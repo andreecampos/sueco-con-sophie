@@ -1808,7 +1808,7 @@ async function getStripeConfig() {
     if (error || !data) {
       _stripeConfigCache = { link: '', priceNew: 339 };
     } else {
-      const cfg = data.value || {};
+      let cfg = data.value || {}; if (cfg.constructor === String) { try { cfg = JSON.parse(cfg); } catch(e) { cfg = {}; } }
       _stripeConfigCache = {
         link:     cfg.stripe_link || '',
         priceNew: parseInt(cfg.price_new || '339'),
