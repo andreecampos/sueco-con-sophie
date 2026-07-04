@@ -1859,9 +1859,26 @@ async function loadStripeConfigUI() {
   }
 }
 
+// Overlay de carga con logo de Sophie mientras redirige al pago
+function showLoadingOverlay(message) {
+  if (document.getElementById('sc-loading-overlay')) return;
+  const ov = document.createElement('div');
+  ov.id = 'sc-loading-overlay';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:99999;background:linear-gradient(135deg,#006AA7 0%,#003f6b 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;text-align:center;padding:24px;font-family:Helvetica,Arial,sans-serif;';
+  ov.innerHTML = [
+    '<img src="https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/logosophie.jpg" alt="Sueco con Sophie" style="width:110px;height:110px;border-radius:22px;object-fit:cover;box-shadow:0 8px 32px rgba(0,0,0,0.35);"/>',
+    '<div style="width:52px;height:52px;border:5px solid rgba(255,255,255,0.25);border-top-color:#FECC02;border-radius:50%;animation:scspin 0.9s linear infinite;"></div>',
+    '<p style="margin:0;color:#fff;font-size:20px;font-weight:800;">' + (message || 'Cargando...') + '</p>',
+    '<p style="margin:0;color:#90cdf4;font-size:14px;">Te llevamos al pago seguro \uD83D\uDD12</p>',
+    '<style>@keyframes scspin{to{transform:rotate(360deg)}}</style>'
+  ].join('');
+  document.body.appendChild(ov);
+}
+
 async function openEnrollLink() {
   const cfg = _stripeConfigCache || await getStripeConfig();
   if (cfg.link) {
+    showLoadingOverlay('Preparando tu inscripción...');
     window.location.href = cfg.link;
   } else {
     showToast('El link de pago aún no está configurado. Avisa a tu profesora.', 'info');
