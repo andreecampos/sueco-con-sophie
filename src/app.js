@@ -1493,12 +1493,19 @@ const grammarState = {
   score: 0,            // count of correct answers
   answered: false,     // whether current question has been answered
   filter: 'all',       // 'all' | 'A' | 'B'
+  search: '',          // texto del buscador
 };
 
 // ── Navigate to grammar topic selector ───────────────────────
 function showGrammar() {
   stopSpeech();
   showView('grammar');
+  renderGrammarTopics(grammarState.filter);
+}
+
+// ── Buscar tema (español o sueco) ─────────────
+function searchGrammar(value) {
+  grammarState.search = value || '';
   renderGrammarTopics(grammarState.filter);
 }
 
@@ -1521,9 +1528,19 @@ function renderGrammarTopics(filter) {
   const grid = document.getElementById('grammar-topics-grid');
   if (!grid) return;
 
-  const topics = filter === 'all'
+  let topics = filter === 'all'
     ? GRAMMAR_DATA.topics
     : GRAMMAR_DATA.topics.filter(t => t.level === filter);
+
+  const _q = (grammarState.search || '').trim().toLowerCase();
+  if (_q) {
+    topics = topics.filter(t => ((t.title||'') + ' ' + (t.subtitle||'') + ' ' + (t.keywords||'')).toLowerCase().includes(_q));
+  }
+
+  if (!topics.length) {
+    grid.innerHTML = '<div class="col-span-2 text-center text-gray-400 py-10 text-sm">No se encontraron temas. Prueba otra palabra 🔎</div>';
+    return;
+  }
 
   grid.innerHTML = topics.map(topic => `
     <div class="grammar-topic-card rounded-2xl p-4 shadow-md border-2 border-white/60 cursor-pointer card-hover"
@@ -1553,7 +1570,7 @@ function startGrammarTopic(topicId) {
 
   grammarState.topic = topic;
   // Shuffle questions (Fisher-Yates)
-  grammarState.questions = [...topic.questions].sort(() => Math.random() - 0.5);
+  grammarState.questions = [...topic.questions].sort(() => Math.random() - 0.5).slice(0, topic.sessionSize || topic.questions.length);
   grammarState.index = 0;
   grammarState.score = 0;
   grammarState.answered = false;

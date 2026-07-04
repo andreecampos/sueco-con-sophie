@@ -1269,7 +1269,7 @@
       </button>
       <div>
         <h1 class="text-lg font-bold">🎯 Practica Gramática</h1>
-        <p class="text-blue-200 text-xs">Elige un tema y responde 15 preguntas</p>
+        <p class="text-blue-200 text-xs">Busca o elige un tema y practica</p>
       </div>
     </div>
     <div style="height:4px; background:#FECC02;"></div>
@@ -1282,6 +1282,12 @@
       <button onclick="filterGrammar('all')" id="gf-all" data-level="all" class="grammar-filter-btn active text-xs px-3 py-1.5 rounded-full font-semibold">Todos</button>
       <button onclick="filterGrammar('A')" id="gf-A" data-level="A" class="grammar-filter-btn text-xs px-3 py-1.5 rounded-full font-semibold">SFI A</button>
       <button onclick="filterGrammar('B')" id="gf-B" data-level="B" class="grammar-filter-btn text-xs px-3 py-1.5 rounded-full font-semibold">SFI B</button>
+    </div>
+
+    <!-- Buscador de temas -->
+    <div class="mb-4">
+      <input type="text" oninput="searchGrammar(this.value)" placeholder="🔎 Busca un tema (en español o sueco)…"
+        class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 text-sm focus:border-swe-blue focus:outline-none" />
     </div>
 
     <div id="grammar-topics-grid" class="grid grid-cols-2 gap-3"></div>
