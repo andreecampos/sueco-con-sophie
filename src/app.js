@@ -1494,6 +1494,9 @@ const grammarState = {
   answered: false,     // whether current question has been answered
   filter: 'all',       // 'all' | 'A' | 'B'
   search: '',          // texto del buscador
+  streak: 0,           // racha actual
+  best: 0,             // mejor racha
+  total: 0,            // total respondidas
 };
 
 // ── Navigate to grammar topic selector ───────────────────────
@@ -1574,6 +1577,9 @@ function startGrammarTopic(topicId) {
   grammarState.index = 0;
   grammarState.score = 0;
   grammarState.answered = false;
+  grammarState.streak = 0;
+  grammarState.best = 0;
+  grammarState.total = 0;
 
   // Update quiz header
   const titleEl = document.getElementById('gq-topic-title');
@@ -1591,18 +1597,17 @@ function renderGrammarQuestion() {
 
   grammarState.answered = false;
 
-  // Progress bar
-  const pct = ((current - 1) / total) * 100;
+  // Racha como barra (se llena con la racha, se reinicia al fallar)
   const progressBar = document.getElementById('gq-progress-bar');
-  if (progressBar) progressBar.style.width = pct + '%';
+  if (progressBar) progressBar.style.width = (Math.min(grammarState.streak, 10) * 10) + '%';
 
-  // Live score
-  const scoreEl = document.getElementById('gq-score-live');
-  if (scoreEl) scoreEl.textContent = `${grammarState.score} / ${grammarState.index}`;
+  // Racha en el header
+  const streakEl = document.getElementById('gq-streak');
+  if (streakEl) streakEl.textContent = `🔥 ${grammarState.streak}`;
 
-  // Question number tag
+  // Stats
   const catEl = document.getElementById('gq-category');
-  if (catEl) catEl.textContent = `Pregunta ${current} de ${total}`;
+  if (catEl) catEl.textContent = `🔥 Racha: ${grammarState.streak}   ·   Respondidas: ${grammarState.total}`;
 
   // Question text
   const qEl = document.getElementById('gq-question-text');
@@ -1651,7 +1656,15 @@ function answerGrammar(selectedIdx) {
   const q = grammarState.questions[grammarState.index];
   const isCorrect = selectedIdx === q.correct;
 
-  if (isCorrect) grammarState.score++;
+  grammarState.total++;
+  if (isCorrect) {
+    grammarState.score++;
+    grammarState.streak++;
+    if (grammarState.streak > grammarState.best) grammarState.best = grammarState.streak;
+  } else {
+    grammarState.streak = 0;
+    grammarState.questions.push(q); // repasar: la fallada vuelve mas adelante
+  }
 
   // Style all option buttons
   q.options.forEach((_, i) => {
@@ -1695,37 +1708,41 @@ function answerGrammar(selectedIdx) {
   const nextBtn = document.getElementById('gq-next-btn');
   if (nextBtn) {
     nextBtn.classList.remove('hidden');
-    const isLast = grammarState.index === grammarState.questions.length - 1;
-    nextBtn.textContent = isLast ? '🏁 Ver resultado' : 'Siguiente →';
-    nextBtn.className = `w-full py-3.5 rounded-2xl font-bold text-white text-sm mt-3 transition-all ${isLast
-      ? 'bg-gradient-to-r from-swe-blue to-blue-600 shadow-lg'
-      : 'bg-gradient-to-r from-gray-700 to-gray-600 shadow'}`;
+    nextBtn.textContent = 'Siguiente →';
+    nextBtn.className = 'w-full py-3.5 rounded-2xl font-bold text-white text-sm mt-3 transition-all bg-gradient-to-r from-swe-blue to-blue-600 shadow-lg';
   }
 
-  // Update live score display
-  const scoreEl = document.getElementById('gq-score-live');
-  if (scoreEl) scoreEl.textContent = `${grammarState.score} / ${grammarState.index + 1}`;
+  // Update streak display
+  const streakEl = document.getElementById('gq-streak');
+  if (streakEl) streakEl.textContent = `🔥 ${grammarState.streak}`;
 }
 
 // ── Advance to next question or show result ──────────────────
 function nextGrammarQuestion() {
-  const isLast = grammarState.index === grammarState.questions.length - 1;
-  if (isLast) {
-    showGrammarResult();
-  } else {
-    grammarState.index++;
-    renderGrammarQuestion();
-    // Scroll question area to top
-    const qa = document.getElementById('gq-question-area');
-    if (qa) qa.scrollTop = 0;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  grammarState.index++;
+  // Modo sin parar: si se acaba la cola, se rellena con mas preguntas al azar
+  if (grammarState.index >= grammarState.questions.length) {
+    const t = grammarState.topic;
+    if (t) {
+      const more = [...t.questions].sort(() => Math.random() - 0.5).slice(0, t.sessionSize || t.questions.length);
+      grammarState.questions.push(...more);
+    }
   }
+  renderGrammarQuestion();
+  const qa = document.getElementById('gq-question-area');
+  if (qa) qa.scrollTop = 0;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Terminar la practica y ver resultado ─────────────
+function finishGrammar() {
+  showGrammarResult();
 }
 
 // ── Show final result screen ─────────────────────────────────
 function showGrammarResult() {
   const score = grammarState.score;
-  const total = grammarState.questions.length;
+  const total = grammarState.total || 1;
   const pct = Math.round((score / total) * 100);
   const passed = pct >= 70;
 
@@ -1749,9 +1766,9 @@ function showGrammarResult() {
 
   // Score numbers
   const scoreNumEl = document.getElementById('gq-result-score');
-  if (scoreNumEl) scoreNumEl.textContent = `${score} / ${total}`;
+  if (scoreNumEl) scoreNumEl.textContent = `${score} / ${grammarState.total}`;
   const scorePctEl = document.getElementById('gq-result-pct');
-  if (scorePctEl) scorePctEl.textContent = `${pct}%`;
+  if (scorePctEl) scorePctEl.textContent = `${pct}% aciertos   ·   🔥 mejor racha: ${grammarState.best}`;
 
   // Result progress bar
   const resultBar = document.getElementById('gq-result-bar');
