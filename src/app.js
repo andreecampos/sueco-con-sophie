@@ -1504,12 +1504,68 @@ function showGrammar() {
   stopSpeech();
   showView('grammar');
   renderGrammarTopics(grammarState.filter);
+  renderReviewCard();
 }
 
 // ── Buscar tema (español o sueco) ─────────────
 function searchGrammar(value) {
   grammarState.search = value || '';
   renderGrammarTopics(grammarState.filter);
+}
+
+// ── Errores para repasar (se guardan en el dispositivo) ──────
+function getMistakes() {
+  try { return JSON.parse(localStorage.getItem('sc_mistakes') || '[]'); } catch(e) { return []; }
+}
+function saveMistakes(arr) {
+  try { localStorage.setItem('sc_mistakes', JSON.stringify(arr)); } catch(e) {}
+}
+function addMistake(q) {
+  const arr = getMistakes();
+  if (!arr.some(x => x.text === q.text)) {
+    arr.push({ text: q.text, options: q.options, correct: q.correct, explanation: q.explanation });
+    saveMistakes(arr);
+  }
+}
+function removeMistake(q) {
+  saveMistakes(getMistakes().filter(x => x.text !== q.text));
+}
+
+// ── Tarjeta "Repasar mis errores" ────────────────────────────
+function renderReviewCard() {
+  const el = document.getElementById('grammar-review-card');
+  if (!el) return;
+  const m = getMistakes();
+  if (!m.length) { el.innerHTML = ''; return; }
+  el.innerHTML = `
+    <div onclick="startReviewMistakes()" class="cursor-pointer rounded-2xl p-4 shadow-md border-2 flex items-center gap-3 card-hover"
+         style="background:linear-gradient(135deg,#FEE2E2,#FECACA); border-color:#FCA5A5;">
+      <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-2xl shadow-sm" style="background:#EF4444;">🔁</div>
+      <div class="flex-1">
+        <div class="font-bold text-gray-800 text-sm">Repasar mis errores</div>
+        <div class="text-xs text-gray-600">Tienes ${m.length} pregunta${m.length === 1 ? '' : 's'} por corregir</div>
+      </div>
+      <span class="text-xl" style="color:#EF4444;">→</span>
+    </div>`;
+}
+
+// ── Practicar solo las preguntas falladas ────────────────────
+function startReviewMistakes() {
+  const m = getMistakes();
+  if (!m.length) { showToast('¡No tienes errores para repasar! 🎉', 'success'); return; }
+  const topic = { id: '__review__', title: '🔁 Repasar mis errores', questions: m.map(x => x), sessionSize: m.length, color: '#EF4444', level: 'A' };
+  grammarState.topic = topic;
+  grammarState.questions = [...topic.questions].sort(() => Math.random() - 0.5);
+  grammarState.index = 0;
+  grammarState.score = 0;
+  grammarState.answered = false;
+  grammarState.streak = 0;
+  grammarState.best = 0;
+  grammarState.total = 0;
+  const titleEl = document.getElementById('gq-topic-title');
+  if (titleEl) titleEl.textContent = topic.title;
+  showView('grammar-quiz');
+  renderGrammarQuestion();
 }
 
 // ── Filter grammar topics by level ──────────────────────────
@@ -1661,9 +1717,11 @@ function answerGrammar(selectedIdx) {
     grammarState.score++;
     grammarState.streak++;
     if (grammarState.streak > grammarState.best) grammarState.best = grammarState.streak;
+    removeMistake(q);
   } else {
     grammarState.streak = 0;
     grammarState.questions.push(q); // repasar: la fallada vuelve mas adelante
+    addMistake(q);
   }
 
   // Style all option buttons
