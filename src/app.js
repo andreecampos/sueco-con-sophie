@@ -67,6 +67,7 @@ let _cachedStudents = null;
 window.addEventListener('load', () => {
   loadStats();
   updateStats();
+  renderHomeDashboard();
   stopSpeech();
   // Pre-cargar config de Stripe para que el botón "Inscríbete" funcione instantáneamente
   getStripeConfig();
@@ -87,7 +88,7 @@ function goHome() {
   if (!session) { showView('login'); return; }
   stopSpeech();
   state.level = null;
-  showView('home');
+  showView('home');  renderHomeDashboard();
 }
 
 function goMenu() {
@@ -1193,6 +1194,7 @@ async function loginStudent() {
   const adminBtn = document.getElementById('admin-btn-home');
   if (adminBtn) adminBtn.style.display = 'none';
   showView('home');
+  renderHomeDashboard();
   showToast(`¡Välkommen, ${student.name}! 🇸🇪`, 'success');
 }
 
@@ -2958,6 +2960,7 @@ function computeNivel() {
 
 async function finishNivelTest() {
   const r = computeNivel();
+  try { localStorage.setItem('scs_nivel_last', JSON.stringify({ nivel: r.nivel, pct: Math.round(r.correct / (r.total||1) * 100), skills: { las: pctOf(r.skills.las), hor: pctOf(r.skills.hor), skriv: pctOf(r.skills.skriv), tala: pctOf(r.skills.tala) }, ts: Date.now() })); } catch (e) {}
   showView('nivel-result');
 
   // Insignia de nivel
@@ -3084,4 +3087,75 @@ function shuffleArray(arr) {
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PANEL DEL ALUMNO (inicio) — Sueco con Sophie
+   1) Círculo de AVANCE (sube con la práctica y las pruebas)
+   2) EN QUÉ ENFOCARSE (destreza más floja + errores por corregir)
+   3) ¿QUÉ TAN SUECO ERES? (por ahora, un bebé de 6 meses)
+═══════════════════════════════════════════════════════════════ */
+const DASH_RING_C = 326.7; // circunferencia del anillo (2·π·52)
+const DASH_PRACTICE_TARGET = 300; // aciertos para llenar la parte de práctica
+
+function getLastNivel() {
+  try { return JSON.parse(localStorage.getItem('scs_nivel_last') || 'null'); } catch (e) { return null; }
+}
+
+function computeAvance() {
+  const last = getLastNivel();
+  const testScore = last ? Math.round(last.pct || 0) : 0;
+  const correct = (typeof state !== 'undefined' && state.stats && state.stats.correct) || 0;
+  const practiceScore = Math.min(100, Math.round(correct / DASH_PRACTICE_TARGET * 100));
+  // 50% prueba de nivel + 50% práctica. 100% = 100 en la prueba Y mucha práctica.
+  const avance = last ? Math.round(testScore * 0.5 + practiceScore * 0.5) : Math.round(practiceScore * 0.5);
+  return { avance, testScore, practiceScore, correct, last };
+}
+
+function renderHomeDashboard() {
+  const ring = document.getElementById('dash-ring-fg');
+  if (!ring) return;
+  const { avance, last } = computeAvance();
+
+  // Anillo de avance
+  ring.style.strokeDashoffset = (DASH_RING_C * (1 - avance / 100)).toFixed(1);
+  const col = avance >= 70 ? '#7C3AED' : (avance >= 40 ? '#006AA7' : '#10B981');
+  ring.setAttribute('stroke', col);
+  const pctEl = document.getElementById('dash-pct');
+  if (pctEl) { pctEl.textContent = avance + '%'; pctEl.style.color = col; }
+
+  // En qué enfocarse
+  const focus = document.getElementById('dash-focus');
+  if (focus) {
+    const mistakes = (typeof getMistakes === 'function') ? getMistakes().length : 0;
+    const names = { las: 'Leer · Läsförståelse', hor: 'Escuchar · Hörförståelse', skriv: 'Escribir · Skriva', tala: 'Hablar · Tala' };
+    let html = '';
+    if (last && last.skills) {
+      const entries = Object.keys(names).map(k => ({ k, v: last.skills[k] != null ? last.skills[k] : 0 }));
+      entries.sort((a, b) => a.v - b.v);
+      const weak = entries[0];
+      html += `<div class="flex items-start gap-2">
+        <span class="text-lg leading-none mt-0.5">🎯</span>
+        <div class="flex-1">
+          <div class="text-sm font-bold text-gray-800">Enfócate en: ${names[weak.k]}</div>
+          <div class="text-xs text-gray-500">Es tu destreza más floja (${weak.v}% en tu prueba). Practica más de esto para subir.</div>
+        </div></div>`;
+    } else {
+      html += `<div onclick="showNivelTest()" class="cursor-pointer flex items-start gap-2">
+        <span class="text-lg leading-none mt-0.5">🎯</span>
+        <div class="flex-1">
+          <div class="text-sm font-bold text-swe-blue">Haz tu Prueba de Nivel →</div>
+          <div class="text-xs text-gray-500">Así sabrás exactamente en qué destreza enfocarte.</div>
+        </div></div>`;
+    }
+    if (mistakes > 0) {
+      html += `<button onclick="showGrammar()" class="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-red-600 bg-red-50 rounded-lg px-2.5 py-1 hover:bg-red-100 transition-colors">
+        🔁 ${mistakes} pregunta${mistakes === 1 ? '' : 's'} por corregir</button>`;
+    }
+    focus.innerHTML = html;
+  }
+
+  // ¿Qué tan sueco eres? (bebé fijo por ahora)
+  const babyLabel = document.getElementById('dash-baby-label');
+  if (babyLabel) babyLabel.textContent = 'Bebé sueco · 6 meses';
 }
