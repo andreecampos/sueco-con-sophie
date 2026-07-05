@@ -3199,18 +3199,19 @@ function renderHomeDashboard() {
     else { fixBtn.classList.add('hidden'); fixBtn.classList.remove('inline-flex'); }
   }
 
-  // Alce (älg): crece con el nivel de la prueba
+  // Alce (älg): crece GRADUALMENTE con el avance — el bebé se mantiene y no salta al hacer la prueba
   const mooseEl = document.getElementById('dash-moose');
   const mLabel = document.getElementById('dash-baby-label');
   const mSub = document.getElementById('dash-moose-sub');
-  let stage = 0, mname = 'Alce bebé', msub = 'Haz la prueba para crecer';
-  if (last) {
-    const map = { A: [1, 'Alce joven'], B: [2, 'Alce adulto'], C: [3, 'Alce rey 👑'] };
-    const m = map[last.nivel] || [1, 'Alce joven'];
-    stage = m[0]; mname = m[1];
-    msub = 'Nivel ' + last.nivel + (last.pct != null ? ' · ' + last.pct + '%' : '');
-  }
+  const ALCE_STAGES = [
+    [0, 'Alce bebé', '¡Aquí empieza todo!'],
+    [1, 'Alce joven', 'Vas creciendo 💪'],
+    [2, 'Alce adulto', '¡Ya casi llegas!'],
+    [3, 'Alce rey 👑', '¡Eres un rey! 👑'],
+  ];
+  const si = avance >= 75 ? 3 : (avance >= 50 ? 2 : (avance >= 25 ? 1 : 0));
+  const stage = ALCE_STAGES[si][0];
   if (mooseEl) mooseEl.innerHTML = mooseVisual(stage);
-  if (mLabel) mLabel.textContent = mname;
-  if (mSub) mSub.textContent = msub;
+  if (mLabel) mLabel.textContent = ALCE_STAGES[si][1];
+  if (mSub) mSub.textContent = ALCE_STAGES[si][2];
 }
