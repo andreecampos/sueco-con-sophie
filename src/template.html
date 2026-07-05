@@ -320,6 +320,16 @@
 
   <!-- Level cards -->
   <div class="max-w-4xl mx-auto px-4 mt-6 pb-6">
+    <!-- ── PRUEBA DE NIVEL (CTA destacado) ────────────────── -->
+    <div onclick="showNivelTest()" class="cursor-pointer card-hover rounded-2xl p-5 shadow-lg mb-6 flex items-center gap-4" style="background:linear-gradient(135deg,#006AA7,#003F6B);">
+      <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0" style="background:rgba(255,255,255,0.15);">🎯</div>
+      <div class="flex-1">
+        <div class="font-black text-white text-base">Haz tu Prueba de Nivel</div>
+        <div class="text-blue-100 text-xs mt-0.5">Descubre si estás en SFI A, B o C · sube de dificultad · resultado con gráficos</div>
+      </div>
+      <div class="text-swe-yellow text-2xl">→</div>
+    </div>
+
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
 
       <div class="card-hover glass rounded-2xl p-6 shadow-lg border border-blue-100 text-center" onclick="selectLevel('A')">
@@ -1404,6 +1414,139 @@
   <!-- ══════════════════════════════════════════════════════ -->
   <!--  HÖRFÖRSTÅELSE — Selector de nivel y diálogo         -->
   <!-- ══════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════
+     VIEW: PRUEBA DE NIVEL — Intro
+════════════════════════════════════════════════════════════ -->
+<div id="view-nivel-intro" class="view">
+  <div class="bg-swe-blue text-white blue-header">
+    <div class="flag-line"></div>
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center gap-3">
+      <button onclick="goHome()" class="text-blue-300 hover:text-white transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <div class="flex-1"><h1 class="text-base font-bold">Prueba de Nivel</h1><p class="text-blue-200 text-xs">Nivåtest · descubre tu nivel SFI</p></div>
+    </div>
+    <div style="height:4px; background:#FECC02;"></div>
+  </div>
+
+  <div class="max-w-lg mx-auto px-4 py-6">
+    <div class="glass rounded-3xl p-6 shadow-lg border border-blue-100 text-center mb-5">
+      <div class="text-5xl mb-3">🎯</div>
+      <h2 class="text-2xl font-black text-gray-800 mb-2">¿Cuál es tu nivel de sueco?</h2>
+      <p class="text-gray-600 text-sm leading-relaxed">Esta prueba te ubica en <b>SFI A, B o C</b>. Empieza fácil y <b>sube de dificultad</b> poco a poco. Tómala en serio: mide de verdad lo que sabes.</p>
+    </div>
+
+    <div class="glass rounded-2xl p-5 shadow border border-blue-100 mb-5">
+      <div class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Mide tus 4 destrezas</div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="flex items-center gap-2"><span class="text-xl">📖</span><div><div class="font-bold text-sm text-gray-800">Läsförståelse</div><div class="text-xs text-gray-500">Leer</div></div></div>
+        <div class="flex items-center gap-2"><span class="text-xl">🎧</span><div><div class="font-bold text-sm text-gray-800">Hörförståelse</div><div class="text-xs text-gray-500">Escuchar</div></div></div>
+        <div class="flex items-center gap-2"><span class="text-xl">✍️</span><div><div class="font-bold text-sm text-gray-800">Skriva</div><div class="text-xs text-gray-500">Escribir</div></div></div>
+        <div class="flex items-center gap-2"><span class="text-xl">🗣️</span><div><div class="font-bold text-sm text-gray-800">Tala</div><div class="text-xs text-gray-500">Hablar</div></div></div>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-center gap-2 text-xs text-gray-500 mb-5">
+      <span class="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full font-semibold">15 preguntas</span>
+      <span class="bg-blue-100 text-blue-700 px-2.5 py-1 rounded-full font-semibold">~8 minutos</span>
+      <span class="bg-amber-100 text-amber-700 px-2.5 py-1 rounded-full font-semibold">Resultado con gráficos</span>
+    </div>
+
+    <button onclick="startNivelTest()" class="w-full bg-swe-blue text-white py-4 rounded-2xl font-black text-lg shadow-lg hover:bg-swe-dark transition-colors">
+      Empezar la prueba →
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     VIEW: PRUEBA DE NIVEL — Preguntas
+════════════════════════════════════════════════════════════ -->
+<div id="view-nivel-quiz" class="view">
+  <div class="bg-swe-blue text-white blue-header">
+    <div class="flag-line"></div>
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center gap-3">
+      <button onclick="showNivelTest()" class="text-blue-300 hover:text-white transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <div class="flex-1">
+        <div class="flex items-center gap-2">
+          <span id="nt-level-badge" class="text-xs font-bold text-white px-2 py-0.5 rounded-full" style="background:#10B981;">Nivel A</span>
+          <span id="nt-counter" class="text-blue-200 text-xs">Pregunta 1 de 15</span>
+        </div>
+        <p id="nt-skill-tag" class="text-swe-yellow text-xs font-semibold mt-0.5">📖 Läsförståelse</p>
+      </div>
+    </div>
+    <div class="h-1.5 bg-white/20"><div id="nt-progress-bar" class="h-full bg-swe-yellow transition-all duration-500" style="width:0%"></div></div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-4 py-5">
+    <div id="nt-question-area" class="glass rounded-2xl p-5 shadow border border-blue-100 mb-4"></div>
+
+    <div id="nt-explanation" class="hidden rounded-2xl p-4 border-2 mt-4 mb-2">
+      <div class="flex items-start gap-3">
+        <span id="nt-explanation-icon" class="text-xl flex-shrink-0">💡</span>
+        <p id="nt-explanation-text" class="text-sm text-gray-700 leading-relaxed font-medium"></p>
+      </div>
+    </div>
+
+    <button id="nt-check-btn" onclick="checkNivelOrder()" class="hidden w-full bg-emerald-500 text-white py-3.5 rounded-2xl font-bold hover:bg-emerald-600 transition-colors mt-2">Comprobar</button>
+    <button id="nt-next-btn" onclick="nextNivelQuestion()" class="hidden w-full bg-swe-blue text-white py-3.5 rounded-2xl font-bold hover:bg-swe-dark transition-colors mt-2">Siguiente →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     VIEW: PRUEBA DE NIVEL — Resultado con gráficos
+════════════════════════════════════════════════════════════ -->
+<div id="view-nivel-result" class="view">
+  <div class="bg-swe-blue text-white blue-header">
+    <div class="flag-line"></div>
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center gap-3">
+      <button onclick="goHome()" class="text-blue-300 hover:text-white transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <div class="flex-1"><h1 class="text-base font-bold">Tu resultado</h1><p class="text-blue-200 text-xs">Nivåtest</p></div>
+    </div>
+    <div style="height:4px; background:#FECC02;"></div>
+  </div>
+
+  <div class="max-w-lg mx-auto px-4 py-6">
+    <!-- Insignia de nivel -->
+    <div class="glass rounded-3xl p-6 shadow-lg border border-blue-100 text-center mb-5">
+      <div id="nt-result-emoji" class="text-5xl mb-2">🌟</div>
+      <div class="text-sm text-gray-500 mb-2">Tu nivel de sueco es</div>
+      <div id="nt-result-level" class="inline-flex items-center justify-center text-white text-3xl font-black px-8 py-3 rounded-2xl shadow-lg mb-3" style="background:#006AA7;">SFI B</div>
+      <p id="nt-result-desc" class="text-gray-700 font-semibold text-sm leading-relaxed"></p>
+      <div id="nt-result-score" class="text-xs text-gray-400 mt-2"></div>
+    </div>
+
+    <!-- Desglose por nivel -->
+    <div class="glass rounded-2xl p-5 shadow border border-blue-100 mb-5">
+      <div class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Cómo te fue en cada nivel</div>
+      <div id="nt-tier-breakdown"></div>
+    </div>
+
+    <!-- Radar de destrezas -->
+    <div class="glass rounded-2xl p-5 shadow border border-blue-100 mb-5">
+      <div class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-2">Tus 4 destrezas</div>
+      <div style="height:260px;"><canvas id="nt-radar"></canvas></div>
+    </div>
+
+    <!-- Progreso histórico -->
+    <div id="nt-progress-wrap" class="glass rounded-2xl p-5 shadow border border-blue-100 mb-5">
+      <div class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-2">Tu progreso</div>
+      <div id="nt-progress-empty" class="text-center text-gray-400 text-sm py-6">
+        📈 Este es tu primer intento.<br>Repite la prueba más adelante para ver cómo subes de nivel.
+      </div>
+      <div style="height:240px;"><canvas id="nt-progress-chart" class="hidden"></canvas></div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3">
+      <button onclick="startNivelTest()" class="bg-swe-blue text-white py-3 rounded-xl font-semibold text-sm hover:bg-swe-dark transition-colors">🔄 Repetir prueba</button>
+      <button onclick="goHome()" class="border-2 border-swe-blue text-swe-blue py-3 rounded-xl font-semibold text-sm hover:bg-blue-50 transition-colors">🏠 Inicio</button>
+    </div>
+  </div>
+</div>
+
   <div id="view-horst" class="view">
     <div class="max-w-lg mx-auto px-4 py-6">
       <!-- Header -->

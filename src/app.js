@@ -2708,3 +2708,380 @@ function restartHorstEpisode() {
   if (horstState.episode) startHorstEpisode(horstState.episode.id, horstState.level);
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   PRUEBA DE NIVEL — lógica (Sueco con Sophie)
+   Escalado real A→B→C. Guarda el resultado en Supabase (tabla
+   nivel_resultados) y muestra el progreso con gráficos (Chart.js).
+═══════════════════════════════════════════════════════════════ */
+let nivelState = {
+  i: 0,
+  answered: false,
+  answers: [],        // { nivel, skill, correct }
+  order: { pool: [], built: [] },
+  charts: { radar: null, prog: null },
+};
+
+// ── Abrir la pantalla de inicio de la prueba ─────────────────
+function showNivelTest() {
+  stopSpeech();
+  showView('nivel-intro');
+}
+
+// ── Empezar la prueba ────────────────────────────────────────
+function startNivelTest() {
+  nivelState.i = 0;
+  nivelState.answered = false;
+  nivelState.answers = [];
+  nivelState.order = { pool: [], built: [] };
+  showView('nivel-quiz');
+  renderNivelQuestion();
+}
+
+function nivelCurrent() { return LEVEL_TEST.questions[nivelState.i]; }
+
+// ── Pintar la pregunta actual ────────────────────────────────
+function renderNivelQuestion() {
+  const q = nivelCurrent();
+  const total = LEVEL_TEST.questions.length;
+  nivelState.answered = false;
+
+  // Cabecera: progreso y nivel actual
+  const bar = document.getElementById('nt-progress-bar');
+  if (bar) bar.style.width = Math.round((nivelState.i / total) * 100) + '%';
+  const counter = document.getElementById('nt-counter');
+  if (counter) counter.textContent = `Pregunta ${nivelState.i + 1} de ${total}`;
+  const lvlBadge = document.getElementById('nt-level-badge');
+  const lvlNames = { A: 'Nivel A · básico', B: 'Nivel B · sube', C: 'Nivel C · difícil' };
+  const lvlColors = { A: '#10B981', B: '#006AA7', C: '#7C3AED' };
+  if (lvlBadge) { lvlBadge.textContent = lvlNames[q.nivel]; lvlBadge.style.background = lvlColors[q.nivel]; }
+
+  const sk = LEVEL_TEST.skills[q.skill];
+  const skillTag = document.getElementById('nt-skill-tag');
+  if (skillTag) skillTag.textContent = `${sk.icon} ${sk.label} · ${sk.es}`;
+
+  // Ocultar explicación y botón siguiente
+  const expl = document.getElementById('nt-explanation'); if (expl) expl.classList.add('hidden');
+  const nextBtn = document.getElementById('nt-next-btn'); if (nextBtn) nextBtn.classList.add('hidden');
+  const checkBtn = document.getElementById('nt-check-btn'); if (checkBtn) checkBtn.classList.add('hidden');
+
+  const area = document.getElementById('nt-question-area');
+
+  if (q.type === 'read') {
+    area.innerHTML = `
+      <div class="rounded-2xl p-4 mb-4 border-l-4 border-swe-blue" style="background:#EFF6FF;">
+        <div class="text-xs text-swe-blue font-bold mb-1">📖 Lee este texto en sueco:</div>
+        <p class="text-gray-800 font-semibold leading-relaxed">${q.text}</p>
+      </div>
+      <p class="font-bold text-gray-800 mb-3">${q.question}</p>
+      <div id="nt-options" class="space-y-2.5"></div>`;
+    renderNivelOptions(q);
+
+  } else if (q.type === 'listen') {
+    area.innerHTML = `
+      <div class="rounded-2xl p-5 mb-4 text-center border-2 border-dashed" style="border-color:#0EA5E9; background:#F0F9FF;">
+        <div class="text-xs text-sky-600 font-bold mb-2">🎧 Escucha (no se ve el texto)</div>
+        <button onclick="nivelPlayAudio()" class="inline-flex items-center gap-2 bg-sky-500 text-white px-5 py-3 rounded-2xl font-bold shadow hover:bg-sky-600 transition-colors">
+          🔊 Escuchar
+        </button>
+        <div class="text-xs text-gray-400 mt-2">Puedes escuchar las veces que quieras</div>
+      </div>
+      <p class="font-bold text-gray-800 mb-3">${q.question}</p>
+      <div id="nt-options" class="space-y-2.5"></div>`;
+    renderNivelOptions(q);
+
+  } else if (q.type === 'mc') {
+    area.innerHTML = `
+      <p class="font-bold text-gray-800 mb-4 text-base">${q.question}</p>
+      <div id="nt-options" class="space-y-2.5"></div>`;
+    renderNivelOptions(q);
+
+  } else if (q.type === 'order') {
+    nivelState.order.built = [];
+    nivelState.order.pool = shuffleArray(q.words.map((w, idx) => ({ w, id: idx })));
+    area.innerHTML = `
+      <p class="font-bold text-gray-800 mb-4">${q.question}</p>
+      <div class="text-xs text-gray-400 mb-1">Tu frase:</div>
+      <div id="nt-built" class="min-h-[54px] rounded-2xl border-2 border-dashed border-gray-300 p-2 mb-3 flex flex-wrap gap-2" style="background:#FAFAFA;"></div>
+      <div class="text-xs text-gray-400 mb-1">Toca las palabras en orden:</div>
+      <div id="nt-pool" class="flex flex-wrap gap-2"></div>`;
+    renderNivelOrder();
+    const checkBtn = document.getElementById('nt-check-btn');
+    if (checkBtn) checkBtn.classList.remove('hidden');
+  }
+
+  const qa = document.getElementById('nt-question-area');
+  if (qa) qa.scrollTop = 0;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderNivelOptions(q) {
+  const box = document.getElementById('nt-options');
+  if (!box) return;
+  box.innerHTML = q.options.map((opt, idx) => `
+    <button onclick="answerNivel(${idx})" data-idx="${idx}"
+      class="nt-opt w-full text-left px-4 py-3 rounded-2xl border-2 border-gray-200 font-semibold text-gray-700 hover:border-swe-blue hover:bg-blue-50 transition-all">
+      ${opt}
+    </button>`).join('');
+}
+
+function nivelPlayAudio() {
+  const q = nivelCurrent();
+  if (q.audio) speak(q.audio);
+}
+
+// ── Preguntas de opción (leer / escuchar / escribir) ─────────
+function answerNivel(idx) {
+  if (nivelState.answered) return;
+  nivelState.answered = true;
+  const q = nivelCurrent();
+  const isCorrect = idx === q.correct;
+  nivelState.answers.push({ nivel: q.nivel, skill: q.skill, correct: isCorrect });
+
+  document.querySelectorAll('.nt-opt').forEach(btn => {
+    const i = parseInt(btn.getAttribute('data-idx'), 10);
+    btn.disabled = true;
+    btn.classList.remove('hover:border-swe-blue', 'hover:bg-blue-50');
+    if (i === q.correct) { btn.classList.add('border-emerald-500'); btn.style.background = '#ECFDF5'; }
+    else if (i === idx) { btn.classList.add('border-red-400'); btn.style.background = '#FEF2F2'; }
+    else { btn.classList.add('opacity-50'); }
+  });
+
+  showNivelExplanation(isCorrect, q.explanation);
+}
+
+// ── Preguntas de ordenar (tala) ──────────────────────────────
+function renderNivelOrder() {
+  const poolEl = document.getElementById('nt-pool');
+  const builtEl = document.getElementById('nt-built');
+  if (!poolEl || !builtEl) return;
+  poolEl.innerHTML = nivelState.order.pool.map(item => `
+    <button onclick="nivelPick(${item.id})" class="nt-chip px-3.5 py-2 rounded-xl bg-white border-2 border-swe-blue text-swe-blue font-bold shadow-sm hover:bg-blue-50 transition-all">${item.w}</button>`).join('');
+  builtEl.innerHTML = nivelState.order.built.length
+    ? nivelState.order.built.map(item => `
+        <button onclick="nivelUnpick(${item.id})" class="nt-chip px-3.5 py-2 rounded-xl bg-swe-blue text-white font-bold shadow-sm hover:bg-swe-dark transition-all">${item.w}</button>`).join('')
+    : '<span class="text-gray-300 text-sm py-2 px-1">…</span>';
+}
+
+function nivelPick(id) {
+  if (nivelState.answered) return;
+  const idx = nivelState.order.pool.findIndex(x => x.id === id);
+  if (idx === -1) return;
+  nivelState.order.built.push(nivelState.order.pool.splice(idx, 1)[0]);
+  renderNivelOrder();
+}
+
+function nivelUnpick(id) {
+  if (nivelState.answered) return;
+  const idx = nivelState.order.built.findIndex(x => x.id === id);
+  if (idx === -1) return;
+  nivelState.order.pool.push(nivelState.order.built.splice(idx, 1)[0]);
+  renderNivelOrder();
+}
+
+function checkNivelOrder() {
+  if (nivelState.answered) return;
+  const q = nivelCurrent();
+  if (nivelState.order.built.length < q.words.length) {
+    showToast('Usa todas las palabras 😊', 'info');
+    return;
+  }
+  nivelState.answered = true;
+  const built = nivelState.order.built.map(x => x.w);
+  const isCorrect = built.join(' ') === q.answer.join(' ');
+  nivelState.answers.push({ nivel: q.nivel, skill: q.skill, correct: isCorrect });
+
+  const checkBtn = document.getElementById('nt-check-btn');
+  if (checkBtn) checkBtn.classList.add('hidden');
+  const builtEl = document.getElementById('nt-built');
+  if (builtEl) {
+    builtEl.style.borderStyle = 'solid';
+    builtEl.style.borderColor = isCorrect ? '#10B981' : '#F87171';
+    builtEl.style.background = isCorrect ? '#ECFDF5' : '#FEF2F2';
+  }
+  if (!isCorrect) {
+    // Mostrar la frase correcta
+    const area = document.getElementById('nt-question-area');
+    if (area) {
+      const hint = document.createElement('div');
+      hint.className = 'mt-3 text-sm text-gray-700';
+      hint.innerHTML = `✅ La frase correcta es: <span class="font-bold text-swe-blue">${q.answer.join(' ')}</span>`;
+      area.appendChild(hint);
+    }
+  }
+  showNivelExplanation(isCorrect, q.explanation);
+}
+
+// ── Explicación + botón siguiente ────────────────────────────
+function showNivelExplanation(isCorrect, text) {
+  const expl = document.getElementById('nt-explanation');
+  const icon = document.getElementById('nt-explanation-icon');
+  const body = document.getElementById('nt-explanation-text');
+  if (expl && body) {
+    expl.classList.remove('hidden');
+    expl.style.background = isCorrect ? '#ECFDF5' : '#FFF7ED';
+    expl.style.borderColor = isCorrect ? '#6EE7B7' : '#FDBA74';
+    if (icon) icon.textContent = isCorrect ? '✅' : '💡';
+    body.textContent = (isCorrect ? '¡Correcto! ' : '') + text;
+  }
+  const nextBtn = document.getElementById('nt-next-btn');
+  if (nextBtn) {
+    nextBtn.classList.remove('hidden');
+    nextBtn.textContent = (nivelState.i >= LEVEL_TEST.questions.length - 1) ? '🏁 Ver mi nivel' : 'Siguiente →';
+  }
+}
+
+function nextNivelQuestion() {
+  if (nivelState.i >= LEVEL_TEST.questions.length - 1) {
+    finishNivelTest();
+  } else {
+    nivelState.i++;
+    renderNivelQuestion();
+  }
+}
+
+// ── Calcular nivel y mostrar resultado ───────────────────────
+function computeNivel() {
+  const per = { A: { c: 0, t: 0 }, B: { c: 0, t: 0 }, C: { c: 0, t: 0 } };
+  const skills = { las: { c: 0, t: 0 }, hor: { c: 0, t: 0 }, skriv: { c: 0, t: 0 }, tala: { c: 0, t: 0 } };
+  let correct = 0;
+  nivelState.answers.forEach(a => {
+    per[a.nivel].t++; if (a.correct) per[a.nivel].c++;
+    skills[a.skill].t++; if (a.correct) { skills[a.skill].c++; correct++; }
+  });
+  // Ubicación: hay que aprobar el nivel anterior (>=3 de 5) para subir
+  let nivel = 'A';
+  const passA = per.A.c >= 3, passB = per.B.c >= 3, passC = per.C.c >= 3;
+  if (passA && passB) nivel = 'B';
+  if (passA && passB && passC) nivel = 'C';
+  return { nivel, per, skills, correct, total: nivelState.answers.length, passA, passB, passC };
+}
+
+async function finishNivelTest() {
+  const r = computeNivel();
+  showView('nivel-result');
+
+  // Insignia de nivel
+  const names = { A: 'SFI A', B: 'SFI B', C: 'SFI C' };
+  const descs = {
+    A: 'Estás construyendo la base. ¡Vas por buen camino!',
+    B: '¡Muy bien! Ya dominas lo básico y avanzas al nivel intermedio.',
+    C: '¡Excelente! Manejas frases complejas. Estás en un nivel avanzado.',
+  };
+  const colors = { A: '#10B981', B: '#006AA7', C: '#7C3AED' };
+  const badge = document.getElementById('nt-result-level');
+  if (badge) { badge.textContent = names[r.nivel]; badge.style.background = colors[r.nivel]; }
+  const emoji = document.getElementById('nt-result-emoji');
+  if (emoji) emoji.textContent = r.nivel === 'C' ? '🏆' : (r.nivel === 'B' ? '🌟' : '🌱');
+  const desc = document.getElementById('nt-result-desc');
+  if (desc) desc.textContent = descs[r.nivel];
+  const scoreEl = document.getElementById('nt-result-score');
+  if (scoreEl) scoreEl.textContent = `${r.correct} / ${r.total} respuestas correctas`;
+
+  // Desglose por nivel (barras A/B/C)
+  const tiers = document.getElementById('nt-tier-breakdown');
+  if (tiers) {
+    const row = (lbl, o, col) => `
+      <div class="mb-2">
+        <div class="flex justify-between text-xs font-semibold mb-1"><span>${lbl}</span><span>${o.c}/${o.t}</span></div>
+        <div class="h-2.5 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full" style="width:${o.t ? Math.round(o.c / o.t * 100) : 0}%; background:${col};"></div></div>
+      </div>`;
+    tiers.innerHTML = row('Nivel A · básico', r.per.A, '#10B981') + row('Nivel B · intermedio', r.per.B, '#006AA7') + row('Nivel C · avanzado', r.per.C, '#7C3AED');
+  }
+
+  // Gráfico radar de las 4 destrezas
+  drawNivelRadar(r.skills);
+
+  // Guardar en Supabase y dibujar el progreso histórico
+  const saved = await saveNivelResult(r);
+  await drawNivelProgress(saved);
+}
+
+function drawNivelRadar(skills) {
+  const canvas = document.getElementById('nt-radar');
+  if (!canvas || !window.Chart) return;
+  if (nivelState.charts.radar) { nivelState.charts.radar.destroy(); nivelState.charts.radar = null; }
+  const order = ['las', 'hor', 'skriv', 'tala'];
+  const labels = order.map(k => LEVEL_TEST.skills[k].es);
+  const data = order.map(k => skills[k].t ? Math.round(skills[k].c / skills[k].t * 100) : 0);
+  nivelState.charts.radar = new Chart(canvas, {
+    type: 'radar',
+    data: { labels, datasets: [{ label: '% aciertos', data, fill: true, backgroundColor: 'rgba(0,106,167,0.2)', borderColor: '#006AA7', pointBackgroundColor: '#FECC02', pointRadius: 4 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+      scales: { r: { min: 0, max: 100, ticks: { stepSize: 25, backdropColor: 'transparent', color: '#9CA3AF' }, pointLabels: { font: { size: 12, weight: 'bold' }, color: '#374151' } } } }
+  });
+}
+
+// ── Supabase: guardar y leer el historial ────────────────────
+async function nivelStudentId() {
+  if (window._sbSession?.id) return window._sbSession.id;
+  try { const { data: { session } } = await sb.auth.getSession(); return session?.user?.id || null; } catch (e) { return null; }
+}
+
+async function saveNivelResult(r) {
+  try {
+    const sid = await nivelStudentId();
+    if (!sid) return null;
+    const row = {
+      student_id: sid, nivel: r.nivel, puntaje: r.correct, total: r.total,
+      las: pctOf(r.skills.las), hor: pctOf(r.skills.hor), skriv: pctOf(r.skills.skriv), tala: pctOf(r.skills.tala),
+      detalle: { per: r.per },
+    };
+    const { data, error } = await sb.from('nivel_resultados').insert(row).select().single();
+    if (error) { console.log('[nivel] guardar error', error.message); return null; }
+    return data;
+  } catch (e) { console.log('[nivel] guardar excepción', e); return null; }
+}
+
+function pctOf(o) { return o.t ? Math.round(o.c / o.t * 100) : 0; }
+
+async function drawNivelProgress(justSaved) {
+  const wrap = document.getElementById('nt-progress-wrap');
+  const canvas = document.getElementById('nt-progress-chart');
+  if (!wrap || !canvas || !window.Chart) return;
+  let history = [];
+  try {
+    const sid = await nivelStudentId();
+    if (sid) {
+      const { data } = await sb.from('nivel_resultados').select('*').eq('student_id', sid).order('created_at', { ascending: true });
+      if (data) history = data;
+    }
+  } catch (e) { history = []; }
+
+  if (!history.length && justSaved) history = [justSaved];
+  if (history.length < 2) {
+    // Con un solo intento no hay línea de progreso todavía
+    wrap.querySelector('#nt-progress-empty')?.classList.remove('hidden');
+    canvas.classList.add('hidden');
+    return;
+  }
+  wrap.querySelector('#nt-progress-empty')?.classList.add('hidden');
+  canvas.classList.remove('hidden');
+
+  const map = { A: 1, B: 2, C: 3 };
+  const labels = history.map((h, i) => `Intento ${i + 1}`);
+  const lvlData = history.map(h => map[h.nivel] || 1);
+  const pctData = history.map(h => h.total ? Math.round(h.puntaje / h.total * 100) : 0);
+  if (nivelState.charts.prog) { nivelState.charts.prog.destroy(); nivelState.charts.prog = null; }
+  nivelState.charts.prog = new Chart(canvas, {
+    type: 'line',
+    data: { labels, datasets: [
+      { label: 'Nivel (A=1, B=2, C=3)', data: lvlData, borderColor: '#006AA7', backgroundColor: 'rgba(0,106,167,0.1)', tension: 0.3, yAxisID: 'y', pointRadius: 5, pointBackgroundColor: '#006AA7' },
+      { label: '% aciertos', data: pctData, borderColor: '#FECC02', backgroundColor: 'rgba(254,204,2,0.1)', tension: 0.3, yAxisID: 'y1', pointRadius: 4, pointBackgroundColor: '#F59E0B' },
+    ] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } },
+      scales: {
+        y: { position: 'left', min: 0, max: 3, ticks: { stepSize: 1, color: '#006AA7', callback: v => ({ 1: 'A', 2: 'B', 3: 'C' }[v] || '') } },
+        y1: { position: 'right', min: 0, max: 100, grid: { drawOnChartArea: false }, ticks: { color: '#F59E0B', callback: v => v + '%' } },
+      } }
+  });
+}
+
+// ── Utilidad: barajar ────────────────────────────────────────
+function shuffleArray(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}

@@ -1010,3 +1010,109 @@ const HORST_DATA = {
     ]
   }
 };
+
+/* ═══════════════════════════════════════════════════════════════
+   PRUEBA DE NIVEL (Nivåtest) — Sueco con Sophie
+   15 preguntas que SUBEN de dificultad (SFI A → B → C).
+   Combina las 4 destrezas: läsförståelse, hörförståelse, skriva, tala.
+   Explicaciones en lenguaje simple (que entienda un niño de 6 o alguien de 70).
+   Tipos:
+     'read'   = läsförståelse  (lee un texto en sueco, elige)
+     'listen' = hörförståelse  (escucha a Sophie, elige — el texto NO se ve)
+     'mc'     = skriva/gramática (elige la forma correcta escrita)
+     'order'  = tala (ordena las palabras para formar la frase que dirías)
+═══════════════════════════════════════════════════════════════ */
+const LEVEL_TEST = {
+  skills: {
+    las:   { label: 'Läsförståelse', es: 'Leer',     icon: '📖', color: '#006AA7' },
+    hor:   { label: 'Hörförståelse', es: 'Escuchar', icon: '🎧', color: '#0EA5E9' },
+    skriv: { label: 'Skriva',        es: 'Escribir',  icon: '✍️', color: '#10B981' },
+    tala:  { label: 'Tala',          es: 'Hablar',    icon: '🗣️', color: '#F59E0B' },
+  },
+  questions: [
+    // ───────────────── NIVEL A (básico) ─────────────────
+    { nivel: 'A', skill: 'hor', type: 'listen',
+      audio: 'Hej! Jag heter Sofia. Jag bor i Stockholm.',
+      question: '¿Dónde vive Sofia?',
+      options: ['En Estocolmo', 'En Madrid', 'En Oslo'], correct: 0,
+      explanation: 'Ella dice «Jag bor i Stockholm» = «Vivo en Estocolmo». La palabra «bor» significa «vivo / vive».' },
+
+    { nivel: 'A', skill: 'las', type: 'read',
+      text: 'Det är måndag. Erik går till skolan klockan åtta.',
+      question: '¿A qué hora va Erik a la escuela?',
+      options: ['A las ocho', 'A las diez', 'A las dos'], correct: 0,
+      explanation: '«klockan åtta» = «a las ocho». La palabra «åtta» significa «ocho».' },
+
+    { nivel: 'A', skill: 'skriv', type: 'mc',
+      question: 'Elige la forma correcta: «Jag ___ kaffe.» (yo bebo café)',
+      options: ['dricker', 'dricka', 'drack'], correct: 0,
+      explanation: '«dricker» es el presente: «yo bebo». (dricka = beber; drack = bebí, que es pasado.)' },
+
+    { nivel: 'A', skill: 'skriv', type: 'mc',
+      question: '¿en o ett? «___ hus» (una casa)',
+      options: ['en', 'ett'], correct: 1,
+      explanation: '«ett hus» = una casa. Para decir «la casa» se dice «huset»: termina en -et, señal de «ett».' },
+
+    { nivel: 'A', skill: 'tala', type: 'order',
+      question: 'Ordena las palabras para decir «Me llamo María».',
+      words: ['jag', 'heter', 'Maria'], answer: ['jag', 'heter', 'Maria'],
+      explanation: '«Jag heter Maria» = «Me llamo María». La palabra «heter» significa «me llamo / se llama».' },
+
+    // ───────────────── NIVEL B (intermedio) ─────────────────
+    { nivel: 'B', skill: 'las', type: 'read',
+      text: 'Igår var jag trött, så jag stannade hemma och vilade.',
+      question: '¿Qué hizo ayer esta persona?',
+      options: ['Se quedó en casa a descansar', 'Fue a trabajar', 'Salió con amigos'], correct: 0,
+      explanation: '«stannade hemma och vilade» = «se quedó en casa y descansó». «Igår» significa «ayer».' },
+
+    { nivel: 'B', skill: 'hor', type: 'listen',
+      audio: 'På lördag ska vi åka till Göteborg med tåg.',
+      question: '¿Cómo van a viajar a Göteborg?',
+      options: ['En tren', 'En coche', 'En avión'], correct: 0,
+      explanation: '«med tåg» = «en tren». «tåg» significa «tren». «ska åka» = «van a ir / viajar».' },
+
+    { nivel: 'B', skill: 'skriv', type: 'mc',
+      question: 'Elige el pasado: «Igår ___ jag till jobbet.» (ayer fui al trabajo)',
+      options: ['gick', 'går', 'gå'], correct: 0,
+      explanation: '«gick» = «fui / fue» (pasado de «gå»). «går» es presente («voy / va»).' },
+
+    { nivel: 'B', skill: 'skriv', type: 'mc',
+      question: '¿Cómo se pregunta «¿Bebes café?» en sueco?',
+      options: ['Dricker du kaffe?', 'Du dricker kaffe?', 'Kaffe du dricker?'], correct: 0,
+      explanation: 'En las preguntas, el verbo va primero: «Dricker du kaffe?». Primero «dricker» (bebes), después «du» (tú).' },
+
+    { nivel: 'B', skill: 'tala', type: 'order',
+      question: 'Ordena para decir «Voy a comprar mañana».',
+      words: ['Jag', 'ska', 'handla', 'imorgon'], answer: ['Jag', 'ska', 'handla', 'imorgon'],
+      explanation: '«Jag ska handla imorgon» = «Voy a comprar mañana». «ska» sirve para el futuro («voy a»).' },
+
+    // ───────────────── NIVEL C (avanzado) ─────────────────
+    { nivel: 'C', skill: 'las', type: 'read',
+      text: 'Även om det regnade, bestämde vi oss för att gå ut, eftersom vi ville träffa våra vänner.',
+      question: '¿Por qué salieron?',
+      options: ['Porque querían ver a sus amigos', 'Porque hacía sol', 'Porque tenían que trabajar'], correct: 0,
+      explanation: '«eftersom vi ville träffa våra vänner» = «porque querían ver a sus amigos». «eftersom» = «porque»; «Även om» = «aunque».' },
+
+    { nivel: 'C', skill: 'hor', type: 'listen',
+      audio: 'Jag tycker att svenska är svårt, men jag övar varje dag för att bli bättre.',
+      question: '¿Qué hace esta persona cada día?',
+      options: ['Practica para mejorar', 'Descansa', 'Ve televisión'], correct: 0,
+      explanation: '«jag övar varje dag för att bli bättre» = «practico cada día para mejorar». «övar» = «practico»; «för att» = «para».' },
+
+    { nivel: 'C', skill: 'skriv', type: 'mc',
+      question: 'Completa: «Jag stannade hemma ___ jag var sjuk.» (me quedé en casa porque estaba enfermo)',
+      options: ['eftersom', 'och', 'eller'], correct: 0,
+      explanation: '«eftersom» = «porque» (da la razón). «och» = «y»; «eller» = «o».' },
+
+    { nivel: 'C', skill: 'skriv', type: 'mc',
+      question: 'Elige la frase correcta (ella dijo que no viene):',
+      options: ['Hon sa att hon inte kommer', 'Hon sa att hon kommer inte', 'Att hon inte kommer hon sa'], correct: 0,
+      explanation: 'Después de «att» (que), el «inte» (no) va ANTES del verbo: «...att hon inte kommer» = «...que ella no viene».' },
+
+    { nivel: 'C', skill: 'tala', type: 'order',
+      question: 'Ordena para decir «Creo que el sueco es útil».',
+      words: ['Jag', 'tycker', 'att', 'svenska', 'är', 'användbart'],
+      answer: ['Jag', 'tycker', 'att', 'svenska', 'är', 'användbart'],
+      explanation: '«Jag tycker att svenska är användbart» = «Creo que el sueco es útil». «tycker att» = «creo que».' },
+  ],
+};
