@@ -3165,18 +3165,23 @@ function renderHomeDashboard() {
       let min = 101;
       order.forEach(k => { const v = last.skills[k] != null ? last.skills[k] : 0; if (v < min) { min = v; weakKey = k; } });
     }
-    skillsEl.innerHTML = order.map(k => {
+    const rows = order.map(k => {
       const sk = LEVEL_TEST.skills[k];
       const v = has ? (last.skills[k] != null ? last.skills[k] : 0) : 0;
       const isWeak = k === weakKey;
-      return `<div class="flex items-center gap-1.5 ${isWeak ? 'ring-1 ring-amber-300 bg-amber-50 rounded-lg px-1.5 py-0.5 -mx-1' : ''}" title="${sk.es} (${sk.label})">
-        <span class="text-sm w-4 text-center flex-shrink-0">${isWeak ? '🎯' : sk.icon}</span>
+      return `<div class="flex items-center gap-1.5 ${isWeak ? 'ring-1 ring-amber-300 bg-amber-50 rounded-lg px-1 py-0.5 -mx-0.5' : ''}" title="${sk.es} · ${sk.label}">
+        <span class="text-sm w-4 text-center flex-shrink-0">${sk.icon}</span>
+        <span class="text-[9px] font-semibold w-11 flex-shrink-0 leading-tight ${isWeak ? 'text-amber-700' : 'text-gray-500'}">${sk.es}</span>
         <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
           <div class="h-full rounded-full" style="width:${has ? v : 6}%; background:${has ? sk.color : '#E5E7EB'}; transition:width .8s ease;"></div>
         </div>
         <span class="text-[10px] font-bold w-7 text-right ${isWeak ? 'text-amber-600' : 'text-gray-400'}">${has ? v + '%' : '–'}</span>
       </div>`;
     }).join('');
+    const caption = has && weakKey
+      ? `<div class="text-[10px] text-amber-600 font-bold text-center mt-2">🎯 Enfócate en ${LEVEL_TEST.skills[weakKey].es}</div>`
+      : (!has ? `<div class="text-[10px] text-gray-400 text-center mt-2">Haz la prueba para medir esto</div>` : '');
+    skillsEl.innerHTML = rows + caption;
   }
 
   // Botón de la prueba de nivel (azul)
