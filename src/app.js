@@ -3111,6 +3111,38 @@ function computeAvance() {
   return { avance, testScore, practiceScore, correct, last };
 }
 
+// ── Alce (älg): mascota del idioma, dibujada para verse igual en todo teléfono
+function mooseSVG(stage) {
+  const brown = '#8B5E3C', dark = '#5E3E28', snout = '#C9A27E', antler = '#CFAE5E';
+  let antlers = '';
+  if (stage >= 1) {
+    const big = stage >= 2;
+    antlers += `<path d="M36 24 Q22 ${big ? 6 : 13} ${big ? 9 : 17} ${big ? 16 : 21}" stroke="${antler}" stroke-width="${big ? 5 : 4}" fill="none" stroke-linecap="round"/>`;
+    antlers += `<path d="M64 24 Q78 ${big ? 6 : 13} ${big ? 91 : 83} ${big ? 16 : 21}" stroke="${antler}" stroke-width="${big ? 5 : 4}" fill="none" stroke-linecap="round"/>`;
+    if (big) {
+      antlers += `<path d="M27 15 Q22 9 15 10" stroke="${antler}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+      antlers += `<path d="M73 15 Q78 9 85 10" stroke="${antler}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+      antlers += `<path d="M20 22 Q16 18 10 19" stroke="${antler}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+      antlers += `<path d="M80 22 Q84 18 90 19" stroke="${antler}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+    }
+  }
+  const crown = stage >= 3
+    ? `<path d="M40 10 l3 6 l7 -8 l7 8 l3 -6 l0 9 l-20 0 z" fill="#FECC02" stroke="#E0A800" stroke-width="0.6"/>
+       <circle cx="43" cy="10" r="1.6" fill="#FECC02"/><circle cx="50" cy="8" r="1.6" fill="#FECC02"/><circle cx="57" cy="10" r="1.6" fill="#FECC02"/>`
+    : '';
+  return `<svg viewBox="0 0 100 100" class="w-full h-full">
+    ${antlers}${crown}
+    <ellipse cx="26" cy="34" rx="8" ry="11" fill="${dark}"/>
+    <ellipse cx="74" cy="34" rx="8" ry="11" fill="${dark}"/>
+    <path d="M32 32 Q32 18 50 18 Q68 18 68 32 L68 48 Q68 60 50 62 Q32 60 32 48 Z" fill="${brown}"/>
+    <ellipse cx="50" cy="68" rx="15" ry="13" fill="${snout}"/>
+    <ellipse cx="44" cy="71" rx="2" ry="2.8" fill="${dark}"/>
+    <ellipse cx="56" cy="71" rx="2" ry="2.8" fill="${dark}"/>
+    <circle cx="43" cy="42" r="4.4" fill="#fff"/><circle cx="43.6" cy="42.4" r="2.3" fill="#222"/>
+    <circle cx="57" cy="42" r="4.4" fill="#fff"/><circle cx="57.6" cy="42.4" r="2.3" fill="#222"/>
+  </svg>`;
+}
+
 function renderHomeDashboard() {
   const ring = document.getElementById('dash-ring-fg');
   if (!ring) return;
@@ -3160,7 +3192,18 @@ function renderHomeDashboard() {
     else { fixBtn.classList.add('hidden'); fixBtn.classList.remove('inline-flex'); }
   }
 
-  // Bebé (por ahora fijo, 6 meses)
-  const babyLabel = document.getElementById('dash-baby-label');
-  if (babyLabel) babyLabel.textContent = 'Bebé · 6 meses';
+  // Alce (älg): crece con el nivel de la prueba
+  const mooseEl = document.getElementById('dash-moose');
+  const mLabel = document.getElementById('dash-baby-label');
+  const mSub = document.getElementById('dash-moose-sub');
+  let stage = 0, mname = 'Alce bebé', msub = 'Haz la prueba para crecer';
+  if (last) {
+    const map = { A: [1, 'Alce joven'], B: [2, 'Alce adulto'], C: [3, 'Alce rey 👑'] };
+    const m = map[last.nivel] || [1, 'Alce joven'];
+    stage = m[0]; mname = m[1];
+    msub = 'Nivel ' + last.nivel + (last.pct != null ? ' · ' + last.pct + '%' : '');
+  }
+  if (mooseEl) mooseEl.innerHTML = mooseSVG(stage);
+  if (mLabel) mLabel.textContent = mname;
+  if (mSub) mSub.textContent = msub;
 }
