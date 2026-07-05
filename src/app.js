@@ -3091,9 +3091,8 @@ function shuffleArray(arr) {
 
 /* ═══════════════════════════════════════════════════════════════
    PANEL DEL ALUMNO (inicio) — Sueco con Sophie
-   1) Círculo de AVANCE (sube con la práctica y las pruebas)
-   2) EN QUÉ ENFOCARSE (destreza más floja + errores por corregir)
-   3) ¿QUÉ TAN SUECO ERES? (por ahora, un bebé de 6 meses)
+   Izquierda: círculo de AVANCE · Centro: destrezas (gráfico) ·
+   Derecha: bebé (¿qué tan sueco eres?) · Abajo: botón prueba + corregir
 ═══════════════════════════════════════════════════════════════ */
 const DASH_RING_C = 326.7; // circunferencia del anillo (2·π·52)
 const DASH_PRACTICE_TARGET = 300; // aciertos para llenar la parte de práctica
@@ -3124,38 +3123,44 @@ function renderHomeDashboard() {
   const pctEl = document.getElementById('dash-pct');
   if (pctEl) { pctEl.textContent = avance + '%'; pctEl.style.color = col; }
 
-  // En qué enfocarse
-  const focus = document.getElementById('dash-focus');
-  if (focus) {
-    const mistakes = (typeof getMistakes === 'function') ? getMistakes().length : 0;
-    const names = { las: 'Leer · Läsförståelse', hor: 'Escuchar · Hörförståelse', skriv: 'Escribir · Skriva', tala: 'Hablar · Tala' };
-    let html = '';
-    if (last && last.skills) {
-      const entries = Object.keys(names).map(k => ({ k, v: last.skills[k] != null ? last.skills[k] : 0 }));
-      entries.sort((a, b) => a.v - b.v);
-      const weak = entries[0];
-      html += `<div class="flex items-start gap-2">
-        <span class="text-lg leading-none mt-0.5">🎯</span>
-        <div class="flex-1">
-          <div class="text-sm font-bold text-gray-800">Enfócate en: ${names[weak.k]}</div>
-          <div class="text-xs text-gray-500">Es tu destreza más floja (${weak.v}% en tu prueba). Practica más de esto para subir.</div>
-        </div></div>`;
-    } else {
-      html += `<div onclick="showNivelTest()" class="cursor-pointer flex items-start gap-2">
-        <span class="text-lg leading-none mt-0.5">🎯</span>
-        <div class="flex-1">
-          <div class="text-sm font-bold text-swe-blue">Haz tu Prueba de Nivel →</div>
-          <div class="text-xs text-gray-500">Así sabrás exactamente en qué destreza enfocarte.</div>
-        </div></div>`;
+  // Destrezas: 4 barras (gráfico). Se resalta la más floja.
+  const skillsEl = document.getElementById('dash-skills');
+  if (skillsEl) {
+    const order = ['las', 'hor', 'skriv', 'tala'];
+    const has = last && last.skills;
+    let weakKey = null;
+    if (has) {
+      let min = 101;
+      order.forEach(k => { const v = last.skills[k] != null ? last.skills[k] : 0; if (v < min) { min = v; weakKey = k; } });
     }
-    if (mistakes > 0) {
-      html += `<button onclick="showGrammar()" class="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-red-600 bg-red-50 rounded-lg px-2.5 py-1 hover:bg-red-100 transition-colors">
-        🔁 ${mistakes} pregunta${mistakes === 1 ? '' : 's'} por corregir</button>`;
-    }
-    focus.innerHTML = html;
+    skillsEl.innerHTML = order.map(k => {
+      const sk = LEVEL_TEST.skills[k];
+      const v = has ? (last.skills[k] != null ? last.skills[k] : 0) : 0;
+      const isWeak = k === weakKey;
+      return `<div class="flex items-center gap-1.5 ${isWeak ? 'ring-1 ring-amber-300 bg-amber-50 rounded-lg px-1.5 py-0.5 -mx-1' : ''}" title="${sk.es} (${sk.label})">
+        <span class="text-sm w-4 text-center flex-shrink-0">${isWeak ? '🎯' : sk.icon}</span>
+        <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+          <div class="h-full rounded-full" style="width:${has ? v : 6}%; background:${has ? sk.color : '#E5E7EB'}; transition:width .8s ease;"></div>
+        </div>
+        <span class="text-[10px] font-bold w-7 text-right ${isWeak ? 'text-amber-600' : 'text-gray-400'}">${has ? v + '%' : '–'}</span>
+      </div>`;
+    }).join('');
   }
 
-  // ¿Qué tan sueco eres? (bebé fijo por ahora)
+  // Botón de la prueba de nivel (azul)
+  const testBtn = document.getElementById('dash-test-btn');
+  if (testBtn) testBtn.textContent = last ? '🔄 Repetir prueba de nivel' : '🎯 Hacer la prueba de nivel';
+
+  // Chip "por corregir" (en qué mejorar ya mismo)
+  const fixBtn = document.getElementById('dash-fix-btn');
+  const fixCount = document.getElementById('dash-fix-count');
+  const mistakes = (typeof getMistakes === 'function') ? getMistakes().length : 0;
+  if (fixBtn && fixCount) {
+    if (mistakes > 0) { fixCount.textContent = mistakes; fixBtn.classList.remove('hidden'); fixBtn.classList.add('inline-flex'); }
+    else { fixBtn.classList.add('hidden'); fixBtn.classList.remove('inline-flex'); }
+  }
+
+  // Bebé (por ahora fijo, 6 meses)
   const babyLabel = document.getElementById('dash-baby-label');
-  if (babyLabel) babyLabel.textContent = 'Bebé sueco · 6 meses';
+  if (babyLabel) babyLabel.textContent = 'Bebé · 6 meses';
 }
