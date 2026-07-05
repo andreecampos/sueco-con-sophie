@@ -2354,16 +2354,10 @@ function startHorstEpisode(epId, level) {
 }
 
 // ── Internal: stop Web Audio playback ───────────────────────
+// ── Parar el audio actual (grabación HTML5 o TTS) ───────────
 function _stopWebAudio() {
-  if (horstState._source) {
-    try { horstState._source.stop(); } catch(e) {}
-    try { horstState._source.disconnect(); } catch(e) {}
-    horstState._source = null;
-  }
-  if (horstState._rafId) {
-    cancelAnimationFrame(horstState._rafId);
-    horstState._rafId = null;
-  }
+  if (horstState.audioEl) { try { horstState.audioEl.pause(); } catch (e) {} }
+  if (window.speechSynthesis) { try { window.speechSynthesis.cancel(); } catch (e) {} }
   horstState._playing = false;
 }
 
@@ -2384,58 +2378,59 @@ function _updateAudioProgress() {
   }
 }
 
-// ── Setup audio for episode (Web Audio API) ──────────────────
+// Lista de audios grabados por Sophie (los .mp3 viven en /audio, se cargan bajo demanda)
+const SOPHIE_AUDIO_KEYS = ['a01','a02','a03','a04','a05','a06','b01','b02','b03','b04','b05','b06'];
+
+// ── Preparar el audio del episodio (HTML5 <audio>, carga solo el que se abre) ──
 function setupHorstAudio(ep) {
-  // Tear down any previous playback
   _stopWebAudio();
-  if (horstState._blobUrl) { URL.revokeObjectURL(horstState._blobUrl); horstState._blobUrl = null; }
-  horstState.audioEl   = null;
-  horstState._buffer   = null;
+  horstState.audioEl = null;
   horstState._duration = 0;
-  horstState._offset   = 0;
 
-  const playBtn     = document.getElementById('hq-play-btn');
+  const playBtn = document.getElementById('hq-play-btn');
   const progressBar = document.getElementById('hq-audio-progress');
-  const timeEl      = document.getElementById('hq-audio-time');
-  const totalEl     = document.getElementById('hq-audio-total');
-
-  if (playBtn)     playBtn.textContent = '▶';
+  const timeEl = document.getElementById('hq-audio-time');
+  const totalEl = document.getElementById('hq-audio-total');
+  if (playBtn) playBtn.textContent = '▶';
   if (progressBar) progressBar.style.width = '0%';
-  if (timeEl)      timeEl.textContent = '0:00';
-  if (totalEl)     totalEl.textContent = '...';
+  if (timeEl) timeEl.textContent = '0:00';
+  if (totalEl) totalEl.textContent = '...';
 
-  const hasAudio = (typeof SOPHIE_AUDIO !== 'undefined') && ep.audioKey && SOPHIE_AUDIO[ep.audioKey];
+  const hasAudio = ep.audioKey && SOPHIE_AUDIO_KEYS.indexOf(ep.audioKey) !== -1;
   if (!hasAudio) { if (totalEl) totalEl.textContent = '0:00'; return; }
 
-  try {
-    const ctx  = _getAudioCtx();
-    // iOS requiere resume() antes de decodificar
-    const decode = () => {
-      const b64  = SOPHIE_AUDIO[ep.audioKey].split(',')[1];
-      const bin  = atob(b64);
-      const arr  = new Uint8Array(bin.length);
-      for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+  const audio = new Audio();
+  audio.preload = 'metadata';
+  audio.src = 'audio/' + ep.audioKey + '.mp3';
+  horstState.audioEl = audio;
 
-      // decodeAudioData takes ownership of the buffer — .slice(0) avoids detached-buffer errors on retry
-      ctx.decodeAudioData(arr.buffer.slice(0), function(buffer) {
-        horstState._buffer   = buffer;
-        horstState._duration = buffer.duration;
-        const tot = document.getElementById('hq-audio-total');
-        if (tot) tot.textContent = formatTime(buffer.duration);
-      }, function(err) {
-        console.error('decodeAudioData error:', err);
-        if (totalEl) totalEl.textContent = '0:00';
-      });
-    };
-    // En iOS el contexto puede estar suspendido — resume y luego decodifica
-    if (ctx.state === 'suspended') {
-      ctx.resume().then(decode).catch(decode);
-    } else {
-      decode();
-    }
-  } catch(e) {
-    console.error('Audio setup error:', e);
-  }
+  audio.addEventListener('loadedmetadata', function () {
+    horstState._duration = audio.duration || 0;
+    const tot = document.getElementById('hq-audio-total');
+    if (tot) tot.textContent = formatTime(audio.duration);
+  });
+  audio.addEventListener('timeupdate', function () {
+    if (horstState.audioEl !== audio) return;
+    const dur = audio.duration || horstState._duration || 0;
+    const pb = document.getElementById('hq-audio-progress');
+    const tel = document.getElementById('hq-audio-time');
+    if (pb && dur > 0) pb.style.width = ((audio.currentTime / dur) * 100) + '%';
+    if (tel) tel.textContent = formatTime(audio.currentTime);
+  });
+  audio.addEventListener('ended', function () {
+    if (horstState.audioEl !== audio) return;
+    horstState._playing = false;
+    const pb = document.getElementById('hq-play-btn');
+    const bar = document.getElementById('hq-audio-progress');
+    const tel = document.getElementById('hq-audio-time');
+    if (pb) pb.textContent = '▶';
+    if (bar) bar.style.width = '100%';
+    if (tel) tel.textContent = formatTime(horstState._duration);
+  });
+  audio.addEventListener('error', function () {
+    const tot = document.getElementById('hq-audio-total');
+    if (tot) tot.textContent = '0:00';
+  });
 }
 
 function formatTime(secs) {
@@ -2445,104 +2440,67 @@ function formatTime(secs) {
   return `${m}:${s.toString().padStart(2, '0')}`;
 }
 
-// ── Play / Pause audio (Web Audio API) ───────────────────────
+// ── Play / Pausa (HTML5 audio; el play sale del gesto = seguro en móvil) ──
 function toggleHorstAudio() {
-  const playBtn  = document.getElementById('hq-play-btn');
-  const ep       = horstState.episode;
-  const hasAudio = (typeof SOPHIE_AUDIO !== 'undefined') && ep?.audioKey && SOPHIE_AUDIO[ep.audioKey];
+  const playBtn = document.getElementById('hq-play-btn');
+  const ep = horstState.episode;
+  const hasAudio = ep && ep.audioKey && SOPHIE_AUDIO_KEYS.indexOf(ep.audioKey) !== -1;
 
-  if (hasAudio) {
-    if (!horstState._buffer) return; // still decoding
-
-    if (horstState._playing) {
-      // ── Pause: snapshot current offset ──────────────────────
-      horstState._offset += horstState._ctx.currentTime - horstState._startTime;
-      horstState._offset  = Math.min(horstState._offset, horstState._duration);
-      _stopWebAudio();
+  if (hasAudio && horstState.audioEl) {
+    const audio = horstState.audioEl;
+    if (!audio.paused) {
+      audio.pause();
+      horstState._playing = false;
       if (playBtn) playBtn.textContent = '▶';
     } else {
-      // ── Play / Resume ────────────────────────────────────────
-      const ctx = _getAudioCtx();
-      if (ctx.state === 'suspended') ctx.resume();
-
-      const source = ctx.createBufferSource();
-      source.buffer = horstState._buffer;
-      source.connect(ctx.destination);
-
-      const startOffset = Math.min(Math.max(0, horstState._offset), horstState._duration - 0.01);
-      source.start(0, startOffset);
-
-      horstState._source    = source;
-      horstState._startTime = ctx.currentTime;
-      horstState._playing   = true;
+      const pr = audio.play();
+      horstState._playing = true;
       if (playBtn) playBtn.textContent = '⏸';
-
-      // onended fires when the clip finishes naturally
-      source.onended = function() {
-        if (horstState._source !== source) return; // stale source
-        horstState._offset  = 0;
-        horstState._playing = false;
-        horstState._source  = null;
-        if (horstState._rafId) { cancelAnimationFrame(horstState._rafId); horstState._rafId = null; }
-        const pb   = document.getElementById('hq-play-btn');
-        const pbar = document.getElementById('hq-audio-progress');
-        const tel  = document.getElementById('hq-audio-time');
-        if (pb)   pb.textContent        = '▶';
-        if (pbar) pbar.style.width      = '100%';
-        if (tel)  tel.textContent       = formatTime(horstState._duration);
-      };
-
-      horstState._rafId = requestAnimationFrame(_updateAudioProgress);
+      if (pr && pr.catch) pr.catch(function () { if (playBtn) playBtn.textContent = '▶'; horstState._playing = false; });
     }
   } else {
-    // ── TTS fallback (no Sophie recording yet) ────────────────
+    // Fallback TTS (episodio sin grabación aún)
     if (playBtn) playBtn.textContent = '🔊';
     const utt = new SpeechSynthesisUtterance(ep.ttsScript);
-    utt.lang  = 'sv-SE';
-    utt.rate  = 0.85;
+    utt.lang = 'sv-SE';
+    utt.rate = 0.85;
     utt.onend = () => { if (playBtn) playBtn.textContent = '▶'; };
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utt);
   }
 }
 
-// ── Replay from the beginning ────────────────────────────────
+// ── Repetir desde el inicio ──────────────────────────────────
 function replayHorstAudio() {
   const ep = horstState.episode;
-  const hasAudio = (typeof SOPHIE_AUDIO !== 'undefined') && ep?.audioKey && SOPHIE_AUDIO[ep.audioKey];
-  if (hasAudio) {
-    _stopWebAudio();
-    horstState._offset = 0;
-    const progressBar = document.getElementById('hq-audio-progress');
-    if (progressBar) progressBar.style.width = '0%';
-    const timeEl = document.getElementById('hq-audio-time');
-    if (timeEl) timeEl.textContent = '0:00';
-    toggleHorstAudio();
+  const hasAudio = ep && ep.audioKey && SOPHIE_AUDIO_KEYS.indexOf(ep.audioKey) !== -1;
+  if (hasAudio && horstState.audioEl) {
+    const audio = horstState.audioEl;
+    try { audio.currentTime = 0; } catch (e) {}
+    const pr = audio.play();
+    horstState._playing = true;
+    const pb = document.getElementById('hq-play-btn');
+    if (pb) pb.textContent = '⏸';
+    if (pr && pr.catch) pr.catch(function () {});
   } else {
     window.speechSynthesis.cancel();
     toggleHorstAudio();
   }
 }
 
-// ── Seek by clicking on the progress bar ────────────────────
+// ── Seek con clic en la barra ────────────────────────────────
 function seekHorstAudio(event) {
-  if (!horstState._buffer || !horstState._duration) return;
+  const audio = horstState.audioEl;
+  if (!audio || !horstState._duration) return;
   const bar = document.getElementById('hq-audio-bar');
   if (!bar) return;
-  const rect    = bar.getBoundingClientRect();
-  const pct     = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
-  const newTime = pct * horstState._duration;
-
-  const wasPlaying = horstState._playing;
-  _stopWebAudio();
-  horstState._offset = newTime;
-
+  const rect = bar.getBoundingClientRect();
+  const pct = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+  try { audio.currentTime = pct * horstState._duration; } catch (e) {}
   const progressBar = document.getElementById('hq-audio-progress');
   if (progressBar) progressBar.style.width = (pct * 100) + '%';
   const timeEl = document.getElementById('hq-audio-time');
-  if (timeEl) timeEl.textContent = formatTime(newTime);
-
-  if (wasPlaying) toggleHorstAudio();
+  if (timeEl) timeEl.textContent = formatTime(audio.currentTime);
 }
 
 // ── Render current question ──────────────────────────────────
@@ -3111,35 +3069,72 @@ function computeAvance() {
   return { avance, testScore, practiceScore, correct, last };
 }
 
-// ── Alce (älg): mascota del idioma, dibujada para verse igual en todo teléfono
+// ── Alce (älg) bebé de cuerpo completo, animado, crece por nivel
 function mooseSVG(stage) {
-  const brown = '#8B5E3C', dark = '#5E3E28', snout = '#C9A27E', antler = '#CFAE5E';
+  const B = '#C0894F', D = '#9B6B39', belly = '#F5E6CF', earIn = '#E7A9A0', antler = '#7A5230', hoof = '#5E3E28', nose = '#4A3220';
+  const big = stage >= 2;
+  // Astas: crecen con la etapa
   let antlers = '';
   if (stage >= 1) {
-    const big = stage >= 2;
-    antlers += `<path d="M36 24 Q22 ${big ? 6 : 13} ${big ? 9 : 17} ${big ? 16 : 21}" stroke="${antler}" stroke-width="${big ? 5 : 4}" fill="none" stroke-linecap="round"/>`;
-    antlers += `<path d="M64 24 Q78 ${big ? 6 : 13} ${big ? 91 : 83} ${big ? 16 : 21}" stroke="${antler}" stroke-width="${big ? 5 : 4}" fill="none" stroke-linecap="round"/>`;
-    if (big) {
-      antlers += `<path d="M27 15 Q22 9 15 10" stroke="${antler}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
-      antlers += `<path d="M73 15 Q78 9 85 10" stroke="${antler}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
-      antlers += `<path d="M20 22 Q16 18 10 19" stroke="${antler}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
-      antlers += `<path d="M80 22 Q84 18 90 19" stroke="${antler}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
-    }
+    antlers = `
+      <path d="M40 30 C36 20 33 16 30 13" stroke="${antler}" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+      <path d="M60 30 C64 20 67 16 70 13" stroke="${antler}" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+      <path d="M34.5 20 C31 17 28 16 25 17" stroke="${antler}" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M65.5 20 C69 17 72 16 75 17" stroke="${antler}" stroke-width="3" fill="none" stroke-linecap="round"/>
+      ${big ? `<path d="M31 14 C28 10 25 9 22 10" stroke="${antler}" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <path d="M69 14 C72 10 75 9 78 10" stroke="${antler}" stroke-width="3" fill="none" stroke-linecap="round"/>` : ''}`;
+  } else {
+    // bebé: solo dos botoncitos
+    antlers = `<circle cx="40" cy="27" r="3.2" fill="${antler}"/><circle cx="60" cy="27" r="3.2" fill="${antler}"/>`;
   }
   const crown = stage >= 3
-    ? `<path d="M40 10 l3 6 l7 -8 l7 8 l3 -6 l0 9 l-20 0 z" fill="#FECC02" stroke="#E0A800" stroke-width="0.6"/>
-       <circle cx="43" cy="10" r="1.6" fill="#FECC02"/><circle cx="50" cy="8" r="1.6" fill="#FECC02"/><circle cx="57" cy="10" r="1.6" fill="#FECC02"/>`
+    ? `<path d="M41 11 l3.5 6 l5.5 -7.5 l5.5 7.5 l3.5 -6 l0 8.5 l-18 0 z" fill="#FECC02" stroke="#E0A800" stroke-width="0.6"/>`
     : '';
-  return `<svg viewBox="0 0 100 100" class="w-full h-full">
-    ${antlers}${crown}
-    <ellipse cx="26" cy="34" rx="8" ry="11" fill="${dark}"/>
-    <ellipse cx="74" cy="34" rx="8" ry="11" fill="${dark}"/>
-    <path d="M32 32 Q32 18 50 18 Q68 18 68 32 L68 48 Q68 60 50 62 Q32 60 32 48 Z" fill="${brown}"/>
-    <ellipse cx="50" cy="68" rx="15" ry="13" fill="${snout}"/>
-    <ellipse cx="44" cy="71" rx="2" ry="2.8" fill="${dark}"/>
-    <ellipse cx="56" cy="71" rx="2" ry="2.8" fill="${dark}"/>
-    <circle cx="43" cy="42" r="4.4" fill="#fff"/><circle cx="43.6" cy="42.4" r="2.3" fill="#222"/>
-    <circle cx="57" cy="42" r="4.4" fill="#fff"/><circle cx="57.6" cy="42.4" r="2.3" fill="#222"/>
+  return `<svg viewBox="0 0 100 122" class="w-full h-full" style="overflow:visible">
+    <style>
+      .alce-head{transform-box:fill-box;transform-origin:50% 88%;animation:alceBob 3.2s ease-in-out infinite;}
+      .alce-eye{transform-box:fill-box;transform-origin:center;animation:alceBlink 4.5s infinite;}
+      .alce-tail{transform-box:fill-box;transform-origin:12% 60%;animation:alceTail 1.8s ease-in-out infinite;}
+      .alce-ear{transform-box:fill-box;transform-origin:60% 100%;animation:alceEar 3.2s ease-in-out infinite;}
+      @keyframes alceBob{0%,100%{transform:rotate(-2.5deg)}50%{transform:rotate(2.5deg)}}
+      @keyframes alceBlink{0%,90%,100%{transform:scaleY(1)}95%{transform:scaleY(0.12)}}
+      @keyframes alceTail{0%,100%{transform:rotate(-18deg)}50%{transform:rotate(16deg)}}
+      @keyframes alceEar{0%,100%{transform:rotate(0)}50%{transform:rotate(-6deg)}}
+    </style>
+
+    <!-- PATAS -->
+    <rect x="36" y="92" width="6.5" height="26" rx="3" fill="${D}"/>
+    <rect x="57.5" y="92" width="6.5" height="26" rx="3" fill="${D}"/>
+    <rect x="43" y="94" width="6.5" height="25" rx="3" fill="${B}"/>
+    <rect x="50.5" y="94" width="6.5" height="25" rx="3" fill="${B}"/>
+    <rect x="43" y="113" width="6.5" height="6" rx="2.5" fill="${hoof}"/>
+    <rect x="50.5" y="113" width="6.5" height="6" rx="2.5" fill="${hoof}"/>
+    <rect x="36" y="112" width="6.5" height="6" rx="2.5" fill="${hoof}"/>
+    <rect x="57.5" y="112" width="6.5" height="6" rx="2.5" fill="${hoof}"/>
+
+    <!-- COLA -->
+    <g class="alce-tail"><path d="M70 84 q10 -3 9 6 q-1 6 -9 3 z" fill="${B}"/><path d="M72 86 q5 -1 5 3" fill="${belly}"/></g>
+
+    <!-- CUERPO -->
+    <ellipse cx="50" cy="86" rx="24" ry="18" fill="${B}"/>
+    <ellipse cx="50" cy="92" rx="15" ry="11" fill="${belly}"/>
+    <circle cx="40" cy="80" r="2.2" fill="#fff" opacity=".85"/>
+    <circle cx="59" cy="82" r="2.2" fill="#fff" opacity=".85"/>
+    <circle cx="49" cy="76" r="1.8" fill="#fff" opacity=".85"/>
+    <circle cx="63" cy="88" r="1.6" fill="#fff" opacity=".8"/>
+
+    <!-- CABEZA (grande = bebé, se mueve) -->
+    <g class="alce-head">
+      ${antlers}${crown}
+      <g class="alce-ear"><ellipse cx="26" cy="40" rx="8.5" ry="12" fill="${B}" transform="rotate(-24 26 40)"/><ellipse cx="26" cy="40" rx="4" ry="7" fill="${earIn}" transform="rotate(-24 26 40)"/></g>
+      <g class="alce-ear"><ellipse cx="74" cy="40" rx="8.5" ry="12" fill="${B}" transform="rotate(24 74 40)"/><ellipse cx="74" cy="40" rx="4" ry="7" fill="${earIn}" transform="rotate(24 74 40)"/></g>
+      <path d="M31 44 Q31 24 50 24 Q69 24 69 44 Q69 58 58 62 L42 62 Q31 58 31 44 Z" fill="${B}"/>
+      <ellipse cx="50" cy="60" rx="15" ry="12" fill="${belly}"/>
+      <g class="alce-eye"><circle cx="41" cy="46" r="6.2" fill="#fff"/><circle cx="41.5" cy="46.6" r="4.4" fill="#3A2A1A"/><circle cx="43" cy="45" r="1.5" fill="#fff"/></g>
+      <g class="alce-eye"><circle cx="59" cy="46" r="6.2" fill="#fff"/><circle cx="58.5" cy="46.6" r="4.4" fill="#3A2A1A"/><circle cx="60" cy="45" r="1.5" fill="#fff"/></g>
+      <ellipse cx="50" cy="62" rx="5.5" ry="4.2" fill="${nose}"/>
+      <path d="M46 68 Q50 71 54 68" stroke="${nose}" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+    </g>
   </svg>`;
 }
 
