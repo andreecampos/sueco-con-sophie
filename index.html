@@ -7,6 +7,10 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  @keyframes alceFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+  .alce-float { animation: alceFloat 3s ease-in-out infinite; }
+</style>
 <script>
   tailwind.config = {
     theme: {
@@ -333,7 +337,7 @@
         </div>
         <!-- Alce que crece (idioma) -->
         <div class="flex flex-col items-center text-center">
-          <div id="dash-moose" class="w-16 h-20 sm:w-20 sm:h-24 mb-0.5"></div>
+          <div id="dash-moose" class="w-20 h-20 sm:w-24 sm:h-24 mb-0.5"></div>
           <div id="dash-baby-label" class="text-[11px] sm:text-xs text-swe-blue font-bold">Alce bebé</div>
           <div id="dash-moose-sub" class="text-[9px] sm:text-[10px] text-gray-400 mt-0.5">Crece mientras aprendes</div>
         </div>
@@ -5545,6 +5549,13 @@ function mooseSVG(stage) {
   </svg>`;
 }
 
+// Imagen real del alce por nivel (con animación suave); si falla, usa el dibujo SVG
+const ALCE_IMG = ['bebe', 'joven', 'adulto', 'rey'];
+function mooseVisual(stage) {
+  const name = ALCE_IMG[stage] || 'bebe';
+  return `<img src="alce/${name}.webp" alt="Alce" class="w-full h-full object-cover rounded-2xl shadow-sm alce-float" onerror="this.onerror=null; this.parentNode.innerHTML=mooseSVG(${stage});">`;
+}
+
 function renderHomeDashboard() {
   const ring = document.getElementById('dash-ring-fg');
   if (!ring) return;
@@ -5610,7 +5621,7 @@ function renderHomeDashboard() {
     stage = m[0]; mname = m[1];
     msub = 'Nivel ' + last.nivel + (last.pct != null ? ' · ' + last.pct + '%' : '');
   }
-  if (mooseEl) mooseEl.innerHTML = mooseSVG(stage);
+  if (mooseEl) mooseEl.innerHTML = mooseVisual(stage);
   if (mLabel) mLabel.textContent = mname;
   if (mSub) mSub.textContent = msub;
 }

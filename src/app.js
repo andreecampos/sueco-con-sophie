@@ -3138,6 +3138,13 @@ function mooseSVG(stage) {
   </svg>`;
 }
 
+// Imagen real del alce por nivel (con animación suave); si falla, usa el dibujo SVG
+const ALCE_IMG = ['bebe', 'joven', 'adulto', 'rey'];
+function mooseVisual(stage) {
+  const name = ALCE_IMG[stage] || 'bebe';
+  return `<img src="alce/${name}.webp" alt="Alce" class="w-full h-full object-cover rounded-2xl shadow-sm alce-float" onerror="this.onerror=null; this.parentNode.innerHTML=mooseSVG(${stage});">`;
+}
+
 function renderHomeDashboard() {
   const ring = document.getElementById('dash-ring-fg');
   if (!ring) return;
@@ -3203,7 +3210,7 @@ function renderHomeDashboard() {
     stage = m[0]; mname = m[1];
     msub = 'Nivel ' + last.nivel + (last.pct != null ? ' · ' + last.pct + '%' : '');
   }
-  if (mooseEl) mooseEl.innerHTML = mooseSVG(stage);
+  if (mooseEl) mooseEl.innerHTML = mooseVisual(stage);
   if (mLabel) mLabel.textContent = mname;
   if (mSub) mSub.textContent = msub;
 }
