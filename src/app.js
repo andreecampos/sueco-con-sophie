@@ -1522,15 +1522,15 @@ function getMistakes() {
 function saveMistakes(arr) {
   try { localStorage.setItem('sc_mistakes', JSON.stringify(arr)); } catch(e) {}
 }
+function _gkey(q) { return q.text || q.prompt || ''; }
 function addMistake(q) {
   const arr = getMistakes();
-  if (!arr.some(x => x.text === q.text)) {
-    arr.push({ text: q.text, options: q.options, correct: q.correct, explanation: q.explanation });
-    saveMistakes(arr);
-  }
+  const k = _gkey(q);
+  if (!arr.some(x => _gkey(x) === k)) { arr.push({ ...q }); saveMistakes(arr); }
 }
 function removeMistake(q) {
-  saveMistakes(getMistakes().filter(x => x.text !== q.text));
+  const k = _gkey(q);
+  saveMistakes(getMistakes().filter(x => _gkey(x) !== k));
 }
 
 // ── Tarjeta "Repasar mis errores" ────────────────────────────
@@ -1650,31 +1650,41 @@ function startGrammarTopic(topicId) {
 // ── Render current question ──────────────────────────────────
 function renderGrammarQuestion() {
   const q = grammarState.questions[grammarState.index];
-  const total = grammarState.questions.length;
-  const current = grammarState.index + 1;
-
   grammarState.answered = false;
+  const type = q.type || 'mc';
 
-  // Racha como barra (se llena con la racha, se reinicia al fallar)
+  // Racha como barra
   const progressBar = document.getElementById('gq-progress-bar');
   if (progressBar) progressBar.style.width = (Math.min(grammarState.streak, 10) * 10) + '%';
-
-  // Racha en el header
   const streakEl = document.getElementById('gq-streak');
   if (streakEl) streakEl.textContent = `🔥 ${grammarState.streak}`;
-
-  // Stats
   const catEl = document.getElementById('gq-category');
   if (catEl) catEl.textContent = `🔥 Racha: ${grammarState.streak}   ·   Respondidas: ${grammarState.total}`;
 
-  // Question text
+  // Enunciado
   const qEl = document.getElementById('gq-question-text');
-  if (qEl) qEl.textContent = q.text;
+  if (qEl) qEl.textContent = q.text || q.prompt || '';
 
-  // Answer options
   const optionsEl = document.getElementById('gq-options');
   if (optionsEl) {
-    optionsEl.innerHTML = q.options.map((opt, i) => `
+    if (type === 'order') {
+      grammarState.gorder = { pool: shuffleArray(q.words.map((w, idx) => ({ w, id: idx }))), built: [] };
+      optionsEl.innerHTML = `
+        <div class="text-xs text-gray-400 mb-1">Tu frase:</div>
+        <div id="gq-built" class="min-h-[52px] rounded-2xl border-2 border-dashed border-gray-300 p-2 mb-3 flex flex-wrap gap-2" style="background:#FAFAFA;"></div>
+        <div class="text-xs text-gray-400 mb-1">Toca las palabras en orden:</div>
+        <div id="gq-pool" class="flex flex-wrap gap-2"></div>
+        <button id="gq-check-btn" onclick="checkGrammarOrder()" class="w-full mt-3 py-3 rounded-2xl font-bold text-white bg-emerald-500 hover:bg-emerald-600 transition-all shadow">Comprobar</button>`;
+      renderGrammarOrder();
+    } else if (type === 'type') {
+      optionsEl.innerHTML = `
+        <input id="gq-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+          onkeydown="if(event.key==='Enter')checkGrammarType()"
+          placeholder="Escribe aquí…" class="w-full px-4 py-3 rounded-2xl border-2 border-gray-200 text-base focus:border-swe-blue focus:outline-none" />
+        <button id="gq-check-btn" onclick="checkGrammarType()" class="w-full mt-3 py-3 rounded-2xl font-bold text-white bg-emerald-500 hover:bg-emerald-600 transition-all shadow">Comprobar</button>`;
+      setTimeout(() => { const i = document.getElementById('gq-input'); if (i) i.focus(); }, 60);
+    } else {
+      optionsEl.innerHTML = q.options.map((opt, i) => `
       <button
         onclick="answerGrammar(${i})"
         class="w-full text-left p-3.5 rounded-2xl border-2 border-gray-200 bg-white font-medium text-gray-700 text-sm transition-all hover:border-blue-300 hover:bg-blue-50 hover:shadow-sm"
@@ -1685,62 +1695,124 @@ function renderGrammarQuestion() {
         ${opt}
       </button>
     `).join('');
+    }
   }
 
-  // Hide explanation and next button
   const expEl = document.getElementById('gq-explanation');
-  if (expEl) {
-    expEl.className = 'hidden rounded-2xl p-4 border-2 mt-4 mb-2';
-    expEl.style.display = '';
-  }
-
+  if (expEl) { expEl.className = 'hidden rounded-2xl p-4 border-2 mt-4 mb-2'; expEl.style.display = ''; }
   const nextBtn = document.getElementById('gq-next-btn');
   if (nextBtn) nextBtn.classList.add('hidden');
-
-  // Hide result screen
   const resultEl = document.getElementById('gq-result');
   if (resultEl) resultEl.classList.add('hidden');
-
-  // Show question area
   const questionArea = document.getElementById('gq-question-area');
   if (questionArea) questionArea.classList.remove('hidden');
+}
+
+// ── Ordenar palabras (grammar) ───────────────────────────────
+function renderGrammarOrder() {
+  const pool = document.getElementById('gq-pool'), built = document.getElementById('gq-built');
+  if (!pool || !built) return;
+  pool.innerHTML = grammarState.gorder.pool.map(it => `<button onclick="grammarPick(${it.id})" class="px-3.5 py-2 rounded-xl bg-white border-2 border-swe-blue text-swe-blue font-bold shadow-sm hover:bg-blue-50 transition-all">${it.w}</button>`).join('');
+  built.innerHTML = grammarState.gorder.built.length
+    ? grammarState.gorder.built.map(it => `<button onclick="grammarUnpick(${it.id})" class="px-3.5 py-2 rounded-xl bg-swe-blue text-white font-bold shadow-sm hover:bg-swe-dark transition-all">${it.w}</button>`).join('')
+    : '<span class="text-gray-300 text-sm py-2 px-1">…</span>';
+}
+function grammarPick(id) {
+  if (grammarState.answered) return;
+  const i = grammarState.gorder.pool.findIndex(x => x.id === id); if (i < 0) return;
+  grammarState.gorder.built.push(grammarState.gorder.pool.splice(i, 1)[0]); renderGrammarOrder();
+}
+function grammarUnpick(id) {
+  if (grammarState.answered) return;
+  const i = grammarState.gorder.built.findIndex(x => x.id === id); if (i < 0) return;
+  grammarState.gorder.pool.push(grammarState.gorder.built.splice(i, 1)[0]); renderGrammarOrder();
+}
+function checkGrammarOrder() {
+  if (grammarState.answered) return;
+  const q = grammarState.questions[grammarState.index];
+  if (grammarState.gorder.built.length < q.words.length) { showToast('Usa todas las palabras 😊', 'info'); return; }
+  const built = grammarState.gorder.built.map(x => x.w);
+  const isCorrect = built.join(' ') === q.answer.join(' ');
+  document.getElementById('gq-check-btn') && document.getElementById('gq-check-btn').classList.add('hidden');
+  const b = document.getElementById('gq-built');
+  if (b) { b.style.borderStyle = 'solid'; b.style.borderColor = isCorrect ? '#10B981' : '#F87171'; b.style.background = isCorrect ? '#ECFDF5' : '#FEF2F2'; }
+  if (!isCorrect) {
+    const oe = document.getElementById('gq-options');
+    if (oe) { const h = document.createElement('div'); h.className = 'mt-2 text-sm text-gray-700'; h.innerHTML = `✅ Correcto: <b class="text-swe-blue">${q.answer.join(' ')}</b>`; oe.appendChild(h); }
+  }
+  _gradeGrammar(q, isCorrect);
+}
+
+// ── Escribir / traducir (grammar) ────────────────────────────
+function _gnorm(s) { return (s || '').toLowerCase().trim().replace(/\s+/g, ' ').replace(/[.!?¡¿,;:]+$/g, ''); }
+function checkGrammarType() {
+  if (grammarState.answered) return;
+  const q = grammarState.questions[grammarState.index];
+  const inp = document.getElementById('gq-input'); if (!inp) return;
+  const val = _gnorm(inp.value);
+  if (!val) { showToast('Escribe tu respuesta 😊', 'info'); return; }
+  const accept = [q.answer].concat(q.accept || []).map(_gnorm);
+  const isCorrect = accept.indexOf(val) !== -1;
+  document.getElementById('gq-check-btn') && document.getElementById('gq-check-btn').classList.add('hidden');
+  inp.disabled = true;
+  inp.style.borderColor = isCorrect ? '#10B981' : '#F87171';
+  inp.style.background = isCorrect ? '#ECFDF5' : '#FEF2F2';
+  if (!isCorrect) {
+    const oe = document.getElementById('gq-options');
+    if (oe) { const h = document.createElement('div'); h.className = 'mt-2 text-sm text-gray-700'; h.innerHTML = `✅ Respuesta: <b class="text-swe-blue">${q.answer}</b>`; oe.appendChild(h); }
+  }
+  _gradeGrammar(q, isCorrect);
+}
+
+// ── Calificación común (todos los formatos) ──────────────────
+function _gradeGrammar(q, isCorrect) {
+  grammarState.answered = true;
+  grammarState.total++;
+  if (isCorrect) {
+    grammarState.score++; grammarState.streak++;
+    if (grammarState.streak > grammarState.best) grammarState.best = grammarState.streak;
+    removeMistake(q);
+  } else {
+    grammarState.streak = 0;
+    grammarState.questions.push(q);
+    addMistake(q);
+  }
+  const expEl = document.getElementById('gq-explanation');
+  const expIcon = document.getElementById('gq-explanation-icon');
+  const expText = document.getElementById('gq-explanation-text');
+  if (expEl) {
+    if (expIcon) expIcon.textContent = isCorrect ? '✅' : '💡';
+    if (expText) expText.textContent = (isCorrect ? '¡Correcto! ' : '') + q.explanation;
+    expEl.className = `rounded-2xl p-4 border-2 mt-4 mb-2 ${isCorrect ? 'bg-green-50 border-green-200' : 'bg-amber-50 border-amber-200'}`;
+    expEl.style.display = '';
+  }
+  const nextBtn = document.getElementById('gq-next-btn');
+  if (nextBtn) {
+    nextBtn.classList.remove('hidden');
+    nextBtn.textContent = 'Siguiente →';
+    nextBtn.className = 'w-full py-3.5 rounded-2xl font-bold text-white text-sm mt-3 transition-all bg-gradient-to-r from-swe-blue to-blue-600 shadow-lg';
+  }
+  const streakEl = document.getElementById('gq-streak');
+  if (streakEl) streakEl.textContent = `🔥 ${grammarState.streak}`;
 }
 
 // ── Handle answer selection ──────────────────────────────────
 function answerGrammar(selectedIdx) {
   if (grammarState.answered) return;
-  grammarState.answered = true;
-
   const q = grammarState.questions[grammarState.index];
   const isCorrect = selectedIdx === q.correct;
 
-  grammarState.total++;
-  if (isCorrect) {
-    grammarState.score++;
-    grammarState.streak++;
-    if (grammarState.streak > grammarState.best) grammarState.best = grammarState.streak;
-    removeMistake(q);
-  } else {
-    grammarState.streak = 0;
-    grammarState.questions.push(q); // repasar: la fallada vuelve mas adelante
-    addMistake(q);
-  }
-
-  // Style all option buttons
   q.options.forEach((_, i) => {
     const btn = document.getElementById(`gq-opt-${i}`);
     if (!btn) return;
     btn.disabled = true;
-
     if (i === q.correct) {
-      // Correct answer → green
       btn.className = 'w-full text-left p-3.5 rounded-2xl border-2 font-medium text-sm transition-all border-green-400 bg-green-50 text-green-800';
       btn.innerHTML = btn.innerHTML.replace(
         `<span class="inline-flex w-7 h-7 rounded-full bg-gray-100 items-center justify-center text-xs font-bold mr-2 text-gray-500">${String.fromCharCode(65 + i)}</span>`,
         `<span class="inline-flex w-7 h-7 rounded-full bg-green-500 items-center justify-center text-xs font-bold mr-2 text-white">✓</span>`
       );
     } else if (i === selectedIdx) {
-      // Wrong selection → red
       btn.className = 'w-full text-left p-3.5 rounded-2xl border-2 font-medium text-sm transition-all border-red-400 bg-red-50 text-red-800';
       btn.innerHTML = btn.innerHTML.replace(
         `<span class="inline-flex w-7 h-7 rounded-full bg-gray-100 items-center justify-center text-xs font-bold mr-2 text-gray-500">${String.fromCharCode(65 + i)}</span>`,
@@ -1749,32 +1821,7 @@ function answerGrammar(selectedIdx) {
     }
   });
 
-  // Show explanation
-  const expEl = document.getElementById('gq-explanation');
-  const expIcon = document.getElementById('gq-explanation-icon');
-  const expText = document.getElementById('gq-explanation-text');
-  if (expEl) {
-    if (expIcon) expIcon.textContent = isCorrect ? '✅' : '💡';
-    if (expText) expText.textContent = q.explanation;
-    // Set bg color first, then show (setting className would erase 'hidden' class anyway)
-    expEl.className = `rounded-2xl p-4 border-2 mt-4 mb-2 ${isCorrect
-      ? 'bg-green-50 border-green-200'
-      : 'bg-amber-50 border-amber-200'}`;
-    // className already removed 'hidden' above, but make explicit:
-    expEl.style.display = '';
-  }
-
-  // Show next / finish button
-  const nextBtn = document.getElementById('gq-next-btn');
-  if (nextBtn) {
-    nextBtn.classList.remove('hidden');
-    nextBtn.textContent = 'Siguiente →';
-    nextBtn.className = 'w-full py-3.5 rounded-2xl font-bold text-white text-sm mt-3 transition-all bg-gradient-to-r from-swe-blue to-blue-600 shadow-lg';
-  }
-
-  // Update streak display
-  const streakEl = document.getElementById('gq-streak');
-  if (streakEl) streakEl.textContent = `🔥 ${grammarState.streak}`;
+  _gradeGrammar(q, isCorrect);
 }
 
 // ── Advance to next question or show result ──────────────────
