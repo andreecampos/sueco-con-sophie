@@ -211,11 +211,13 @@ Deno.serve(async (req) => {
         }).eq('stripe_subscription_id', sub.id)
 
       } else if (sub.status === 'active' && !sub.cancel_at_period_end) {
-        console.log('Subscription reactivated:', sub.id)
+        console.log('Subscription active/updated:', sub.id)
+        const priceNow = sub.items?.data?.[0]?.price?.unit_amount
         await sb.from('students').update({
           active:     true,
           status:     'active',
           cancels_at: null,
+          ...(priceNow ? { price: Math.round(priceNow / 100) } : {}),
         }).eq('stripe_subscription_id', sub.id)
 
       } else if (sub.status === 'past_due') {
