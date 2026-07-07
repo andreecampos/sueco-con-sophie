@@ -2781,8 +2781,8 @@ function renderNivelQuestion() {
   const counter = document.getElementById('nt-counter');
   if (counter) counter.textContent = `Pregunta ${nivelState.i + 1} de ${total}`;
   const lvlBadge = document.getElementById('nt-level-badge');
-  const lvlNames = { A: 'Nivel A · básico', B: 'Nivel B · sube', C: 'Nivel C · difícil' };
-  const lvlColors = { A: '#10B981', B: '#006AA7', C: '#7C3AED' };
+  const lvlNames = { A: 'Nivel Principiante', B: 'Nivel Básico', C: 'Nivel Intermedio', D: 'Nivel Avanzado' };
+  const lvlColors = { A: '#10B981', B: '#3B82F6', C: '#F59E0B', D: '#8B5CF6' };
   if (lvlBadge) { lvlBadge.textContent = lvlNames[q.nivel]; lvlBadge.style.background = lvlColors[q.nivel]; }
 
   const sk = LEVEL_TEST.skills[q.skill];
@@ -2839,6 +2839,7 @@ function renderNivelQuestion() {
     if (checkBtn) checkBtn.classList.remove('hidden');
   }
 
+  const _skip = document.getElementById('nt-skip-btn'); if (_skip) _skip.classList.remove('hidden');
   const qa = document.getElementById('nt-question-area');
   if (qa) qa.scrollTop = 0;
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2854,9 +2855,44 @@ function renderNivelOptions(q) {
     </button>`).join('');
 }
 
+let _ntAudio = null;
 function nivelPlayAudio() {
   const q = nivelCurrent();
-  if (q.audio) speak(q.audio);
+  if (q.audioKey && typeof SOPHIE_AUDIO_KEYS !== 'undefined' && SOPHIE_AUDIO_KEYS.indexOf(q.audioKey) !== -1) {
+    try {
+      if (_ntAudio) { _ntAudio.pause(); _ntAudio.currentTime = 0; }
+      _ntAudio = new Audio('audio/' + q.audioKey + '.mp3');
+      _ntAudio.play();
+    } catch (e) { if (q.audio) speak(q.audio); }
+  } else if (q.audio) {
+    speak(q.audio);
+  }
+}
+
+// ── Saltar la pregunta (No lo sé) — cuenta como no acertada ──
+function skipNivel() {
+  if (nivelState.answered) return;
+  nivelState.answered = true;
+  const q = nivelCurrent();
+  nivelState.answers.push({ nivel: q.nivel, skill: q.skill, correct: false });
+  if (q.type === 'order') {
+    const cb = document.getElementById('nt-check-btn'); if (cb) cb.classList.add('hidden');
+    const area = document.getElementById('nt-question-area');
+    if (area && q.answer) {
+      const hint = document.createElement('div');
+      hint.className = 'mt-3 text-sm text-gray-700';
+      hint.innerHTML = '✅ La frase correcta es: <span class=\'font-bold text-swe-blue\'>' + q.answer.join(' ') + '</span>';
+      area.appendChild(hint);
+    }
+  } else {
+    document.querySelectorAll('.nt-opt').forEach(btn => {
+      const i = parseInt(btn.getAttribute('data-idx'), 10);
+      btn.disabled = true;
+      if (i === q.correct) { btn.classList.add('border-emerald-500'); btn.style.background = '#ECFDF5'; }
+      else { btn.classList.add('opacity-50'); }
+    });
+  }
+  showNivelExplanation(false, q.explanation);
 }
 
 // ── Preguntas de opción (leer / escuchar / escribir) ─────────
@@ -2943,6 +2979,7 @@ function checkNivelOrder() {
 
 // ── Explicación + botón siguiente ────────────────────────────
 function showNivelExplanation(isCorrect, text) {
+  const _skip = document.getElementById('nt-skip-btn'); if (_skip) _skip.classList.add('hidden');
   const expl = document.getElementById('nt-explanation');
   const icon = document.getElementById('nt-explanation-icon');
   const body = document.getElementById('nt-explanation-text');
@@ -2971,19 +3008,22 @@ function nextNivelQuestion() {
 
 // ── Calcular nivel y mostrar resultado ───────────────────────
 function computeNivel() {
-  const per = { A: { c: 0, t: 0 }, B: { c: 0, t: 0 }, C: { c: 0, t: 0 } };
+  const per = { A: { c: 0, t: 0 }, B: { c: 0, t: 0 }, C: { c: 0, t: 0 }, D: { c: 0, t: 0 } };
   const skills = { las: { c: 0, t: 0 }, hor: { c: 0, t: 0 }, skriv: { c: 0, t: 0 }, tala: { c: 0, t: 0 } };
   let correct = 0;
   nivelState.answers.forEach(a => {
-    per[a.nivel].t++; if (a.correct) per[a.nivel].c++;
-    skills[a.skill].t++; if (a.correct) { skills[a.skill].c++; correct++; }
+    if (per[a.nivel]) { per[a.nivel].t++; if (a.correct) per[a.nivel].c++; }
+    if (skills[a.skill]) { skills[a.skill].t++; if (a.correct) skills[a.skill].c++; }
+    if (a.correct) correct++;
   });
-  // Ubicación: hay que aprobar el nivel anterior (>=3 de 5) para subir
+  // Ubicación: aprobar cada nivel (>=60% de sus preguntas) para subir al siguiente
+  const need = lvl => Math.max(1, Math.ceil((per[lvl].t || 1) * 0.6));
+  const passA = per.A.c >= need('A'), passB = per.B.c >= need('B'), passC = per.C.c >= need('C'), passD = per.D.c >= need('D');
   let nivel = 'A';
-  const passA = per.A.c >= 3, passB = per.B.c >= 3, passC = per.C.c >= 3;
   if (passA && passB) nivel = 'B';
   if (passA && passB && passC) nivel = 'C';
-  return { nivel, per, skills, correct, total: nivelState.answers.length, passA, passB, passC };
+  if (passA && passB && passC && passD) nivel = 'D';
+  return { nivel, per, skills, correct, total: nivelState.answers.length, passA, passB, passC, passD };
 }
 
 async function finishNivelTest() {
@@ -2992,17 +3032,18 @@ async function finishNivelTest() {
   showView('nivel-result');
 
   // Insignia de nivel
-  const names = { A: 'Principiante (SFI A)', B: 'Básico (SFI B)', C: 'Intermedio (SFI C)' };
+  const names = { A: 'Principiante', B: 'Básico', C: 'Intermedio', D: 'Avanzado' };
   const descs = {
     A: 'Estás construyendo la base. ¡Vas por buen camino!',
     B: '¡Muy bien! Ya dominas lo básico y avanzas al nivel intermedio.',
     C: '¡Excelente! Manejas frases complejas. Estás en un nivel avanzado.',
+    D: '¡Impresionante! Tu sueco es de nivel avanzado. Puedes con textos y matices.',
   };
-  const colors = { A: '#10B981', B: '#006AA7', C: '#7C3AED' };
+  const colors = { A: '#10B981', B: '#3B82F6', C: '#F59E0B', D: '#8B5CF6' };
   const badge = document.getElementById('nt-result-level');
   if (badge) { badge.textContent = names[r.nivel]; badge.style.background = colors[r.nivel]; }
   const emoji = document.getElementById('nt-result-emoji');
-  if (emoji) emoji.textContent = r.nivel === 'C' ? '🏆' : (r.nivel === 'B' ? '🌟' : '🌱');
+  if (emoji) emoji.textContent = ({ A: '🌱', B: '🌟', C: '🎓', D: '🏆' })[r.nivel] || '🌱';
   const desc = document.getElementById('nt-result-desc');
   if (desc) desc.textContent = descs[r.nivel];
   const scoreEl = document.getElementById('nt-result-score');
@@ -3016,7 +3057,7 @@ async function finishNivelTest() {
         <div class="flex justify-between text-xs font-semibold mb-1"><span>${lbl}</span><span>${o.c}/${o.t}</span></div>
         <div class="h-2.5 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full" style="width:${o.t ? Math.round(o.c / o.t * 100) : 0}%; background:${col};"></div></div>
       </div>`;
-    tiers.innerHTML = row('Nivel A · básico', r.per.A, '#10B981') + row('Nivel B · intermedio', r.per.B, '#006AA7') + row('Nivel C · avanzado', r.per.C, '#7C3AED');
+    tiers.innerHTML = row('Principiante', r.per.A, '#10B981') + row('Básico', r.per.B, '#3B82F6') + row('Intermedio', r.per.C, '#F59E0B') + row('Avanzado', r.per.D, '#8B5CF6');
   }
 
   // Gráfico radar de las 4 destrezas
