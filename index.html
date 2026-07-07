@@ -4344,6 +4344,138 @@ const THEORY_DATA = {
   ]
 };
 
+
+// ═══════════════════════════════════════════════════════════
+//  GRAMMAR EXTRA — más preguntas para Intermedio (C) y Avanzado (D)
+//  Se inyectan en los temas existentes al cargar (más variedad).
+// ═══════════════════════════════════════════════════════════
+const GRAMMAR_EXTRA = {
+  // ───── INTERMEDIO (C) ─────
+  'subordinadas': [
+    { type: 'mc', text: '«Llámame cuando llegues» → «Ring mig ___ du kommer»', options: ['när', 'om', 'att'], correct: 0, explanation: '«när» = cuando.' },
+    { type: 'mc', text: '«Si llueve, me quedo en casa» → «___ det regnar, stannar jag hemma»', options: ['Om', 'När', 'Att'], correct: 0, explanation: '«Om» = si (condición).' },
+    { type: 'mc', text: '«El coche que compré» → «Bilen ___ jag köpte»', options: ['som', 'att', 'vilken'], correct: 0, explanation: '«som» = que (relativo).' },
+    { type: 'type', prompt: '«que» (relativo, mannen ___ bor här):', answer: 'som', accept: [], explanation: '«som».' },
+    { type: 'type', prompt: '«si» (condición):', answer: 'om', accept: [], explanation: '«om».' },
+    { type: 'order', prompt: 'Ordena: «No sé si él viene»', words: ['Jag', 'vet', 'inte', 'om', 'han', 'kommer'], answer: ['Jag', 'vet', 'inte', 'om', 'han', 'kommer'], explanation: '«Jag vet inte om han kommer».' },
+  ],
+  'avanzado': [
+    { type: 'mc', text: '«La comida se cocina» → «Maten ___»', options: ['lagas', 'lagar', 'lagade'], correct: 0, explanation: '«lagas» = se cocina (pasiva con -s).' },
+    { type: 'mc', text: '«un problema conocido» → «ett ___ problem»', options: ['känt', 'känd', 'känna'], correct: 0, explanation: '«ett känt problem». El participio concuerda: känd (en) → känt (ett).' },
+    { type: 'mc', text: '«Hay comida en la mesa» → «___ finns mat på bordet»', options: ['Det', 'Den', 'De'], correct: 0, explanation: '«Det finns…» = hay…' },
+    { type: 'type', prompt: 'Terminación de la voz pasiva (una letra):', answer: 's', accept: [], explanation: '«-s»: lagas, öppnas.' },
+    { type: 'type', prompt: '«llueve» → «___ regnar»:', answer: 'det', accept: [], explanation: '«Det regnar».' },
+    { type: 'order', prompt: 'Ordena: «Aquí se habla sueco»', words: ['Här', 'talas', 'svenska'], answer: ['Här', 'talas', 'svenska'], explanation: '«Här talas svenska» (pasiva).' },
+  ],
+  'partikelverb': [
+    { type: 'mc', text: '«visitar (a alguien)» → ___', options: ['hälsa på', 'hälsa', 'på hälsa'], correct: 0, explanation: '«hälsa på» = visitar. «hälsa» solo = saludar.' },
+    { type: 'mc', text: '«ponerse (ropa)» → ___', options: ['ta på sig', 'ta', 'sig ta'], correct: 0, explanation: '«ta på sig» = ponerse (ropa).' },
+    { type: 'mc', text: '«Enciende la luz» → «___ lampan»', options: ['Slå på', 'Slå', 'På slå'], correct: 0, explanation: '«Slå på lampan» = enciende la luz.' },
+    { type: 'type', prompt: '«encender»:', answer: 'slå på', accept: [], explanation: '«slå på».' },
+    { type: 'type', prompt: '«apagar»:', answer: 'stänga av', accept: [], explanation: '«stänga av».' },
+    { type: 'order', prompt: 'Ordena: «Me pongo la chaqueta»', words: ['Jag', 'tar', 'på', 'mig', 'jackan'], answer: ['Jag', 'tar', 'på', 'mig', 'jackan'], explanation: '«Jag tar på mig jackan».' },
+  ],
+  'condicional': [
+    { type: 'mc', text: '«Me gustaría viajar» → «Jag skulle vilja ___»', options: ['resa', 'reser', 'reste'], correct: 0, explanation: 'Tras «skulle vilja» va la forma base: resa.' },
+    { type: 'mc', text: '«Sería mejor» → «Det skulle ___ bättre»', options: ['vara', 'är', 'var'], correct: 0, explanation: '«Det skulle vara bättre» = sería mejor.' },
+    { type: 'mc', text: '«¿Podrías abrir la ventana?» → «___ du kunna öppna fönstret?»', options: ['Skulle', 'Ska', 'Vill'], correct: 0, explanation: '«Skulle du kunna…?» = ¿podrías…? (muy cortés).' },
+    { type: 'type', prompt: 'La palabra del condicional («-ría»):', answer: 'skulle', accept: [], explanation: '«skulle».' },
+    { type: 'type', prompt: '«querría» (cortés):', answer: 'skulle vilja', accept: [], explanation: '«skulle vilja».' },
+    { type: 'order', prompt: 'Ordena: «Compraría una casa grande»', words: ['Jag', 'skulle', 'köpa', 'ett', 'stort', 'hus'], answer: ['Jag', 'skulle', 'köpa', 'ett', 'stort', 'hus'], explanation: '«Jag skulle köpa ett stort hus».' },
+  ],
+  'verbos-preposicion': [
+    { type: 'mc', text: '«creer en» → «tro ___»', options: ['på', 'i', 'om'], correct: 0, explanation: '«tro på» = creer en.' },
+    { type: 'mc', text: '«depender de» → «bero ___»', options: ['på', 'av', 'om'], correct: 0, explanation: '«bero på» = depender de.' },
+    { type: 'mc', text: '«invitar / convidar a algo» → «bjuda ___»', options: ['på', 'till', 'med'], correct: 0, explanation: '«bjuda på» = invitar/convidar (Jag bjuder på kaffe).' },
+    { type: 'type', prompt: '«pensar en» → «tänka ___»:', answer: 'på', accept: [], explanation: '«tänka på».' },
+    { type: 'type', prompt: '«escuchar» → «lyssna ___»:', answer: 'på', accept: [], explanation: '«lyssna på».' },
+    { type: 'order', prompt: 'Ordena: «Creo en ti»', words: ['Jag', 'tror', 'på', 'dig'], answer: ['Jag', 'tror', 'på', 'dig'], explanation: '«Jag tror på dig».' },
+  ],
+  'conjunciones-avanzadas': [
+    { type: 'mc', text: '«después de que» → ___', options: ['efter att', 'innan', 'medan'], correct: 0, explanation: '«efter att» = después de que.' },
+    { type: 'mc', text: '«Hablo despacio para que entiendas» → «…___ du förstår»', options: ['så att', 'fastän', 'medan'], correct: 0, explanation: '«så att» = para que.' },
+    { type: 'mc', text: '«Aunque es caro, lo compro» → «___ det är dyrt, köper jag det»', options: ['Fastän', 'Eftersom', 'Medan'], correct: 0, explanation: '«Fastän» = aunque.' },
+    { type: 'type', prompt: '«mientras»:', answer: 'medan', accept: [], explanation: '«medan».' },
+    { type: 'type', prompt: '«para que / así que»:', answer: 'så att', accept: [], explanation: '«så att».' },
+    { type: 'order', prompt: 'Ordena: «Leo antes de dormir»', words: ['Jag', 'läser', 'innan', 'jag', 'sover'], answer: ['Jag', 'läser', 'innan', 'jag', 'sover'], explanation: '«Jag läser innan jag sover».' },
+  ],
+  'palabras-compuestas': [
+    { type: 'mc', text: '«zapatilla de deporte» = sport + sko =', options: ['sportsko', 'skosport', 'sport sko'], correct: 0, explanation: '«sportsko» = zapatilla deportiva.' },
+    { type: 'mc', text: '«parada de autobús» = buss + hållplats =', options: ['busshållplats', 'hållplatsbuss', 'buss hållplats'], correct: 0, explanation: '«busshållplats» = parada de autobús.' },
+    { type: 'mc', text: '«mesa de cocina» = köks + bord =', options: ['köksbord', 'bordköks', 'köks bord'], correct: 0, explanation: '«köksbord» = mesa de cocina.' },
+    { type: 'type', prompt: '«parada de autobús» (buss + hållplats):', answer: 'busshållplats', accept: [], explanation: '«busshållplats».' },
+    { type: 'type', prompt: '«mesa de cocina» (köks + bord):', answer: 'köksbord', accept: [], explanation: '«köksbord».' },
+    { type: 'order', prompt: 'Ordena: «Espero en la parada»', words: ['Jag', 'väntar', 'vid', 'busshållplatsen'], answer: ['Jag', 'väntar', 'vid', 'busshållplatsen'], explanation: '«Jag väntar vid busshållplatsen».' },
+  ],
+  'adjetivo-definido': [
+    { type: 'mc', text: '«la casa blanca» (ett hus) → «det ___ huset»', options: ['vita', 'vitt', 'vit'], correct: 0, explanation: '«det vita huset». En definido el adjetivo va en -a, aunque sea «ett».' },
+    { type: 'mc', text: '«los niños pequeños» → «de ___ barnen»', options: ['små', 'liten', 'litet'], correct: 0, explanation: '«de små barnen». «liten» es irregular: plural/definido → «små».' },
+    { type: 'mc', text: '«el hombre viejo» (en man) → «den ___ mannen»', options: ['gamla', 'gammal', 'gammalt'], correct: 0, explanation: '«den gamla mannen». Definido → -a: gamla.' },
+    { type: 'type', prompt: 'La forma definida del adjetivo termina casi siempre en (una letra):', answer: 'a', accept: [], explanation: '«-a»: vita, stora, nya.' },
+    { type: 'type', prompt: '«el… blanco» (en bil): «den ___ bilen»:', answer: 'vita', accept: [], explanation: '«den vita bilen».' },
+    { type: 'order', prompt: 'Ordena: «Me gusta la casa roja»', words: ['Jag', 'gillar', 'det', 'röda', 'huset'], answer: ['Jag', 'gillar', 'det', 'röda', 'huset'], explanation: '«Jag gillar det röda huset».' },
+  ],
+
+  // ───── AVANZADO (D) ─────
+  'estructura-texto': [
+    { type: 'mc', text: '«En resumen…» (para cerrar el texto) → ___', options: ['Sammanfattningsvis', 'Först', 'Till exempel'], correct: 0, explanation: '«Sammanfattningsvis» = en resumen. Perfecto para la avslutning.' },
+    { type: 'mc', text: 'Cada párrafo (stycke) debería tratar…', options: ['una idea principal', 'muchas ideas mezcladas'], correct: 0, explanation: 'Un párrafo = una idea. Así el texto se lee claro.' },
+    { type: 'mc', text: 'El título de un texto se llama…', options: ['rubrik', 'stycke', 'inledning'], correct: 0, explanation: '«rubrik» = título.' },
+    { type: 'type', prompt: '«introducción» en sueco:', answer: 'inledning', accept: [], explanation: '«inledning».' },
+    { type: 'type', prompt: '«desarrollo / parte principal» en sueco:', answer: 'huvuddel', accept: [], explanation: '«huvuddel».' },
+    { type: 'order', prompt: 'Ordena: «Escribo la conclusión al final»', words: ['Jag', 'skriver', 'avslutningen', 'till', 'slut'], answer: ['Jag', 'skriver', 'avslutningen', 'till', 'slut'], explanation: '«Jag skriver avslutningen till slut».' },
+  ],
+  'conectores': [
+    { type: 'mc', text: '«también» → ___', options: ['också', 'dock', 'ändå'], correct: 0, explanation: '«också» = también.' },
+    { type: 'mc', text: '«primero… luego» → «först… ___»', options: ['sedan', 'slutligen', 'dessutom'], correct: 0, explanation: '«sedan» = luego/después.' },
+    { type: 'mc', text: '«Estaba cansado. ___, terminé» (aun así)', options: ['Ändå', 'Dessutom', 'Alltså'], correct: 0, explanation: '«Ändå» = aun así.' },
+    { type: 'type', prompt: '«además»:', answer: 'dessutom', accept: [], explanation: '«dessutom».' },
+    { type: 'type', prompt: '«finalmente / por último»:', answer: 'slutligen', accept: [], explanation: '«slutligen».' },
+    { type: 'order', prompt: 'Ordena: «Además, es barato»', words: ['Dessutom', 'är', 'det', 'billigt'], answer: ['Dessutom', 'är', 'det', 'billigt'], explanation: '«Dessutom är det billigt».' },
+  ],
+  'argumentar': [
+    { type: 'mc', text: '«En segundo lugar…» → ___', options: ['För det andra', 'För det första', 'Till slut'], correct: 0, explanation: '«För det andra» = en segundo lugar.' },
+    { type: 'mc', text: '«Considero que…» (formal) → «Jag ___ att…»', options: ['anser', 'frågar', 'svarar'], correct: 0, explanation: '«Jag anser att…» = considero que… (más formal que «tycker»).' },
+    { type: 'mc', text: '«por un lado» → «å ena ___»', options: ['sidan', 'handen', 'sida'], correct: 0, explanation: '«å ena sidan» = por un lado.' },
+    { type: 'type', prompt: '«opinión» en sueco:', answer: 'åsikt', accept: [], explanation: '«åsikt».' },
+    { type: 'type', prompt: '«no estoy de acuerdo» → «Jag håller ___ med»:', answer: 'inte', accept: [], explanation: '«håller inte med».' },
+    { type: 'order', prompt: 'Ordena: «Considero que es caro»', words: ['Jag', 'anser', 'att', 'det', 'är', 'dyrt'], answer: ['Jag', 'anser', 'att', 'det', 'är', 'dyrt'], explanation: '«Jag anser att det är dyrt».' },
+  ],
+  'formal-informal': [
+    { type: 'mc', text: '«dem» se usa cuando la palabra es…', options: ['objeto (los / les)', 'sujeto (ellos)'], correct: 0, explanation: '«dem» = objeto (Jag ser dem). «de» = sujeto.' },
+    { type: 'mc', text: '«de» se usa cuando la palabra es…', options: ['sujeto (ellos)', 'objeto (los)'], correct: 0, explanation: '«de» = sujeto (De kommer). Ambos suenan «dom».' },
+    { type: 'mc', text: '«typ», «ba» son ejemplos de…', options: ['jerga (informal)', 'lenguaje formal'], correct: 0, explanation: 'Son muletillas coloquiales; evítalas en textos formales.' },
+    { type: 'type', prompt: 'Despedida formal de un correo (3 palabras):', answer: 'med vänliga hälsningar', accept: ['mvh'], explanation: '«Med vänliga hälsningar».' },
+    { type: 'type', prompt: 'Forma escrita de «dom» cuando es sujeto:', answer: 'de', accept: [], explanation: '«de» (sujeto).' },
+    { type: 'order', prompt: 'Ordena: «Gracias por tu respuesta»', words: ['Tack', 'för', 'ditt', 'svar'], answer: ['Tack', 'för', 'ditt', 'svar'], explanation: '«Tack för ditt svar».' },
+  ],
+  'discurso-referido': [
+    { type: 'mc', text: '«alegar / pretender / afirmar» → ___', options: ['påstå', 'fråga', 'svara'], correct: 0, explanation: '«påstå» = afirmar/alegar (a veces con duda).' },
+    { type: 'mc', text: '«Ella preguntó SI…» → «Hon frågade ___…»', options: ['om', 'att', 'när'], correct: 0, explanation: '«Hon frågade om…» = ella preguntó si…' },
+    { type: 'mc', text: '«según yo / en mi opinión» → «Enligt ___»', options: ['mig', 'jag', 'min'], correct: 0, explanation: '«Enligt mig» = según yo.' },
+    { type: 'type', prompt: '«según» (citar fuente):', answer: 'enligt', accept: [], explanation: '«enligt».' },
+    { type: 'type', prompt: '«dice que» → «säger ___»:', answer: 'att', accept: [], explanation: '«säger att».' },
+    { type: 'order', prompt: 'Ordena: «Dice que tiene tiempo»', words: ['Hon', 'säger', 'att', 'hon', 'har', 'tid'], answer: ['Hon', 'säger', 'att', 'hon', 'har', 'tid'], explanation: '«Hon säger att hon har tid».' },
+  ],
+  'participios': [
+    { type: 'mc', text: '«un libro leído» → «en ___ bok»', options: ['läst', 'läsen', 'läsa'], correct: 0, explanation: '«en läst bok». Participio pasado de läsa = läst.' },
+    { type: 'mc', text: '«gente trabajadora / que trabaja» → «___ människor»', options: ['arbetande', 'arbetar', 'arbetade'], correct: 0, explanation: '«arbetande» = trabajadora (participio presente de arbeta).' },
+    { type: 'mc', text: '«agua hirviendo» → «___ vatten»', options: ['kokande', 'kokar', 'kokade'], correct: 0, explanation: '«kokande vatten» (de koka = hervir).' },
+    { type: 'type', prompt: 'Terminación del participio de presente:', answer: 'ande', accept: ['-ande', 'ende', '-ende'], explanation: '«-ande / -ende».' },
+    { type: 'type', prompt: '«cerrada» (participio, en «en ___ dörr»):', answer: 'stängd', accept: [], explanation: '«stängd».' },
+    { type: 'order', prompt: 'Ordena: «Un niño que llora»', words: ['Ett', 'gråtande', 'barn'], answer: ['Ett', 'gråtande', 'barn'], explanation: '«Ett gråtande barn».' },
+  ],
+};
+
+// Inyectar las preguntas extra en sus temas (más variedad en la práctica infinita)
+try {
+  if (typeof GRAMMAR_DATA !== 'undefined' && GRAMMAR_DATA.topics) {
+    GRAMMAR_DATA.topics.forEach(t => {
+      if (GRAMMAR_EXTRA[t.id]) t.questions = t.questions.concat(GRAMMAR_EXTRA[t.id]);
+    });
+  }
+} catch (e) {}
+
 </script>
 <script>
 // ═══════════════════════════════════════════════════════════
@@ -7989,6 +8121,7 @@ function backToTheory() {
       <button onclick="filterGrammar('A')" id="gf-A" data-level="A" class="grammar-filter-btn text-xs px-3 py-1.5 rounded-full font-semibold">Principiante</button>
       <button onclick="filterGrammar('B')" id="gf-B" data-level="B" class="grammar-filter-btn text-xs px-3 py-1.5 rounded-full font-semibold">Básico</button>
       <button onclick="filterGrammar('C')" id="gf-C" data-level="C" class="grammar-filter-btn text-xs px-3 py-1.5 rounded-full font-semibold">Intermedio</button>
+      <button onclick="filterGrammar('D')" id="gf-D" data-level="D" class="grammar-filter-btn text-xs px-3 py-1.5 rounded-full font-semibold">Avanzado</button>
     </div>
 
     <!-- Buscador de temas -->
