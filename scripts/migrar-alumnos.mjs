@@ -57,7 +57,7 @@ const {
   SUPABASE_SERVICE_ROLE_KEY,
   RESEND_API_KEY,
   APP_URL = 'https://suecoconsophie.com',
-  RESEND_FROM = 'Sueco con Sophie <onboarding@resend.dev>',
+  RESEND_FROM = 'Sueco con Sophie <hola@suecoconsophie.com>',
 } = process.env;
 
 // ── Flags ────────────────────────────────────────────────────────────────

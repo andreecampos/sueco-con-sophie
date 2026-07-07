@@ -84,7 +84,7 @@ async function sendWelcomeEmail(email: string, actionLink: string): Promise<bool
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: 'Sueco con Sofi <onboarding@resend.dev>',
+      from: 'Sueco con Sophie <hola@suecoconsophie.com>',
       to: email,
       subject: '¡Bienvenido/a a Sueco con Sophie! 🇸🇪 Crea tu contraseña',
       html,
@@ -137,7 +137,7 @@ Deno.serve(async (req) => {
         // Usuario nuevo: invitar vía Supabase (envía email automáticamente)
         const { data: inviteData, error: inviteError } = await sb.auth.admin.inviteUserByEmail(email, {
           data: { name },
-          options: { redirectTo: 'https://aquamarine-faloodeh-d0d732.netlify.app' }
+          options: { redirectTo: 'https://suecoconsophie.com' }
         } as any)
         if (inviteError) {
           console.error('inviteUser error:', inviteError.message)
@@ -150,7 +150,7 @@ Deno.serve(async (req) => {
         const { data: linkData } = await sb.auth.admin.generateLink({
           type: 'recovery',
           email,
-          options: { redirectTo: 'https://aquamarine-faloodeh-d0d732.netlify.app' }
+          options: { redirectTo: 'https://suecoconsophie.com' }
         })
         if (linkData?.properties?.action_link) {
           actionLink = linkData.properties.action_link
@@ -165,7 +165,7 @@ Deno.serve(async (req) => {
         const { data: linkData } = await sb.auth.admin.generateLink({
           type: 'recovery',
           email,
-          options: { redirectTo: 'https://aquamarine-faloodeh-d0d732.netlify.app' }
+          options: { redirectTo: 'https://suecoconsophie.com' }
         })
         if (linkData?.properties?.action_link) {
           actionLink = linkData.properties.action_link
