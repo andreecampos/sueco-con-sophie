@@ -2087,6 +2087,11 @@ async function renderAdminDashboard() {
 
   const revenueMonth    = active.reduce((sum, s) => sum + (s.price || defaultPrice), 0);
   const revenueExpected = active.filter(s => s.status !== 'cancelled').reduce((sum, s) => sum + (s.price || defaultPrice), 0);
+  // Mes actual, alumnos en riesgo de fuga (>21 días sin entrar) e ingreso perdido (cancelados)
+  const _mn = new Date().toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+  const monthName = _mn.charAt(0).toUpperCase() + _mn.slice(1);
+  const atRisk = active.filter(s => !s.lastLogin || (Date.now() - new Date(s.lastLogin).getTime()) / 86400000 >= 21).length;
+  const revenueLost = cancelled.reduce((sum, s) => sum + (s.price || defaultPrice), 0);
 
   // Update metric cards
   const fmt = n => n.toLocaleString('sv-SE') + ' SEK';
@@ -2097,6 +2102,9 @@ async function renderAdminDashboard() {
   _setEl('dash-total-label',      'de ' + students.length + ' total');
   _setEl('dash-issues-count',     failed.length + pending.length + cancelling.length);
   _setEl('dash-issues-label',     `${failed.length} fallidos · ${cancelled.length} cancelados · ${cancelling.length} cancelando`);
+  _setEl('dash-month-header',      '💰 ' + monthName);
+  _setEl('dash-risk-count',        atRisk);
+  _setEl('dash-lost-month',        fmt(revenueLost));
 
   // ── Desglose por precio ──────────────────────────────────
   const pricingSection = document.getElementById('dash-pricing-section');

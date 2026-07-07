@@ -1097,7 +1097,7 @@
       <!-- Metric cards -->
       <div class="grid grid-cols-2 gap-3 mb-5">
         <div class="glass rounded-2xl p-4 shadow border border-green-200 bg-gradient-to-br from-green-50 to-emerald-50">
-          <div class="text-xs font-bold text-green-600 uppercase tracking-wide mb-1">💰 Este mes</div>
+          <div id="dash-month-header" class="text-xs font-bold text-green-600 uppercase tracking-wide mb-1">💰 Este mes</div>
           <div id="dash-revenue-month" class="text-2xl font-black text-green-800">0 SEK</div>
           <div id="dash-revenue-label" class="text-xs text-green-600 mt-1">calculando...</div>
         </div>
@@ -1115,6 +1115,16 @@
           <div class="text-xs font-bold text-red-600 uppercase tracking-wide mb-1">⚠️ Atención</div>
           <div id="dash-issues-count" class="text-2xl font-black text-red-800">0</div>
           <div id="dash-issues-label" class="text-xs text-red-600 mt-1">pagos fallidos</div>
+        </div>
+        <div class="glass rounded-2xl p-4 shadow border border-orange-200 bg-gradient-to-br from-orange-50 to-amber-50">
+          <div class="text-xs font-bold text-orange-600 uppercase tracking-wide mb-1">🚨 En riesgo</div>
+          <div id="dash-risk-count" class="text-2xl font-black text-orange-800">0</div>
+          <div class="text-xs text-orange-600 mt-1">sin entrar +21 días</div>
+        </div>
+        <div class="glass rounded-2xl p-4 shadow border border-gray-200 bg-gradient-to-br from-gray-50 to-slate-50">
+          <div class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">📉 Perdido/mes</div>
+          <div id="dash-lost-month" class="text-2xl font-black text-gray-700">0 SEK</div>
+          <div class="text-xs text-gray-500 mt-1">de cancelados</div>
         </div>
       </div>
 
