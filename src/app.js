@@ -1499,11 +1499,15 @@ const grammarState = {
   streak: 0,           // racha actual
   best: 0,             // mejor racha
   total: 0,            // total respondidas
+  limit: null,         // Teoría: 10 preguntas; Gramática: null (infinitas)
+  fromTheory: null,    // id de la unidad de Teoría que lanzó la práctica
 };
 
 // ── Navigate to grammar topic selector ───────────────────────
 function showGrammar() {
   stopSpeech();
+  grammarState.fromTheory = null;
+  grammarState.limit = null;
   showView('grammar');
   renderGrammarTopics(grammarState.filter);
   renderReviewCard();
@@ -1556,6 +1560,8 @@ function startReviewMistakes() {
   const m = getMistakes();
   if (!m.length) { showToast('¡No tienes errores para repasar! 🎉', 'success'); return; }
   const topic = { id: '__review__', title: '🔁 Repasar mis errores', questions: m.map(x => x), sessionSize: m.length, color: '#EF4444', level: 'A' };
+  grammarState.fromTheory = null;
+  grammarState.limit = null;
   grammarState.topic = topic;
   grammarState.questions = [...topic.questions].sort(() => Math.random() - 0.5);
   grammarState.index = 0;
@@ -1630,8 +1636,11 @@ function startGrammarTopic(topicId) {
   if (!topic) return;
 
   grammarState.topic = topic;
+  // Desde Teoría: sesión corta de 10 preguntas. En Gramática: infinitas.
+  const _cap = grammarState.fromTheory ? 10 : null;
+  grammarState.limit = _cap;
   // Shuffle questions (Fisher-Yates)
-  grammarState.questions = [...topic.questions].sort(() => Math.random() - 0.5).slice(0, topic.sessionSize || topic.questions.length);
+  grammarState.questions = [...topic.questions].sort(() => Math.random() - 0.5).slice(0, _cap || topic.sessionSize || topic.questions.length);
   grammarState.index = 0;
   grammarState.score = 0;
   grammarState.answered = false;
@@ -1659,7 +1668,9 @@ function renderGrammarQuestion() {
   const streakEl = document.getElementById('gq-streak');
   if (streakEl) streakEl.textContent = `🔥 ${grammarState.streak}`;
   const catEl = document.getElementById('gq-category');
-  if (catEl) catEl.textContent = `🔥 Racha: ${grammarState.streak}   ·   Respondidas: ${grammarState.total}`;
+  if (catEl) catEl.textContent = grammarState.limit
+    ? `Pregunta ${Math.min(grammarState.index + 1, grammarState.limit)} de ${grammarState.limit}   ·   🔥 Racha: ${grammarState.streak}`
+    : `🔥 Racha: ${grammarState.streak}   ·   Respondidas: ${grammarState.total}`;
 
   // Enunciado
   const qEl = document.getElementById('gq-question-text');
@@ -1791,6 +1802,7 @@ function _gradeGrammar(q, isCorrect) {
     nextBtn.classList.remove('hidden');
     nextBtn.textContent = 'Siguiente →';
     nextBtn.className = 'w-full py-3.5 rounded-2xl font-bold text-white text-sm mt-3 transition-all bg-gradient-to-r from-swe-blue to-blue-600 shadow-lg';
+    if (grammarState.limit && grammarState.index >= grammarState.limit - 1) nextBtn.textContent = 'Ver mi resultado 🎉';
   }
   const streakEl = document.getElementById('gq-streak');
   if (streakEl) streakEl.textContent = `🔥 ${grammarState.streak}`;
@@ -1827,6 +1839,8 @@ function answerGrammar(selectedIdx) {
 // ── Advance to next question or show result ──────────────────
 function nextGrammarQuestion() {
   grammarState.index++;
+  // Teoría: sesión corta → al llegar a 10 preguntas, mostrar resultado.
+  if (grammarState.limit && grammarState.index >= grammarState.limit) { finishGrammar(); return; }
   // Modo sin parar: si se acaba la cola, se rellena con mas preguntas al azar
   if (grammarState.index >= grammarState.questions.length) {
     const t = grammarState.topic;
