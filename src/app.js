@@ -3276,8 +3276,12 @@ function mooseVisual(stage) {
 function _paymentState() {
   const s = window._sbSession || {};
   const status = (s.status || '').toLowerCase();
+  // Cancelado y ya terminado / inactivo → bloqueo (sin acceso)
   if (status === 'cancelled' || status === 'canceled' || status === 'inactive' || status === 'unpaid') return 'blocked';
-  if (status === 'failed' || status === 'past_due' || status === 'pending' || status === 'cancelling') return 'warning';
+  // Canceló pero AÚN tiene tiempo pagado → mantiene acceso (modelo Netflix)
+  if (status === 'cancelling') return 'cancelling';
+  // Problema de pago, Stripe reintentando → mantiene acceso (periodo de gracia)
+  if (status === 'failed' || status === 'past_due' || status === 'pending') return 'payment_issue';
   if (s.active === false) return 'blocked';
   return 'ok';
 }
@@ -3305,7 +3309,14 @@ function renderPaymentBanner() {
   if (!el) return;
   const st = _paymentState();
   if (st === 'ok') { el.innerHTML = ''; return; }
-  if (st === 'warning') {
+  if (st === 'cancelling') {
+    el.innerHTML = `<div class="rounded-2xl p-4 border-2 flex items-center gap-3" style="background:#EFF6FF;border-color:#93C5FD;">
+      <span class="text-2xl flex-shrink-0">📅</span>
+      <div class="flex-1 min-w-0"><div class="font-bold text-blue-900 text-sm">Cancelaste tu suscripción</div>
+      <div class="text-xs text-blue-700">Sigues con acceso completo hasta que termine tu periodo pagado. ¿Cambiaste de opinión?</div></div>
+      <button onclick="manageSubscription()" class="text-xs font-bold px-3 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 flex-shrink-0">Reactivar</button>
+    </div>`;
+  } else if (st === 'payment_issue') {
     el.innerHTML = `<div class="rounded-2xl p-4 border-2 flex items-center gap-3" style="background:#FFFBEB;border-color:#FCD34D;">
       <span class="text-2xl flex-shrink-0">⚠️</span>
       <div class="flex-1 min-w-0"><div class="font-bold text-amber-800 text-sm">Tu último pago no se procesó</div>
