@@ -2580,6 +2580,112 @@ const GRAMMAR_DATA = {
         { type: 'order', prompt: 'Ordena: «¿Cuál libro quieres?»', words: ['Vilken', 'bok', 'vill', 'du', 'ha'], answer: ['Vilken', 'bok', 'vill', 'du', 'ha'], explanation: '«Vilken bok vill du ha?».' },
       ]
     },
+
+    // ─────────────────────────────────────────────────────
+    // 22. PRONUNCIACIÓN — los sonidos del sueco (SFI A)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'pronunciacion',
+      title: 'Los sonidos del sueco',
+      subtitle: 'Cómo se leen las letras (vocales, sj, tj…)',
+      icon: '🔊',
+      color: '#10B981',
+      level: 'A',
+      keywords: 'pronunciacion sonidos vocales sj tj o u a e i y å ä ö uttal acento melodico letras leer',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: 'La letra «o» en sueco muchas veces suena como…', options: ['«u» (bok se dice «buk»)', '«o» como en español', '«a»'], correct: 0, explanation: 'La «o» sueca a menudo suena como una «u» española: <em>bok</em> («buk») = libro, <em>sol</em> («sul») = sol. 🔊' },
+        { type: 'mc', text: 'El sueco tiene 9 vocales. ¿Cuáles NO existen en español?', options: ['å, ä, ö, y', 'solo la ä', 'ninguna nueva'], correct: 0, explanation: 'Las cuatro nuevas son <strong>å, ä, ö</strong> y la <strong>y</strong>. Son las que más cuesta pronunciar al principio.' },
+        { type: 'mc', text: 'El sonido «sj» (como en «sju» = siete) suena…', options: ['como un soplido/susurro', 'como una «s» normal', 'como la «j» española'], correct: 0, explanation: '«sj» es un soplido suave, muy típico del sueco: <em>sju</em>, <em>sjö</em> (lago). No es la «j» española.' },
+        { type: 'mc', text: '«tj» y la «k» antes de e, i, y, ä, ö suenan parecido a…', options: ['«ch/sh» suave', '«k» dura', '«g»'], correct: 0, explanation: '<em>tjugo</em> (veinte), <em>kött</em> (carne): suenan con un «ch/sh» suave, no con «k» dura.' },
+        { type: 'mc', text: 'La «g» antes de e, i, y suena como…', options: ['«y» (ge se dice «ye»)', '«g» dura', 'muda'], correct: 0, explanation: 'Antes de vocal suave, la «g» suena «y»: <em>ge</em> («ye») = dar, <em>gilla</em> («yila») = gustar.' },
+        { type: 'mc', text: 'Las vocales suecas pueden ser…', options: ['largas o cortas (¡cambian el significado!)', 'siempre iguales'], correct: 0, explanation: 'La duración importa: <em>vit</em> (blanco, larga) vs <em>vitt</em> (corta). Alargar o acortar cambia la palabra.' },
+        { type: 'mc', text: 'La «u» sueca se pronuncia…', options: ['con los labios más redondeados que en español', 'igual que en español'], correct: 0, explanation: 'La «u» sueca se dice adelantando y redondeando más los labios. Suena distinta a la «u» española.' },
+        { type: 'mc', text: 'La palabra «och» (= y) se pronuncia normalmente…', options: ['«ok»', '«och» con ch fuerte'], correct: 0, explanation: 'En el habla normal, <em>och</em> suena como «ok» (la última letra casi no se oye).' },
+        { type: 'mc', text: 'El sueco tiene un acento «melódico». Eso le da…', options: ['su sonido cantadito (sube y baja)', 'ningún ritmo especial'], correct: 0, explanation: 'El sueco «canta»: el tono sube y baja. Por eso suena musical. Se aprende sobre todo escuchando. 🎵' },
+        { type: 'mc', text: 'En «hjul» (rueda), «ljus» (luz), «djur» (animal), la primera letra…', options: ['es muda (se dice «jul», «jus», «jur»)', 'se pronuncia normal'], correct: 0, explanation: 'La h, l o d iniciales son mudas: <em>hjul</em> → «jul», <em>ljus</em> → «jus», <em>djur</em> → «jur».' },
+        { type: 'mc', text: 'La letra «å» suena parecida a…', options: ['la «o» española', 'la «a» española', 'la «e»'], correct: 0, explanation: 'La <strong>å</strong> suena como una «o» española: <em>gå</em> («go») = ir, <em>år</em> («or») = año.' },
+        { type: 'mc', text: 'El grupo «rs» (como en «kurs») suena…', options: ['parecido a «sh»', 'como «r» + «s» separadas'], correct: 0, explanation: 'La r se junta con la s y suena tipo «sh»: <em>kurs</em>, <em>fors</em>. Pasa también con rt, rd, rn.' },
+        { type: 'mc', text: 'La «ä» suena parecida a…', options: ['una «e» abierta', 'una «i»'], correct: 0, explanation: 'La <strong>ä</strong> es como una «e» bien abierta: <em>äta</em> (comer), <em>här</em> (aquí).' },
+        { type: 'mc', text: 'La «ö» suena…', options: ['un sonido entre «o» y «e» (con labios redondos)', 'como «o» normal'], correct: 0, explanation: 'La <strong>ö</strong> no existe en español: es un sonido entre «o» y «e», con los labios redondeados: <em>öra</em> (oído), <em>öl</em> (cerveza).' },
+        { type: 'type', prompt: 'La «å» suena como la ___ española (escribe una letra):', answer: 'o', accept: [], explanation: 'La å ≈ «o»: gå se dice «go».' },
+        { type: 'type', prompt: 'En «bok», la «o» suena como una ___ (escribe u o o):', answer: 'u', accept: [], explanation: 'La o sueca suele sonar «u»: bok = «buk».' },
+        { type: 'type', prompt: '«och» se pronuncia como… (escribe «ok» u «och»):', answer: 'ok', accept: [], explanation: '«och» suena «ok».' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 23. SUBORDINADAS — frases largas (SFI C)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'subordinadas',
+      title: 'Frases largas: subordinadas',
+      subtitle: 'att, som y la regla del «inte»',
+      icon: '🔗',
+      color: '#F59E0B',
+      level: 'C',
+      keywords: 'subordinadas bisats att som eftersom när om inte biff orden palabras frases largas que quien relativo',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: '«Sé QUE viene» → «Jag vet ___ han kommer»', options: ['att', 'som', 'och'], correct: 0, explanation: '«att» = que (introduce una idea). Jag vet att… = Sé que… 🔗' },
+        { type: 'mc', text: '«El hombre QUE vive aquí» → «Mannen ___ bor här»', options: ['som', 'att', 'vilken'], correct: 0, explanation: '«som» = que/quien (relativo). Une un nombre con más información: Mannen som bor här.' },
+        { type: 'mc', text: 'En una frase subordinada, «inte» va…', options: ['antes del verbo', 'después del verbo', 'siempre al final'], correct: 0, explanation: '¡La regla clave! En subordinadas, «inte» va ANTES del verbo: «…att han inte kommer». (En español no cambia, por eso sorprende.) 🎯' },
+        { type: 'mc', text: '«Sé que él NO viene» → «Jag vet att han ___»', options: ['inte kommer', 'kommer inte'], correct: 0, explanation: '«Jag vet att han inte kommer». En subordinada el «inte» va delante del verbo.' },
+        { type: 'mc', text: 'Pero en frase normal: «Él no viene» → «Han ___»', options: ['kommer inte', 'inte kommer'], correct: 0, explanation: '«Han kommer inte». En la frase principal, «inte» va DESPUÉS del verbo. ¡Es al revés que en la subordinada!' },
+        { type: 'mc', text: '«Quiero que vengas» → «Jag vill ___ du kommer»', options: ['att', 'som', 'och'], correct: 0, explanation: '«Jag vill att du kommer». «att» = que.' },
+        { type: 'mc', text: '¿Cuál une con subordinación (no con coordinación)?', options: ['eftersom', 'men', 'eller'], correct: 0, explanation: '«eftersom» (porque) crea una subordinada. «men» y «eller» solo enlazan al mismo nivel.' },
+        { type: 'mc', text: '«El libro QUE leo» → «Boken ___ jag läser»', options: ['som', 'att', 'vilken'], correct: 0, explanation: '«Boken som jag läser». «som» = que (relativo).' },
+        { type: 'mc', text: '«No sé DÓNDE vive» → «Jag vet inte ___ han bor»', options: ['var', 'vart', 'här'], correct: 0, explanation: '«Jag vet inte var han bor» = no sé dónde vive (pregunta metida dentro de la frase).' },
+        { type: 'mc', text: '«CUANDO» (subordinante) → ___', options: ['när', 'sedan', 'och'], correct: 0, explanation: '«när» = cuando: «Ring när du kommer» = llama cuando llegues.' },
+        { type: 'mc', text: '«Me pregunto SI viene» → «Jag undrar ___ han kommer»', options: ['om', 'att', 'när'], correct: 0, explanation: '«om» = si (dentro de una frase): Jag undrar om han kommer.' },
+        { type: 'mc', text: 'En «Jag tror att det regnar», la parte subordinada es…', options: ['att det regnar', 'Jag tror', 'det'], correct: 0, explanation: 'La subordinada es «att det regnar» (que llueve): depende de «Jag tror».' },
+        { type: 'mc', text: 'La palabra que introduce el relativo (que/quien/el cual) es…', options: ['som', 'att', 'om'], correct: 0, explanation: '«som» sirve para personas y cosas: mannen som…, boken som…' },
+        { type: 'mc', text: 'Truco «BIFF»: en subordinada, el «inte» va… del verbo', options: ['antes', 'después'], correct: 0, explanation: 'BIFF = «i Bisats (subordinada), Inte Framför (antes) det Finita verbet». En subordinada: inte + verbo.' },
+        { type: 'type', prompt: '«que» (introduce una idea, ej. Jag vet ___ …):', answer: 'att', accept: [], explanation: '«att» = que.' },
+        { type: 'type', prompt: '«que / quien» (relativo, ej. mannen ___ bor här):', answer: 'som', accept: [], explanation: '«som».' },
+        { type: 'type', prompt: '«porque» (subordinante):', answer: 'eftersom', accept: [], explanation: '«eftersom».' },
+        { type: 'type', prompt: '«si» (me pregunto ___ viene):', answer: 'om', accept: [], explanation: '«om».' },
+        { type: 'type', prompt: '«cuando» (subordinante):', answer: 'när', accept: [], explanation: '«när».' },
+        { type: 'order', prompt: 'Ordena: «Sé que él vive aquí»', words: ['Jag', 'vet', 'att', 'han', 'bor', 'här'], answer: ['Jag', 'vet', 'att', 'han', 'bor', 'här'], explanation: '«Jag vet att han bor här».' },
+        { type: 'order', prompt: 'Ordena: «El hombre que trabaja aquí»', words: ['Mannen', 'som', 'jobbar', 'här'], answer: ['Mannen', 'som', 'jobbar', 'här'], explanation: '«Mannen som jobbar här».' },
+        { type: 'order', prompt: 'Ordena: «Creo que él no viene» (regla BIFF)', words: ['Jag', 'tror', 'att', 'han', 'inte', 'kommer'], answer: ['Jag', 'tror', 'att', 'han', 'inte', 'kommer'], explanation: '«Jag tror att han inte kommer». En subordinada, «inte» antes del verbo.' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 24. SUECO AVANZADO — pasiva, participios, énfasis (SFI C)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'avanzado',
+      title: 'Sueco avanzado',
+      subtitle: 'Voz pasiva, participios y frases con «det»',
+      icon: '🎓',
+      color: '#F59E0B',
+      level: 'C',
+      keywords: 'avanzado pasiva passiv -s participio stängd målad det anticipatorio perifrasis enfatica cleft bli finns',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: 'La voz pasiva en sueco muchas veces se forma sumando ___ al verbo', options: ['-s', '-ar', '-de'], correct: 0, explanation: 'Se le pega una «-s»: <em>Dörren öppnas</em> (la puerta se abre/es abierta). 🎓' },
+        { type: 'mc', text: '«La puerta se abre / es abierta» → «Dörren ___»', options: ['öppnas', 'öppnar', 'öppnade'], correct: 0, explanation: '«Dörren öppnas». La -s marca la pasiva.' },
+        { type: 'mc', text: '«El libro es leído» → «Boken ___»', options: ['läses', 'läser', 'läste'], correct: 0, explanation: '«Boken läses» = el libro es leído (pasiva con -s).' },
+        { type: 'mc', text: 'Otra forma de pasiva es «bli + participio». «bli» significa…', options: ['llegar a ser / volverse', 'tener', 'ir'], correct: 0, explanation: '«bli» = volverse/llegar a ser: <em>Dörren blir öppnad</em> (la puerta es abierta).' },
+        { type: 'mc', text: '«una puerta cerrada» → «en ___ dörr»', options: ['stängd', 'stänga', 'stänger'], correct: 0, explanation: '«en stängd dörr». «stängd» es el participio pasado usado como adjetivo (cerrada).' },
+        { type: 'mc', text: '«una pared pintada» → «en ___ vägg»', options: ['målad', 'måla', 'målar'], correct: 0, explanation: '«en målad vägg» = una pared pintada. Participio como adjetivo.' },
+        { type: 'mc', text: '«La ventana está cerrada» (ett fönster) → «Fönstret är ___»', options: ['stängt', 'stängd', 'stänga'], correct: 0, explanation: '«Fönstret är stängt». Con palabras «ett», el participio suma -t: stängd → stängt.' },
+        { type: 'mc', text: '«Es Anna QUIEN cocina» → «Det är Anna ___ lagar maten»', options: ['som', 'att', 'och'], correct: 0, explanation: '«Det är Anna som lagar maten». Es la fórmula para resaltar algo: «Det är … som …».' },
+        { type: 'mc', text: 'La fórmula «Det är … som …» sirve para…', options: ['resaltar/enfatizar una parte', 'negar', 'preguntar la hora'], correct: 0, explanation: 'Enfatiza: «Det är IDAG som vi åker» = es HOY cuando nos vamos.' },
+        { type: 'mc', text: '«Llueve» → «___ regnar»', options: ['Det', 'Den', 'Han'], correct: 0, explanation: '«Det regnar». El sueco pone un «det» de relleno cuando no hay un sujeto real (clima, etc.).' },
+        { type: 'mc', text: '«Es divertido aprender sueco» → «___ är kul att lära sig svenska»', options: ['Det', 'Den', 'Han'], correct: 0, explanation: '«Det är kul att…». Ese «Det» anticipa la idea que viene después.' },
+        { type: 'mc', text: '«Hay muchos coches» → «___ finns många bilar»', options: ['Det', 'Den', 'De'], correct: 0, explanation: '«Det finns…» = hay… Siempre empieza con «Det finns».' },
+        { type: 'type', prompt: 'La terminación típica de la voz pasiva (una letra):', answer: 's', accept: [], explanation: 'La «-s»: öppnas, läses.' },
+        { type: 'type', prompt: '«llueve» → «___ regnar»:', answer: 'det', accept: [], explanation: '«Det regnar».' },
+        { type: 'type', prompt: '«cerrada» (participio, en «en ___ dörr»):', answer: 'stängd', accept: [], explanation: '«stängd».' },
+        { type: 'type', prompt: '«que/quien» en la frase enfática (Det är Anna ___):', answer: 'som', accept: [], explanation: '«som».' },
+        { type: 'order', prompt: 'Ordena: «Es Anna quien cocina»', words: ['Det', 'är', 'Anna', 'som', 'lagar', 'maten'], answer: ['Det', 'är', 'Anna', 'som', 'lagar', 'maten'], explanation: '«Det är Anna som lagar maten».' },
+        { type: 'order', prompt: 'Ordena: «Es divertido aprender sueco»', words: ['Det', 'är', 'kul', 'att', 'lära', 'sig', 'svenska'], answer: ['Det', 'är', 'kul', 'att', 'lära', 'sig', 'svenska'], explanation: '«Det är kul att lära sig svenska».' },
+        { type: 'order', prompt: 'Ordena: «El libro es leído en la escuela»', words: ['Boken', 'läses', 'i', 'skolan'], answer: ['Boken', 'läses', 'i', 'skolan'], explanation: '«Boken läses i skolan».' },
+      ]
+    },
   ]
 };
 
@@ -3090,6 +3196,24 @@ const THEORY_DATA = {
       ]
     },
 
+    // ── Pronunciación (los sonidos) ─────────────────────────
+    {
+      id: 'u-pronunciacion',
+      title: 'Los sonidos del sueco',
+      subtitle: 'Cómo se leen las letras',
+      icon: '🔊',
+      color: '#10B981',
+      level: 'A',
+      grammarTopicId: 'pronunciacion',
+      cards: [
+        { title: 'La idea', body: 'El sueco se escribe casi como se lee… pero algunas letras suenan distinto a lo que esperas. Aquí van los sonidos clave para que te entiendan desde el primer día. (Pronto Sophie sumará audios para oírlos.) 🔊' },
+        { title: 'Las vocales nuevas', body: 'El sueco tiene 9 vocales. Cuatro no existen en español: <br><strong>å</strong> suena como «o» (<em>gå</em> = «go»). <br><strong>ä</strong> es una «e» abierta (<em>äta</em>). <br><strong>ö</strong> está entre «o» y «e» (<em>öra</em>). <br><strong>y</strong> es una «i» con labios redondos (<em>ny</em>).' },
+        { title: 'La «o» tramposa', body: 'La letra <strong>o</strong> muchas veces NO suena «o», sino <strong>«u»</strong>: <br><em>bok</em> se dice «buk» (libro). <br><em>sol</em> se dice «sul» (sol). <br>Es de las cosas que más despistan al principio. 🎯' },
+        { title: 'Sonidos especiales', body: '<strong>sj</strong> es un soplido suave: <em>sju</em> (siete), <em>sjö</em> (lago). <br><strong>tj</strong> y la <strong>k</strong> antes de e/i/y/ä/ö suenan «ch» suave: <em>tjugo</em> (veinte), <em>kött</em> (carne). <br>La <strong>g</strong> antes de e/i/y suena «y»: <em>ge</em> = «ye».' },
+        { title: 'Letras mudas y melodía', body: 'Al inicio, la primera letra de <strong>hj-, lj-, dj-</strong> es muda: <em>hjul</em> = «jul» (rueda). <br>Y ojo: el sueco «canta» — el tono sube y baja. Ese sonido melódico se pega escuchando mucho. ¡A practicar! 💪' },
+      ]
+    },
+
     // ── 13. Posesivos ───────────────────────────────────────
     {
       id: 'u-posesivos',
@@ -3226,6 +3350,42 @@ const THEORY_DATA = {
         { title: 'El detalle clave', body: 'Con «den här/den där», el sustantivo va en su forma <strong>con el/la</strong> (definida): <br><em>den här <strong>bilen</strong></em> (no «bil»). <br><em>det här <strong>huset</strong></em>. <br>Es como decir «este el-coche». Raro, pero así es el sueco. 🎯' },
         { title: 'Algún y ningún', body: '<strong>någon</strong> = algún/alguien: <em>Har du någon fråga?</em> (¿tienes alguna pregunta?). <br><strong>ingen</strong> = ningún/nadie: <em>Ingen är hemma</em> (nadie está en casa). <br>Con «ett»: <em>något</em> / <em>inget</em>. En plural: <em>några</em> / <em>inga</em>.' },
         { title: '¿Cuál? y todo', body: '<strong>vilken</strong> = cuál/qué: <em>Vilken bok?</em> (¿cuál libro?). Con «ett»: <em>vilket</em>. <br><strong>hela</strong> = todo/entero: <em>hela dagen</em> (todo el día). <br>Con esto ya preguntas, señalas y precisas. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── Subordinadas (frases largas) ────────────────────────
+    {
+      id: 'u-subordinadas',
+      title: 'Frases largas: subordinadas',
+      subtitle: 'att, som y la regla del «inte»',
+      icon: '🔗',
+      color: '#F59E0B',
+      level: 'C',
+      grammarTopicId: 'subordinadas',
+      cards: [
+        { title: 'La idea', body: 'Hasta ahora hiciste frases cortas. Ahora vas a <strong>unir dos ideas en una sola frase larga</strong>: «Sé <u>que</u> él vive aquí», «El hombre <u>que</u> trabaja aquí». Esas segunditas partes son las <strong>subordinadas</strong>. 🔗' },
+        { title: 'att = que', body: '<strong>att</strong> mete una idea dentro de otra: <br><em>Jag vet <strong>att</strong> han bor här</em> = sé que vive aquí. <br><em>Jag vill <strong>att</strong> du kommer</em> = quiero que vengas. <br>Es el «que» del español.' },
+        { title: 'som = que / quien', body: '<strong>som</strong> conecta un nombre con más información (sirve para personas y cosas): <br><em>Mannen <strong>som</strong> bor här</em> = el hombre que vive aquí. <br><em>Boken <strong>som</strong> jag läser</em> = el libro que leo.' },
+        { title: '⭐ La regla estrella (BIFF)', body: 'Aquí el sueco cambia el orden. En una frase <strong>normal</strong>, «inte» va DESPUÉS del verbo: <br><em>Han kommer <strong>inte</strong></em> (él no viene). <br>Pero en una <strong>subordinada</strong>, «inte» va ANTES del verbo: <br><em>Jag vet att han <strong>inte</strong> kommer</em>. <br>Se llama regla «BIFF»: en subordinada, Inte va antes del verbo. 🎯' },
+        { title: 'Preguntas metidas dentro', body: 'También puedes meter una pregunta dentro de la frase: <br><em>Jag vet inte <strong>var</strong> han bor</em> = no sé dónde vive. <br><em>Jag undrar <strong>om</strong> han kommer</em> = me pregunto si viene. <br>Con esto ya hablas de corrido, no a frases sueltas. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── Sueco avanzado ──────────────────────────────────────
+    {
+      id: 'u-avanzado',
+      title: 'Sueco avanzado',
+      subtitle: 'Voz pasiva, participios y frases con «det»',
+      icon: '🎓',
+      color: '#F59E0B',
+      level: 'C',
+      grammarTopicId: 'avanzado',
+      cards: [
+        { title: 'La idea', body: 'Estos son los toques que hacen que tu sueco suene «de verdad»: la voz pasiva, los participios y esas frases que empiezan con <strong>det</strong>. Ninguno es difícil; son detalles finos. 🎓' },
+        { title: 'Voz pasiva: la «-s»', body: 'Cuando lo importante es la acción (no quién la hace), se le pega una <strong>-s</strong> al verbo: <br><em>Dörren <strong>öppnas</strong></em> = la puerta se abre / es abierta. <br><em>Boken <strong>läses</strong></em> = el libro es leído. <br>También existe «bli + participio»: <em>Dörren blir öppnad</em>.' },
+        { title: 'Participios como adjetivos', body: 'El participio pasado describe algo ya hecho, como un adjetivo: <br><em>en <strong>stängd</strong> dörr</em> = una puerta cerrada. <br><em>en <strong>målad</strong> vägg</em> = una pared pintada. <br>Y cambia con «ett»: <em>Fönstret är <strong>stängt</strong></em> (la ventana está cerrada).' },
+        { title: 'El «det» de relleno', body: 'El sueco odia las frases sin sujeto, así que pone un <strong>det</strong> de relleno: <br><em><strong>Det</strong> regnar</em> = llueve. <br><em><strong>Det</strong> finns många bilar</em> = hay muchos coches. <br><em><strong>Det</strong> är kul att lära sig svenska</em> = es divertido aprender sueco.' },
+        { title: 'Resaltar con «Det är … som»', body: 'Para poner el foco en algo, usas esta fórmula: <br><em><strong>Det är</strong> Anna <strong>som</strong> lagar maten</em> = es Anna quien cocina. <br>Cambias lo que va en medio para resaltar lo que quieras. Con esto cierras el temario. ¡Enorme trabajo! 🎉' },
       ]
     },
   ]
@@ -6789,6 +6949,7 @@ function backToTheory() {
       <button onclick="filterGrammar('all')" id="gf-all" data-level="all" class="grammar-filter-btn active text-xs px-3 py-1.5 rounded-full font-semibold">Todos</button>
       <button onclick="filterGrammar('A')" id="gf-A" data-level="A" class="grammar-filter-btn text-xs px-3 py-1.5 rounded-full font-semibold">SFI A</button>
       <button onclick="filterGrammar('B')" id="gf-B" data-level="B" class="grammar-filter-btn text-xs px-3 py-1.5 rounded-full font-semibold">SFI B</button>
+      <button onclick="filterGrammar('C')" id="gf-C" data-level="C" class="grammar-filter-btn text-xs px-3 py-1.5 rounded-full font-semibold">SFI C</button>
     </div>
 
     <!-- Buscador de temas -->
