@@ -2754,6 +2754,7 @@ let nivelState = {
 // ── Abrir la pantalla de inicio de la prueba ─────────────────
 function showNivelTest() {
   stopSpeech();
+  stopNivelAudio();
   showView('nivel-intro');
 }
 
@@ -2774,6 +2775,7 @@ function renderNivelQuestion() {
   const q = nivelCurrent();
   const total = LEVEL_TEST.questions.length;
   nivelState.answered = false;
+  stopNivelAudio();
 
   // Cabecera: progreso y nivel actual
   const bar = document.getElementById('nt-progress-bar');
@@ -2810,9 +2812,7 @@ function renderNivelQuestion() {
     area.innerHTML = `
       <div class="rounded-2xl p-5 mb-4 text-center border-2 border-dashed" style="border-color:#0EA5E9; background:#F0F9FF;">
         <div class="text-xs text-sky-600 font-bold mb-2">🎧 Escucha (no se ve el texto)</div>
-        <button onclick="nivelPlayAudio()" class="inline-flex items-center gap-2 bg-sky-500 text-white px-5 py-3 rounded-2xl font-bold shadow hover:bg-sky-600 transition-colors">
-          🔊 Escuchar
-        </button>
+        <button id="nt-audio-btn" onclick="nivelPlayAudio()" class="inline-flex items-center gap-2 bg-sky-500 text-white px-5 py-3 rounded-2xl font-bold shadow hover:bg-sky-600 transition-colors">🔊 Escuchar</button>
         <div class="text-xs text-gray-400 mt-2">Puedes escuchar las veces que quieras</div>
       </div>
       <p class="font-bold text-gray-800 mb-3">${q.question}</p>
@@ -2855,24 +2855,39 @@ function renderNivelOptions(q) {
     </button>`).join('');
 }
 
-let _ntAudio = null;
+let _ntAudio = null, _ntAudioKey = null;
+function _ntSetAudioBtn(txt) { const b = document.getElementById('nt-audio-btn'); if (b) b.innerHTML = txt; }
+function stopNivelAudio() {
+  if (_ntAudio) { try { _ntAudio.pause(); } catch (e) {} }
+  _ntAudio = null; _ntAudioKey = null;
+  _ntSetAudioBtn('🔊 Escuchar');
+}
 function nivelPlayAudio() {
   const q = nivelCurrent();
-  if (q.audioKey && typeof SOPHIE_AUDIO_KEYS !== 'undefined' && SOPHIE_AUDIO_KEYS.indexOf(q.audioKey) !== -1) {
-    try {
-      if (_ntAudio) { _ntAudio.pause(); _ntAudio.currentTime = 0; }
-      _ntAudio = new Audio('audio/' + q.audioKey + '.mp3');
-      _ntAudio.play();
-    } catch (e) { if (q.audio) speak(q.audio); }
-  } else if (q.audio) {
-    speak(q.audio);
+  const ok = q.audioKey && typeof SOPHIE_AUDIO_KEYS !== 'undefined' && SOPHIE_AUDIO_KEYS.indexOf(q.audioKey) !== -1;
+  if (!ok) { if (q.audio) speak(q.audio); return; }
+  // Misma pista: alternar play / pausa
+  if (_ntAudio && _ntAudioKey === q.audioKey) {
+    if (_ntAudio.paused) { _ntAudio.play(); _ntSetAudioBtn('⏸️ Pausar'); }
+    else { _ntAudio.pause(); _ntSetAudioBtn('▶️ Continuar'); }
+    return;
   }
+  // Pista nueva: detener la anterior y empezar
+  if (_ntAudio) { try { _ntAudio.pause(); } catch (e) {} }
+  try {
+    _ntAudio = new Audio('audio/' + q.audioKey + '.mp3');
+    _ntAudioKey = q.audioKey;
+    _ntAudio.addEventListener('ended', () => _ntSetAudioBtn('🔁 Escuchar de nuevo'));
+    _ntAudio.play();
+    _ntSetAudioBtn('⏸️ Pausar');
+  } catch (e) { if (q.audio) speak(q.audio); }
 }
 
 // ── Saltar la pregunta (No lo sé) — cuenta como no acertada ──
 function skipNivel() {
   if (nivelState.answered) return;
   nivelState.answered = true;
+  stopNivelAudio();
   const q = nivelCurrent();
   nivelState.answers.push({ nivel: q.nivel, skill: q.skill, correct: false });
   if (q.type === 'order') {
@@ -2899,6 +2914,7 @@ function skipNivel() {
 function answerNivel(idx) {
   if (nivelState.answered) return;
   nivelState.answered = true;
+  stopNivelAudio();
   const q = nivelCurrent();
   const isCorrect = idx === q.correct;
   nivelState.answers.push({ nivel: q.nivel, skill: q.skill, correct: isCorrect });
@@ -3027,6 +3043,7 @@ function computeNivel() {
 }
 
 async function finishNivelTest() {
+  stopNivelAudio();
   const r = computeNivel();
   try { localStorage.setItem('scs_nivel_last', JSON.stringify({ nivel: r.nivel, pct: Math.round(r.correct / (r.total||1) * 100), skills: { las: pctOf(r.skills.las), hor: pctOf(r.skills.hor), skriv: pctOf(r.skills.skriv), tala: pctOf(r.skills.tala) }, ts: Date.now() })); } catch (e) {}
   showView('nivel-result');
