@@ -2225,6 +2225,236 @@ const GRAMMAR_DATA = {
         { type: 'order', prompt: 'Ordena: «Compro dos manzanas»', words: ['Jag', 'köper', 'två', 'äpplen'], answer: ['Jag', 'köper', 'två', 'äpplen'], explanation: '«Jag köper två äpplen».' },
       ]
     },
+
+    // ─────────────────────────────────────────────────────
+    // 13. SALUDOS Y PRESENTARSE (SFI A)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'saludos',
+      title: 'Saludos y presentarse',
+      subtitle: 'Hej, god morgon, hej då… lo primero que dices cada día',
+      icon: '👋',
+      color: '#F59E0B',
+      level: 'A',
+      keywords: 'saludos presentarse hej god morgon dag kväll natt hej då tack förlåt ursäkta heter hola gracias adios buenos dias hälsningar presentation',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: '«Hola» (informal) → ___', options: ['Hej', 'Adjö', 'Tack'], correct: 0, explanation: '«Hej» = hola. Es el saludo más común, sirve a cualquier hora. 😊' },
+        { type: 'mc', text: '«Buenos días» → ___', options: ['God morgon', 'God natt', 'Hej då'], correct: 0, explanation: '«God morgon» = buenos días (por la mañana). «god» = bueno/buenas.' },
+        { type: 'mc', text: '«Buenas noches» (al ir a dormir) → ___', options: ['God natt', 'God morgon', 'God dag'], correct: 0, explanation: '«God natt» = buenas noches, para despedirse antes de dormir. «God kväll» es para saludar de noche.' },
+        { type: 'mc', text: '«Adiós» (informal) → ___', options: ['Hej då', 'Hej', 'Tack'], correct: 0, explanation: '«Hej då» = adiós. Curioso: «hej» solo = hola, pero «hej då» = adiós. 🎯' },
+        { type: 'mc', text: '«¿Cómo estás?» → ___', options: ['Hur mår du?', 'Vad heter du?', 'Var bor du?'], correct: 0, explanation: '«Hur mår du?» = ¿cómo estás? Se responde «Bra, tack» (bien, gracias).' },
+        { type: 'mc', text: '«Bien, gracias» → ___', options: ['Bra, tack', 'Hej då', 'Varsågod'], correct: 0, explanation: '«Bra, tack» = bien, gracias. «bra» = bien.' },
+        { type: 'mc', text: '«¿Cómo te llamas?» → ___', options: ['Vad heter du?', 'Hur mår du?', 'Var kommer du ifrån?'], correct: 0, explanation: '«Vad heter du?» = ¿cómo te llamas? Literal: «¿qué te llamas?».' },
+        { type: 'mc', text: '«Me llamo Ana» → «Jag ___ Ana»', options: ['heter', 'är', 'bor'], correct: 0, explanation: '«Jag heter Ana» = me llamo Ana. «heter» = me llamo / se llama.' },
+        { type: 'mc', text: '«Gracias» → ___', options: ['Tack', 'Förlåt', 'Ursäkta'], correct: 0, explanation: '«Tack» = gracias. «Tack så mycket» = muchas gracias.' },
+        { type: 'mc', text: '«Perdón / lo siento» → ___', options: ['Förlåt', 'Tack', 'Hej'], correct: 0, explanation: '«Förlåt» = perdón / lo siento (cuando te disculpas por algo).' },
+        { type: 'mc', text: '«Disculpa» (para llamar la atención) → ___', options: ['Ursäkta', 'Varsågod', 'God dag'], correct: 0, explanation: '«Ursäkta» = disculpa/perdón, para pedir paso o preguntar algo. «Förlåt» es más para pedir perdón.' },
+        { type: 'mc', text: '«Mucho gusto (encantado)» → ___', options: ['Trevligt att träffas', 'Hej då', 'Vi ses'], correct: 0, explanation: '«Trevligt att träffas» = mucho gusto / encantado de conocerte.' },
+        { type: 'mc', text: '«¿De dónde vienes?» → «Var kommer du ___?»', options: ['ifrån', 'till', 'med'], correct: 0, explanation: '«Var kommer du ifrån?» = ¿de dónde vienes? «ifrån» = de (origen).' },
+        { type: 'mc', text: '«Nos vemos» → ___', options: ['Vi ses', 'God natt', 'Tack'], correct: 0, explanation: '«Vi ses» = nos vemos (despedida informal).' },
+        { type: 'mc', text: '«De nada» (respuesta a gracias) → ___', options: ['Varsågod', 'Förlåt', 'Hej då'], correct: 0, explanation: '«Varsågod» = de nada / aquí tienes. También se usa al dar algo a alguien.' },
+        { type: 'type', prompt: '«Hola» en sueco:', answer: 'hej', accept: [], explanation: '«hej» = hola.' },
+        { type: 'type', prompt: '«Gracias» en sueco:', answer: 'tack', accept: [], explanation: '«tack» = gracias.' },
+        { type: 'type', prompt: 'Completa: «Jag ___ Erik» (me llamo):', answer: 'heter', accept: [], explanation: '«heter» = me llamo.' },
+        { type: 'type', prompt: '«Buenos días» en sueco:', answer: 'god morgon', accept: ['godmorgon'], explanation: '«god morgon» = buenos días.' },
+        { type: 'type', prompt: '«Adiós» (informal) en sueco:', answer: 'hej då', accept: ['hejdå'], explanation: '«hej då» = adiós.' },
+        { type: 'order', prompt: 'Ordena: «Me llamo Maria»', words: ['Jag', 'heter', 'Maria'], answer: ['Jag', 'heter', 'Maria'], explanation: '«Jag heter Maria».' },
+        { type: 'order', prompt: 'Ordena: «¿De dónde vienes?»', words: ['Var', 'kommer', 'du', 'ifrån'], answer: ['Var', 'kommer', 'du', 'ifrån'], explanation: '«Var kommer du ifrån?».' },
+        { type: 'order', prompt: 'Ordena: «¿Cómo estás?»', words: ['Hur', 'mår', 'du'], answer: ['Hur', 'mår', 'du'], explanation: '«Hur mår du?».' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 14. FORMA DEFINIDA (boken, bilen, huset) (SFI A)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'forma-definida',
+      title: 'El / la (forma definida)',
+      subtitle: 'bok → boken, hus → huset. El artículo va PEGADO al final',
+      icon: '📖',
+      color: '#3B82F6',
+      level: 'A',
+      keywords: 'forma definida el la boken bilen huset bestämd form artikel bok hus final sufijo definido',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: '«el libro» (en bok) → ___', options: ['boken', 'boket', 'bokar'], correct: 0, explanation: '«boken» = el libro. En sueco «el/la» va pegado al final. Palabras «en» → +en: bok → boken. 🎯' },
+        { type: 'mc', text: '«el coche» (en bil) → ___', options: ['bilen', 'bilet', 'bilar'], correct: 0, explanation: '«bilen» = el coche. «en» → +en: bil → bilen.' },
+        { type: 'mc', text: '«la casa» (ett hus) → ___', options: ['huset', 'husen', 'husan'], correct: 0, explanation: '«huset» = la casa. Palabras «ett» → +et: hus → huset.' },
+        { type: 'mc', text: '«la mesa» (ett bord) → ___', options: ['bordet', 'borden', 'bordan'], correct: 0, explanation: '«bordet» = la mesa. «ett» → +et: bord → bordet.' },
+        { type: 'mc', text: '«la niña» (en flicka) → ___', options: ['flickan', 'flicken', 'flickaet'], correct: 0, explanation: '«flickan» = la niña. Si «en» termina en -a, solo suma -n: flicka → flickan. 🎯' },
+        { type: 'mc', text: '«la calle» (en gata) → ___', options: ['gatan', 'gataen', 'gatet'], correct: 0, explanation: '«gatan» = la calle. Termina en -a → solo +n: gata → gatan.' },
+        { type: 'mc', text: '«la manzana» (ett äpple) → ___', options: ['äpplet', 'äpplen', 'äppleet'], correct: 0, explanation: '«äpplet» = la manzana. Si «ett» termina en vocal, solo suma -t: äpple → äpplet.' },
+        { type: 'mc', text: '«el día» (en dag) → ___', options: ['dagen', 'daget', 'dagan'], correct: 0, explanation: '«dagen» = el día. «en» → +en.' },
+        { type: 'mc', text: '«la ciudad» (en stad) → ___', options: ['staden', 'stadet', 'stadan'], correct: 0, explanation: '«staden» = la ciudad. «en» → +en.' },
+        { type: 'mc', text: '«la palabra» (ett ord) → ___', options: ['ordet', 'orden', 'ordat'], correct: 0, explanation: '«ordet» = la palabra. «ett» → +et.' },
+        { type: 'mc', text: '«la escuela» (en skola) → ___', options: ['skolan', 'skolen', 'skolet'], correct: 0, explanation: '«skolan» = la escuela. Termina en -a → +n.' },
+        { type: 'mc', text: '«el trabajo» (ett jobb) → ___', options: ['jobbet', 'jobben', 'jobban'], correct: 0, explanation: '«jobbet» = el trabajo. «ett» → +et.' },
+        { type: 'mc', text: '«bilen» ¿qué significa?', options: ['el coche', 'un coche', 'coches'], correct: 0, explanation: '«bilen» = EL coche (definido). «en bil» = UN coche (indefinido).' },
+        { type: 'mc', text: '«la respuesta» (ett svar) → ___', options: ['svaret', 'svaren', 'svarat'], correct: 0, explanation: '«svaret» = la respuesta. «ett» → +et.' },
+        { type: 'mc', text: '¿Cómo se dice «el/la» en sueco?', options: ['Va pegado al final de la palabra', 'Es una palabra aparte antes', 'No existe'], correct: 0, explanation: 'En sueco «el/la» no va delante: se pega al final. bok → boken (el libro).' },
+        { type: 'type', prompt: '«el libro» (de «bok»):', answer: 'boken', accept: [], explanation: '«boken». «en» → +en.' },
+        { type: 'type', prompt: '«la casa» (de «hus»):', answer: 'huset', accept: [], explanation: '«huset». «ett» → +et.' },
+        { type: 'type', prompt: '«la niña» (de «flicka»):', answer: 'flickan', accept: [], explanation: '«flickan». Termina en -a → +n.' },
+        { type: 'type', prompt: '«la manzana» (de «äpple»):', answer: 'äpplet', accept: [], explanation: '«äpplet». «ett» + vocal → +t.' },
+        { type: 'type', prompt: '«el día» (de «dag»):', answer: 'dagen', accept: [], explanation: '«dagen». «en» → +en.' },
+        { type: 'order', prompt: 'Ordena: «El libro es rojo»', words: ['Boken', 'är', 'röd'], answer: ['Boken', 'är', 'röd'], explanation: '«Boken är röd».' },
+        { type: 'order', prompt: 'Ordena: «La casa es grande»', words: ['Huset', 'är', 'stort'], answer: ['Huset', 'är', 'stort'], explanation: '«Huset är stort». (hus es «ett» → stort)' },
+        { type: 'order', prompt: 'Ordena: «El coche es nuevo»', words: ['Bilen', 'är', 'ny'], answer: ['Bilen', 'är', 'ny'], explanation: '«Bilen är ny».' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 15. ADJETIVOS Y CONCORDANCIA (en röd bil / ett rött hus) (SFI A)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'adjetivos',
+      title: 'Adjetivos y concordancia',
+      subtitle: 'en röd bil, ett rött hus, röda bilar. El adjetivo cambia',
+      icon: '🎨',
+      color: '#EC4899',
+      level: 'A',
+      keywords: 'adjetivos concordancia adjektiv röd rött röda stor stort stora en ett plural color grande adjetivo concordar',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: '«un coche rojo» (en bil) → «en ___ bil»', options: ['röd', 'rött', 'röda'], correct: 0, explanation: '«en röd bil». Con palabras «en», el adjetivo va normal: röd. 🎯' },
+        { type: 'mc', text: '«una casa roja» (ett hus) → «ett ___ hus»', options: ['rött', 'röd', 'röda'], correct: 0, explanation: '«ett rött hus». Con palabras «ett», el adjetivo suma -t: röd → rött.' },
+        { type: 'mc', text: '«coches rojos» (plural) → «___ bilar»', options: ['röda', 'röd', 'rött'], correct: 0, explanation: '«röda bilar». En plural el adjetivo suma -a: röd → röda.' },
+        { type: 'mc', text: '«un coche grande» (en bil) → «en ___ bil»', options: ['stor', 'stort', 'stora'], correct: 0, explanation: '«en stor bil». «en» → adjetivo normal: stor.' },
+        { type: 'mc', text: '«una casa grande» (ett hus) → «ett ___ hus»', options: ['stort', 'stor', 'stora'], correct: 0, explanation: '«ett stort hus». «ett» → +t: stor → stort.' },
+        { type: 'mc', text: '«casas grandes» (plural) → «___ hus»', options: ['stora', 'stort', 'stor'], correct: 0, explanation: '«stora hus». Plural → +a: stora. (hus no cambia en plural)' },
+        { type: 'mc', text: '«una manzana verde» (ett äpple) → «ett ___ äpple»', options: ['grönt', 'grön', 'gröna'], correct: 0, explanation: '«ett grönt äpple». «ett» → +t: grön → grönt.' },
+        { type: 'mc', text: '«un libro nuevo» (en bok) → «en ___ bok»', options: ['ny', 'nytt', 'nya'], correct: 0, explanation: '«en ny bok». «en» → adjetivo normal: ny.' },
+        { type: 'mc', text: '«una casa nueva» (ett hus) → «ett ___ hus»', options: ['nytt', 'ny', 'nya'], correct: 0, explanation: '«ett nytt hus». «ett» → +t: ny → nytt.' },
+        { type: 'mc', text: '«flores bonitas» (blommor, plural) → «___ blommor»', options: ['fina', 'fin', 'fint'], correct: 0, explanation: '«fina blommor». Plural → +a: fin → fina.' },
+        { type: 'mc', text: 'Con palabras «ett», el adjetivo…', options: ['suma -t (rött)', 'no cambia', 'suma -a'], correct: 0, explanation: 'Con «ett» el adjetivo suma -t: ett rött hus, ett stort hus. Con «en» va normal, en plural suma -a.' },
+        { type: 'mc', text: '«El coche es rojo» (en bil) → «Bilen är ___»', options: ['röd', 'rött', 'röda'], correct: 0, explanation: '«Bilen är röd». La palabra es «en bil», así que el adjetivo va normal: röd.' },
+        { type: 'mc', text: '«La casa es roja» (ett hus) → «Huset är ___»', options: ['rött', 'röd', 'röda'], correct: 0, explanation: '«Huset är rött». Es «ett hus» → +t: rött.' },
+        { type: 'mc', text: '«Los coches son rojos» → «Bilarna är ___»', options: ['röda', 'röd', 'rött'], correct: 0, explanation: '«Bilarna är röda». Plural → +a: röda.' },
+        { type: 'type', prompt: 'Completa: «ett ___ hus» (rojo):', answer: 'rött', accept: [], explanation: '«rött». «ett» → +t.' },
+        { type: 'type', prompt: 'Completa: «en ___ bil» (grande):', answer: 'stor', accept: [], explanation: '«stor». «en» → normal.' },
+        { type: 'type', prompt: 'Completa: «ett ___ hus» (grande):', answer: 'stort', accept: [], explanation: '«stort». «ett» → +t.' },
+        { type: 'type', prompt: 'Completa: «___ bilar» (rojos, plural):', answer: 'röda', accept: [], explanation: '«röda». Plural → +a.' },
+        { type: 'type', prompt: 'Completa: «ett ___ äpple» (verde):', answer: 'grönt', accept: [], explanation: '«grönt». «ett» → +t.' },
+        { type: 'order', prompt: 'Ordena: «El coche es rojo»', words: ['Bilen', 'är', 'röd'], answer: ['Bilen', 'är', 'röd'], explanation: '«Bilen är röd».' },
+        { type: 'order', prompt: 'Ordena: «Es una casa grande»', words: ['Det', 'är', 'ett', 'stort', 'hus'], answer: ['Det', 'är', 'ett', 'stort', 'hus'], explanation: '«Det är ett stort hus».' },
+        { type: 'order', prompt: 'Ordena: «Tengo un coche rojo»', words: ['Jag', 'har', 'en', 'röd', 'bil'], answer: ['Jag', 'har', 'en', 'röd', 'bil'], explanation: '«Jag har en röd bil».' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 16. FUTURO (ska / kommer att) (SFI B)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'futuro',
+      title: 'El futuro (ska / kommer att)',
+      subtitle: 'ska = plan que decides · kommer att = predicción',
+      icon: '🔮',
+      color: '#8B5CF6',
+      level: 'B',
+      keywords: 'futuro ska kommer att voy a plan prediccion framtid ska kommer imorgon nästa año mañana',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: '«Voy a comer» (un plan) → «Jag ___ äta»', options: ['ska', 'kommer', 'vill'], correct: 0, explanation: '«Jag ska äta». «ska» = voy a (algo que tú decides o planeas). 🎯' },
+        { type: 'mc', text: '«Va a llover» (predicción) → «Det ___ att regna»', options: ['kommer', 'ska', 'får'], correct: 0, explanation: '«Det kommer att regna». «kommer att» = va a (algo que pasará, no lo decides tú).' },
+        { type: 'mc', text: '«Mañana voy a trabajar» → «Imorgon ___ jag jobba»', options: ['ska', 'kommer', 'är'], correct: 0, explanation: '«Imorgon ska jag jobba». Es un plan → «ska».' },
+        { type: 'mc', text: '«Vamos a viajar en verano» → «Vi ___ resa i sommar»', options: ['ska', 'kommer', 'har'], correct: 0, explanation: '«Vi ska resa i sommar». Plan decidido → «ska».' },
+        { type: 'mc', text: 'Después de «ska», el verbo va…', options: ['en su forma base (äta)', 'en presente (äter)', 'en pasado (åt)'], correct: 0, explanation: 'Después de «ska» va la forma base (infinitivo): Jag ska äta, Jag ska köpa. 🎯' },
+        { type: 'mc', text: '«kommer» necesita ___ antes del verbo', options: ['att', 'och', 'som'], correct: 0, explanation: '«kommer ATT + verbo»: Det kommer att regna. No olvides el «att».' },
+        { type: 'mc', text: '¿Cuál expresa un plan/decisión?', options: ['Jag ska plugga', 'Det kommer att snöa', 'Jag pluggade'], correct: 0, explanation: '«Jag ska plugga» = voy a estudiar (lo decido yo). «kommer att» es predicción; «pluggade» es pasado.' },
+        { type: 'mc', text: '¿Cuál es una predicción (algo que pasará)?', options: ['Det kommer att snöa', 'Jag ska handla', 'Jag handlade'], correct: 0, explanation: '«Det kommer att snöa» = va a nevar (predicción). «ska handla» es un plan; «handlade» es pasado.' },
+        { type: 'mc', text: '«Él va a estudiar sueco» → «Han ___ studera svenska»', options: ['ska', 'skas', 'skar'], correct: 0, explanation: '«Han ska studera svenska». «ska» es igual para todos (jag ska, du ska, han ska).' },
+        { type: 'mc', text: '«Voy a comprar pan» → «Jag ska ___ bröd»', options: ['köpa', 'köper', 'köpte'], correct: 0, explanation: '«Jag ska köpa bröd». Tras «ska» va la base: köpa (no köper).' },
+        { type: 'mc', text: '«El próximo año voy a mudarme» → «Nästa år ___ jag flytta»', options: ['ska', 'är', 'har'], correct: 0, explanation: '«Nästa år ska jag flytta». Plan → «ska».' },
+        { type: 'mc', text: '«No va a funcionar» → «Det ___ inte att fungera»', options: ['kommer', 'ska', 'vill'], correct: 0, explanation: '«Det kommer inte att fungera» = no va a funcionar (predicción).' },
+        { type: 'mc', text: '¿Cuál está bien escrito?', options: ['Jag kommer att resa', 'Jag kommer resa att', 'Jag att kommer resa'], correct: 0, explanation: '«Jag kommer att resa». Orden: kommer + att + verbo base.' },
+        { type: 'mc', text: '«¿Qué vas a hacer hoy?» → «Vad ___ du göra idag?»', options: ['ska', 'kommer', 'är'], correct: 0, explanation: '«Vad ska du göra idag?». Para planes se usa «ska».' },
+        { type: 'type', prompt: '«Voy a» (un plan) en sueco:', answer: 'ska', accept: [], explanation: '«ska» = voy a (plan que decides).' },
+        { type: 'type', prompt: 'Completa: «Det ___ att regna» (va a llover):', answer: 'kommer', accept: [], explanation: '«kommer» → Det kommer att regna.' },
+        { type: 'type', prompt: 'Después de «ska», «comer» se dice:', answer: 'äta', accept: [], explanation: '«äta» (forma base). Jag ska äta.' },
+        { type: 'type', prompt: 'Falta la palabra: «Det kommer ___ regna»:', answer: 'att', accept: [], explanation: '«att». kommer + att + verbo.' },
+        { type: 'type', prompt: 'Completa: «Imorgon ska jag ___» (trabajar):', answer: 'jobba', accept: ['arbeta'], explanation: '«jobba» (o «arbeta»). Tras «ska» va la base.' },
+        { type: 'order', prompt: 'Ordena: «Voy a estudiar sueco»', words: ['Jag', 'ska', 'studera', 'svenska'], answer: ['Jag', 'ska', 'studera', 'svenska'], explanation: '«Jag ska studera svenska».' },
+        { type: 'order', prompt: 'Ordena: «Va a llover mañana»', words: ['Det', 'kommer', 'att', 'regna', 'imorgon'], answer: ['Det', 'kommer', 'att', 'regna', 'imorgon'], explanation: '«Det kommer att regna imorgon».' },
+        { type: 'order', prompt: 'Ordena: «Vamos a viajar en verano»', words: ['Vi', 'ska', 'resa', 'i', 'sommar'], answer: ['Vi', 'ska', 'resa', 'i', 'sommar'], explanation: '«Vi ska resa i sommar».' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 17. COMPARATIVOS (större / störst) (SFI B)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'comparativos',
+      title: 'Comparativos y superlativos',
+      subtitle: 'stor → större → störst · más grande, el más grande',
+      icon: '📊',
+      color: '#14B8A6',
+      level: 'B',
+      keywords: 'comparativos superlativos större störst bättre bäst mindre än som mas grande mejor comparar komparation',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: '«más grande» (de «stor») → ___', options: ['större', 'storare', 'storast'], correct: 0, explanation: '«större» = más grande. Es irregular (no dice «storare»). 🎯' },
+        { type: 'mc', text: '«el más grande» (de «stor») → ___', options: ['störst', 'större', 'storast'], correct: 0, explanation: '«störst» = el más grande (superlativo). stor → större → störst.' },
+        { type: 'mc', text: '«más rápido» (de «snabb») → ___', options: ['snabbare', 'snabbre', 'snabbast'], correct: 0, explanation: '«snabbare». Los normales suman -are: snabb → snabbare.' },
+        { type: 'mc', text: '«el más rápido» (de «snabb») → ___', options: ['snabbast', 'snabbare', 'snabbst'], correct: 0, explanation: '«snabbast». El superlativo normal suma -ast: snabb → snabbast.' },
+        { type: 'mc', text: '«mejor» (de «bra») → ___', options: ['bättre', 'braare', 'bäst'], correct: 0, explanation: '«bättre» = mejor. Irregular: bra → bättre → bäst.' },
+        { type: 'mc', text: '«el mejor» (de «bra») → ___', options: ['bäst', 'bättre', 'bra'], correct: 0, explanation: '«bäst» = el mejor. bra → bättre → bäst.' },
+        { type: 'mc', text: '«más pequeño» (de «liten») → ___', options: ['mindre', 'litenare', 'minst'], correct: 0, explanation: '«mindre» = más pequeño. Irregular: liten → mindre → minst.' },
+        { type: 'mc', text: '«mayor / más viejo» (de «gammal») → ___', options: ['äldre', 'gammalare', 'äldst'], correct: 0, explanation: '«äldre» = mayor/más viejo. Irregular: gammal → äldre → äldst.' },
+        { type: 'mc', text: '«Ana es más alta QUE Erik» → «Ana är längre ___ Erik»', options: ['än', 'som', 'att'], correct: 0, explanation: '«än» = que (en comparaciones). Ana är längre än Erik. 🎯' },
+        { type: 'mc', text: '«Estocolmo es más grande que Malmö» → «Stockholm är ___ än Malmö»', options: ['större', 'störst', 'stor'], correct: 0, explanation: '«större». Comparativo + «än»: större än.' },
+        { type: 'mc', text: '«El coche rojo es el más rápido» → «Den röda bilen är ___»', options: ['snabbast', 'snabbare', 'snabb'], correct: 0, explanation: '«snabbast» = el más rápido (superlativo).' },
+        { type: 'mc', text: '«más caro» (de «dyr») → ___', options: ['dyrare', 'dyrre', 'dyrast'], correct: 0, explanation: '«dyrare». Normal: dyr → dyrare → dyrast.' },
+        { type: 'mc', text: '«menor / más joven» (de «ung») → ___', options: ['yngre', 'ungare', 'yngst'], correct: 0, explanation: '«yngre» = más joven. Irregular: ung → yngre → yngst.' },
+        { type: 'mc', text: '«tan grande como» → «lika stor ___»', options: ['som', 'än', 'att'], correct: 0, explanation: '«som». Para igualdad se usa «lika … som»: lika stor som (tan grande como).' },
+        { type: 'type', prompt: '«más grande» (de «stor»):', answer: 'större', accept: [], explanation: '«större» (irregular).' },
+        { type: 'type', prompt: '«el más grande» (de «stor»):', answer: 'störst', accept: [], explanation: '«störst» (superlativo).' },
+        { type: 'type', prompt: '«mejor» (de «bra»):', answer: 'bättre', accept: [], explanation: '«bättre» (irregular).' },
+        { type: 'type', prompt: '«que» en una comparación (längre ___ Erik):', answer: 'än', accept: [], explanation: '«än» = que.' },
+        { type: 'type', prompt: '«más rápido» (de «snabb»):', answer: 'snabbare', accept: [], explanation: '«snabbare» (+are).' },
+        { type: 'order', prompt: 'Ordena: «Ana es más alta que Erik»', words: ['Ana', 'är', 'längre', 'än', 'Erik'], answer: ['Ana', 'är', 'längre', 'än', 'Erik'], explanation: '«Ana är längre än Erik».' },
+        { type: 'order', prompt: 'Ordena: «Estocolmo es más grande que Gotemburgo»', words: ['Stockholm', 'är', 'större', 'än', 'Göteborg'], answer: ['Stockholm', 'är', 'större', 'än', 'Göteborg'], explanation: '«Stockholm är större än Göteborg».' },
+        { type: 'order', prompt: 'Ordena: «Este coche es el más rápido»', words: ['Den', 'här', 'bilen', 'är', 'snabbast'], answer: ['Den', 'här', 'bilen', 'är', 'snabbast'], explanation: '«Den här bilen är snabbast».' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 18. CONJUNCIONES (och / men / eftersom) (SFI B)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'conjunciones',
+      title: 'Conjunciones (och, men, eftersom)',
+      subtitle: 'Las palabras que unen frases: y, pero, porque, cuando…',
+      icon: '🔗',
+      color: '#F97316',
+      level: 'B',
+      keywords: 'conjunciones och men eller eftersom för att när om konjunktioner y pero o porque que cuando si unir frases',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: '«y» → ___', options: ['och', 'men', 'eller'], correct: 0, explanation: '«och» = y. Une dos cosas: kaffe och te (café y té). 🎯' },
+        { type: 'mc', text: '«pero» → ___', options: ['men', 'och', 'för'], correct: 0, explanation: '«men» = pero. Muestra contraste: trött men glad (cansado pero feliz).' },
+        { type: 'mc', text: '«o» → ___', options: ['eller', 'och', 'men'], correct: 0, explanation: '«eller» = o. Da opciones: kaffe eller te (café o té).' },
+        { type: 'mc', text: '«porque» → ___', options: ['eftersom', 'men', 'och'], correct: 0, explanation: '«eftersom» = porque (da la razón). También sirve «för».' },
+        { type: 'mc', text: '«Creo QUE es bueno» → «Jag tror ___ det är bra»', options: ['att', 'och', 'men'], correct: 0, explanation: '«att» = que (introduce una idea): Jag tror att… (creo que…).' },
+        { type: 'mc', text: '«cuando» → ___', options: ['när', 'om', 'och'], correct: 0, explanation: '«när» = cuando: Ring när du kommer (llama cuando llegues).' },
+        { type: 'mc', text: '«si» (condición) → ___', options: ['om', 'när', 'att'], correct: 0, explanation: '«om» = si (condición): Om det regnar… (si llueve…).' },
+        { type: 'mc', text: '«Quiero café ___ té» (o)', options: ['eller', 'och', 'men'], correct: 0, explanation: '«eller» = o: Jag vill ha kaffe eller te.' },
+        { type: 'mc', text: '«Estoy cansado ___ feliz» (pero)', options: ['men', 'och', 'eller'], correct: 0, explanation: '«men» = pero: Jag är trött men glad.' },
+        { type: 'mc', text: '«No voy ___ estoy enfermo» (porque)', options: ['eftersom', 'men', 'eller'], correct: 0, explanation: '«eftersom» = porque: Jag går inte eftersom jag är sjuk.' },
+        { type: 'mc', text: '«Como ___ tengo hambre» → «Jag äter ___ jag är hungrig» (porque)', options: ['för', 'men', 'och'], correct: 0, explanation: '«för» = porque (coloquial): Jag äter för jag är hungrig. También vale «eftersom».' },
+        { type: 'mc', text: '«Voy a casa ___ como» (y)', options: ['och', 'men', 'om'], correct: 0, explanation: '«och» = y: Jag går hem och äter.' },
+        { type: 'mc', text: '«Llámame ___ llegas» (cuando)', options: ['när', 'om', 'att'], correct: 0, explanation: '«när» = cuando: Ring mig när du kommer.' },
+        { type: 'mc', text: '«Ella dice ___ está feliz» (que)', options: ['att', 'och', 'men'], correct: 0, explanation: '«att» = que: Hon säger att hon är glad.' },
+        { type: 'type', prompt: '«y» en sueco:', answer: 'och', accept: [], explanation: '«och» = y.' },
+        { type: 'type', prompt: '«pero» en sueco:', answer: 'men', accept: [], explanation: '«men» = pero.' },
+        { type: 'type', prompt: '«o» en sueco:', answer: 'eller', accept: [], explanation: '«eller» = o.' },
+        { type: 'type', prompt: '«porque» en sueco:', answer: 'eftersom', accept: ['för'], explanation: '«eftersom» (o «för») = porque.' },
+        { type: 'type', prompt: '«cuando» en sueco:', answer: 'när', accept: [], explanation: '«när» = cuando.' },
+        { type: 'order', prompt: 'Ordena: «Como y bebo»', words: ['Jag', 'äter', 'och', 'dricker'], answer: ['Jag', 'äter', 'och', 'dricker'], explanation: '«Jag äter och dricker».' },
+        { type: 'order', prompt: 'Ordena: «Estoy cansado pero feliz»', words: ['Jag', 'är', 'trött', 'men', 'glad'], answer: ['Jag', 'är', 'trött', 'men', 'glad'], explanation: '«Jag är trött men glad».' },
+        { type: 'order', prompt: 'Ordena: «Creo que es bueno»', words: ['Jag', 'tror', 'att', 'det', 'är', 'bra'], answer: ['Jag', 'tror', 'att', 'det', 'är', 'bra'], explanation: '«Jag tror att det är bra».' },
+      ]
+    },
   ]
 };
 
