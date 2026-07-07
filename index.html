@@ -3079,6 +3079,195 @@ const GRAMMAR_DATA = {
         { type: 'order', prompt: 'Ordena: «Los coches nuevos»', words: ['De', 'nya', 'bilarna'], answer: ['De', 'nya', 'bilarna'], explanation: '«De nya bilarna».' },
       ]
     },
+
+    // ─────────────────────────────────────────────────────
+    // 37. ESTRUCTURA DEL TEXTO (SFI D)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'estructura-texto',
+      title: 'Cómo escribir un texto',
+      subtitle: 'inledning, huvuddel, avslutning',
+      icon: '📄',
+      color: '#8B5CF6',
+      level: 'D',
+      keywords: 'estructura texto inledning huvuddel avslutning rubrik stycke introduccion desarrollo conclusion escribir textstruktur',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: 'La primera parte de un texto, que presenta el tema, se llama…', options: ['inledning', 'avslutning', 'huvuddel'], correct: 0, explanation: '«inledning» = introducción. Ahí presentas el tema y captas el interés del lector. 📄' },
+        { type: 'mc', text: '«inledning» significa…', options: ['introducción', 'conclusión', 'opinión'], correct: 0, explanation: '«inledning» = introducción (el comienzo del texto).' },
+        { type: 'mc', text: 'El cuerpo del texto, donde desarrollas las ideas, es…', options: ['huvuddel', 'inledning', 'avslutning'], correct: 0, explanation: '«huvuddel» = parte principal / desarrollo. Aquí van los detalles y argumentos.' },
+        { type: 'mc', text: 'La parte final, que resume y cierra, se llama…', options: ['avslutning', 'inledning', 'rubrik'], correct: 0, explanation: '«avslutning» = conclusión / cierre.' },
+        { type: 'mc', text: 'El orden correcto de un texto es…', options: ['inledning → huvuddel → avslutning', 'avslutning → inledning → huvuddel'], correct: 0, explanation: 'Primero introduces (inledning), luego desarrollas (huvuddel) y al final cierras (avslutning). 🎯' },
+        { type: 'mc', text: '«rubrik» significa…', options: ['título', 'párrafo', 'firma'], correct: 0, explanation: '«rubrik» = título (el encabezado del texto).' },
+        { type: 'mc', text: '«stycke» significa…', options: ['párrafo', 'palabra', 'letra'], correct: 0, explanation: '«stycke» = párrafo. Cada idea nueva suele ir en un párrafo nuevo.' },
+        { type: 'mc', text: 'En la «inledning» debes…', options: ['presentar el tema y captar interés', 'despedirte'], correct: 0, explanation: 'La introducción abre el tema y engancha al lector.' },
+        { type: 'mc', text: 'En la «avslutning» normalmente…', options: ['resumes y das una conclusión', 'presentas el tema por primera vez'], correct: 0, explanation: 'El cierre recoge lo dicho y concluye.' },
+        { type: 'mc', text: 'Cada idea nueva suele empezar…', options: ['en un párrafo nuevo (stycke)', 'en la misma línea siempre'], correct: 0, explanation: 'Un texto claro separa las ideas en párrafos (stycken).' },
+        { type: 'type', prompt: '«introducción» en sueco:', answer: 'inledning', accept: [], explanation: '«inledning».' },
+        { type: 'type', prompt: '«conclusión / cierre» en sueco:', answer: 'avslutning', accept: [], explanation: '«avslutning».' },
+        { type: 'type', prompt: '«parte principal / desarrollo» en sueco:', answer: 'huvuddel', accept: [], explanation: '«huvuddel».' },
+        { type: 'type', prompt: '«párrafo» en sueco:', answer: 'stycke', accept: [], explanation: '«stycke».' },
+        { type: 'order', prompt: 'Ordena las partes de un texto (de principio a fin)', words: ['Inledning', 'Huvuddel', 'Avslutning'], answer: ['Inledning', 'Huvuddel', 'Avslutning'], explanation: 'Inledning → Huvuddel → Avslutning.' },
+        { type: 'order', prompt: 'Ordena: «Primero escribo la introducción»', words: ['Först', 'skriver', 'jag', 'inledningen'], answer: ['Först', 'skriver', 'jag', 'inledningen'], explanation: '«Först skriver jag inledningen».' },
+        { type: 'order', prompt: 'Ordena: «Al final viene la conclusión»', words: ['Till', 'slut', 'kommer', 'avslutningen'], answer: ['Till', 'slut', 'kommer', 'avslutningen'], explanation: '«Till slut kommer avslutningen».' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 38. CONECTORES DEL TEXTO — sambandsord (SFI D)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'conectores',
+      title: 'Conectores del texto',
+      subtitle: 'dessutom, däremot, därför, slutligen',
+      icon: '🔗',
+      color: '#8B5CF6',
+      level: 'D',
+      keywords: 'conectores sambandsord textbindning dessutom däremot därför alltså dock slutligen ändå till exempel å andra sidan',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: '«además» → ___', options: ['dessutom', 'däremot', 'dock'], correct: 0, explanation: '«dessutom» = además (suma un punto más). 🔗' },
+        { type: 'mc', text: '«por ejemplo» → ___', options: ['till exempel', 'till slut', 'därför'], correct: 0, explanation: '«till exempel» (t.ex.) = por ejemplo.' },
+        { type: 'mc', text: '«en cambio / por otro lado» → ___', options: ['däremot', 'dessutom', 'alltså'], correct: 0, explanation: '«däremot» = en cambio (marca un contraste).' },
+        { type: 'mc', text: '«por eso» → ___', options: ['därför', 'dessutom', 'men'], correct: 0, explanation: '«därför» = por eso. Ojo: «därför att» = porque.' },
+        { type: 'mc', text: '«sin embargo / de todos modos» → ___', options: ['ändå', 'dessutom', 'också'], correct: 0, explanation: '«ändå» = aun así / de todos modos.' },
+        { type: 'mc', text: '«finalmente / por último» → ___', options: ['slutligen', 'först', 'dessutom'], correct: 0, explanation: '«slutligen» = finalmente. Útil para cerrar el texto.' },
+        { type: 'mc', text: '«por lo tanto» → ___', options: ['alltså', 'dock', 'också'], correct: 0, explanation: '«alltså» = por lo tanto / o sea.' },
+        { type: 'mc', text: 'Los conectores (sambandsord) sirven para…', options: ['unir ideas y que el texto fluya', 'solo decorar'], correct: 0, explanation: 'Enlazan las frases y le dan «hilo» al texto. Un texto sin ellos suena cortado.' },
+        { type: 'mc', text: '«Me gusta Suecia. ___, hace frío» (por otro lado)', options: ['Å andra sidan', 'Dessutom', 'Därför'], correct: 0, explanation: '«Å andra sidan» = por otro lado (contraste).' },
+        { type: 'mc', text: '«Estudio mucho. ___ apruebo» (por eso)', options: ['Därför', 'Däremot', 'Dock'], correct: 0, explanation: '«Därför» = por eso (consecuencia).' },
+        { type: 'type', prompt: '«además»:', answer: 'dessutom', accept: [], explanation: '«dessutom».' },
+        { type: 'type', prompt: '«por ejemplo»:', answer: 'till exempel', accept: ['t.ex.'], explanation: '«till exempel».' },
+        { type: 'type', prompt: '«por eso»:', answer: 'därför', accept: [], explanation: '«därför».' },
+        { type: 'type', prompt: '«finalmente / por último»:', answer: 'slutligen', accept: [], explanation: '«slutligen».' },
+        { type: 'order', prompt: 'Ordena: «Además, hace frío»', words: ['Dessutom', 'är', 'det', 'kallt'], answer: ['Dessutom', 'är', 'det', 'kallt'], explanation: '«Dessutom är det kallt». (Empieza con conector → verbo en 2.º lugar.)' },
+        { type: 'order', prompt: 'Ordena: «Por eso estudio sueco»', words: ['Därför', 'pluggar', 'jag', 'svenska'], answer: ['Därför', 'pluggar', 'jag', 'svenska'], explanation: '«Därför pluggar jag svenska».' },
+        { type: 'order', prompt: 'Ordena: «Finalmente, quiero decir gracias»', words: ['Slutligen', 'vill', 'jag', 'säga', 'tack'], answer: ['Slutligen', 'vill', 'jag', 'säga', 'tack'], explanation: '«Slutligen vill jag säga tack».' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 39. ARGUMENTAR Y DAR TU OPINIÓN (SFI D)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'argumentar',
+      title: 'Argumentar y dar tu opinión',
+      subtitle: 'Enligt min åsikt… För det första…',
+      icon: '💭',
+      color: '#8B5CF6',
+      level: 'D',
+      keywords: 'argumentar opinion åsikt tycker att håller med motargument för det första enligt min åsikt argumenterande',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: '«åsikt» significa…', options: ['opinión', 'argumento', 'conclusión'], correct: 0, explanation: '«åsikt» = opinión. 💭' },
+        { type: 'mc', text: '«En mi opinión…» → «Enligt min ___…»', options: ['åsikt', 'bok', 'text'], correct: 0, explanation: '«Enligt min åsikt…» = en mi opinión… (una forma clásica de abrir tu postura).' },
+        { type: 'mc', text: '«Creo / opino que…» → «Jag ___ att…»', options: ['tycker', 'vet', 'ser'], correct: 0, explanation: '«Jag tycker att…» = creo/opino que… «tycka» = opinar.' },
+        { type: 'mc', text: '«En primer lugar…» (primer argumento) → ___', options: ['För det första', 'Till slut', 'Däremot'], correct: 0, explanation: '«För det första…» = en primer lugar. Luego: «För det andra…» (en segundo lugar).' },
+        { type: 'mc', text: '«Estoy de acuerdo» → «Jag håller ___»', options: ['med', 'på', 'om'], correct: 0, explanation: '«Jag håller med» = estoy de acuerdo.' },
+        { type: 'mc', text: '«No estoy de acuerdo» → «Jag håller ___ med»', options: ['inte', 'ingen', 'aldrig'], correct: 0, explanation: '«Jag håller inte med» = no estoy de acuerdo.' },
+        { type: 'mc', text: 'Un «motargument» es…', options: ['un contraargumento', 'la conclusión', 'el título'], correct: 0, explanation: '«motargument» = contraargumento (una razón en contra). Un buen texto los considera.' },
+        { type: 'mc', text: 'Para apoyar tu opinión necesitas…', options: ['argument (razones)', 'solo la rubrik'], correct: 0, explanation: 'Los «argument» justifican por qué piensas así.' },
+        { type: 'mc', text: '«Por un lado… por otro lado» → «Å ena sidan… ___»', options: ['å andra sidan', 'dessutom', 'därför'], correct: 0, explanation: '«å ena sidan… å andra sidan…» = por un lado… por otro lado…' },
+        { type: 'mc', text: '«Creo que es importante» → «Jag tycker att det är ___»', options: ['viktigt', 'viktig', 'viktiga'], correct: 0, explanation: '«…att det är viktigt». Con «det» el adjetivo va en -t: viktigt.' },
+        { type: 'type', prompt: '«opinión» en sueco:', answer: 'åsikt', accept: [], explanation: '«åsikt».' },
+        { type: 'type', prompt: '«creo / opino que» → «Jag ___ att»:', answer: 'tycker', accept: [], explanation: '«Jag tycker att…».' },
+        { type: 'type', prompt: '«estoy de acuerdo» → «Jag håller ___»:', answer: 'med', accept: [], explanation: '«håller med».' },
+        { type: 'type', prompt: '«contraargumento» en sueco:', answer: 'motargument', accept: [], explanation: '«motargument».' },
+        { type: 'order', prompt: 'Ordena: «Creo que es importante»', words: ['Jag', 'tycker', 'att', 'det', 'är', 'viktigt'], answer: ['Jag', 'tycker', 'att', 'det', 'är', 'viktigt'], explanation: '«Jag tycker att det är viktigt».' },
+        { type: 'order', prompt: 'Ordena: «Estoy de acuerdo contigo»', words: ['Jag', 'håller', 'med', 'dig'], answer: ['Jag', 'håller', 'med', 'dig'], explanation: '«Jag håller med dig».' },
+        { type: 'order', prompt: 'Ordena: «En primer lugar es barato»', words: ['För', 'det', 'första', 'är', 'det', 'billigt'], answer: ['För', 'det', 'första', 'är', 'det', 'billigt'], explanation: '«För det första är det billigt».' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 40. LENGUAJE FORMAL E INFORMAL (SFI D)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'formal-informal',
+      title: 'Lenguaje formal e informal',
+      subtitle: 'Cuándo escribir «något» y no «nåt»',
+      icon: '🎩',
+      color: '#8B5CF6',
+      level: 'D',
+      keywords: 'formal informal register tilltal du hälsningar med vänliga hälsningar tjena talspråk skriftspråk något nåt',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: 'En un texto formal (un correo de trabajo) conviene…', options: ['escribir completo, sin abreviar ni jerga', 'usar jerga y emojis'], correct: 0, explanation: 'El registro formal es cuidado: sin abreviaturas ni palabras coloquiales. 🎩' },
+        { type: 'mc', text: 'Al escribir formal, «nåt» (habla) se escribe…', options: ['något', 'nåt', 'nada'], correct: 0, explanation: 'En el habla se dice «nåt», pero al escribir se pone la forma completa «något».' },
+        { type: 'mc', text: '«de / dem» se pronuncian «dom», pero al escribir usas…', options: ['de / dem (según el caso)', '«dom» siempre'], correct: 0, explanation: 'Se escribe «de» (sujeto) o «dem» (objeto), aunque ambos suenen «dom».' },
+        { type: 'mc', text: 'Para despedirte en un correo formal…', options: ['Med vänliga hälsningar', 'Hej då!'], correct: 0, explanation: '«Med vänliga hälsningar» (MVH) = saludos cordiales. Cierre estándar formal.' },
+        { type: 'mc', text: '«Tjena!» es un saludo…', options: ['muy informal (entre amigos)', 'formal, para el jefe'], correct: 0, explanation: '«Tjena!» es coloquial. Para lo formal: «Hej» o «God dag».' },
+        { type: 'mc', text: 'En Suecia, tratar de «du» a un desconocido…', options: ['es normal (se usa con casi todos)', 'es una falta de respeto grave'], correct: 0, explanation: 'Desde la «du-reformen», «du» es lo normal incluso con desconocidos. No necesitas «usted». 🎯' },
+        { type: 'mc', text: 'El lenguaje formal evita…', options: ['abreviaturas y jerga', 'palabras largas'], correct: 0, explanation: 'Evita abreviaturas (typ, ba, nåt) y expresiones de jerga.' },
+        { type: 'mc', text: '«sedan» en el habla se acorta a «sen», pero al escribir formal…', options: ['sedan', 'sen'], correct: 0, explanation: 'Forma escrita completa: «sedan».' },
+        { type: 'type', prompt: 'Despedida formal de un correo (3 palabras):', answer: 'med vänliga hälsningar', accept: ['mvh'], explanation: '«Med vänliga hälsningar» (MVH).' },
+        { type: 'type', prompt: 'Forma escrita correcta de «nåt»:', answer: 'något', accept: [], explanation: '«något».' },
+        { type: 'type', prompt: 'Forma escrita correcta de «sen» (después):', answer: 'sedan', accept: [], explanation: '«sedan».' },
+        { type: 'order', prompt: 'Ordena: «Saludos cordiales» (cierre formal)', words: ['Med', 'vänliga', 'hälsningar'], answer: ['Med', 'vänliga', 'hälsningar'], explanation: '«Med vänliga hälsningar».' },
+        { type: 'order', prompt: 'Ordena: «Gracias por tu correo»', words: ['Tack', 'för', 'ditt', 'mejl'], answer: ['Tack', 'för', 'ditt', 'mejl'], explanation: '«Tack för ditt mejl».' },
+        { type: 'order', prompt: 'Ordena: «Espero tu respuesta»', words: ['Jag', 'väntar', 'på', 'ditt', 'svar'], answer: ['Jag', 'väntar', 'på', 'ditt', 'svar'], explanation: '«Jag väntar på ditt svar».' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 41. DISCURSO REFERIDO — referat (SFI D)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'discurso-referido',
+      title: 'Contar lo que otros dicen',
+      subtitle: 'Enligt artikeln… Hon säger att…',
+      icon: '🗣️',
+      color: '#8B5CF6',
+      level: 'D',
+      keywords: 'discurso referido referat referatmarkör enligt säger att menar att hävdar påstår segun cita fuente',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: '«según» (para citar una fuente) → ___', options: ['enligt', 'genom', 'med'], correct: 0, explanation: '«enligt» = según. «Enligt artikeln…» = según el artículo… 🗣️' },
+        { type: 'mc', text: '«Él dice que…» → «Han säger ___…»', options: ['att', 'som', 'och'], correct: 0, explanation: '«Han säger att…» = él dice que… Se usa «att» para contar lo dicho.' },
+        { type: 'mc', text: '«Ella opina que…» → «Hon ___ att…»', options: ['tycker', 'frågar', 'svarar'], correct: 0, explanation: '«Hon tycker att…» = ella opina que…' },
+        { type: 'mc', text: '«hävda» significa…', options: ['afirmar / sostener', 'preguntar'], correct: 0, explanation: '«hävda» = afirmar, sostener (algo con firmeza). «Hon hävdar att…».' },
+        { type: 'mc', text: 'Una «referatmarkör» sirve para…', options: ['señalar de quién es la idea que cuentas', 'terminar el texto'], correct: 0, explanation: 'Los referatmarkörer (enligt, säger att, menar att…) marcan que la idea es de otra persona/fuente.' },
+        { type: 'mc', text: '«Según el artículo…» → «___ artikeln…»', options: ['Enligt', 'Med', 'På'], correct: 0, explanation: '«Enligt artikeln…».' },
+        { type: 'mc', text: '«menar att» significa…', options: ['quiere decir / opina que', 'pregunta si'], correct: 0, explanation: '«menar att» = quiere decir / da a entender que.' },
+        { type: 'mc', text: 'Al contar lo que alguien dijo, normalmente usas…', options: ['«att» + la frase', 'comillas obligatorias siempre'], correct: 0, explanation: 'El referat (estilo indirecto) usa «att»: «Hon sa att hon var trött».' },
+        { type: 'type', prompt: '«según» (citar una fuente):', answer: 'enligt', accept: [], explanation: '«enligt».' },
+        { type: 'type', prompt: '«dice que» → «säger ___»:', answer: 'att', accept: [], explanation: '«säger att».' },
+        { type: 'type', prompt: '«afirmar / sostener» (presente, «afirma»):', answer: 'hävdar', accept: ['hävda'], explanation: '«hävdar».' },
+        { type: 'order', prompt: 'Ordena: «Ella dice que está cansada»', words: ['Hon', 'säger', 'att', 'hon', 'är', 'trött'], answer: ['Hon', 'säger', 'att', 'hon', 'är', 'trött'], explanation: '«Hon säger att hon är trött».' },
+        { type: 'order', prompt: 'Ordena: «Según el artículo es importante»', words: ['Enligt', 'artikeln', 'är', 'det', 'viktigt'], answer: ['Enligt', 'artikeln', 'är', 'det', 'viktigt'], explanation: '«Enligt artikeln är det viktigt».' },
+        { type: 'order', prompt: 'Ordena: «Él opina que el sueco es difícil»', words: ['Han', 'tycker', 'att', 'svenska', 'är', 'svårt'], answer: ['Han', 'tycker', 'att', 'svenska', 'är', 'svårt'], explanation: '«Han tycker att svenska är svårt».' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 42. PARTICIPIOS (SFI D)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'participios',
+      title: 'Los participios',
+      subtitle: 'en leende flicka, ett växande problem',
+      icon: '🌀',
+      color: '#8B5CF6',
+      level: 'D',
+      keywords: 'participios particip presens leende växande rinnande participio pasado skrivet stängd adjetivo',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: 'El participio de presente (que está haciendo algo) termina en…', options: ['-ande / -ende', '-at'], correct: 0, explanation: 'El particip presens termina en -ande/-ende: leende (sonriente), växande (creciente). 🌀' },
+        { type: 'mc', text: '«una niña sonriente» → «en ___ flicka»', options: ['leende', 'ler', 'log'], correct: 0, explanation: '«en leende flicka» (de le = sonreír).' },
+        { type: 'mc', text: '«un problema creciente» → «ett ___ problem»', options: ['växande', 'växer', 'växte'], correct: 0, explanation: '«ett växande problem» (de växa = crecer).' },
+        { type: 'mc', text: '«agua corriente» → «___ vatten»', options: ['rinnande', 'rinner', 'rann'], correct: 0, explanation: '«rinnande vatten» (de rinna = correr/fluir).' },
+        { type: 'mc', text: 'El participio de pasado (algo ya hecho) se usa como…', options: ['adjetivo (una puerta cerrada)', 'verbo principal solo'], correct: 0, explanation: 'El participio pasado describe: «en stängd dörr» (una puerta cerrada), «en målad vägg».' },
+        { type: 'mc', text: '«una carta escrita» → «ett ___ brev»', options: ['skrivet', 'skriva', 'skrev'], correct: 0, explanation: '«ett skrivet brev». El participio también concuerda: skriven (en), skrivet (ett).' },
+        { type: 'mc', text: 'Los verbos en -a forman el participio presente sumando…', options: ['-nde (tala → talande)', '-at'], correct: 0, explanation: 'tala → talande (hablante), simma → simmande. Se suma -nde.' },
+        { type: 'mc', text: '«un perro que ladra» → «en ___ hund»', options: ['skällande', 'skäller', 'skällde'], correct: 0, explanation: '«en skällande hund» (de skälla = ladrar).' },
+        { type: 'type', prompt: 'Terminación del participio de presente:', answer: 'ande', accept: ['-ande', 'ende', '-ende'], explanation: '«-ande / -ende».' },
+        { type: 'type', prompt: '«sonriente» (de le):', answer: 'leende', accept: [], explanation: '«leende».' },
+        { type: 'type', prompt: '«creciente» (de växa):', answer: 'växande', accept: [], explanation: '«växande».' },
+        { type: 'order', prompt: 'Ordena: «Es un problema creciente»', words: ['Det', 'är', 'ett', 'växande', 'problem'], answer: ['Det', 'är', 'ett', 'växande', 'problem'], explanation: '«Det är ett växande problem».' },
+        { type: 'order', prompt: 'Ordena: «Una niña sonriente»', words: ['En', 'leende', 'flicka'], answer: ['En', 'leende', 'flicka'], explanation: '«En leende flicka».' },
+        { type: 'order', prompt: 'Ordena: «La puerta está cerrada»', words: ['Dörren', 'är', 'stängd'], answer: ['Dörren', 'är', 'stängd'], explanation: '«Dörren är stängd».' },
+      ]
+    },
   ]
 };
 
@@ -3992,6 +4181,111 @@ const THEORY_DATA = {
         { title: 'Participios como adjetivos', body: 'El participio pasado describe algo ya hecho, como un adjetivo: <br><em>en <strong>stängd</strong> dörr</em> = una puerta cerrada. <br><em>en <strong>målad</strong> vägg</em> = una pared pintada. <br>Y cambia con «ett»: <em>Fönstret är <strong>stängt</strong></em> (la ventana está cerrada).' },
         { title: 'El «det» de relleno', body: 'El sueco odia las frases sin sujeto, así que pone un <strong>det</strong> de relleno: <br><em><strong>Det</strong> regnar</em> = llueve. <br><em><strong>Det</strong> finns många bilar</em> = hay muchos coches. <br><em><strong>Det</strong> är kul att lära sig svenska</em> = es divertido aprender sueco.' },
         { title: 'Resaltar con «Det är … som»', body: 'Para poner el foco en algo, usas esta fórmula: <br><em><strong>Det är</strong> Anna <strong>som</strong> lagar maten</em> = es Anna quien cocina. <br>Cambias lo que va en medio para resaltar lo que quieras. Con esto cierras el temario. ¡Enorme trabajo! 🎉' },
+      ]
+    },
+
+    // ── Estructura del texto ────────────────────────────────
+    {
+      id: 'u-estructura-texto',
+      title: 'Cómo escribir un texto',
+      subtitle: 'inledning · huvuddel · avslutning',
+      icon: '📄',
+      color: '#8B5CF6',
+      level: 'D',
+      grammarTopicId: 'estructura-texto',
+      cards: [
+        { title: 'La idea', body: 'Un buen texto no es soltar frases: tiene <strong>tres partes</strong>, como un sándwich. En sueco se llaman <strong>inledning</strong> (introducción), <strong>huvuddel</strong> (desarrollo) y <strong>avslutning</strong> (cierre). 📄' },
+        { title: '1. Inledning (introducción)', body: 'Es el comienzo. Aquí <strong>presentas el tema</strong> y captas el interés del lector. Corto: una o dos frases que digan de qué vas a hablar. <em>«I den här texten ska jag skriva om…»</em> (En este texto voy a escribir sobre…).' },
+        { title: '2. Huvuddel (desarrollo)', body: 'Es el cuerpo, la parte más larga. Aquí <strong>desarrollas tus ideas</strong>, das ejemplos y razones. Cada idea nueva en un <strong>stycke</strong> (párrafo) nuevo, para que se lea claro.' },
+        { title: '3. Avslutning (cierre)', body: 'El final. <strong>Resumes</strong> lo dicho y das una conclusión. No metas ideas nuevas aquí. <em>«Sammanfattningsvis…»</em> (En resumen…) es una buena forma de empezarlo.' },
+        { title: 'El truco', body: 'Antes de escribir, piensa las tres partes: ¿de qué hablo? (inledning), ¿qué digo? (huvuddel), ¿cómo cierro? (avslutning). Y no olvides la <strong>rubrik</strong> (título) arriba. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── Conectores del texto ────────────────────────────────
+    {
+      id: 'u-conectores',
+      title: 'Conectores del texto',
+      subtitle: 'dessutom, däremot, därför, slutligen',
+      icon: '🔗',
+      color: '#8B5CF6',
+      level: 'D',
+      grammarTopicId: 'conectores',
+      cards: [
+        { title: 'La idea', body: 'Los <strong>sambandsord</strong> (conectores) son el hilo que une tu texto. Sin ellos, las frases suenan cortadas; con ellos, todo fluye. Son la marca de un texto de nivel. 🔗' },
+        { title: 'Para sumar y ejemplificar', body: '<strong>dessutom</strong> = además. <strong>också</strong> = también. <strong>till exempel</strong> (t.ex.) = por ejemplo. <br><em>Svenska är nyttigt. <strong>Dessutom</strong> är det roligt.</em> (El sueco es útil. Además es divertido.)' },
+        { title: 'Para contrastar', body: '<strong>däremot</strong> = en cambio. <strong>å andra sidan</strong> = por otro lado. <strong>ändå</strong> = aun así. <strong>dock</strong> = sin embargo. <br>Sirven para mostrar las dos caras de un tema.' },
+        { title: 'Para razón y cierre', body: '<strong>därför</strong> = por eso. <strong>alltså</strong> = por lo tanto. <strong>slutligen</strong> = finalmente. <br><em><strong>Slutligen</strong> vill jag säga…</em> (Finalmente quiero decir…) — perfecto para la avslutning.' },
+        { title: 'Ojo con el orden', body: 'Si empiezas la frase con un conector, recuerda la regla del segundo puesto: el verbo va justo después. <br><em><strong>Dessutom</strong> <u>är</u> det billigt</em> (Además es barato). ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── Argumentar y dar tu opinión ─────────────────────────
+    {
+      id: 'u-argumentar',
+      title: 'Argumentar y dar tu opinión',
+      subtitle: 'Enligt min åsikt… För det första…',
+      icon: '💭',
+      color: '#8B5CF6',
+      level: 'D',
+      grammarTopicId: 'argumentar',
+      cards: [
+        { title: 'La idea', body: 'Un <strong>texto argumentativo</strong> defiende una opinión con razones. Es de lo más pedido en SFI D y en la vida (una carta al periódico, un correo de queja). Se trata de decir <strong>qué piensas</strong> y <strong>por qué</strong>. 💭' },
+        { title: 'Presentar tu opinión', body: 'Frases para abrir: <br><em><strong>Enligt min åsikt</strong>…</em> = en mi opinión… <br><em>Jag <strong>tycker att</strong>…</em> = creo que… <br><em>Jag <strong>anser att</strong>…</em> = considero que… (más formal).' },
+        { title: 'Ordenar tus argumentos', body: 'En la huvuddel, ordena las razones: <br><em><strong>För det första</strong>…</em> = en primer lugar… <br><em><strong>För det andra</strong>…</em> = en segundo lugar… <br>Cada «argument» explica <strong>por qué</strong> piensas así.' },
+        { title: 'Acuerdo y contraargumento', body: '<em>Jag <strong>håller med</strong></em> = estoy de acuerdo · <em>Jag <strong>håller inte med</strong></em> = no lo estoy. <br>Un texto fuerte también menciona el <strong>motargument</strong> (lo que diría el otro lado) y lo responde. Eso te hace convincente.' },
+        { title: 'Cerrar con fuerza', body: 'En la avslutning, resume tu postura: <br><em>Sammanfattningsvis tycker jag att…</em> (En resumen, creo que…). <br>Deja claro qué quieres que el lector piense. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── Lenguaje formal e informal ──────────────────────────
+    {
+      id: 'u-formal-informal',
+      title: 'Lenguaje formal e informal',
+      subtitle: 'Cuándo escribir «något» y no «nåt»',
+      icon: '🎩',
+      color: '#8B5CF6',
+      level: 'D',
+      grammarTopicId: 'formal-informal',
+      cards: [
+        { title: 'La idea', body: 'No se escribe igual un mensaje a un amigo que un correo a una oficina. Saber cambiar de <strong>registro</strong> (formal / informal) es señal de dominio del idioma. 🎩' },
+        { title: 'Habla vs. escritura', body: 'Muchas palabras se dicen «cortas» pero se <strong>escriben completas</strong>: <br>«nåt» → se escribe <strong>något</strong>. <br>«sen» → <strong>sedan</strong>. <br>«dom» → <strong>de</strong> o <strong>dem</strong>. <br>En un texto formal, usa siempre la forma completa.' },
+        { title: 'Saludos y despedidas', body: 'Informal: <em>Hej! / Tjena! … Ha det bra!</em> <br>Formal (un correo): abre con <em>Hej</em> y cierra con <strong>Med vänliga hälsningar</strong> (MVH) = saludos cordiales.' },
+        { title: 'El «du» sueco', body: 'Buena noticia: en Suecia se trata de <strong>du</strong> a casi todos, incluso a desconocidos o al jefe. No necesitas un «usted». Eso sí, el <strong>tono</strong> sí se cuida: sin jerga ni abreviaturas en lo formal. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── Contar lo que otros dicen (referat) ─────────────────
+    {
+      id: 'u-discurso-referido',
+      title: 'Contar lo que otros dicen',
+      subtitle: 'Enligt artikeln… Hon säger att…',
+      icon: '🗣️',
+      color: '#8B5CF6',
+      level: 'D',
+      grammarTopicId: 'discurso-referido',
+      cards: [
+        { title: 'La idea', body: 'A menudo necesitas contar lo que <strong>otra persona o una fuente</strong> dice: un artículo, un amigo, una noticia. A eso se le llama <strong>referat</strong> (estilo indirecto), y tiene sus palabras clave. 🗣️' },
+        { title: 'Citar una fuente', body: '<strong>enligt</strong> = según: <br><em><strong>Enligt</strong> artikeln är det viktigt</em> = según el artículo, es importante. <br>Perfecto para apoyar tus argumentos con datos de fuera.' },
+        { title: 'Contar lo que alguien dijo', body: 'Se usa un verbo de decir + <strong>att</strong>: <br><em>Hon <strong>säger att</strong>…</em> = ella dice que… <br><em>Han <strong>menar att</strong>…</em> = él quiere decir que… <br><em>De <strong>hävdar att</strong>…</em> = ellos afirman que…' },
+        { title: 'Los «referatmarkörer»', body: 'Son esas marcas (enligt, säger att, menar att, hävdar att) que avisan: <strong>«esta idea no es mía, es de otro»</strong>. Usarlas bien hace que tu texto sea claro y honesto sobre de dónde viene cada idea. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── Los participios ─────────────────────────────────────
+    {
+      id: 'u-participios',
+      title: 'Los participios',
+      subtitle: 'en leende flicka, ett växande problem',
+      icon: '🌀',
+      color: '#8B5CF6',
+      level: 'D',
+      grammarTopicId: 'participios',
+      cards: [
+        { title: 'La idea', body: 'Los participios son formas del verbo que funcionan como <strong>adjetivos</strong>: describen algo por lo que hace o por lo que le hicieron. Le dan riqueza a tu sueco. 🌀' },
+        { title: 'Participio de presente (-ande/-ende)', body: 'Describe algo que <strong>está haciendo</strong> la acción. Se forma sumando <strong>-nde</strong>: <br><em>le → <strong>leende</strong></em> (sonriente): <em>en leende flicka</em>. <br><em>växa → <strong>växande</strong></em> (creciente): <em>ett växande problem</em>.' },
+        { title: 'Participio de pasado', body: 'Describe algo <strong>ya hecho</strong> (como un adjetivo): <br><em>en <strong>stängd</strong> dörr</em> = una puerta cerrada. <br><em>en <strong>målad</strong> vägg</em> = una pared pintada. <br>Y concuerda: <em>ett <strong>skrivet</strong> brev</em> (una carta escrita).' },
+        { title: 'Para qué sirven', body: 'Con participios dices en una palabra lo que si no necesitaría una frase entera: <em>«rinnande vatten»</em> (agua corriente) en vez de «agua que corre». Es lenguaje de nivel avanzado. ¡Enorme trabajo llegar hasta aquí! 🎉' },
       ]
     },
   ]
