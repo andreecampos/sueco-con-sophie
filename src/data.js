@@ -1656,5 +1656,108 @@ const THEORY_DATA = {
         { title: 'Los días', body: 'Los días terminan en <strong>-dag</strong> (día): <em>måndag</em> (lunes), <em>tisdag</em> (martes)… hasta <em>söndag</em> (domingo). <br>¿Ves el parecido con el inglés? <em>Monday → måndag</em>. ¡A practicar! 💪' },
       ]
     },
+
+    // ── 13. Posesivos ───────────────────────────────────────
+    {
+      id: 'u-posesivos',
+      title: 'Mío y tuyo: los posesivos',
+      subtitle: 'min bok, mitt hus, mina böcker',
+      icon: '🫰',
+      color: '#8B5CF6',
+      level: 'B',
+      grammarTopicId: 'posesivos',
+      cards: [
+        { title: 'La idea', body: 'Los posesivos dicen <strong>de quién</strong> es algo: mi, tu, su. En sueco, «mi» tiene <strong>tres formas</strong> según la palabra que acompaña. Suena raro, pero es el mismo truco de siempre: en / ett / plural. 🫰' },
+        { title: 'Mi = min / mitt / mina', body: '<strong>min</strong> con palabras «en»: <em>min bok</em> (mi libro). <br><strong>mitt</strong> con palabras «ett»: <em>mitt hus</em> (mi casa). <br><strong>mina</strong> en plural: <em>mina böcker</em> (mis libros). <br>Fíjate: es el mismo patrón que los adjetivos (en / ett+t / plural+a). 🎯' },
+        { title: 'Tu = din / ditt / dina', body: 'Igualito, cambiando la primera letra: <br><em>din bok</em> (tu libro), <em>ditt hus</em> (tu casa), <em>dina böcker</em> (tus libros). <br>Si te aprendiste «min», ya te sabes «din». Es copiar y pegar.' },
+        { title: 'Su (de él / de ella)', body: 'Estas <strong>no cambian</strong>, ¡qué alivio!: <br><strong>hans</strong> = su/de él: <em>hans bil</em>, <em>hans hus</em>. <br><strong>hennes</strong> = su/de ella: <em>hennes bil</em>, <em>hennes hus</em>. <br>Una sola forma para todo. 😌' },
+        { title: 'Nuestro y de ellos', body: '<strong>vår / vårt / våra</strong> = nuestro (sí, también tres formas). <br><strong>deras</strong> = de ellos (no cambia). <br>Ejemplo: <em>vårt hus</em> (nuestra casa), <em>deras barn</em> (sus hijos). ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── 14. Modales ─────────────────────────────────────────
+    {
+      id: 'u-modales',
+      title: 'Verbos que ayudan: kan, vill, ska',
+      subtitle: 'Poder, querer, deber…',
+      icon: '🤝',
+      color: '#F59E0B',
+      level: 'B',
+      grammarTopicId: 'modales',
+      cards: [
+        { title: 'La idea', body: 'Los verbos modales son «ayudantes»: acompañan a otro verbo para decir si <strong>puedes, quieres o debes</strong> hacer algo. En español: puedo comer, quiero comer, debo comer. En sueco funcionan igual de fácil. 🤝' },
+        { title: 'La regla de oro', body: 'Después de un modal, el segundo verbo va en su <strong>forma base</strong> (sin -r): <br><em>Jag <strong>kan</strong> simma</em> = puedo nadar. <br><em>Jag <strong>vill</strong> äta</em> = quiero comer. <br>Nunca «kan simmar». El ayudante manda; el otro descansa en su forma base.' },
+        { title: 'Los más útiles', body: '<strong>kan</strong> = puedo/sé. <br><strong>vill</strong> = quiero. <br><strong>ska</strong> = voy a (plan). <br><strong>måste</strong> = tengo que. <br><em>Jag måste jobba</em> = tengo que trabajar.' },
+        { title: 'Permiso y consejo', body: '<strong>får</strong> = puedo (con permiso): <em>Får jag komma in?</em> = ¿puedo pasar? <br><strong>bör</strong> = debería: <em>Du bör vila</em> = deberías descansar. <br>Con estos ya pides permiso y das consejos. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── 15. Pasado ──────────────────────────────────────────
+    {
+      id: 'u-pasado',
+      title: 'Lo que ya pasó: el pasado',
+      subtitle: 'Ayer hablé, comí, fui',
+      icon: '⏪',
+      color: '#0EA5E9',
+      level: 'B',
+      grammarTopicId: 'pasado',
+      cards: [
+        { title: 'La idea', body: 'El pasado sirve para contar lo que <strong>ya sucedió</strong>: ayer, la semana pasada. Igual que el presente, en sueco es <strong>una sola forma para todos</strong> (yo, tú, él…). Un dolor de cabeza menos. ⏪' },
+        { title: 'La señal: -de / -te', body: 'Muchos verbos hacen el pasado sumando <strong>-de</strong> o <strong>-te</strong>: <br><em>tala → talade</em> (hablé). <br><em>ringa → ringde</em> (llamé). <br><em>köpa → köpte</em> (compré). <br>Si el presente termina en -r, el pasado suele terminar en -de/-te. 🎯' },
+        { title: 'Presente vs pasado', body: 'Compara: <br><em>Jag talar</em> = hablo (ahora). <br><em>Jag talade</em> = hablé (ayer). <br>La <strong>-r</strong> es «ahora»; la <strong>-de</strong> es «antes». Un cambiecito y viajas en el tiempo. ⏳' },
+        { title: 'Los rebeldes (irregulares)', body: 'Algunos muy comunes cambian a su manera y se aprenden de memoria: <br><em>är → <strong>var</strong></em> (soy → fui/era). <br><em>har → <strong>hade</strong></em> (tengo → tenía). <br><em>går → <strong>gick</strong></em> (voy → fui). <br>Son poquitos pero se usan mucho. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── 16. Futuro ──────────────────────────────────────────
+    {
+      id: 'u-futuro',
+      title: 'Lo que va a pasar: el futuro',
+      subtitle: 'ska / kommer att',
+      icon: '🔮',
+      color: '#7C3AED',
+      level: 'B',
+      grammarTopicId: 'futuro',
+      cards: [
+        { title: 'La idea', body: 'El futuro es lo que <strong>va a pasar</strong>: mañana, la próxima semana. En sueco hay dos formas y la diferencia es sencilla: una para tus <strong>planes</strong> y otra para tus <strong>predicciones</strong>. 🔮' },
+        { title: 'ska = mi plan', body: 'Usa <strong>ska</strong> cuando <strong>tú decides</strong> hacer algo: <br><em>Jag <strong>ska</strong> äta</em> = voy a comer. <br><em>Imorgon ska jag jobba</em> = mañana voy a trabajar. <br>Después de «ska», el verbo va en su forma base (äta, jobba).' },
+        { title: 'kommer att = predicción', body: 'Usa <strong>kommer att</strong> para algo que <strong>pasará</strong> (no lo decides tú): <br><em>Det <strong>kommer att</strong> regna</em> = va a llover. <br>Ojo: no olvides el <strong>att</strong> en medio. «kommer att + verbo».' },
+        { title: '¿Cuál elijo?', body: 'Truco rápido: si es <strong>tu decisión</strong> → <em>ska</em>. Si es una <strong>predicción del mundo</strong> (el clima, el futuro) → <em>kommer att</em>. <br><em>Jag ska plugga</em> (yo decido) vs <em>Det kommer att snöa</em> (pasará). ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── 17. Conjunciones ────────────────────────────────────
+    {
+      id: 'u-conjunciones',
+      title: 'Unir ideas: och, men, eftersom',
+      subtitle: 'y, pero, porque…',
+      icon: '🔗',
+      color: '#F97316',
+      level: 'B',
+      grammarTopicId: 'conjunciones',
+      cards: [
+        { title: 'La idea', body: 'Las conjunciones son el <strong>pegamento</strong> de las frases: unen dos ideas en una sola. Con unas pocas ya hablas de corrido, en vez de frases sueltas y cortadas. 🔗' },
+        { title: 'Las tres básicas', body: '<strong>och</strong> = y: <em>kaffe och te</em> (café y té). <br><strong>men</strong> = pero: <em>trött men glad</em> (cansado pero feliz). <br><strong>eller</strong> = o: <em>te eller kaffe</em> (té o café). <br>Con estas tres ya unes casi todo.' },
+        { title: 'Dar razones', body: '<strong>eftersom</strong> = porque (da el motivo): <em>Jag stannar hemma eftersom jag är sjuk</em> = me quedo en casa porque estoy enfermo. <br>En el día a día también se oye mucho <strong>för</strong> con el mismo sentido.' },
+        { title: 'Más pegamento', body: '<strong>att</strong> = que: <em>Jag tror att det är bra</em> (creo que está bien). <br><strong>när</strong> = cuando: <em>Ring när du kommer</em>. <br><strong>om</strong> = si: <em>Om det regnar…</em> (si llueve…). <br>¡A practicar! 💪' },
+      ]
+    },
+
+    // ── 18. Comparativos ────────────────────────────────────
+    {
+      id: 'u-comparativos',
+      title: 'Comparar: más grande, el más grande',
+      subtitle: 'stor → större → störst',
+      icon: '📊',
+      color: '#14B8A6',
+      level: 'B',
+      grammarTopicId: 'comparativos',
+      cards: [
+        { title: 'La idea', body: 'Comparar es decir que algo es <strong>más</strong> que otra cosa, o <strong>el más</strong> de todos. En español usamos «más… / el más…». En sueco, en vez de poner una palabra delante, se le <strong>cambia el final</strong> al adjetivo. 📊' },
+        { title: 'La regla normal', body: 'Se suma <strong>-are</strong> (más) y <strong>-ast</strong> (el más): <br><em>snabb → snabbare → snabbast</em> (rápido → más rápido → el más rápido). <br><em>dyr → dyrare → dyrast</em> (caro…). <br>Un final y ya comparas. 🎯' },
+        { title: 'Los famosos irregulares', body: 'Unos pocos cambian a su manera (muy usados): <br><em>stor → <strong>större → störst</strong></em> (grande). <br><em>bra → <strong>bättre → bäst</strong></em> (bueno → mejor → el mejor). <br><em>liten → <strong>mindre → minst</strong></em> (pequeño). <br>Se aprenden de memoria; son poquitos.' },
+        { title: 'La palabra "que"', body: 'Para comparar dos cosas usas <strong>än</strong> (= que): <br><em>Ana är längre <strong>än</strong> Erik</em> = Ana es más alta que Erik. <br><em>Stockholm är större än Malmö</em>. <br>Comparativo + <em>än</em> y listo. ¡A practicar! 💪' },
+      ]
+    },
   ]
 };
