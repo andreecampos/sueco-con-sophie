@@ -443,6 +443,16 @@
       </div>
 
       <!-- Grammar Practice CTA -->
+      <div class="glass rounded-2xl p-5 shadow border-2 border-sky-300/50 mb-6 cursor-pointer card-hover" onclick="showTheory()">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-sm" style="background:linear-gradient(135deg,#0EA5E9,#38BDF8);">📖</div>
+          <div class="flex-1">
+            <div class="font-bold text-gray-800">Teoría — Aprende paso a paso</div>
+            <div class="text-xs text-gray-500">Lecciones cortas y fáciles: lees y luego practicas</div>
+          </div>
+          <span class="text-xl text-sky-500">→</span>
+        </div>
+      </div>
       <div class="glass rounded-2xl p-5 shadow border-2 border-swe-yellow/40 mb-6 cursor-pointer card-hover" onclick="showGrammar()">
         <div class="flex items-center gap-4">
           <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background:linear-gradient(135deg,#FECC02,#F59E0B);">🎯</div>
@@ -1293,6 +1303,65 @@
 <!-- ═══════════════════════════════════════════════════════════
      VIEW: GRAMMAR — Selector de tema (estilo Ta Körkort)
 ════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════
+     VIEW: TEORÍA — Camino del estudiante
+════════════════════════════════════════════════════════════ -->
+<div id="view-theory" class="view">
+  <div class="bg-swe-blue text-white blue-header">
+    <div class="flag-line"></div>
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center gap-3">
+      <button onclick="goHome()" class="text-blue-300 hover:text-white transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <div>
+        <h1 class="text-lg font-bold">📖 Teoría</h1>
+        <p class="text-blue-200 text-xs">Tu camino para aprender sueco paso a paso</p>
+      </div>
+    </div>
+    <div style="height:4px; background:#FECC02;"></div>
+  </div>
+  <div class="max-w-4xl mx-auto px-4 py-5">
+    <div class="glass rounded-2xl p-4 shadow border border-sky-100 mb-5">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-sm font-bold text-gray-700">Tu progreso</span>
+        <span id="theory-progress-label" class="text-xs text-gray-500">0 de 0 lecciones completadas</span>
+      </div>
+      <div class="w-full h-3 rounded-full bg-gray-100 overflow-hidden">
+        <div id="theory-progress-bar" class="h-full rounded-full transition-all" style="width:0%; background:linear-gradient(90deg,#0EA5E9,#34D399);"></div>
+      </div>
+    </div>
+    <div id="theory-path" class="space-y-3"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     VIEW: TEORÍA LECCIÓN — Lectura de tarjetas
+════════════════════════════════════════════════════════════ -->
+<div id="view-theory-lesson" class="view">
+  <div class="bg-swe-blue text-white blue-header">
+    <div class="flag-line"></div>
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center gap-3">
+      <button onclick="showTheory()" class="text-blue-300 hover:text-white transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <div class="flex-1 min-w-0">
+        <h1 id="theory-lesson-title" class="text-base font-bold truncate">Lección</h1>
+        <p id="theory-lesson-sub" class="text-blue-200 text-xs">Tarjeta 1</p>
+      </div>
+    </div>
+    <div style="height:4px; background:#FECC02;"></div>
+  </div>
+  <div class="max-w-3xl mx-auto px-4 py-5">
+    <div id="theory-dots" class="flex justify-center gap-2 mb-4"></div>
+    <div id="theory-card-body" class="glass rounded-2xl p-6 shadow border border-blue-100 mb-5 min-h-[260px]"></div>
+    <div class="flex items-center gap-3">
+      <button id="theory-prev" onclick="theoryPrev()" class="px-5 py-3 rounded-2xl font-semibold text-sm border-2 border-gray-200 text-gray-500 hover:bg-gray-50 transition-colors">← Anterior</button>
+      <button id="theory-next" onclick="theoryNext()" class="flex-1 py-3 rounded-2xl font-bold text-white text-sm bg-gradient-to-r from-swe-blue to-blue-600 shadow-lg transition-all">Siguiente →</button>
+      <button id="theory-finish" onclick="theoryFinish()" class="hidden flex-1 py-3 rounded-2xl font-bold text-white text-sm bg-emerald-500 hover:bg-emerald-600 shadow-lg transition-all">✅ ¡Entendido! Practicar</button>
+    </div>
+  </div>
+</div>
+
 <div id="view-grammar" class="view">
   <div class="bg-swe-blue text-white blue-header">
     <div class="flag-line"></div>
@@ -1421,6 +1490,7 @@
         📚 Otro tema
       </button>
     </div>
+    <button id="gq-theory-back" onclick="backToTheory()" class="hidden w-full mt-3 py-3 rounded-xl font-bold text-white text-sm bg-gradient-to-r from-sky-500 to-emerald-500 shadow transition-all">📖 Volver a la Teoría (lección completada ✓)</button>
   </div>
 </div>
 

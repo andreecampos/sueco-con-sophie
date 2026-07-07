@@ -1909,6 +1909,15 @@ function showGrammarResult() {
     if (subEl) subEl.textContent = 'Vuelve a intentarlo, ¡tú puedes! Cada intento te hace más fuerte.';
   }
 
+  // Enganche con la Seccion Teoria
+  const _tBack = document.getElementById('gq-theory-back');
+  if (grammarState.fromTheory) {
+    if (typeof markTheoryDone === 'function') markTheoryDone(grammarState.fromTheory, pct / 100);
+    if (_tBack) _tBack.classList.remove('hidden');
+  } else if (_tBack) {
+    _tBack.classList.add('hidden');
+  }
+
   // Scroll to result
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -3261,4 +3270,155 @@ function renderHomeDashboard() {
   if (mooseEl) mooseEl.innerHTML = mooseVisual(stage);
   if (mLabel) mLabel.textContent = ALCE_STAGES[si][1];
   if (mSub) mSub.textContent = ALCE_STAGES[si][2];
+}
+
+
+// ═══════════════════════════════════════════════════════════
+//  SECCIÓN TEORÍA — camino del estudiante (leer → practicar → ✓)
+//  Progreso en localStorage con forma Supabase-ready (una sola clave).
+// ═══════════════════════════════════════════════════════════
+const theoryState = { unitId: null, card: 0 };
+
+// ── Progreso (formato listo para subir a una columna JSONB) ──
+function getTheoryProgress() {
+  try { return JSON.parse(localStorage.getItem('sc_theory') || '{}'); } catch (e) { return {}; }
+}
+function saveTheoryProgress(p) {
+  try { localStorage.setItem('sc_theory', JSON.stringify(p)); } catch (e) {}
+}
+function theoryUnitStatus(id) { return getTheoryProgress()[id] || {}; }
+function markTheoryRead(id) {
+  const p = getTheoryProgress(); const cur = p[id] || {};
+  p[id] = { ...cur, read: true }; saveTheoryProgress(p);
+}
+function markTheoryDone(id, score) {
+  const p = getTheoryProgress(); const cur = p[id] || {};
+  p[id] = {
+    read: true, done: true,
+    bestScore: Math.max(cur.bestScore || 0, score || 0),
+    date: new Date().toISOString().slice(0, 10)
+  };
+  saveTheoryProgress(p);
+}
+
+// ── Camino (lista de unidades) ───────────────────────────────
+function showTheory() {
+  stopSpeech();
+  showView('theory');
+  renderTheoryPath();
+}
+
+function renderTheoryPath() {
+  const wrap = document.getElementById('theory-path');
+  if (!wrap) return;
+  const units = (typeof THEORY_DATA !== 'undefined' && THEORY_DATA.units) ? THEORY_DATA.units : [];
+  const p = getTheoryProgress();
+  const doneCount = units.filter(u => p[u.id] && p[u.id].done).length;
+  const firstOpen = units.findIndex(u => !(p[u.id] && p[u.id].done));
+
+  const bar = document.getElementById('theory-progress-bar');
+  if (bar) bar.style.width = units.length ? Math.round(doneCount / units.length * 100) + '%' : '0%';
+  const lbl = document.getElementById('theory-progress-label');
+  if (lbl) lbl.textContent = `${doneCount} de ${units.length} lecciones completadas`;
+
+  wrap.innerHTML = units.map((u, i) => {
+    const st = p[u.id] || {};
+    const done = !!st.done;
+    const isNext = i === firstOpen;
+    const badge = done
+      ? `<div class="w-9 h-9 rounded-full flex items-center justify-center text-white text-lg shadow" style="background:#10B981;">✓</div>`
+      : `<div class="w-9 h-9 rounded-full flex items-center justify-center font-bold shadow" style="background:${u.color}22; color:${u.color};">${i}</div>`;
+    const ring = isNext ? `box-shadow:0 0 0 3px ${u.color}66;` : '';
+    return `
+      <div onclick="openTheoryUnit('${u.id}')"
+           class="rounded-2xl p-4 shadow-md border-2 cursor-pointer card-hover flex items-center gap-3"
+           style="background:linear-gradient(135deg, ${u.color}12, ${u.color}22); border-color:${u.color}40; ${ring}">
+        ${badge}
+        <div class="flex-1 min-w-0">
+          <div class="font-bold text-gray-800 text-sm leading-tight">${u.title}</div>
+          <div class="text-xs text-gray-500 truncate">${u.subtitle || ''}</div>
+        </div>
+        ${isNext && !done ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full" style="background:${u.color}; color:#fff;">Empieza aquí</span>` : ''}
+        <span class="text-lg" style="color:${u.color};">→</span>
+      </div>`;
+  }).join('');
+}
+
+// ── Lector de la lección (tarjetas) ──────────────────────────
+function openTheoryUnit(id) {
+  const u = THEORY_DATA.units.find(x => x.id === id);
+  if (!u) return;
+  theoryState.unitId = id;
+  theoryState.card = 0;
+  showView('theory-lesson');
+  renderTheoryCard();
+}
+
+function renderTheoryCard() {
+  const u = THEORY_DATA.units.find(x => x.id === theoryState.unitId);
+  if (!u) return;
+  const cards = u.cards || [];
+  const i = Math.max(0, Math.min(theoryState.card, cards.length - 1));
+  theoryState.card = i;
+  const c = cards[i] || {};
+  const isLast = i === cards.length - 1;
+
+  const titleEl = document.getElementById('theory-lesson-title');
+  if (titleEl) titleEl.textContent = u.title;
+  const subEl = document.getElementById('theory-lesson-sub');
+  if (subEl) subEl.textContent = `Tarjeta ${i + 1} de ${cards.length}`;
+
+  const dots = document.getElementById('theory-dots');
+  if (dots) dots.innerHTML = cards.map((_, k) =>
+    `<span style="width:8px;height:8px;border-radius:50%;background:${k === i ? u.color : '#D1D5DB'};display:inline-block;"></span>`
+  ).join('');
+
+  const body = document.getElementById('theory-card-body');
+  if (body) body.innerHTML = `
+    <div class="text-4xl mb-3">${c.icon || u.icon || '📘'}</div>
+    ${c.title ? `<h2 class="text-lg font-extrabold text-gray-800 mb-3" style="color:${u.color};">${c.title}</h2>` : ''}
+    <div class="text-gray-700 leading-relaxed" style="font-size:1.02rem;">${c.body || ''}</div>
+    ${c.example ? `<div class="mt-4 rounded-xl p-3 text-sm" style="background:${u.color}12; border-left:4px solid ${u.color};">${c.example}</div>` : ''}
+  `;
+
+  const prev = document.getElementById('theory-prev');
+  if (prev) prev.style.visibility = i === 0 ? 'hidden' : 'visible';
+  const next = document.getElementById('theory-next');
+  const finish = document.getElementById('theory-finish');
+  if (next) next.classList.toggle('hidden', isLast);
+  if (finish) {
+    finish.classList.toggle('hidden', !isLast);
+    finish.textContent = u.grammarTopicId ? '✅ ¡Entendido! Practicar' : '✅ Marcar como completada';
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function theoryNext() {
+  const u = THEORY_DATA.units.find(x => x.id === theoryState.unitId);
+  if (!u) return;
+  if (theoryState.card < u.cards.length - 1) { theoryState.card++; renderTheoryCard(); }
+}
+function theoryPrev() {
+  if (theoryState.card > 0) { theoryState.card--; renderTheoryCard(); }
+}
+
+// ── Fin de la lectura → practicar (o completar si no hay práctica) ──
+function theoryFinish() {
+  const u = THEORY_DATA.units.find(x => x.id === theoryState.unitId);
+  if (!u) return;
+  if (u.grammarTopicId && typeof startGrammarTopic === 'function') {
+    markTheoryDone(u.id, theoryUnitStatus(u.id).bestScore || 0.7);
+    grammarState.fromTheory = u.id;
+    startGrammarTopic(u.grammarTopicId);
+  } else {
+    markTheoryDone(u.id, 1);
+    showTheory();
+    if (typeof showToast === 'function') showToast('¡Lección completada! ✓', 'success');
+  }
+}
+
+// ── Volver a la Teoría desde el resultado de la práctica ─────
+function backToTheory() {
+  if (typeof grammarState !== 'undefined') grammarState.fromTheory = null;
+  showTheory();
 }

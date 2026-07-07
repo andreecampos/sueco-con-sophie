@@ -1423,3 +1423,238 @@ const LEVEL_TEST = {
       explanation: '«Jag tycker att svenska är användbart» = «Creo que el sueco es útil». «tycker att» = «creo que».' },
   ],
 };
+
+
+// ═══════════════════════════════════════════════════════════
+//  THEORY DATA — Sección Teoría (camino del estudiante)
+//  Cada unidad: teoría que se LEE (tarjetas) + práctica (reusa GRAMMAR_DATA)
+//  Texto 100% original. El libro solo como mapa de temas.
+// ═══════════════════════════════════════════════════════════
+const THEORY_DATA = {
+  units: [
+    // ── 0. Bienvenida ───────────────────────────────────────
+    {
+      id: 'intro-como-funciona',
+      title: 'Cómo funciona el sueco',
+      subtitle: 'Antes de empezar: 4 cosas que te harán la vida fácil',
+      icon: '🌱',
+      color: '#0EA5E9',
+      level: 'A',
+      grammarTopicId: null,
+      cards: [
+        { title: '¡Bienvenido!', body: 'Vas a aprender sueco paso a paso, como subir una escalera: un escalón a la vez. No tienes que saberlo todo hoy. Solo lee cada lección con calma y luego practica. Si algo no se entiende, se lee otra vez y ya. 🙂' },
+        { title: 'Buena noticia #1', body: 'El sueco es <strong>más parecido al español de lo que crees</strong>. Muchas palabras se parecen: <em>station</em> (estación), <em>familj</em> (familia), <em>telefon</em> (teléfono). Ya sabes más sueco del que piensas.' },
+        { title: 'Buena noticia #2', body: 'Los verbos en sueco son <strong>fáciles</strong>. En español cambias todo (yo hablo, tú hablas, él habla). En sueco es <strong>igual para todos</strong>: <em>jag talar, du talar, han talar</em>. Una sola forma. ¡Un dolor de cabeza menos!' },
+        { title: 'Lo que sí es distinto', body: 'Dos cositas te van a sorprender: <br>1) El «el/la» va <strong>pegado al final</strong> de la palabra (no delante). <br>2) Cada palabra nace con un «un/una» especial: <strong>en</strong> o <strong>ett</strong>. <br>Tranquilo, lo vemos con calma en las próximas lecciones.' },
+        { title: 'Cómo estudiar aquí', body: 'Cada lección tiene dos partes: <strong>1) Leer</strong> la teoría (cortita, como esta) y <strong>2) Practicar</strong> con preguntas. Al terminar, la lección queda con su ✓. Sin prisa, sin miedo a fallar: fallar es parte de aprender. ¡Vamos! 💪' },
+      ]
+    },
+
+    // ── 1. Saludos ──────────────────────────────────────────
+    {
+      id: 'u-saludos',
+      title: 'Saludar y presentarte',
+      subtitle: 'Lo primero que dirás cada día',
+      icon: '👋',
+      color: '#F59E0B',
+      level: 'A',
+      grammarTopicId: 'saludos',
+      cards: [
+        { title: 'La palabra mágica', body: 'La palabra más útil del sueco es <strong>Hej</strong> (se dice «jey») = hola. Sirve a cualquier hora y con cualquier persona. Si solo te aprendes una palabra hoy, que sea esta. 👋' },
+        { title: 'Según la hora', body: 'También puedes saludar según el momento: <br><strong>God morgon</strong> = buenos días. <br><strong>God dag</strong> = buenas (de día). <br><strong>God kväll</strong> = buenas noches (al saludar). <br><strong>God natt</strong> = buenas noches (al ir a dormir).' },
+        { title: 'Para despedirte', body: '<strong>Hej då</strong> = adiós. <br>Curioso, ¿no? <em>Hej</em> solo = hola, pero <em>hej då</em> = adiós. También puedes decir <strong>Vi ses</strong> (nos vemos). 🎯' },
+        { title: 'Presentarte', body: 'Para decir tu nombre: <strong>Jag heter…</strong> = me llamo… <br>Ejemplo: <em>Jag heter Ana</em>. <br>Y para preguntar: <strong>Vad heter du?</strong> = ¿cómo te llamas?' },
+        { title: 'Cortesía', body: 'Tres palabras que abren puertas: <br><strong>Tack</strong> = gracias. <br><strong>Förlåt</strong> = perdón/lo siento. <br><strong>Ursäkta</strong> = disculpa (para llamar la atención). <br>Con esto ya puedes tener tu primer saludo completo. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── 2. Pronombres ───────────────────────────────────────
+    {
+      id: 'u-pronombres',
+      title: 'Las personas: jag, du, han, hon',
+      subtitle: 'Quién hace la acción',
+      icon: '🧍',
+      color: '#7C3AED',
+      level: 'A',
+      grammarTopicId: 'pronombres-personales',
+      cards: [
+        { title: '¿Qué es esto?', body: 'Los pronombres son las palabritas que dicen <strong>quién</strong> hace algo: yo, tú, él, ella… En sueco son cortitas y se usan muchísimo. Vale la pena aprenderlas de memoria.' },
+        { title: 'Las básicas', body: '<strong>jag</strong> = yo (se dice «ya»). <br><strong>du</strong> = tú. <br><strong>han</strong> = él. <br><strong>hon</strong> = ella. <br>Ojo con estas dos: <em>han</em> (él) y <em>hon</em> (ella) se parecen. Truco: h<strong>o</strong>n con «o» de «mujer». 👩' },
+        { title: 'En grupo', body: '<strong>vi</strong> = nosotros. <br><strong>ni</strong> = ustedes. <br><strong>de</strong> = ellos/ellas (se dice «dom»). <br>Sí, <em>de</em> se escribe con «e» pero se pronuncia «dom». El sueco tiene esas sorpresas. 😄' },
+        { title: 'Cosas: den y det', body: 'Para las cosas no se usa «él/ella», se usa <strong>den</strong> o <strong>det</strong>. ¿Cuál? Depende de si la palabra es «en» o «ett» (lo vemos pronto). <em>en bil → den</em> (el coche), <em>ett hus → det</em> (la casa).' },
+        { title: 'Yo te veo', body: 'Cuando la persona <strong>recibe</strong> la acción, cambian: <em>jag</em> → <strong>mig</strong> (me/a mí), <em>du</em> → <strong>dig</strong> (te/a ti). <br>Ejemplo: <em>Jag ser dig</em> = yo te veo. <em>Hon ser mig</em> = ella me ve. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── 3. en / ett ─────────────────────────────────────────
+    {
+      id: 'u-en-ett',
+      title: 'Un y una: en / ett',
+      subtitle: '¿en bil o ett hus?',
+      icon: '📝',
+      color: '#10B981',
+      level: 'A',
+      grammarTopicId: 'articulos',
+      cards: [
+        { title: 'La idea', body: 'En español tenemos «un» y «una». En sueco también hay dos, pero se llaman <strong>en</strong> y <strong>ett</strong>. Lo raro: no es cuestión de hombre o mujer. Cada palabra simplemente «nace» con su <em>en</em> o su <em>ett</em>, y se aprende junto con la palabra. 🚗🏠' },
+        { title: 'La buena noticia', body: 'No es mitad y mitad: <strong>8 de cada 10 palabras usan «en»</strong>. Así que si dudas, di <em>en</em> y lo más probable es que aciertes. <em>ett</em> es la minoría. <br>Ej: <em>en bil</em> (un coche), <em>en bok</em> (un libro), <em>en katt</em> (un gato).' },
+        { title: 'Trucos que no fallan', body: 'Algunas terminaciones te avisan: <br>• Termina en <strong>-a</strong> → casi siempre «en»: <em>en flicka</em> (niña). <br>• Termina en <strong>-ning</strong> o <strong>-het</strong> → siempre «en»: <em>en tidning</em>. <br>• Termina en <strong>-um</strong> → «ett»: <em>ett centrum</em>.' },
+        { title: 'Las tramposas', body: 'Casi todo lo que termina en <strong>-a</strong> es «en»… menos tres palabras del cuerpo, que son «ett»: <em>ett öga</em> (ojo), <em>ett öra</em> (oído), <em>ett hjärta</em> (corazón). ❤️ Solo tres; apréndetelas como un chiste y listo.' },
+        { title: 'Por qué importa', body: 'El <em>en</em> o <em>ett</em> decide cómo dices «el/la» después: <em>en bil → bilen</em> (el coche), <em>ett hus → huset</em> (la casa). Por eso conviene aprender la palabra siempre con su <em>en</em>/<em>ett</em> pegado. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── 4. Forma definida ───────────────────────────────────
+    {
+      id: 'u-forma-definida',
+      title: 'El y la: boken, huset',
+      subtitle: 'El artículo va pegado al final',
+      icon: '📖',
+      color: '#3B82F6',
+      level: 'A',
+      grammarTopicId: 'forma-definida',
+      cards: [
+        { title: 'La sorpresa', body: 'En español decimos «<strong>el</strong> libro», con la palabrita delante. En sueco es al revés: «el/la» se <strong>pega al final</strong> de la palabra. <em>bok</em> (libro) → <strong>boken</strong> (el libro). ¡La palabra crece por detrás! 📖' },
+        { title: 'Palabras «en»', body: 'Si la palabra es «en», para decir «el/la» le sumas <strong>-en</strong>: <br><em>en bil → bilen</em> (el coche). <br><em>en dag → dagen</em> (el día). <br>Si ya termina en -a, solo sumas <strong>-n</strong>: <em>en flicka → flickan</em> (la niña).' },
+        { title: 'Palabras «ett»', body: 'Si la palabra es «ett», le sumas <strong>-et</strong>: <br><em>ett hus → huset</em> (la casa). <br><em>ett bord → bordet</em> (la mesa). <br>Si termina en vocal, solo <strong>-t</strong>: <em>ett äpple → äpplet</em> (la manzana).' },
+        { title: 'Un / el', body: 'Fíjate en la diferencia: <br><em>en bil</em> = <strong>un</strong> coche (cualquiera). <br><em>bilen</em> = <strong>el</strong> coche (ese que ya conocemos). <br>Es la misma idea que en español, solo que aquí se pega atrás. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── 5. Plurales ─────────────────────────────────────────
+    {
+      id: 'u-plurales',
+      title: 'Muchos: los plurales',
+      subtitle: 'Una casa, dos casas',
+      icon: '➕',
+      color: '#10B981',
+      level: 'A',
+      grammarTopicId: 'plurales',
+      cards: [
+        { title: 'La idea', body: 'Plural es cuando hay <strong>más de uno</strong>: una casa → dos casas. En español casi siempre sumamos «-s». En sueco hay varias terminaciones, pero no te asustes: con unos pocos patrones ya te defiendes. ➕' },
+        { title: 'Termina en -a → -or', body: 'Las palabras «en» que terminan en <strong>-a</strong> cambian la -a por <strong>-or</strong>: <br><em>en flicka → flickor</em> (niñas). <br><em>en gata → gator</em> (calles). <br>Es el patrón más ordenadito. 🎯' },
+        { title: 'El clásico -ar', body: 'Muchísimas palabras «en» suman <strong>-ar</strong>: <br><em>en bil → bilar</em> (coches). <br><em>en hund → hundar</em> (perros). <br>Si dudas con una palabra «en», prueba con <em>-ar</em>: aciertas mucho.' },
+        { title: 'Las que no cambian', body: 'Sorpresa: varias palabras «ett» son <strong>iguales</strong> en singular y plural: <br><em>ett hus → två hus</em> (dos casas). <br><em>ett barn → två barn</em> (dos niños). <br>¡Menos trabajo para ti! Las «ett» que terminan en vocal suman -n: <em>ett äpple → äpplen</em>.' },
+      ]
+    },
+
+    // ── 6. Presente ─────────────────────────────────────────
+    {
+      id: 'u-presente',
+      title: 'Lo que haces ahora: el presente',
+      subtitle: '¡Igual para todos!',
+      icon: '⏱️',
+      color: '#F59E0B',
+      level: 'A',
+      grammarTopicId: 'presente',
+      cards: [
+        { title: 'La mejor noticia del sueco', body: 'En español el verbo cambia con cada persona: yo hablo, tú hablas, él habla, nosotros hablamos… En sueco es <strong>igual para todos</strong>: <em>jag talar, du talar, han talar, vi talar</em>. Una sola forma. 🎉' },
+        { title: 'La regla', body: 'El presente (lo que pasa ahora) casi siempre termina en <strong>-r</strong>: <br><em>tala → talar</em> (hablar → hablo/hablas/habla). <br><em>bo → bor</em> (vivir → vivo). <br>¿Ves la -r al final? Esa es la señal de «ahora».' },
+        { title: 'También para siempre', body: 'El presente sirve para lo de ahora <strong>y</strong> para lo que haces siempre: <br><em>Jag dricker kaffe varje dag</em> = bebo café todos los días. <br>No necesitas otra forma para «costumbres». Práctico, ¿no?' },
+        { title: 'Ojo con el pasado', body: 'No confundas: <em>talar</em> = habla (ahora), pero <em>talade</em> = habló (ayer). La <strong>-r</strong> es presente; la <strong>-de</strong> suele ser pasado. Por ahora quédate con: presente = -r. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── 7. Orden de palabras ────────────────────────────────
+    {
+      id: 'u-orden-palabras',
+      title: 'El orden de las palabras',
+      subtitle: 'Dónde va cada cosa en la frase',
+      icon: '🔀',
+      color: '#6366F1',
+      level: 'A',
+      grammarTopicId: 'orden-palabras',
+      cards: [
+        { title: 'La base', body: 'La frase normal sueca sigue el orden: <strong>quién + acción + resto</strong>. Igual que el español: <em>Jag (yo) äter (como) frukost (desayuno)</em>. Fácil, empezamos en terreno conocido. 🙂' },
+        { title: 'La regla de oro', body: 'El sueco tiene una regla muy querida: <strong>el verbo va SIEMPRE en segundo lugar</strong>. No importa qué pongas primero, la acción va justo después. A esto se le llama la «regla del segundo puesto».' },
+        { title: 'Empezar por otra cosa', body: 'Si empiezas por «mañana» o «hoy», el verbo <strong>sigue en segundo lugar</strong>, así que se cambia el orden: <br><em>Imorgon <strong>jobbar</strong> jag</em> = mañana trabajo yo (literal). <br>En español dirías «mañana yo trabajo»; en sueco el verbo se adelanta.' },
+        { title: 'El truco', body: 'Piensa en el verbo como el vagón número 2 del tren: pase lo que pase delante, él siempre va segundo. 🚂 Si te acostumbras a eso, hablarás mucho más natural. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── 8. Negación ─────────────────────────────────────────
+    {
+      id: 'u-negacion',
+      title: 'Decir que no: inte',
+      subtitle: 'No hablo, no quiero, nunca',
+      icon: '🚫',
+      color: '#EF4444',
+      level: 'A',
+      grammarTopicId: 'negacion',
+      cards: [
+        { title: 'La palabra clave', body: 'Para negar algo en sueco usas <strong>inte</strong> = no. <br><em>Jag talar svenska</em> = hablo sueco. <br><em>Jag talar <strong>inte</strong> svenska</em> = no hablo sueco. <br>Una sola palabra y ya niegas. 🚫' },
+        { title: '¿Dónde va?', body: 'En una frase normal, <strong>inte</strong> va <strong>después del verbo</strong>: <br><em>Jag <u>förstår</u> inte</em> = no entiendo. <br><em>Han <u>bor</u> inte här</em> = él no vive aquí. <br>Primero la acción, luego el «no».' },
+        { title: 'Nunca y nada', body: 'Otras palabras negativas útiles: <br><strong>aldrig</strong> = nunca. <br><strong>ingen / inget</strong> = ningún/nada. <br><em>Jag dricker <strong>aldrig</strong> kaffe</em> = nunca bebo café.' },
+        { title: 'Ojo', body: 'A diferencia del español, en sueco <strong>no se dobla</strong> la negación. Nosotros decimos «no tengo nada»; en sueco es una sola negación. Por ahora quédate con <em>inte</em> = no, y ya estás negando bien. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── 9. Preguntas ────────────────────────────────────────
+    {
+      id: 'u-preguntas',
+      title: 'Preguntar',
+      subtitle: 'Sí/no y las palabras de pregunta',
+      icon: '❓',
+      color: '#0EA5E9',
+      level: 'A',
+      grammarTopicId: 'preguntas',
+      cards: [
+        { title: 'Preguntas de sí/no', body: 'Para preguntar algo de sí o no, solo <strong>pones el verbo primero</strong>: <br><em>Du talar svenska</em> = hablas sueco. <br><em><strong>Talar</strong> du svenska?</em> = ¿hablas sueco? <br>¡No necesitas «¿acaso?» ni nada! Solo adelantas la acción. 🙌' },
+        { title: 'Las palabras de pregunta', body: 'Muchas empiezan con <strong>V</strong>, como en español con «qu»: <br><strong>Vad</strong> = qué. <strong>Var</strong> = dónde. <strong>Vem</strong> = quién. <strong>När</strong> = cuándo. <strong>Hur</strong> = cómo. <strong>Varför</strong> = por qué.' },
+        { title: 'Cómo se arma', body: 'Palabra de pregunta + verbo + resto: <br><em><strong>Var</strong> bor du?</em> = ¿dónde vives? <br><em><strong>Vad</strong> heter du?</em> = ¿cómo te llamas? <br><em><strong>Hur</strong> mår du?</em> = ¿cómo estás?' },
+        { title: 'Truco para recordar', body: 'Casi todas las preguntas suecas empiezan con <strong>V</strong> o <strong>H</strong>. Si quieres preguntar y no recuerdas la palabra, piensa «V de pregunta». Con estas seis ya preguntas casi todo. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── 10. Adjetivos ───────────────────────────────────────
+    {
+      id: 'u-adjetivos',
+      title: 'Describir: los adjetivos',
+      subtitle: 'en röd bil, ett rött hus',
+      icon: '🎨',
+      color: '#EC4899',
+      level: 'A',
+      grammarTopicId: 'adjetivos',
+      cards: [
+        { title: 'La idea', body: 'Un adjetivo describe: rojo, grande, nuevo. En sueco el adjetivo <strong>cambia un poquito</strong> según la palabra que acompaña. Suena raro, pero son solo tres formas. Vamos con calma. 🎨' },
+        { title: 'Con palabras «en»', body: 'Con una palabra «en», el adjetivo va <strong>normal</strong>: <br><em>en <strong>röd</strong> bil</em> = un coche rojo. <br><em>en <strong>stor</strong> hund</em> = un perro grande. <br>Esta es la forma base, sin cambios.' },
+        { title: 'Con palabras «ett»', body: 'Con una palabra «ett», el adjetivo suma <strong>-t</strong>: <br><em>ett <strong>rött</strong> hus</em> = una casa roja. <br><em>ett <strong>stort</strong> bord</em> = una mesa grande. <br>Regla corta: «ett» → ponle una -t al adjetivo. 🎯' },
+        { title: 'En plural', body: 'Cuando hay varios, el adjetivo suma <strong>-a</strong>: <br><em><strong>röda</strong> bilar</em> = coches rojos. <br><em><strong>stora</strong> hus</em> = casas grandes. <br>Resumen: «en» normal, «ett» +t, plural +a. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── 11. Preposiciones de lugar ──────────────────────────
+    {
+      id: 'u-preposiciones',
+      title: 'Dónde están las cosas',
+      subtitle: 'en, sobre, bajo, al lado',
+      icon: '📍',
+      color: '#14B8A6',
+      level: 'A',
+      grammarTopicId: 'preposiciones',
+      cards: [
+        { title: 'La idea', body: 'Las preposiciones dicen <strong>dónde</strong> está algo: en, sobre, debajo, al lado. Son palabritas pequeñas pero se usan todo el tiempo. Vamos con las más comunes. 📍' },
+        { title: 'Las más usadas', body: '<strong>i</strong> = en (dentro): <em>i huset</em> (en la casa). <br><strong>på</strong> = en/sobre: <em>på bordet</em> (sobre la mesa). <br><strong>under</strong> = debajo: <em>under stolen</em> (debajo de la silla).' },
+        { title: 'i o på', body: 'La duda típica: <strong>i</strong> es «dentro de» (i huset, dentro de la casa) y <strong>på</strong> es «encima de» o lugares abiertos (på jobbet, en el trabajo). Con el tiempo te sale solo; por ahora recuerda: <em>i</em> = dentro, <em>på</em> = encima.' },
+        { title: 'Más direcciones', body: '<strong>till</strong> = a/hacia: <em>till skolan</em> (a la escuela). <br><strong>från</strong> = de/desde: <em>från Sverige</em> (de Suecia). <br><strong>bredvid</strong> = al lado de. <br>Con estas ya ubicas casi todo. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── 12. Números y tiempo ────────────────────────────────
+    {
+      id: 'u-numeros-tiempo',
+      title: 'Números, la hora y los días',
+      subtitle: 'Contar y decir cuándo',
+      icon: '🔢',
+      color: '#8B5CF6',
+      level: 'A',
+      grammarTopicId: 'numeros-tiempo',
+      cards: [
+        { title: 'Del 1 al 5', body: 'Empecemos a contar: <br><strong>ett</strong> (1), <strong>två</strong> (2), <strong>tre</strong> (3), <strong>fyra</strong> (4), <strong>fem</strong> (5). <br>Léelos en voz alta un par de veces; se pegan rápido. 🔢' },
+        { title: 'Del 6 al 10', body: '<strong>sex</strong> (6), <strong>sju</strong> (7), <strong>åtta</strong> (8), <strong>nio</strong> (9), <strong>tio</strong> (10). <br>Ojo: <em>sju</em> (7) suena como un soplido, «juu». Es uno de los sonidos típicos del sueco.' },
+        { title: 'La hora', body: 'Para preguntar la hora: <strong>Hur mycket är klockan?</strong> = ¿qué hora es? <br>Y respondes: <em>Klockan är tre</em> = son las tres. <br><em>klockan</em> = el reloj/la hora.' },
+        { title: 'Los días', body: 'Los días terminan en <strong>-dag</strong> (día): <em>måndag</em> (lunes), <em>tisdag</em> (martes)… hasta <em>söndag</em> (domingo). <br>¿Ves el parecido con el inglés? <em>Monday → måndag</em>. ¡A practicar! 💪' },
+      ]
+    },
+  ]
+};
