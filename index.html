@@ -2465,6 +2465,45 @@ const GRAMMAR_DATA = {
         { type: 'order', prompt: 'Ordena: «Creo que es bueno»', words: ['Jag', 'tror', 'att', 'det', 'är', 'bra'], answer: ['Jag', 'tror', 'att', 'det', 'är', 'bra'], explanation: '«Jag tror att det är bra».' },
       ]
     },
+
+    // ─────────────────────────────────────────────────────
+    // 19. SER Y TENER — vara / ha (SFI A)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'ser-tener',
+      title: 'Ser y tener (vara / ha)',
+      subtitle: 'är y har — los dos verbos que más usarás',
+      icon: '⭐',
+      color: '#EF4444',
+      level: 'A',
+      keywords: 'ser tener vara ha är har var hade soy es esta tengo tiene edad hambre verbos basicos',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: '«Yo soy» → «Jag ___»', options: ['är', 'har', 'vara'], correct: 0, explanation: '«Jag är» = yo soy/estoy. «är» viene de «vara» y es igual para todos (jag är, du är, han är). ⭐' },
+        { type: 'mc', text: '«Yo tengo» → «Jag ___»', options: ['har', 'är', 'ha'], correct: 0, explanation: '«Jag har» = yo tengo. «har» viene de «ha», e igual para todos.' },
+        { type: 'mc', text: '«Ella es maestra» → «Hon ___ lärare»', options: ['är', 'har', 'vara'], correct: 0, explanation: '«Hon är lärare». Para profesiones se usa «är» (ser).' },
+        { type: 'mc', text: '«Tengo un coche» → «Jag ___ en bil»', options: ['har', 'är', 'ha'], correct: 0, explanation: '«Jag har en bil». Para lo que posees, «har» (tener).' },
+        { type: 'mc', text: '«är» ¿qué significa?', options: ['soy / es / está', 'tengo', 'voy'], correct: 0, explanation: '«är» cubre «ser» Y «estar»: una sola palabra para las dos. Jag är trött (estoy cansado), Jag är lärare (soy maestro).' },
+        { type: 'mc', text: '«Estoy cansado» → «Jag ___ trött»', options: ['är', 'har', 'vara'], correct: 0, explanation: '«Jag är trött». En sueco «ser» y «estar» son la misma palabra: «är». 🎯' },
+        { type: 'mc', text: '«¿Tienes tiempo?» → «___ du tid?»', options: ['Har', 'Är', 'Ha'], correct: 0, explanation: '«Har du tid?». Para preguntar, el verbo va primero.' },
+        { type: 'mc', text: '«¿Eres de Suecia?» → «___ du från Sverige?»', options: ['Är', 'Har', 'Vara'], correct: 0, explanation: '«Är du från Sverige?». Origen con «är».' },
+        { type: 'mc', text: '«Tengo hambre» en sueco es «Jag ___ hungrig»', options: ['är', 'har', 'ha'], correct: 0, explanation: '¡Sorpresa! En sueco NO se «tiene» hambre, se «es» hambriento: «Jag är hungrig». Usa «är», no «har». 🍽️' },
+        { type: 'mc', text: '«Tengo 30 años» → «Jag ___ trettio år»', options: ['är', 'har', 'ha'], correct: 0, explanation: 'La edad va con «är», no con «har»: «Jag är trettio år» (literal: «soy 30 años»). Otro truco que sorprende. 🎂' },
+        { type: 'mc', text: '«Nosotros somos amigos» → «Vi ___ vänner»', options: ['är', 'har', 'vara'], correct: 0, explanation: '«Vi är vänner». «är» es igual para todos, también para «vi».' },
+        { type: 'mc', text: '«Ellos tienen hijos» → «De ___ barn»', options: ['har', 'är', 'ha'], correct: 0, explanation: '«De har barn». Posesión → «har».' },
+        { type: 'mc', text: '«No estoy cansado» → «Jag är ___ trött»', options: ['inte', 'ingen', 'aldrig'], correct: 0, explanation: '«Jag är inte trött». El «no» (inte) va después del verbo «är».' },
+        { type: 'mc', text: '«Yo era / estaba» → «Jag ___»', options: ['var', 'är', 'hade'], correct: 0, explanation: '«var» = era/estaba/fui (pasado de «är»). Ej: Jag var trött igår (ayer estaba cansado).' },
+        { type: 'mc', text: '«Yo tenía» → «Jag ___»', options: ['hade', 'har', 'var'], correct: 0, explanation: '«hade» = tenía (pasado de «har»). Ej: Jag hade en katt (tenía un gato).' },
+        { type: 'type', prompt: '«soy / es / está» (presente):', answer: 'är', accept: [], explanation: '«är» — la misma palabra para ser y estar.' },
+        { type: 'type', prompt: '«tengo / tiene» (presente):', answer: 'har', accept: [], explanation: '«har» = tener (presente).' },
+        { type: 'type', prompt: 'Completa: «Jag ___ 25 år» (tengo 25 años):', answer: 'är', accept: [], explanation: '«är». La edad va con «är»: Jag är 25 år.' },
+        { type: 'type', prompt: '«era / estaba» (pasado):', answer: 'var', accept: [], explanation: '«var» = era/estaba (pasado de är).' },
+        { type: 'type', prompt: '«tenía» (pasado):', answer: 'hade', accept: [], explanation: '«hade» = tenía (pasado de har).' },
+        { type: 'order', prompt: 'Ordena: «Yo soy maestro»', words: ['Jag', 'är', 'lärare'], answer: ['Jag', 'är', 'lärare'], explanation: '«Jag är lärare».' },
+        { type: 'order', prompt: 'Ordena: «Tengo dos hijos»', words: ['Jag', 'har', 'två', 'barn'], answer: ['Jag', 'har', 'två', 'barn'], explanation: '«Jag har två barn».' },
+        { type: 'order', prompt: 'Ordena: «¿Tienes tiempo?»', words: ['Har', 'du', 'tid'], answer: ['Har', 'du', 'tid'], explanation: '«Har du tid?».' },
+      ]
+    },
   ]
 };
 
@@ -2852,6 +2891,24 @@ const THEORY_DATA = {
         { title: 'La regla', body: 'El presente (lo que pasa ahora) casi siempre termina en <strong>-r</strong>: <br><em>tala → talar</em> (hablar → hablo/hablas/habla). <br><em>bo → bor</em> (vivir → vivo). <br>¿Ves la -r al final? Esa es la señal de «ahora».' },
         { title: 'También para siempre', body: 'El presente sirve para lo de ahora <strong>y</strong> para lo que haces siempre: <br><em>Jag dricker kaffe varje dag</em> = bebo café todos los días. <br>No necesitas otra forma para «costumbres». Práctico, ¿no?' },
         { title: 'Ojo con el pasado', body: 'No confundas: <em>talar</em> = habla (ahora), pero <em>talade</em> = habló (ayer). La <strong>-r</strong> es presente; la <strong>-de</strong> suele ser pasado. Por ahora quédate con: presente = -r. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── Ser y tener (vara / ha) ─────────────────────────────
+    {
+      id: 'u-ser-tener',
+      title: 'Ser y tener: vara y ha',
+      subtitle: 'är y har, los dos verbos estrella',
+      icon: '⭐',
+      color: '#EF4444',
+      level: 'A',
+      grammarTopicId: 'ser-tener',
+      cards: [
+        { title: 'Los dos más importantes', body: 'Si hay dos verbos que vas a usar todo el día, son <strong>vara</strong> (ser/estar) y <strong>ha</strong> (tener). En presente: <strong>är</strong> (soy/es/está) y <strong>har</strong> (tengo/tiene). Y lo mejor: son <strong>iguales para todos</strong>. ⭐' },
+        { title: 'är = ser Y estar', body: 'En español separas «ser» y «estar». En sueco es <strong>una sola palabra</strong>: <strong>är</strong>. <br><em>Jag är lärare</em> = soy maestro. <br><em>Jag är trött</em> = estoy cansado. <br>¡Un problema menos! No tienes que elegir entre ser y estar. 🎯' },
+        { title: 'har = tener', body: 'Para lo que <strong>posees</strong> usas <strong>har</strong>: <br><em>Jag har en bil</em> = tengo un coche. <br><em>Har du tid?</em> = ¿tienes tiempo? <br>Igual para todos: jag har, du har, han har, vi har…' },
+        { title: '¡Ojo! Hambre y edad', body: 'Aquí el sueco te sorprende. Lo que en español «tienes», en sueco a veces lo «eres»: <br><em>Jag <strong>är</strong> hungrig</em> = tengo hambre (literal: «soy hambriento»). <br><em>Jag <strong>är</strong> 30 år</em> = tengo 30 años. <br>Con hambre, sed y edad → usa <strong>är</strong>, no «har». 🍽️🎂' },
+        { title: 'En pasado', body: 'Para contar lo de antes: <br><strong>var</strong> = era/estaba/fui (de «är»). <em>Igår var jag trött</em> (ayer estaba cansado). <br><strong>hade</strong> = tenía (de «har»). <em>Jag hade en katt</em> (tenía un gato). <br>Con estos dos ya te presentas y cuentas tu vida. ¡A practicar! 💪' },
       ]
     },
 
