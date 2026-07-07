@@ -1586,6 +1586,199 @@ const GRAMMAR_DATA = {
         { type: 'order', prompt: 'Ordena: «Sí, (lo) estoy»', words: ['Ja', 'det', 'är', 'jag'], answer: ['Ja', 'det', 'är', 'jag'], explanation: '«Ja, det är jag».' },
       ]
     },
+
+    // ─────────────────────────────────────────────────────
+    // 31. VERBOS CON PARTÍCULA — partikelverb (SFI C)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'partikelverb',
+      title: 'Verbos con partícula',
+      subtitle: 'tycka om, ge upp, stänga av',
+      icon: '🧩',
+      color: '#F59E0B',
+      level: 'C',
+      keywords: 'partikelverb particula tycka om ge upp känna igen stänga av slå på ta reda på phrasal',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: 'Un «verbo con partícula» es un verbo + una palabrita que juntos cambian el significado. «tycka om» =', options: ['gustar', 'pensar', 'tener'], correct: 0, explanation: '«tycka om» = gustar. Solo, «tycka» es «opinar»; con «om» significa «gustar». 🧩' },
+        { type: 'mc', text: '«Me gusta el café» → «Jag ___ kaffe»', options: ['tycker om', 'tycker', 'om tycker'], correct: 0, explanation: '«Jag tycker om kaffe». La partícula «om» va justo después del verbo.' },
+        { type: 'mc', text: '«rendirse» → ___', options: ['ge upp', 'ge', 'upp ge'], correct: 0, explanation: '«ge upp» = rendirse. «ge» solo = dar.' },
+        { type: 'mc', text: '«reconocer» → ___', options: ['känna igen', 'känna', 'igen känna'], correct: 0, explanation: '«känna igen» = reconocer. «känna» solo = conocer/sentir.' },
+        { type: 'mc', text: '«apagar la luz» → «___ lampan»', options: ['stänga av', 'stänga', 'av stänga'], correct: 0, explanation: '«stänga av lampan» = apagar la luz.' },
+        { type: 'mc', text: '«encender» → ___', options: ['slå på', 'slå', 'på slå'], correct: 0, explanation: '«slå på» = encender (prender). «stänga av» = apagar.' },
+        { type: 'mc', text: '«averiguar» → ___', options: ['ta reda på', 'ta reda', 'reda ta'], correct: 0, explanation: '«ta reda på» = averiguar / informarse.' },
+        { type: 'mc', text: 'En «tycka om», la partícula «om»…', options: ['cambia el significado del verbo', 'es una preposición normal cualquiera'], correct: 0, explanation: 'La partícula va pegada al sentido del verbo y se pronuncia con fuerza (acento).' },
+        { type: 'mc', text: '«¿Te gusta Suecia?» → «___ du om Sverige?»', options: ['Tycker', 'Tänker', 'Tittar'], correct: 0, explanation: '«Tycker du om Sverige?» = ¿te gusta Suecia?' },
+        { type: 'mc', text: 'La partícula suele ir…', options: ['justo después del verbo (antes del objeto)', 'siempre al final de la frase'], correct: 0, explanation: '«stänga av lampan», «tycka om kaffe»: partícula pegada al verbo, antes del objeto.' },
+        { type: 'mc', text: '«ocurrírsele / recordar» → ___', options: ['komma på', 'komma', 'på komma'], correct: 0, explanation: '«komma på» = ocurrírsele algo / caer en cuenta.' },
+        { type: 'type', prompt: '«gustar» (presente, «me gusta»): tycker ___', answer: 'om', accept: [], explanation: '«tycker om».' },
+        { type: 'type', prompt: '«rendirse»:', answer: 'ge upp', accept: [], explanation: '«ge upp».' },
+        { type: 'type', prompt: '«apagar»:', answer: 'stänga av', accept: [], explanation: '«stänga av».' },
+        { type: 'type', prompt: '«reconocer»:', answer: 'känna igen', accept: [], explanation: '«känna igen».' },
+        { type: 'order', prompt: 'Ordena: «Me gusta el café»', words: ['Jag', 'tycker', 'om', 'kaffe'], answer: ['Jag', 'tycker', 'om', 'kaffe'], explanation: '«Jag tycker om kaffe».' },
+        { type: 'order', prompt: 'Ordena: «Apaga la luz»', words: ['Stäng', 'av', 'lampan'], answer: ['Stäng', 'av', 'lampan'], explanation: '«Stäng av lampan».' },
+        { type: 'order', prompt: 'Ordena: «No me rindo»', words: ['Jag', 'ger', 'inte', 'upp'], answer: ['Jag', 'ger', 'inte', 'upp'], explanation: '«Jag ger inte upp».' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 32. EL CONDICIONAL — skulle (SFI C)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'condicional',
+      title: 'El condicional (skulle)',
+      subtitle: 'Jag skulle vilja… = querría…',
+      icon: '🌤️',
+      color: '#F59E0B',
+      level: 'C',
+      keywords: 'condicional skulle skulle vilja haria querria si tuviera hipotetico cortesia would',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: '«skulle» equivale en español a…', options: ['«-ría» (haría, querría)', '«-é» (haré, querré)'], correct: 0, explanation: '«skulle» = «-ría»: el condicional. Jag skulle resa = yo viajaría. 🌤️' },
+        { type: 'mc', text: '«Querría un café» (cortés) → «Jag ___ vilja ha en kaffe»', options: ['skulle', 'ska', 'vill'], correct: 0, explanation: '«Jag skulle vilja ha…» = querría… Es la forma educada de pedir.' },
+        { type: 'mc', text: '«Sería divertido» → «Det ___ vara kul»', options: ['skulle', 'ska', 'är'], correct: 0, explanation: '«Det skulle vara kul» = sería divertido.' },
+        { type: 'mc', text: 'Para pedir algo con educación conviene usar…', options: ['skulle vilja (querría)', 'vill (quiero)'], correct: 0, explanation: '«skulle vilja» suena más amable que «vill»: Jag skulle vilja ha… 🎯' },
+        { type: 'mc', text: '«Si tuviera dinero, viajaría» → «Om jag hade pengar ___ jag resa»', options: ['skulle', 'ska', 'vill'], correct: 0, explanation: '«…skulle jag resa» = viajaría. «skulle» para lo hipotético.' },
+        { type: 'mc', text: 'Después de «skulle», el verbo va en…', options: ['forma base (resa)', 'presente (reser)'], correct: 0, explanation: 'Como con los modales: skulle + verbo base. Jag skulle resa, Det skulle vara…' },
+        { type: 'mc', text: '«¿Podrías ayudarme?» → «___ du kunna hjälpa mig?»', options: ['Skulle', 'Ska', 'Vill'], correct: 0, explanation: '«Skulle du kunna hjälpa mig?» = ¿podrías ayudarme? (muy educado).' },
+        { type: 'mc', text: '«skulle vilja» significa…', options: ['querría', 'quiero', 'querré'], correct: 0, explanation: '«skulle vilja» = querría (condicional + querer).' },
+        { type: 'mc', text: '«Me gustaría ir» → «Jag skulle vilja ___»', options: ['åka', 'åker', 'åkte'], correct: 0, explanation: '«…vilja åka» (forma base). Jag skulle vilja åka.' },
+        { type: 'mc', text: '«Compraría una casa» → «Jag ___ köpa ett hus»', options: ['skulle', 'ska', 'köper'], correct: 0, explanation: '«Jag skulle köpa ett hus» = compraría una casa.' },
+        { type: 'type', prompt: 'La palabra clave del condicional («-ría»):', answer: 'skulle', accept: [], explanation: '«skulle».' },
+        { type: 'type', prompt: '«querría» (cortés):', answer: 'skulle vilja', accept: [], explanation: '«skulle vilja».' },
+        { type: 'type', prompt: 'Tras «skulle», «ir» (åka) se dice:', answer: 'åka', accept: [], explanation: '«åka» (forma base).' },
+        { type: 'order', prompt: 'Ordena: «Querría un café»', words: ['Jag', 'skulle', 'vilja', 'ha', 'en', 'kaffe'], answer: ['Jag', 'skulle', 'vilja', 'ha', 'en', 'kaffe'], explanation: '«Jag skulle vilja ha en kaffe».' },
+        { type: 'order', prompt: 'Ordena: «Sería divertido»', words: ['Det', 'skulle', 'vara', 'kul'], answer: ['Det', 'skulle', 'vara', 'kul'], explanation: '«Det skulle vara kul».' },
+        { type: 'order', prompt: 'Ordena: «¿Podrías ayudarme?»', words: ['Skulle', 'du', 'kunna', 'hjälpa', 'mig'], answer: ['Skulle', 'du', 'kunna', 'hjälpa', 'mig'], explanation: '«Skulle du kunna hjälpa mig?».' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 33. VERBOS CON PREPOSICIÓN (SFI C)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'verbos-preposicion',
+      title: 'Verbos con preposición',
+      subtitle: 'tänka på, vänta på, tycka om',
+      icon: '🔌',
+      color: '#F59E0B',
+      level: 'C',
+      keywords: 'verbos preposicion tänka på vänta på titta på lyssna på tro på bero på fasta preposition rection',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: '«pensar EN» → «tänka ___»', options: ['på', 'i', 'om'], correct: 0, explanation: '«tänka på» = pensar en. Jag tänker på dig. 🔌' },
+        { type: 'mc', text: '«esperar (algo)» → «vänta ___»', options: ['på', 'för', 'till'], correct: 0, explanation: '«vänta på» = esperar. Jag väntar på bussen.' },
+        { type: 'mc', text: '«mirar» → «titta ___»', options: ['på', 'i', 'åt'], correct: 0, explanation: '«titta på» = mirar. Titta på tavlan.' },
+        { type: 'mc', text: '«escuchar» → «lyssna ___»', options: ['på', 'till', 'i'], correct: 0, explanation: '«lyssna på» = escuchar. Lyssna på musik.' },
+        { type: 'mc', text: '«gustar» → «tycka ___»', options: ['om', 'på', 'i'], correct: 0, explanation: '«tycka om» = gustar.' },
+        { type: 'mc', text: '«depender de» → «bero ___»', options: ['på', 'av', 'om'], correct: 0, explanation: '«bero på» = depender de. Det beror på vädret.' },
+        { type: 'mc', text: '«creer en» → «tro ___»', options: ['på', 'i', 'om'], correct: 0, explanation: '«tro på» = creer en. Jag tror på dig.' },
+        { type: 'mc', text: 'Las preposiciones de estos verbos…', options: ['se aprenden de memoria (no siempre igual que en español)', 'son siempre iguales al español'], correct: 0, explanation: 'Ojo: «tänka på» (pensar EN, no «i»), «vänta på» (esperar, sin «a»). Hay que memorizarlas. 🎯' },
+        { type: 'mc', text: '«Pienso en ti» → «Jag tänker ___ dig»', options: ['på', 'i', 'om'], correct: 0, explanation: '«Jag tänker på dig».' },
+        { type: 'mc', text: '«Espero el autobús» → «Jag väntar ___ bussen»', options: ['på', 'för', 'till'], correct: 0, explanation: '«Jag väntar på bussen».' },
+        { type: 'type', prompt: '«pensar en» → «tänka ___»:', answer: 'på', accept: [], explanation: '«tänka på».' },
+        { type: 'type', prompt: '«esperar (algo)» → «vänta ___»:', answer: 'på', accept: [], explanation: '«vänta på».' },
+        { type: 'type', prompt: '«gustar» → «tycka ___»:', answer: 'om', accept: [], explanation: '«tycka om».' },
+        { type: 'order', prompt: 'Ordena: «Pienso en ti»', words: ['Jag', 'tänker', 'på', 'dig'], answer: ['Jag', 'tänker', 'på', 'dig'], explanation: '«Jag tänker på dig».' },
+        { type: 'order', prompt: 'Ordena: «Espero el autobús»', words: ['Jag', 'väntar', 'på', 'bussen'], answer: ['Jag', 'väntar', 'på', 'bussen'], explanation: '«Jag väntar på bussen».' },
+        { type: 'order', prompt: 'Ordena: «Escucho música»', words: ['Jag', 'lyssnar', 'på', 'musik'], answer: ['Jag', 'lyssnar', 'på', 'musik'], explanation: '«Jag lyssnar på musik».' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 34. CONJUNCIONES AVANZADAS (SFI C)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'conjunciones-avanzadas',
+      title: 'Conjunciones avanzadas',
+      subtitle: 'fastän, medan, innan, så att',
+      icon: '🪢',
+      color: '#F59E0B',
+      level: 'C',
+      keywords: 'conjunciones avanzadas fastän trots att medan innan efter att därför att så att aunque mientras antes bisats',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: '«aunque» → ___', options: ['fastän', 'eftersom', 'medan'], correct: 0, explanation: '«fastän» (o «trots att») = aunque. Fastän det regnar… 🪢' },
+        { type: 'mc', text: '«mientras» → ___', options: ['medan', 'innan', 'efter'], correct: 0, explanation: '«medan» = mientras. Medan jag lagar mat…' },
+        { type: 'mc', text: '«antes de (que)» → ___', options: ['innan', 'efter', 'medan'], correct: 0, explanation: '«innan» = antes de que. Innan jag äter…' },
+        { type: 'mc', text: '«después de (que)» → ___', options: ['efter att', 'innan', 'medan'], correct: 0, explanation: '«efter att» = después de que.' },
+        { type: 'mc', text: '«porque» (otra forma) → ___', options: ['därför att', 'därför', 'så'], correct: 0, explanation: '«därför att» = porque (da la razón). Ojo: «därför» solo = por eso.' },
+        { type: 'mc', text: '«para que / así que» → ___', options: ['så att', 'fastän', 'medan'], correct: 0, explanation: '«så att» = para que / así que. …så att du förstår.' },
+        { type: 'mc', text: 'Estas conjunciones crean una subordinada, así que «inte» va…', options: ['antes del verbo', 'después del verbo'], correct: 0, explanation: 'Recuerda la regla BIFF: en subordinada, «inte» antes del verbo. …fastän jag inte vill.' },
+        { type: 'mc', text: '«Aunque llueve, salgo» → «___ det regnar, går jag ut»', options: ['Fastän', 'Eftersom', 'Medan'], correct: 0, explanation: '«Fastän det regnar, går jag ut».' },
+        { type: 'mc', text: '«Leo mientras como» → «Jag läser ___ jag äter»', options: ['medan', 'innan', 'efter'], correct: 0, explanation: '«Jag läser medan jag äter».' },
+        { type: 'type', prompt: '«aunque»:', answer: 'fastän', accept: ['trots att'], explanation: '«fastän» (o «trots att»).' },
+        { type: 'type', prompt: '«mientras»:', answer: 'medan', accept: [], explanation: '«medan».' },
+        { type: 'type', prompt: '«antes de»:', answer: 'innan', accept: [], explanation: '«innan».' },
+        { type: 'type', prompt: '«para que / así que»:', answer: 'så att', accept: [], explanation: '«så att».' },
+        { type: 'order', prompt: 'Ordena: «Espero antes de comer»', words: ['Jag', 'väntar', 'innan', 'jag', 'äter'], answer: ['Jag', 'väntar', 'innan', 'jag', 'äter'], explanation: '«Jag väntar innan jag äter».' },
+        { type: 'order', prompt: 'Ordena: «Leo mientras como»', words: ['Jag', 'läser', 'medan', 'jag', 'äter'], answer: ['Jag', 'läser', 'medan', 'jag', 'äter'], explanation: '«Jag läser medan jag äter».' },
+        { type: 'order', prompt: 'Ordena: «No salgo porque llueve»', words: ['Jag', 'går', 'inte', 'ut', 'eftersom', 'det', 'regnar'], answer: ['Jag', 'går', 'inte', 'ut', 'eftersom', 'det', 'regnar'], explanation: '«Jag går inte ut eftersom det regnar».' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 35. PALABRAS COMPUESTAS — sammansatta ord (SFI C)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'palabras-compuestas',
+      title: 'Palabras compuestas',
+      subtitle: 'tandläkare, kylskåp, sommarhus',
+      icon: '🧱',
+      color: '#F59E0B',
+      level: 'C',
+      keywords: 'palabras compuestas sammansatta ord tandläkare kylskåp fotboll barnbok sommarhus juntar pegar',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: 'En sueco, muchas palabras se forman…', options: ['pegando dos o más palabras', 'separándolas con guion'], correct: 0, explanation: 'El sueco pega las palabras: tand + läkare = tandläkare. ¡Todo junto! 🧱' },
+        { type: 'mc', text: '«dentista» = tand (diente) + läkare (médico) =', options: ['tandläkare', 'tand läkare', 'läkaretand'], correct: 0, explanation: '«tandläkare» = dentista (médico de dientes), todo junto.' },
+        { type: 'mc', text: '«refrigerador» = kyl (frío) + skåp (armario) =', options: ['kylskåp', 'skåpkyl', 'kyl skåp'], correct: 0, explanation: '«kylskåp» = refrigerador (armario del frío).' },
+        { type: 'mc', text: 'En una palabra compuesta, el significado base lo da…', options: ['la última palabra', 'la primera palabra'], correct: 0, explanation: 'La última manda: en «tandläkare», lo básico es «läkare» (médico); «tand» solo dice de qué. 🎯' },
+        { type: 'mc', text: '«fotboll» (fútbol) es «en» o «ett»? Lo decide…', options: ['la última palabra (en boll → en fotboll)', 'la primera palabra'], correct: 0, explanation: 'La última palabra manda el género: «en boll» → «en fotboll».' },
+        { type: 'mc', text: '«libro infantil» = barn (niño) + bok (libro) =', options: ['barnbok', 'bokbarn', 'barn bok'], correct: 0, explanation: '«barnbok» = libro infantil.' },
+        { type: 'mc', text: '«casa de verano» = sommar + hus =', options: ['sommarhus', 'hussommar', 'sommar hus'], correct: 0, explanation: '«sommarhus» = casa de verano.' },
+        { type: 'mc', text: 'Juntar palabras en sueco es…', options: ['muy común (mejor pegarlas)', 'raro, casi no se hace'], correct: 0, explanation: 'Es normalísimo. Separarlas cuando deberían ir juntas es un error típico (särskrivning).' },
+        { type: 'type', prompt: '«dentista» (tand + läkare):', answer: 'tandläkare', accept: [], explanation: '«tandläkare».' },
+        { type: 'type', prompt: '«refrigerador» (kyl + skåp):', answer: 'kylskåp', accept: [], explanation: '«kylskåp».' },
+        { type: 'type', prompt: '«casa de verano» (sommar + hus):', answer: 'sommarhus', accept: [], explanation: '«sommarhus».' },
+        { type: 'type', prompt: '«libro infantil» (barn + bok):', answer: 'barnbok', accept: [], explanation: '«barnbok».' },
+        { type: 'order', prompt: 'Ordena: «Tengo un refrigerador nuevo»', words: ['Jag', 'har', 'ett', 'nytt', 'kylskåp'], answer: ['Jag', 'har', 'ett', 'nytt', 'kylskåp'], explanation: '«Jag har ett nytt kylskåp».' },
+        { type: 'order', prompt: 'Ordena: «Ella es dentista»', words: ['Hon', 'är', 'tandläkare'], answer: ['Hon', 'är', 'tandläkare'], explanation: '«Hon är tandläkare».' },
+        { type: 'order', prompt: 'Ordena: «Es un libro infantil»', words: ['Det', 'är', 'en', 'barnbok'], answer: ['Det', 'är', 'en', 'barnbok'], explanation: '«Det är en barnbok».' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 36. ADJETIVO EN FORMA DEFINIDA (SFI C)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'adjetivo-definido',
+      title: 'El adjetivo con «el/la»',
+      subtitle: 'den stora bilen, det stora huset',
+      icon: '🎯',
+      color: '#F59E0B',
+      level: 'C',
+      keywords: 'adjetivo definido den stora bilen det stora huset de stora bestämd form adjektiv doble determinacion',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: '«el coche grande» (en bil) → «den ___ bilen»', options: ['stora', 'stor', 'stort'], correct: 0, explanation: '«den stora bilen». Con «el/la», el adjetivo casi siempre termina en -a: stora. 🎯' },
+        { type: 'mc', text: '«la casa grande» (ett hus) → «det ___ huset»', options: ['stora', 'stort', 'stor'], correct: 0, explanation: '«det stora huset». ¡Incluso con «ett» el adjetivo definido es -a! (stora, no stort).' },
+        { type: 'mc', text: '«los coches grandes» → «de ___ bilarna»', options: ['stora', 'stor', 'stort'], correct: 0, explanation: '«de stora bilarna». En plural también -a: stora.' },
+        { type: 'mc', text: 'En forma definida, el adjetivo casi siempre termina en…', options: ['-a', '-t'], correct: 0, explanation: 'Con «el/la/los» el adjetivo va en -a (stora, röda, nya). El -t es solo para «ett» indefinido.' },
+        { type: 'mc', text: 'Hay «doble marca»: delante va ___ y el nombre queda en forma definida', options: ['den / det / de', 'nada'], correct: 0, explanation: '«den stora bilen»: den (delante) + stora (-a) + bilen (definido). Tres marcas de «el». 🎯' },
+        { type: 'mc', text: '«el coche rojo» (en bil) → «___ röda bilen»', options: ['den', 'det', 'de'], correct: 0, explanation: '«den röda bilen». «en bil» → «den».' },
+        { type: 'mc', text: '«la casa roja» (ett hus) → «___ röda huset»', options: ['det', 'den', 'de'], correct: 0, explanation: '«det röda huset». «ett hus» → «det».' },
+        { type: 'mc', text: '«los libros nuevos» → «de ___ böckerna»', options: ['nya', 'ny', 'nytt'], correct: 0, explanation: '«de nya böckerna». Plural definido → adjetivo en -a: nya.' },
+        { type: 'mc', text: '«en röd bil» vs «den röda bilen». La diferencia es…', options: ['un coche rojo vs EL coche rojo', 'no hay diferencia'], correct: 0, explanation: '«en röd bil» = un coche rojo (indefinido). «den röda bilen» = el coche rojo (definido, con -a).' },
+        { type: 'type', prompt: '«el coche grande» → «den ___ bilen»:', answer: 'stora', accept: [], explanation: '«stora» (definido → -a).' },
+        { type: 'type', prompt: 'En forma definida, el adjetivo acaba casi siempre en (una letra):', answer: 'a', accept: [], explanation: '«-a»: stora, röda, nya.' },
+        { type: 'type', prompt: '«el… rojo» (en bil): «___ röda bilen»:', answer: 'den', accept: [], explanation: '«den» (para palabras «en»).' },
+        { type: 'type', prompt: '«la… roja» (ett hus): «___ röda huset»:', answer: 'det', accept: [], explanation: '«det» (para palabras «ett»).' },
+        { type: 'order', prompt: 'Ordena: «El coche grande es rojo»', words: ['Den', 'stora', 'bilen', 'är', 'röd'], answer: ['Den', 'stora', 'bilen', 'är', 'röd'], explanation: '«Den stora bilen är röd».' },
+        { type: 'order', prompt: 'Ordena: «La casa grande»', words: ['Det', 'stora', 'huset'], answer: ['Det', 'stora', 'huset'], explanation: '«Det stora huset».' },
+        { type: 'order', prompt: 'Ordena: «Los coches nuevos»', words: ['De', 'nya', 'bilarna'], answer: ['De', 'nya', 'bilarna'], explanation: '«De nya bilarna».' },
+      ]
+    },
   ]
 };
 
@@ -1735,7 +1928,13 @@ const HORST_DATA = {
           { text: '¿Qué dice Sophie sobre el fika?', options: ['Es solo para el trabajo', 'Es una tradición diaria con café y algo rico', 'Es solo los domingos', 'Es una comida especial'], correct: 1, explanation: '"Fika är en daglig tradition med kaffe och något gott" = El fika es una tradición diaria con café y algo rico.' },
         ]
       },
-    ]
+    ],
+
+    // ─── Intermedio (SFI C) — vacío, listo para los audios de Sophie ───
+    C: [],
+
+    // ─── Avanzado (SFI D) — vacío ───
+    D: []
   }
 };
 
@@ -2354,6 +2553,109 @@ const THEORY_DATA = {
         { title: 'El comodín «gör»', body: 'Para verbos de acción (hablar, vivir, trabajar…), la respuesta usa <strong>gör</strong> (= hago), para no repetir el verbo: <br><em>Ja, det <strong>gör</strong> jag</em> = sí (lo hago). <br><em>Nej, det <strong>gör</strong> jag inte</em> = no (no lo hago).' },
         { title: 'Con «är» y «har» se repiten', body: 'Si la pregunta usa <em>är</em> (ser/estar) o <em>har</em> (tener), la respuesta repite esa palabra: <br><em>—Är du trött? —Ja, det <strong>är</strong> jag.</em> <br><em>—Har du en bil? —Ja, det <strong>har</strong> jag.</em>' },
         { title: 'El truco del «Jo»', body: 'Si te preguntan algo <strong>en negativo</strong> y quieres decir «sí», no usas «Ja» sino <strong>Jo</strong>: <br><em>—Kommer du inte? —<strong>Jo</strong>, det gör jag!</em> (—¿No vienes? —¡Sí que voy!). <br>Ese «Jo» te hace sonar nativo. ¡A practicar! 💪' },
+      ]
+    },
+
+
+    // ── Verbos con partícula ────────────────────────────────
+    {
+      id: 'u-partikelverb',
+      title: 'Verbos con partícula',
+      subtitle: 'tycka om, ge upp, stänga av',
+      icon: '🧩',
+      color: '#F59E0B',
+      level: 'C',
+      grammarTopicId: 'partikelverb',
+      cards: [
+        { title: 'La idea', body: 'Como en inglés (give <em>up</em>, turn <em>off</em>), el sueco tiene verbos formados por un verbo + una <strong>partícula</strong> (una palabrita) que juntos significan algo nuevo. Y esa partícula se dice con <strong>fuerza</strong>. 🧩' },
+        { title: 'El clásico: tycka om', body: '<em>tycka</em> solo = opinar. Pero <em>tycka <strong>om</strong></em> = <strong>gustar</strong>: <br><em>Jag tycker om kaffe</em> = me gusta el café. <br>La partícula cambia todo el sentido.' },
+        { title: 'Unos muy usados', body: '<em>ge <strong>upp</strong></em> = rendirse. <br><em>känna <strong>igen</strong></em> = reconocer. <br><em>stänga <strong>av</strong></em> = apagar · <em>slå <strong>på</strong></em> = encender. <br><em>ta reda <strong>på</strong></em> = averiguar.' },
+        { title: 'Dónde va la partícula', body: 'La partícula va <strong>justo después del verbo</strong>, antes del objeto: <br><em>Stäng <strong>av</strong> lampan</em> = apaga la luz. <br>Y ojo: se pronuncia acentuada, eso la distingue de una preposición normal. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── El condicional (skulle) ─────────────────────────────
+    {
+      id: 'u-condicional',
+      title: 'El condicional (skulle)',
+      subtitle: 'querría, sería, viajaría',
+      icon: '🌤️',
+      color: '#F59E0B',
+      level: 'C',
+      grammarTopicId: 'condicional',
+      cards: [
+        { title: 'La idea', body: 'El condicional es el «<strong>-ría</strong>»: haría, sería, querría. En sueco se arma con una sola palabra mágica: <strong>skulle</strong>. <br><em>Jag <strong>skulle</strong> resa</em> = yo viajaría. 🌤️' },
+        { title: 'Para pedir con educación', body: 'Aquí es donde más lo vas a usar: para pedir cosas amablemente. <br><em>Jag <strong>skulle vilja</strong> ha en kaffe</em> = querría un café. <br>Suena mucho más fino que «Jag vill…» (quiero). ¡Muy útil en tiendas y restaurantes! 🎯' },
+        { title: 'Lo hipotético', body: 'Para «si pasara X, haría Y»: <br><em>Om jag hade pengar, <strong>skulle</strong> jag resa</em> = si tuviera dinero, viajaría. <br>El «skulle» marca lo imaginado, lo que no es real (todavía).' },
+        { title: 'La regla', body: 'Igual que los verbos que ayudan: después de <strong>skulle</strong> va el verbo en <strong>forma base</strong>: <br><em>Det skulle <strong>vara</strong> kul</em> = sería divertido. <br><em>Skulle du <strong>kunna</strong> hjälpa mig?</em> = ¿podrías ayudarme? ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── Verbos con preposición ──────────────────────────────
+    {
+      id: 'u-verbos-preposicion',
+      title: 'Verbos con preposición',
+      subtitle: 'tänka på, vänta på, tycka om',
+      icon: '🔌',
+      color: '#F59E0B',
+      level: 'C',
+      grammarTopicId: 'verbos-preposicion',
+      cards: [
+        { title: 'La idea', body: 'Muchos verbos suecos vienen «enchufados» a una preposición fija, y <strong>no siempre es la misma que en español</strong>. Hay que aprenderlos como pareja: verbo + preposición. 🔌' },
+        { title: 'La estrella: «på»', body: 'La preposición «på» acompaña a muchísimos verbos: <br><em>tänka <strong>på</strong></em> = pensar en. <br><em>vänta <strong>på</strong></em> = esperar. <br><em>titta <strong>på</strong></em> = mirar · <em>lyssna <strong>på</strong></em> = escuchar. <br><em>tro <strong>på</strong></em> = creer en.' },
+        { title: 'Ojo con el español', body: 'No traduzcas la preposición literal: <br>«pensar <u>en</u>» NO es «tänka i», es <em>tänka <strong>på</strong></em>. <br>«esperar» (sin «a») lleva «på»: <em>vänta <strong>på</strong> bussen</em>. <br>Por eso se memorizan en pareja. 🎯' },
+        { title: 'Otros útiles', body: '<em>tycka <strong>om</strong></em> = gustar. <br><em>bero <strong>på</strong></em> = depender de: <em>Det beror på vädret</em> (depende del clima). <br>Cada vez que aprendas un verbo nuevo, apréndete también su preposición. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── Conjunciones avanzadas ──────────────────────────────
+    {
+      id: 'u-conjunciones-avanzadas',
+      title: 'Conjunciones avanzadas',
+      subtitle: 'fastän, medan, innan, så att',
+      icon: '🪢',
+      color: '#F59E0B',
+      level: 'C',
+      grammarTopicId: 'conjunciones-avanzadas',
+      cards: [
+        { title: 'La idea', body: 'Ya conoces och, men, eftersom. Ahora sumamos conectores más ricos para hablar como un nativo: <strong>aunque, mientras, antes de, para que…</strong> Con ellos tus frases dejan de ser simples. 🪢' },
+        { title: 'Contraste y tiempo', body: '<strong>fastän</strong> (o <em>trots att</em>) = aunque. <br><strong>medan</strong> = mientras. <br><strong>innan</strong> = antes de (que) · <strong>efter att</strong> = después de (que). <br><em>Fastän det regnar, går jag ut</em> = aunque llueve, salgo.' },
+        { title: 'Causa y propósito', body: '<strong>därför att</strong> = porque (¡ojo! «därför» solo = por eso). <br><strong>så att</strong> = para que / así que: <em>Jag talar långsamt så att du förstår</em> (hablo despacio para que entiendas).' },
+        { title: 'No olvides la regla BIFF', body: 'Todas crean una <strong>subordinada</strong>, así que dentro de ellas el «inte» va <strong>antes del verbo</strong>: <br><em>…fastän jag <strong>inte</strong> vill</em> = …aunque no quiero. <br>Misma regla de las subordinadas. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── Palabras compuestas ─────────────────────────────────
+    {
+      id: 'u-palabras-compuestas',
+      title: 'Palabras compuestas',
+      subtitle: 'tandläkare, kylskåp, sommarhus',
+      icon: '🧱',
+      color: '#F59E0B',
+      level: 'C',
+      grammarTopicId: 'palabras-compuestas',
+      cards: [
+        { title: 'La idea', body: 'El sueco es famoso por <strong>pegar palabras</strong> para crear una nueva. Donde el español usa varias palabras («médico de dientes»), el sueco hace una sola: <em>tandläkare</em>. ¡Todo junto! 🧱' },
+        { title: 'Cómo funciona', body: 'Se juntan y la <strong>última palabra manda</strong> (dice qué es); las de delante solo describen: <br><em>kyl</em> (frío) + <em>skåp</em> (armario) = <strong>kylskåp</strong> (refrigerador = armario del frío). <br><em>sommar</em> + <em>hus</em> = <strong>sommarhus</strong> (casa de verano).' },
+        { title: 'El género lo da la última', body: 'Como la última palabra manda, ella decide el «en/ett»: <br><em>en boll</em> → <em>en fot<strong>boll</strong></em> (un balón de fútbol). <br><em>en bok</em> → <em>en barn<strong>bok</strong></em> (un libro infantil).' },
+        { title: 'Un error típico', body: 'Separar lo que va junto (särskrivning) cambia el sentido o se ve mal: <em>en rödspätta</em> (un pez) no es lo mismo que «en röd spätta». Regla práctica: si es un concepto, <strong>va pegado</strong>. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── Adjetivo en forma definida ──────────────────────────
+    {
+      id: 'u-adjetivo-definido',
+      title: 'El adjetivo con «el/la»',
+      subtitle: 'den stora bilen, det stora huset',
+      icon: '🎯',
+      color: '#F59E0B',
+      level: 'C',
+      grammarTopicId: 'adjetivo-definido',
+      cards: [
+        { title: 'La idea', body: 'Ya sabes «en röd bil» (un coche rojo). Ahora: cuando dices «<strong>EL</strong> coche rojo», el adjetivo cambia. Es la última pieza para que suenes correcto con los adjetivos. 🎯' },
+        { title: 'El adjetivo se pone en -a', body: 'Con «el/la/los», el adjetivo casi siempre termina en <strong>-a</strong>: <br><em><strong>den stora</strong> bilen</em> = el coche grande. <br><em><strong>de nya</strong> böckerna</em> = los libros nuevos. <br>Nada de «stort» aquí: en definido siempre -a.' },
+        { title: 'Hasta con «ett»', body: 'Sorpresa: aunque la palabra sea «ett», el adjetivo definido también va en -a (no -t): <br><em><strong>det stora</strong> huset</em> = la casa grande (no «det stort»). <br>Definido = -a, siempre.' },
+        { title: 'La «triple marca»', body: 'El sueco marca «el» tres veces a la vez: <br><em><strong>den</strong> stor<strong>a</strong> bil<strong>en</strong></em> → den (delante) + -a (adjetivo) + -en (nombre definido). <br>Usa «den» para palabras «en», «det» para «ett», «de» para plural. ¡A practicar! 💪' },
       ]
     },
 
