@@ -3322,6 +3322,10 @@ function showTheory() {
   renderTheoryPath();
 }
 
+const THEORY_LEVEL_COLORS = { A: '#10B981', B: '#3B82F6', C: '#F59E0B', D: '#8B5CF6' };
+const THEORY_LEVEL_NAMES  = { A: 'SFI A', B: 'SFI B', C: 'SFI C', D: 'SFI D' };
+function theoryColor(u) { return THEORY_LEVEL_COLORS[(u && u.level) || 'A'] || '#10B981'; }
+
 function renderTheoryPath() {
   const wrap = document.getElementById('theory-path');
   if (!wrap) return;
@@ -3335,27 +3339,51 @@ function renderTheoryPath() {
   const lbl = document.getElementById('theory-progress-label');
   if (lbl) lbl.textContent = `${doneCount} de ${units.length} lecciones completadas`;
 
-  wrap.innerHTML = units.map((u, i) => {
+  let html = '';
+  let curLevel = null;
+  units.forEach((u, i) => {
+    const lvl = (u.level || 'A');
+    const col = theoryColor(u);
+    // Encabezado cuando empieza un nivel nuevo
+    if (lvl !== curLevel) {
+      curLevel = lvl;
+      const inLevel = units.filter(x => (x.level || 'A') === lvl);
+      const doneLevel = inLevel.filter(x => p[x.id] && p[x.id].done).length;
+      const restan = inLevel.length - doneLevel;
+      const nota = restan === 0
+        ? '¡Nivel completado! 🎉'
+        : `${doneLevel} de ${inLevel.length} lecciones · te faltan ${restan} para el siguiente nivel`;
+      html += `
+        <div class="flex items-center gap-2 ${curLevel === null ? '' : 'mt-6'} mb-2" style="margin-top:${i === 0 ? '0' : '1.5rem'};">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center text-white font-black shadow" style="background:linear-gradient(135deg, ${col}, ${col}cc);">${lvl}</div>
+          <div class="flex-1">
+            <div class="text-sm font-extrabold text-gray-700">${THEORY_LEVEL_NAMES[lvl] || ('SFI ' + lvl)}</div>
+            <div class="text-[11px] text-gray-400">${nota}</div>
+          </div>
+        </div>`;
+    }
     const st = p[u.id] || {};
     const done = !!st.done;
     const isNext = i === firstOpen;
     const badge = done
-      ? `<div class="w-9 h-9 rounded-full flex items-center justify-center text-white text-lg shadow" style="background:#10B981;">✓</div>`
-      : `<div class="w-9 h-9 rounded-full flex items-center justify-center font-bold shadow" style="background:${u.color}22; color:${u.color};">${i}</div>`;
-    const ring = isNext ? `box-shadow:0 0 0 3px ${u.color}66;` : '';
-    return `
+      ? `<div class="w-9 h-9 rounded-full flex items-center justify-center text-white text-lg shadow flex-shrink-0" style="background:${col};">✓</div>`
+      : `<div class="w-9 h-9 rounded-full flex items-center justify-center text-lg shadow-sm flex-shrink-0" style="background:${col}22;">${u.icon || '📘'}</div>`;
+    const ring = isNext ? `box-shadow:0 0 0 3px ${col}66;` : '';
+    html += `
       <div onclick="openTheoryUnit('${u.id}')"
            class="rounded-2xl p-4 shadow-md border-2 cursor-pointer card-hover flex items-center gap-3"
-           style="background:linear-gradient(135deg, ${u.color}12, ${u.color}22); border-color:${u.color}40; ${ring}">
+           style="background:linear-gradient(135deg, ${col}12, ${col}22); border-color:${col}40; ${ring}">
         ${badge}
         <div class="flex-1 min-w-0">
           <div class="font-bold text-gray-800 text-sm leading-tight">${u.title}</div>
           <div class="text-xs text-gray-500 truncate">${u.subtitle || ''}</div>
         </div>
-        ${isNext && !done ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full" style="background:${u.color}; color:#fff;">Empieza aquí</span>` : ''}
-        <span class="text-lg" style="color:${u.color};">→</span>
+        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0" style="background:${col}22; color:${col};">${lvl}</span>
+        ${isNext && !done ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0" style="background:${col}; color:#fff;">Empieza aquí</span>` : ''}
+        <span class="text-lg flex-shrink-0" style="color:${col};">→</span>
       </div>`;
-  }).join('');
+  });
+  wrap.innerHTML = html;
 }
 
 // ── Lector de la lección (tarjetas) ──────────────────────────
@@ -3371,6 +3399,7 @@ function openTheoryUnit(id) {
 function renderTheoryCard() {
   const u = THEORY_DATA.units.find(x => x.id === theoryState.unitId);
   if (!u) return;
+  const col = theoryColor(u);
   const cards = u.cards || [];
   const i = Math.max(0, Math.min(theoryState.card, cards.length - 1));
   theoryState.card = i;
@@ -3384,15 +3413,15 @@ function renderTheoryCard() {
 
   const dots = document.getElementById('theory-dots');
   if (dots) dots.innerHTML = cards.map((_, k) =>
-    `<span style="width:8px;height:8px;border-radius:50%;background:${k === i ? u.color : '#D1D5DB'};display:inline-block;"></span>`
+    `<span style="width:8px;height:8px;border-radius:50%;background:${k === i ? col : '#D1D5DB'};display:inline-block;"></span>`
   ).join('');
 
   const body = document.getElementById('theory-card-body');
   if (body) body.innerHTML = `
     <div class="text-4xl mb-3">${c.icon || u.icon || '📘'}</div>
-    ${c.title ? `<h2 class="text-lg font-extrabold text-gray-800 mb-3" style="color:${u.color};">${c.title}</h2>` : ''}
+    ${c.title ? `<h2 class="text-lg font-extrabold text-gray-800 mb-3" style="color:${col};">${c.title}</h2>` : ''}
     <div class="text-gray-700 leading-relaxed" style="font-size:1.02rem;">${c.body || ''}</div>
-    ${c.example ? `<div class="mt-4 rounded-xl p-3 text-sm" style="background:${u.color}12; border-left:4px solid ${u.color};">${c.example}</div>` : ''}
+    ${c.example ? `<div class="mt-4 rounded-xl p-3 text-sm" style="background:${col}12; border-left:4px solid ${col};">${c.example}</div>` : ''}
   `;
 
   const prev = document.getElementById('theory-prev');
