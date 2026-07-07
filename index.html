@@ -7758,9 +7758,19 @@ function mooseVisual(stage) {
 function _paymentState() {
   const s = window._sbSession || {};
   const status = (s.status || '').toLowerCase();
-  if (s.active === false || status === 'cancelled' || status === 'inactive' || status === 'unpaid') return 'blocked';
-  if (status === 'failed' || status === 'past_due' || status === 'cancelling') return 'warning';
+  if (status === 'cancelled' || status === 'canceled' || status === 'inactive' || status === 'unpaid') return 'blocked';
+  if (status === 'failed' || status === 'past_due' || status === 'pending' || status === 'cancelling') return 'warning';
+  if (s.active === false) return 'blocked';
   return 'ok';
+}
+
+// Reactivar pagando: abre el link de pago (checkout). Al pagar, el webhook reactiva.
+async function reactivarSuscripcion() {
+  try {
+    const cfg = await getStripeConfig();
+    if (cfg && cfg.link) { window.location.href = cfg.link; return; }
+  } catch (e) {}
+  manageSubscription();
 }
 function paymentBlocked() { return _paymentState() === 'blocked'; }
 function requireAccess() {
@@ -7789,7 +7799,7 @@ function renderPaymentBanner() {
       <span class="text-2xl flex-shrink-0">🔒</span>
       <div class="flex-1 min-w-0"><div class="font-bold text-red-800 text-sm">Tu suscripción está inactiva</div>
       <div class="text-xs text-red-700">Por un problema de pago no puedes usar el contenido. Reactiva tu suscripción para volver a entrar.</div></div>
-      <button onclick="manageSubscription()" class="text-xs font-bold px-3 py-2 rounded-xl bg-red-500 text-white hover:bg-red-600 flex-shrink-0">Reactivar</button>
+      <button onclick="reactivarSuscripcion()" class="text-xs font-bold px-3 py-2 rounded-xl bg-red-500 text-white hover:bg-red-600 flex-shrink-0">Reactivar</button>
     </div>`;
   }
 }
