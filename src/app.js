@@ -42,6 +42,7 @@ const EDGE_FN       = SUPABASE_URL + '/functions/v1/admin-ops';
 const sb            = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
 const ADMIN_EMAILS = ['sophie.sahlin@hotmail.com', 'orlandoandree1998@gmail.com'];
+let _wantAdmin = false;
 function isAdminUser() { const e = (window._sbSession?.email || '').toLowerCase(); return ADMIN_EMAILS.includes(e); }
 
 // Helper: calls the admin Edge Function
@@ -793,7 +794,13 @@ function showToast(msg, type = 'info') {
 // ── ADMIN ─────────────────────────────────────────────────────
 function goAdmin() {
   stopSpeech();
-  if (!isAdminUser()) { showToast(window._sbSession ? 'No tienes acceso de administrador.' : 'Primero inicia sesión con tu cuenta de administrador.', 'error'); return; }
+  if (!isAdminUser()) {
+    if (window._sbSession) { showToast('No tienes acceso de administrador.', 'error'); return; }
+    _wantAdmin = true;
+    showView('login');
+    showToast('Inicia sesión con tu cuenta de administrador', 'info');
+    return;
+  }
   state.adminLoggedIn = true;
   const lg = document.getElementById('admin-login'); if (lg) lg.classList.add('hidden');
   const pn = document.getElementById('admin-panel'); if (pn) pn.classList.remove('hidden');
@@ -1201,6 +1208,7 @@ async function loginStudent() {
   showView('home');
   renderHomeDashboard();
   showToast(_isAdmin ? '¡Bienvenida! Tienes acceso de administrador 👋' : (blocked ? `Hej ${student.name}. Tu suscripción está inactiva.` : `¡Välkommen, ${student.name}! 🇸🇪`), 'success');
+  if (isAdminUser() && _wantAdmin) { _wantAdmin = false; goAdmin(); }
 }
 
 async function logoutStudent() {
@@ -1264,6 +1272,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     showView('newpass');
     return;
   }
+  if (hash === '#admin' || /\/admin\/?$/i.test(window.location.pathname || '')) _wantAdmin = true;
 
   const { data: { session } } = await sb.auth.getSession();
   if (session) {
@@ -1276,6 +1285,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (adminBtn) adminBtn.style.display = isAdminUser() ? '' : 'none';
       showView('home');
       renderHomeDashboard();
+      if (_wantAdmin && isAdminUser()) { _wantAdmin = false; goAdmin(); }
       return;
     }
     await sb.auth.signOut();
