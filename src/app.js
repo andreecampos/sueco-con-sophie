@@ -41,16 +41,22 @@ const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const EDGE_FN       = SUPABASE_URL + '/functions/v1/admin-ops';
 const sb            = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
+const ADMIN_EMAILS = ['sophie.sahlin@hotmail.com', 'orlandoandree1998@gmail.com'];
+function isAdminUser() { const e = (window._sbSession?.email || '').toLowerCase(); return ADMIN_EMAILS.includes(e); }
+
 // Helper: calls the admin Edge Function
 async function adminOps(action, data = {}) {
   try {
+    let _token = SUPABASE_ANON;
+    try { const { data: { session } } = await sb.auth.getSession(); if (session?.access_token) _token = session.access_token; } catch (e) {}
     const res = await fetch(EDGE_FN, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${SUPABASE_ANON}`
+        'apikey': SUPABASE_ANON,
+        'Authorization': `Bearer ${_token}`
       },
-      body: JSON.stringify({ action, password: 'sofi2025', data })
+      body: JSON.stringify({ action, data })
     });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     return await res.json();
@@ -787,20 +793,16 @@ function showToast(msg, type = 'info') {
 // ── ADMIN ─────────────────────────────────────────────────────
 function goAdmin() {
   stopSpeech();
-  if (!state.adminLoggedIn) {
-    document.getElementById('admin-login').classList.remove('hidden');
-    document.getElementById('admin-panel').classList.add('hidden');
-  } else {
-    document.getElementById('admin-login').classList.add('hidden');
-    document.getElementById('admin-panel').classList.remove('hidden');
-    adminTab('dashboard');
-  }
+  if (!isAdminUser()) { showToast('No tienes acceso de administrador.', 'error'); return; }
+  state.adminLoggedIn = true;
+  const lg = document.getElementById('admin-login'); if (lg) lg.classList.add('hidden');
+  const pn = document.getElementById('admin-panel'); if (pn) pn.classList.remove('hidden');
+  adminTab('dashboard');
   showView('admin');
 }
 
 function adminLogin() {
-  const pwd = document.getElementById('admin-pwd').value;
-  if (pwd === 'sofi2025') {
+  if (isAdminUser()) {
     state.adminLoggedIn = true;
     document.getElementById('admin-login').classList.add('hidden');
     document.getElementById('admin-panel').classList.remove('hidden');
@@ -1189,7 +1191,7 @@ async function loginStudent() {
   errEl?.classList.add('hidden');
   if (btn) { btn.disabled = false; btn.textContent = 'Entrar'; }
   const adminBtn = document.getElementById('admin-btn-home');
-  if (adminBtn) adminBtn.style.display = 'none';
+  if (adminBtn) adminBtn.style.display = isAdminUser() ? '' : 'none';
   showView('home');
   renderHomeDashboard();
   showToast(blocked ? `Hej ${student.name}. Tu suscripción está inactiva.` : `¡Välkommen, ${student.name}! 🇸🇪`, blocked ? 'info' : 'success');
@@ -1225,11 +1227,11 @@ async function manageSubscription() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${SUPABASE_ANON}`
+        'apikey': SUPABASE_ANON,
+        'Authorization': `Bearer ${session.access_token}`
       },
       body: JSON.stringify({
         action: 'create_portal_session',
-        password: 'sofi2025',
         data: {
           customer_id: student.stripe_customer_id,
           return_url: window.location.href
@@ -1264,7 +1266,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (student) {
       window._sbSession = { email: session.user.email, id: session.user.id, active: student.active, status: student.status };
       const adminBtn = document.getElementById('admin-btn-home');
-      if (adminBtn) adminBtn.style.display = 'none';
+      if (adminBtn) adminBtn.style.display = isAdminUser() ? '' : 'none';
       showView('home');
       renderHomeDashboard();
       return;

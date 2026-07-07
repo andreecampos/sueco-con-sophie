@@ -12,20 +12,29 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { action, password, data = {} } = await req.json()
-
-    // Verificar contraseña admin (excepto create_portal_session que usa JWT)
-    if (action !== 'create_portal_session' && password !== 'sofi2025') {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401, headers: corsHeaders
-      })
-    }
+    const { action, data = {} } = await req.json()
 
     const sb = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
       { auth: { autoRefreshToken: false, persistSession: false } }
     )
+
+    // Seguridad: verificar que quien llama es admin POR SU LOGIN (su token de sesión),
+    // no por una contraseña compartida. create_portal_session queda libre porque la usan
+    // los propios alumnos para abrir su portal de pago.
+    if (action !== 'create_portal_session') {
+      const ADMIN_EMAILS = (Deno.env.get('ADMIN_EMAILS') || 'sophie.sahlin@hotmail.com,orlandoandree1998@gmail.com')
+        .split(',').map((e) => e.trim().toLowerCase())
+      const jwt = (req.headers.get('Authorization') || '').replace('Bearer ', '').trim()
+      let callerEmail = ''
+      if (jwt) {
+        try { const { data: u } = await sb.auth.getUser(jwt); callerEmail = (u?.user?.email || '').toLowerCase() } catch (_e) {}
+      }
+      if (!callerEmail || !ADMIN_EMAILS.includes(callerEmail)) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: corsHeaders })
+      }
+    }
 
     switch (action) {
 
@@ -131,7 +140,7 @@ Deno.serve(async (req) => {
         }
         const portalSession = await stripe.billingPortal.sessions.create({
           customer: customer_id,
-          return_url: return_url || 'https://darling-lily-3c657d.netlify.app',
+          return_url: return_url || 'https://suecoconsophie.com',
         })
         return new Response(JSON.stringify({ url: portalSession.url }), { headers: corsHeaders })
       }
