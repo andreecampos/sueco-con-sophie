@@ -1204,6 +1204,82 @@ const GRAMMAR_DATA = {
         { type: 'order', prompt: 'Ordena: «¿Tienes tiempo?»', words: ['Har', 'du', 'tid'], answer: ['Har', 'du', 'tid'], explanation: '«Har du tid?».' },
       ]
     },
+
+    // ─────────────────────────────────────────────────────
+    // 20. EL PERFECTO — har + supino (SFI B)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'perfecto',
+      title: 'El perfecto (har ätit)',
+      subtitle: '«He comido»: har + la forma en supino',
+      icon: '✅',
+      color: '#0EA5E9',
+      level: 'B',
+      keywords: 'perfecto har supino supinum atit talat bott varit he comido he hablado pluscuamperfecto hade perfekt',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: '«He comido» → «Jag har ___»', options: ['ätit', 'äter', 'åt'], correct: 0, explanation: '«Jag har ätit» = he comido. El perfecto es «har + supino» (ätit). ✅' },
+        { type: 'mc', text: 'El perfecto se forma con…', options: ['har + supino', 'var + verbo', 'ska + verbo'], correct: 0, explanation: '«har» + la forma supino del verbo: har ätit, har talat, har bott.' },
+        { type: 'mc', text: '«He hablado» → «Jag har ___»', options: ['talat', 'talar', 'talade'], correct: 0, explanation: '«talat» es el supino de «tala». Los verbos en -ar hacen el supino en -at: tala → talat.' },
+        { type: 'mc', text: '«He trabajado» → «Jag har ___»', options: ['jobbat', 'jobbar', 'jobba'], correct: 0, explanation: '«jobbat». Otro verbo en -ar → supino en -at: jobba → jobbat.' },
+        { type: 'mc', text: '«He vivido en Suecia» → «Jag har ___ i Sverige»', options: ['bott', 'bor', 'bodde'], correct: 0, explanation: '«bott» = vivido (supino de bo). Los verbos cortos suelen doblar: bo → bott.' },
+        { type: 'mc', text: '«He escrito» → «Jag har ___»', options: ['skrivit', 'skriver', 'skrev'], correct: 0, explanation: '«skrivit». Los verbos fuertes hacen el supino en -it: skriva → skrivit.' },
+        { type: 'mc', text: '«He bebido café» → «Jag har ___ kaffe»', options: ['druckit', 'dricker', 'drack'], correct: 0, explanation: '«druckit» = bebido (supino de dricka). Verbo fuerte → -it.' },
+        { type: 'mc', text: '¿Cuál es el perfecto («he comido»)?', options: ['Jag har ätit', 'Jag äter', 'Jag åt'], correct: 0, explanation: '«Jag har ätit» = he comido. «Jag äter» = como; «Jag åt» = comí.' },
+        { type: 'mc', text: '«Jag åt» significa…', options: ['comí (un momento concreto)', 'he comido', 'como'], correct: 0, explanation: '«åt» es el pretérito: «comí» (ayer, un momento dado). El perfecto «har ätit» conecta con el ahora.' },
+        { type: 'mc', text: '«¿Has estado en Estocolmo?» → «Har du ___ i Stockholm?»', options: ['varit', 'är', 'var'], correct: 0, explanation: '«varit» = estado/sido (supino de vara). Har du varit…? = ¿has estado…?' },
+        { type: 'mc', text: '«Ella ha llegado» → «Hon har ___»', options: ['kommit', 'kommer', 'kom'], correct: 0, explanation: '«kommit» = llegado/venido (supino de komma).' },
+        { type: 'mc', text: 'Los verbos en -ar hacen el supino en…', options: ['-at (talat)', '-it', '-en'], correct: 0, explanation: 'Grupo -ar → supino -at: tala → talat, jobba → jobbat, studera → studerat.' },
+        { type: 'mc', text: '«Había comido» (antes de otra cosa) → «Jag ___ ätit»', options: ['hade', 'har', 'var'], correct: 0, explanation: '«hade + supino» = pluscuamperfecto: «Jag hade ätit» = había comido.' },
+        { type: 'mc', text: '«No he dormido» → «Jag har ___ sovit»', options: ['inte', 'ingen', 'aldrig'], correct: 0, explanation: '«Jag har inte sovit». El «inte» va entre «har» y el supino.' },
+        { type: 'type', prompt: '«he comido» → «Jag har ___» (äta):', answer: 'ätit', accept: [], explanation: '«ätit» (supino de äta).' },
+        { type: 'type', prompt: '«he hablado» → «Jag har ___» (tala):', answer: 'talat', accept: [], explanation: '«talat» (-ar → -at).' },
+        { type: 'type', prompt: 'El auxiliar del perfecto («he/ha»):', answer: 'har', accept: [], explanation: '«har» + supino = perfecto.' },
+        { type: 'type', prompt: '«he vivido» → «Jag har ___» (bo):', answer: 'bott', accept: [], explanation: '«bott» (verbo corto, dobla la t).' },
+        { type: 'type', prompt: '«estado» (supino de vara):', answer: 'varit', accept: [], explanation: '«varit».' },
+        { type: 'order', prompt: 'Ordena: «He comido pan»', words: ['Jag', 'har', 'ätit', 'bröd'], answer: ['Jag', 'har', 'ätit', 'bröd'], explanation: '«Jag har ätit bröd».' },
+        { type: 'order', prompt: 'Ordena: «¿Has estudiado sueco?»', words: ['Har', 'du', 'studerat', 'svenska'], answer: ['Har', 'du', 'studerat', 'svenska'], explanation: '«Har du studerat svenska?».' },
+        { type: 'order', prompt: 'Ordena: «Ella ha trabajado hoy»', words: ['Hon', 'har', 'jobbat', 'idag'], answer: ['Hon', 'har', 'jobbat', 'idag'], explanation: '«Hon har jobbat idag».' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 21. ESTE, ESE, ALGÚN, NINGÚN (SFI B)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'demostrativos',
+      title: 'Este, ese, algún, ningún',
+      subtitle: 'den här, den där, någon, ingen',
+      icon: '👉',
+      color: '#D946EF',
+      level: 'B',
+      keywords: 'demostrativos den här den där någon något ingen inget vilken all hela este ese algun ningun cual todo indefinidos',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: '«este coche» (cerca) → «___ bilen»', options: ['den här', 'den där', 'det här'], correct: 0, explanation: '«den här bilen» = este coche. «den här» = este (para palabras «en»). 👉' },
+        { type: 'mc', text: '«esta casa» (ett hus) → «___ huset»', options: ['det här', 'den här', 'de här'], correct: 0, explanation: '«det här huset». Con palabras «ett» se usa «det här».' },
+        { type: 'mc', text: '«estos coches» (plural) → «___ bilarna»', options: ['de här', 'den här', 'det här'], correct: 0, explanation: '«de här bilarna» = estos coches. En plural: «de här».' },
+        { type: 'mc', text: '«ese coche» (lejos) → «___ bilen»', options: ['den där', 'den här', 'det där'], correct: 0, explanation: '«den där bilen» = ese/aquel coche. «där» = allá (lejos).' },
+        { type: 'mc', text: 'Con «den här / den där», el sustantivo va en forma…', options: ['definida (bilen)', 'indefinida (bil)', 'siempre plural'], correct: 0, explanation: 'Va en forma definida: den här bil<strong>en</strong>, det här hus<strong>et</strong>. ¡Doble marca!' },
+        { type: 'mc', text: '«algún / alguien» → ___', options: ['någon', 'ingen', 'vilken'], correct: 0, explanation: '«någon» = algún/alguien. Ej: Har du någon fråga? (¿tienes alguna pregunta?).' },
+        { type: 'mc', text: '«¿Tienes algún libro?» → «Har du ___ bok?»', options: ['någon', 'något', 'inga'], correct: 0, explanation: '«någon» con palabras «en» (en bok). Para «ett» se usa «något».' },
+        { type: 'mc', text: '«ningún / nadie» → ___', options: ['ingen', 'någon', 'all'], correct: 0, explanation: '«ingen» = ningún/nadie. Ej: Ingen är hemma (nadie está en casa).' },
+        { type: 'mc', text: '«No tengo dinero» → «Jag har ___ pengar»', options: ['inga', 'ingen', 'inget'], correct: 0, explanation: '«inga» = ningún/ningunos, forma de plural. «pengar» es plural → inga.' },
+        { type: 'mc', text: '«¿Cuál coche?» → «___ bil?»', options: ['Vilken', 'Vilket', 'Vilka'], correct: 0, explanation: '«Vilken bil?». «vilken» para palabras «en».' },
+        { type: 'mc', text: '«¿Cuál casa?» (ett hus) → «___ hus?»', options: ['Vilket', 'Vilken', 'Vilka'], correct: 0, explanation: '«Vilket hus?». «vilket» para palabras «ett».' },
+        { type: 'mc', text: '«todo el día» → «___ dagen»', options: ['hela', 'all', 'allt'], correct: 0, explanation: '«hela dagen» = todo el día. «hel» = entero; con forma definida → «hela».' },
+        { type: 'mc', text: '«algo» (una cosa) → ___', options: ['något', 'någon', 'några'], correct: 0, explanation: '«något» = algo. «någon» = alguien; «några» = algunos.' },
+        { type: 'mc', text: '«otros / otras» → ___', options: ['andra', 'annan', 'annat'], correct: 0, explanation: '«andra» = otros (plural). «annan» (en), «annat» (ett), «andra» (plural).' },
+        { type: 'type', prompt: '«este» (con palabra «en», ej. ___ bilen):', answer: 'den här', accept: ['denhär'], explanation: '«den här» = este.' },
+        { type: 'type', prompt: '«ese» (con palabra «en»):', answer: 'den där', accept: ['dendär'], explanation: '«den där» = ese/aquel.' },
+        { type: 'type', prompt: '«algún / alguien»:', answer: 'någon', accept: [], explanation: '«någon».' },
+        { type: 'type', prompt: '«ningún / nadie»:', answer: 'ingen', accept: [], explanation: '«ingen».' },
+        { type: 'type', prompt: '«¿cuál?» (con palabra «en»):', answer: 'vilken', accept: [], explanation: '«vilken».' },
+        { type: 'order', prompt: 'Ordena: «Este coche es rojo»', words: ['Den här', 'bilen', 'är', 'röd'], answer: ['Den här', 'bilen', 'är', 'röd'], explanation: '«Den här bilen är röd».' },
+        { type: 'order', prompt: 'Ordena: «No tengo ningún problema»', words: ['Jag', 'har', 'inget', 'problem'], answer: ['Jag', 'har', 'inget', 'problem'], explanation: '«Jag har inget problem». (ett problem → inget)' },
+        { type: 'order', prompt: 'Ordena: «¿Cuál libro quieres?»', words: ['Vilken', 'bok', 'vill', 'du', 'ha'], answer: ['Vilken', 'bok', 'vill', 'du', 'ha'], explanation: '«Vilken bok vill du ha?».' },
+      ]
+    },
   ]
 };
 
@@ -1766,6 +1842,24 @@ const THEORY_DATA = {
       ]
     },
 
+    // ── Perfecto (har + supino) ─────────────────────────────
+    {
+      id: 'u-perfecto',
+      title: 'Ya lo hice: el perfecto',
+      subtitle: '«He comido»: har + supino',
+      icon: '✅',
+      color: '#0EA5E9',
+      level: 'B',
+      grammarTopicId: 'perfecto',
+      cards: [
+        { title: 'La idea', body: 'El perfecto es el «<strong>he hecho</strong>»: algo que ya pasó pero que sigue importando ahora. <em>He comido</em> (por eso no tengo hambre). <em>He estudiado sueco</em> (por eso lo hablo). En sueco se arma con dos piezas. ✅' },
+        { title: 'La fórmula', body: 'Siempre es <strong>har + supino</strong>. El «supino» es una forma especial del verbo (no te asustes por el nombre). <br><em>Jag <strong>har ätit</strong></em> = he comido. <br><em>Jag <strong>har talat</strong></em> = he hablado. <br>«har» nunca cambia; solo cambia el segundo.' },
+        { title: 'Cómo es el supino', body: 'Depende del verbo, pero hay patrones: <br>• Verbos en <strong>-ar</strong> → <strong>-at</strong>: <em>tala → talat</em>, <em>jobba → jobbat</em>. <br>• Verbos fuertes → <strong>-it</strong>: <em>skriva → skrivit</em>, <em>äta → ätit</em>. <br>Con el tiempo se pegan solos de tanto oírlos. 🎯' },
+        { title: 'Perfecto vs. pasado', body: 'Cuidado, no es lo mismo: <br><em>Jag <strong>åt</strong> igår</em> = comí ayer (momento concreto). <br><em>Jag <strong>har ätit</strong></em> = he comido (y sigue valiendo ahora). <br>Si dices <em>cuándo</em> exacto, suele ir el pasado; si conecta con el presente, el perfecto.' },
+        { title: 'Un paso más atrás', body: 'Si cambias «har» por <strong>hade</strong>, retrocedes otro escalón en el tiempo: <br><em>Jag <strong>hade</strong> ätit</em> = había comido (antes de otra cosa que también pasó). <br>Pero con el perfecto normal (har + supino) ya cubres el 90% del día a día. ¡A practicar! 💪' },
+      ]
+    },
+
     // ── 16. Futuro ──────────────────────────────────────────
     {
       id: 'u-futuro',
@@ -1814,6 +1908,24 @@ const THEORY_DATA = {
         { title: 'La regla normal', body: 'Se suma <strong>-are</strong> (más) y <strong>-ast</strong> (el más): <br><em>snabb → snabbare → snabbast</em> (rápido → más rápido → el más rápido). <br><em>dyr → dyrare → dyrast</em> (caro…). <br>Un final y ya comparas. 🎯' },
         { title: 'Los famosos irregulares', body: 'Unos pocos cambian a su manera (muy usados): <br><em>stor → <strong>större → störst</strong></em> (grande). <br><em>bra → <strong>bättre → bäst</strong></em> (bueno → mejor → el mejor). <br><em>liten → <strong>mindre → minst</strong></em> (pequeño). <br>Se aprenden de memoria; son poquitos.' },
         { title: 'La palabra "que"', body: 'Para comparar dos cosas usas <strong>än</strong> (= que): <br><em>Ana är längre <strong>än</strong> Erik</em> = Ana es más alta que Erik. <br><em>Stockholm är större än Malmö</em>. <br>Comparativo + <em>än</em> y listo. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── Este, ese, algún, ningún ────────────────────────────
+    {
+      id: 'u-demostrativos',
+      title: 'Este, ese, algún, ningún',
+      subtitle: 'den här, den där, någon, ingen',
+      icon: '👉',
+      color: '#D946EF',
+      level: 'B',
+      grammarTopicId: 'demostrativos',
+      cards: [
+        { title: 'La idea', body: 'Estas palabritas señalan y precisan: <strong>este</strong> (el de aquí), <strong>ese</strong> (el de allá), <strong>algún</strong>, <strong>ningún</strong>, <strong>cuál</strong>. Son cortas y se usan a cada rato para no repetir el nombre de las cosas. 👉' },
+        { title: 'Este y ese', body: '<strong>den här</strong> = este (cerca). <strong>den där</strong> = ese/aquel (lejos). <br><em>den här bilen</em> (este coche), <em>den där bilen</em> (ese coche). <br>Truco: <em>här</em> = aquí, <em>där</em> = allá. Con «ett»: <em>det här</em> / <em>det där</em>. En plural: <em>de här</em> / <em>de där</em>.' },
+        { title: 'El detalle clave', body: 'Con «den här/den där», el sustantivo va en su forma <strong>con el/la</strong> (definida): <br><em>den här <strong>bilen</strong></em> (no «bil»). <br><em>det här <strong>huset</strong></em>. <br>Es como decir «este el-coche». Raro, pero así es el sueco. 🎯' },
+        { title: 'Algún y ningún', body: '<strong>någon</strong> = algún/alguien: <em>Har du någon fråga?</em> (¿tienes alguna pregunta?). <br><strong>ingen</strong> = ningún/nadie: <em>Ingen är hemma</em> (nadie está en casa). <br>Con «ett»: <em>något</em> / <em>inget</em>. En plural: <em>några</em> / <em>inga</em>.' },
+        { title: '¿Cuál? y todo', body: '<strong>vilken</strong> = cuál/qué: <em>Vilken bok?</em> (¿cuál libro?). Con «ett»: <em>vilket</em>. <br><strong>hela</strong> = todo/entero: <em>hela dagen</em> (todo el día). <br>Con esto ya preguntas, señalas y precisas. ¡A practicar! 💪' },
       ]
     },
   ]
