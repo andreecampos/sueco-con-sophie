@@ -97,6 +97,7 @@ function goMenu() {
 }
 
 function selectLevel(level) {
+  if (!requireAccess()) return;
   const available = ['A','B'];
   if (!available.includes(level)) {
     showToast('¡Próximamente! Este nivel estará disponible pronto.', 'info');
@@ -1155,7 +1156,7 @@ async function loginStudent() {
   // 2. Check student record (RLS: student reads own row only)
   const { data: student, error: dbErr } = await sb
     .from('students')
-    .select('active, name, device_keys')
+    .select('active, status, name, device_keys')
     .eq('id', data.user.id)
     .single();
 
@@ -1165,37 +1166,32 @@ async function loginStudent() {
     return;
   }
 
-  if (!student.active) {
-    await sb.auth.signOut();
-    showErr('Tu acceso está desactivado. Contacta a Sophie para reactivarlo.');
-    return;
+  // Los alumnos con pago inactivo SÍ pueden entrar, pero en modo bloqueado (ven pero no interactúan).
+  // El límite de dispositivos solo se controla para los activos.
+  const blocked = !student.active;
+
+  if (!blocked) {
+    const deviceKeys = student.device_keys || [];
+    const alreadyRegistered = deviceKeys.includes(DEVICE_KEY);
+    if (!alreadyRegistered && deviceKeys.length >= MAX_DEVICES) {
+      await sb.auth.signOut();
+      showErr(`Límite de ${MAX_DEVICES} dispositivos alcanzado. Contacta a Sophie.`);
+      return;
+    }
+    const updFields = alreadyRegistered
+      ? { last_login: new Date().toISOString() }
+      : { device_keys: [...deviceKeys, DEVICE_KEY], last_login: new Date().toISOString() };
+    await sb.from('students').update(updFields).eq('id', data.user.id);
   }
 
-  // 3. Device check
-  const deviceKeys = student.device_keys || [];
-  const alreadyRegistered = deviceKeys.includes(DEVICE_KEY);
-
-  if (!alreadyRegistered && deviceKeys.length >= MAX_DEVICES) {
-    await sb.auth.signOut();
-    showErr(`Límite de ${MAX_DEVICES} dispositivos alcanzado. Contacta a Sophie.`);
-    return;
-  }
-
-  // 4. Register device if new
-  const updFields = alreadyRegistered
-    ? { last_login: new Date().toISOString() }
-    : { device_keys: [...deviceKeys, DEVICE_KEY], last_login: new Date().toISOString() };
-  await sb.from('students').update(updFields).eq('id', data.user.id);
-
-  window._sbSession = { email: data.user.email, id: data.user.id, name: student.name };
+  window._sbSession = { email: data.user.email, id: data.user.id, name: student.name, active: student.active, status: student.status };
   errEl?.classList.add('hidden');
   if (btn) { btn.disabled = false; btn.textContent = 'Entrar'; }
-  // Ocultar botón admin para alumnos normales
   const adminBtn = document.getElementById('admin-btn-home');
   if (adminBtn) adminBtn.style.display = 'none';
   showView('home');
   renderHomeDashboard();
-  showToast(`¡Välkommen, ${student.name}! 🇸🇪`, 'success');
+  showToast(blocked ? `Hej ${student.name}. Tu suscripción está inactiva.` : `¡Välkommen, ${student.name}! 🇸🇪`, blocked ? 'info' : 'success');
 }
 
 async function logoutStudent() {
@@ -1263,13 +1259,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   const { data: { session } } = await sb.auth.getSession();
   if (session) {
     const { data: student } = await sb
-      .from('students').select('active').eq('id', session.user.id).single();
-    if (student?.active) {
-      window._sbSession = { email: session.user.email, id: session.user.id };
-      // Ocultar botón admin para alumnos normales
+      .from('students').select('active, status').eq('id', session.user.id).single();
+    if (student) {
+      window._sbSession = { email: session.user.email, id: session.user.id, active: student.active, status: student.status };
       const adminBtn = document.getElementById('admin-btn-home');
       if (adminBtn) adminBtn.style.display = 'none';
       showView('home');
+      renderHomeDashboard();
       return;
     }
     await sb.auth.signOut();
@@ -1505,6 +1501,7 @@ const grammarState = {
 
 // ── Navigate to grammar topic selector ───────────────────────
 function showGrammar() {
+  if (!requireAccess()) return;
   stopSpeech();
   grammarState.fromTheory = null;
   grammarState.limit = null;
@@ -2344,6 +2341,7 @@ function _getAudioCtx() {
 
 // ── Navigate to episode selector ────────────────────────────
 function showHorst() {
+  if (!requireAccess()) return;
   stopSpeech();
   _stopWebAudio();
   clearInterval(horstState.progressTimer);
@@ -2753,6 +2751,7 @@ let nivelState = {
 
 // ── Abrir la pantalla de inicio de la prueba ─────────────────
 function showNivelTest() {
+  if (!requireAccess()) return;
   stopSpeech();
   stopNivelAudio();
   showView('nivel-intro');
@@ -3273,7 +3272,48 @@ function mooseVisual(stage) {
   return `<img src="alce/${name}.webp" alt="Alce" class="w-full h-full object-cover rounded-2xl shadow-sm alce-float" onerror="this.onerror=null; this.parentNode.innerHTML=mooseSVG(${stage});">`;
 }
 
+// ── Candado por estado de pago ───────────────────────────────
+function _paymentState() {
+  const s = window._sbSession || {};
+  const status = (s.status || '').toLowerCase();
+  if (s.active === false || status === 'cancelled' || status === 'inactive' || status === 'unpaid') return 'blocked';
+  if (status === 'failed' || status === 'past_due' || status === 'cancelling') return 'warning';
+  return 'ok';
+}
+function paymentBlocked() { return _paymentState() === 'blocked'; }
+function requireAccess() {
+  if (paymentBlocked()) {
+    showToast('🔒 Tu suscripción está inactiva por falta de pago. Reactívala para continuar.', 'error');
+    renderPaymentBanner();
+    try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) {}
+    return false;
+  }
+  return true;
+}
+function renderPaymentBanner() {
+  const el = document.getElementById('payment-banner');
+  if (!el) return;
+  const st = _paymentState();
+  if (st === 'ok') { el.innerHTML = ''; return; }
+  if (st === 'warning') {
+    el.innerHTML = `<div class="rounded-2xl p-4 border-2 flex items-center gap-3" style="background:#FFFBEB;border-color:#FCD34D;">
+      <span class="text-2xl flex-shrink-0">⚠️</span>
+      <div class="flex-1 min-w-0"><div class="font-bold text-amber-800 text-sm">Tu último pago no se procesó</div>
+      <div class="text-xs text-amber-700">Se volverá a intentar automáticamente. Mientras tanto puedes seguir usando la plataforma con normalidad.</div></div>
+      <button onclick="manageSubscription()" class="text-xs font-bold px-3 py-2 rounded-xl bg-amber-500 text-white hover:bg-amber-600 flex-shrink-0">Actualizar pago</button>
+    </div>`;
+  } else {
+    el.innerHTML = `<div class="rounded-2xl p-4 border-2 flex items-center gap-3" style="background:#FEF2F2;border-color:#FCA5A5;">
+      <span class="text-2xl flex-shrink-0">🔒</span>
+      <div class="flex-1 min-w-0"><div class="font-bold text-red-800 text-sm">Tu suscripción está inactiva</div>
+      <div class="text-xs text-red-700">Por un problema de pago no puedes usar el contenido. Reactiva tu suscripción para volver a entrar.</div></div>
+      <button onclick="manageSubscription()" class="text-xs font-bold px-3 py-2 rounded-xl bg-red-500 text-white hover:bg-red-600 flex-shrink-0">Reactivar</button>
+    </div>`;
+  }
+}
+
 function renderHomeDashboard() {
+  renderPaymentBanner();
   const ring = document.getElementById('dash-ring-fg');
   if (!ring) return;
   const { avance, last } = computeAvance();
@@ -3375,6 +3415,7 @@ function markTheoryDone(id, score) {
 
 // ── Camino (lista de unidades) ───────────────────────────────
 function showTheory() {
+  if (!requireAccess()) return;
   stopSpeech();
   showView('theory');
   renderTheoryPath();
