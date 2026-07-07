@@ -1386,6 +1386,206 @@ const GRAMMAR_DATA = {
         { type: 'order', prompt: 'Ordena: «El libro es leído en la escuela»', words: ['Boken', 'läses', 'i', 'skolan'], answer: ['Boken', 'läses', 'i', 'skolan'], explanation: '«Boken läses i skolan».' },
       ]
     },
+
+    // ─────────────────────────────────────────────────────
+    // 25. GENITIVO — posesión con -s (SFI A)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'genitivo',
+      title: 'El genitivo (de quién)',
+      subtitle: 'Annas bok = el libro de Ana',
+      icon: '🔑',
+      color: '#10B981',
+      level: 'A',
+      keywords: 'genitivo posesion s annas eriks de quien pertenece dueño genitiv apostrofo',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: '«el libro de Ana» → «___ bok»', options: ['Annas', 'Anna', 'Annan'], correct: 0, explanation: '«Annas bok». Para decir «de alguien» se le pega una -s al nombre. 🔑' },
+        { type: 'mc', text: 'El genitivo (posesión) se forma añadiendo ___ al nombre', options: ['-s', '-en', '-ar'], correct: 0, explanation: 'Se suma «-s»: Anna → Annas, Erik → Eriks. Como en inglés, pero SIN apóstrofo.' },
+        { type: 'mc', text: '«el coche de Erik» → «___ bil»', options: ['Eriks', 'Erik', 'Erikar'], correct: 0, explanation: '«Eriks bil» = el coche de Erik.' },
+        { type: 'mc', text: '¿Lleva apóstrofo el genitivo sueco?', options: ['No, solo -s (Annas)', 'Sí, como en inglés (con apóstrofo, como en inglés)'], correct: 0, explanation: 'En sueco NO se pone apóstrofo: se escribe «Annas», «Eriks». (En inglés sí, en sueco no.)' },
+        { type: 'mc', text: '«la casa de mi mamá» → «min ___ hus»', options: ['mammas', 'mamma', 'mamman'], correct: 0, explanation: '«min mammas hus» = la casa de mi mamá.' },
+        { type: 'mc', text: '«el nombre del perro» → «___ namn»', options: ['hundens', 'hunden', 'hunds'], correct: 0, explanation: '«hundens namn» = el nombre del perro (hunden = el perro, + s).' },
+        { type: 'mc', text: 'En sueco, lo que se posee va…', options: ['después del dueño (Annas bok)', 'antes del dueño'], correct: 0, explanation: 'Primero el dueño con -s, luego la cosa: «Annas bok» = de-Ana libro.' },
+        { type: 'mc', text: '«el trabajo de papá» → «___ jobb»', options: ['pappas', 'pappa', 'pappan'], correct: 0, explanation: '«pappas jobb» = el trabajo de papá.' },
+        { type: 'mc', text: '«la capital de Suecia» → «___ huvudstad»', options: ['Sveriges', 'Sverige', 'Sverigen'], correct: 0, explanation: '«Sveriges huvudstad» = la capital de Suecia. También los países llevan -s.' },
+        { type: 'mc', text: '«los amigos de María» → «___ vänner»', options: ['Marias', 'Maria', 'Marian'], correct: 0, explanation: '«Marias vänner» = los amigos de María.' },
+        { type: 'type', prompt: '«de Ana» (genitivo):', answer: 'Annas', accept: ['annas'], explanation: '«Annas».' },
+        { type: 'type', prompt: '«de Erik» (genitivo):', answer: 'Eriks', accept: ['eriks'], explanation: '«Eriks».' },
+        { type: 'type', prompt: 'La letra que marca el genitivo:', answer: 's', accept: [], explanation: 'La «-s»: Annas, Eriks.' },
+        { type: 'type', prompt: '«de papá» (pappa):', answer: 'pappas', accept: [], explanation: '«pappas».' },
+        { type: 'order', prompt: 'Ordena: «Es el libro de Ana»', words: ['Det', 'är', 'Annas', 'bok'], answer: ['Det', 'är', 'Annas', 'bok'], explanation: '«Det är Annas bok».' },
+        { type: 'order', prompt: 'Ordena: «El coche de Erik es rojo»', words: ['Eriks', 'bil', 'är', 'röd'], answer: ['Eriks', 'bil', 'är', 'röd'], explanation: '«Eriks bil är röd».' },
+        { type: 'order', prompt: 'Ordena: «La casa de mi mamá»', words: ['Min', 'mammas', 'hus'], answer: ['Min', 'mammas', 'hus'], explanation: '«Min mammas hus».' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 26. IMPERATIVO — dar órdenes (SFI A)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'imperativo',
+      title: 'Dar órdenes: el imperativo',
+      subtitle: 'Kom! Ät! Vänta! Läs!',
+      icon: '📢',
+      color: '#10B981',
+      level: 'A',
+      keywords: 'imperativo ordenes mandato kom ät skriv vänta öppna titta instrucciones imperativ',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: 'El imperativo sirve para…', options: ['dar una orden o instrucción', 'hacer una pregunta'], correct: 0, explanation: 'El imperativo manda o instruye: «¡Ven!», «¡Abre la puerta!». 📢' },
+        { type: 'mc', text: '«¡Ven!» → ___', options: ['Kom!', 'Kommer!', 'Komma!'], correct: 0, explanation: '«Kom!» = ¡ven! (de komma, se quita la -a).' },
+        { type: 'mc', text: '«¡Come!» → ___', options: ['Ät!', 'Äter!', 'Äta!'], correct: 0, explanation: '«Ät!» = ¡come!' },
+        { type: 'mc', text: '«¡Escribe!» → ___', options: ['Skriv!', 'Skriver!', 'Skriva!'], correct: 0, explanation: '«Skriv!» = ¡escribe!' },
+        { type: 'mc', text: '«¡Espera!» → ___', options: ['Vänta!', 'Väntar!', 'Väntad!'], correct: 0, explanation: '«Vänta!» = ¡espera! (los verbos en -ar mantienen la -a: vänta, titta, öppna).' },
+        { type: 'mc', text: '«¡Abre la puerta!» → «___ dörren!»', options: ['Öppna', 'Öppnar', 'Öppnad'], correct: 0, explanation: '«Öppna dörren!» = ¡abre la puerta!' },
+        { type: 'mc', text: '«¡Mira!» → ___', options: ['Titta!', 'Tittar!', 'Tittad!'], correct: 0, explanation: '«Titta!» = ¡mira!' },
+        { type: 'mc', text: '«¡Siéntate!» → ___', options: ['Sitt!', 'Sitter!', 'Sitta!'], correct: 0, explanation: '«Sitt!» = ¡siéntate! (de sitta, se quita la -a).' },
+        { type: 'mc', text: '«¡Ven aquí!» → «Kom ___!»', options: ['hit', 'här', 'dit'], correct: 0, explanation: '«Kom hit!» = ¡ven (hacia) aquí! «hit» = hacia aquí.' },
+        { type: 'mc', text: 'Para suavizar una orden puedes usar…', options: ['«Kan du…?» (¿puedes…?)', 'gritar más fuerte'], correct: 0, explanation: '«Kan du stänga dörren?» (¿puedes cerrar la puerta?) suena más amable que la orden directa.' },
+        { type: 'mc', text: '«¡Lee el libro!» → «___ boken!»', options: ['Läs', 'Läser', 'Läsa'], correct: 0, explanation: '«Läs boken!» = ¡lee el libro!' },
+        { type: 'mc', text: 'El imperativo normalmente es el verbo…', options: ['solo la acción (sin decir «tú»)', 'siempre con «du» delante'], correct: 0, explanation: 'No hace falta «du»: la orden es solo el verbo. «Kom!», «Ät!», «Läs!».' },
+        { type: 'type', prompt: '«¡ven!» en sueco:', answer: 'kom', accept: ['kom!'], explanation: '«Kom!»' },
+        { type: 'type', prompt: '«¡come!» en sueco:', answer: 'ät', accept: ['ät!'], explanation: '«Ät!»' },
+        { type: 'type', prompt: '«¡escribe!» en sueco:', answer: 'skriv', accept: ['skriv!'], explanation: '«Skriv!»' },
+        { type: 'type', prompt: '«¡espera!» en sueco:', answer: 'vänta', accept: ['vänta!'], explanation: '«Vänta!»' },
+        { type: 'order', prompt: 'Ordena: «¡Abre la puerta!»', words: ['Öppna', 'dörren'], answer: ['Öppna', 'dörren'], explanation: '«Öppna dörren!».' },
+        { type: 'order', prompt: 'Ordena: «¡Ven aquí!»', words: ['Kom', 'hit'], answer: ['Kom', 'hit'], explanation: '«Kom hit!».' },
+        { type: 'order', prompt: 'Ordena: «¡Lee el libro!»', words: ['Läs', 'boken'], answer: ['Läs', 'boken'], explanation: '«Läs boken!».' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 27. REFLEXIVOS Y «MAN» (SFI B)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'reflexivos',
+      title: 'Reflexivos y «man»',
+      subtitle: 'Jag tvättar mig · Hur säger man?',
+      icon: '🔄',
+      color: '#3B82F6',
+      level: 'B',
+      keywords: 'reflexivos sig mig dig oss man impersonal lära sig känna sig tvätta reflexiva',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: '«Me lavo» → «Jag tvättar ___»', options: ['mig', 'jag', 'sig'], correct: 0, explanation: '«Jag tvättar mig». La forma reflexiva de «jag» es «mig» (me). 🔄' },
+        { type: 'mc', text: '«Él aprende sueco» → «Han lär ___ svenska»', options: ['sig', 'mig', 'honom'], correct: 0, explanation: '«Han lär sig svenska». «lära sig» = aprender. Para él/ella/ellos la reflexiva es «sig».' },
+        { type: 'mc', text: 'La forma reflexiva de «han / hon / de» es…', options: ['sig', 'hans', 'den'], correct: 0, explanation: '«sig» sirve para él, ella y ellos: Han lär sig, De sätter sig.' },
+        { type: 'mc', text: '«Nos sentimos cansados» → «Vi känner ___ trötta»', options: ['oss', 'vi', 'sig'], correct: 0, explanation: '«Vi känner oss trötta». Reflexiva de «vi» = «oss» (nos).' },
+        { type: 'mc', text: '«¿Cómo se dice…?» → «Hur säger ___…?»', options: ['man', 'du', 'vi'], correct: 0, explanation: '«Hur säger man…?» = ¿cómo se dice…? «man» = se / uno (en general).' },
+        { type: 'mc', text: '«man» significa…', options: ['uno / se (en general)', 'un hombre solamente'], correct: 0, explanation: '«man» es impersonal: «uno», «se». (Aunque se escribe igual que «man» = hombre, aquí es «se».)' },
+        { type: 'mc', text: '«Me siento bien» → «Jag känner ___ bra»', options: ['mig', 'jag', 'sig'], correct: 0, explanation: '«Jag känner mig bra» = me siento bien. «känna sig» = sentirse.' },
+        { type: 'mc', text: '«¡Apúrate!» (tú) → «Skynda ___!»', options: ['dig', 'sig', 'du'], correct: 0, explanation: '«Skynda dig!». Reflexiva de «du» = «dig».' },
+        { type: 'mc', text: '«Ellos se sientan» → «De sätter ___»', options: ['sig', 'dem', 'de'], correct: 0, explanation: '«De sätter sig» = ellos se sientan. «sätta sig» = sentarse.' },
+        { type: 'mc', text: '«Aquí se habla sueco» → «Här talar ___ svenska»', options: ['man', 'den', 'de'], correct: 0, explanation: '«Här talar man svenska» = aquí se habla sueco.' },
+        { type: 'type', prompt: 'Reflexivo de «jag» (me):', answer: 'mig', accept: [], explanation: '«mig».' },
+        { type: 'type', prompt: 'Reflexivo de «han/hon/de» (se):', answer: 'sig', accept: [], explanation: '«sig».' },
+        { type: 'type', prompt: '«se / uno» (impersonal):', answer: 'man', accept: [], explanation: '«man».' },
+        { type: 'type', prompt: 'Reflexivo de «vi» (nos):', answer: 'oss', accept: [], explanation: '«oss».' },
+        { type: 'order', prompt: 'Ordena: «Me lavo»', words: ['Jag', 'tvättar', 'mig'], answer: ['Jag', 'tvättar', 'mig'], explanation: '«Jag tvättar mig».' },
+        { type: 'order', prompt: 'Ordena: «Él aprende sueco»', words: ['Han', 'lär', 'sig', 'svenska'], answer: ['Han', 'lär', 'sig', 'svenska'], explanation: '«Han lär sig svenska».' },
+        { type: 'order', prompt: 'Ordena: «¿Cómo se dice esto?»', words: ['Hur', 'säger', 'man', 'det här'], answer: ['Hur', 'säger', 'man', 'det här'], explanation: '«Hur säger man det här?».' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 28. ADVERBIOS (SFI B)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'adverbios',
+      title: 'Adverbios',
+      subtitle: 'snabbt, ofta, alltid, aldrig',
+      icon: '🏃',
+      color: '#3B82F6',
+      level: 'B',
+      keywords: 'adverbios snabbt ofta alltid aldrig ibland kanske mycket adverb modo frecuencia rápidamente',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: 'Para formar un adverbio de modo, al adjetivo se le suma…', options: ['-t (snabb → snabbt)', '-ar'], correct: 0, explanation: 'Adjetivo + t = adverbio: snabb (rápido) → snabbt (rápidamente). 🏃' },
+        { type: 'mc', text: '«Él corre rápido» → «Han springer ___»', options: ['snabbt', 'snabb', 'snabba'], correct: 0, explanation: '«Han springer snabbt». Como describe cómo corre (el verbo), va el adverbio: snabbt.' },
+        { type: 'mc', text: '«Ella habla bien» → «Hon talar ___»', options: ['bra', 'brat', 'bras'], correct: 0, explanation: '«Hon talar bra». «bra» (bien) es irregular: no cambia.' },
+        { type: 'mc', text: '«a menudo» → ___', options: ['ofta', 'alltid', 'aldrig'], correct: 0, explanation: '«ofta» = a menudo.' },
+        { type: 'mc', text: '«siempre» → ___', options: ['alltid', 'aldrig', 'ibland'], correct: 0, explanation: '«alltid» = siempre.' },
+        { type: 'mc', text: '«nunca» → ___', options: ['aldrig', 'alltid', 'ofta'], correct: 0, explanation: '«aldrig» = nunca.' },
+        { type: 'mc', text: '«a veces» → ___', options: ['ibland', 'alltid', 'ofta'], correct: 0, explanation: '«ibland» = a veces.' },
+        { type: 'mc', text: '«quizás» → ___', options: ['kanske', 'mycket', 'lite'], correct: 0, explanation: '«kanske» = quizás.' },
+        { type: 'mc', text: '«Habla despacio» → «Tala ___»', options: ['långsamt', 'långsam', 'långsamma'], correct: 0, explanation: '«Tala långsamt» = habla despacio. långsam + t = långsamt (adverbio).' },
+        { type: 'mc', text: '«mucho» → ___', options: ['mycket', 'lite', 'lagom'], correct: 0, explanation: '«mycket» = mucho. «lite» = poco.' },
+        { type: 'mc', text: '«ahora» → ___', options: ['nu', 'sedan', 'då'], correct: 0, explanation: '«nu» = ahora. «sedan» = después, «då» = entonces.' },
+        { type: 'mc', text: '«Ella canta bonito» → «Hon sjunger ___»', options: ['vackert', 'vacker', 'vackra'], correct: 0, explanation: '«Hon sjunger vackert». vacker + t = vackert (adverbio).' },
+        { type: 'type', prompt: 'Adverbio de «snabb» (rápidamente):', answer: 'snabbt', accept: [], explanation: '«snabbt» (snabb + t).' },
+        { type: 'type', prompt: '«siempre» en sueco:', answer: 'alltid', accept: [], explanation: '«alltid».' },
+        { type: 'type', prompt: '«nunca» en sueco:', answer: 'aldrig', accept: [], explanation: '«aldrig».' },
+        { type: 'type', prompt: '«a menudo» en sueco:', answer: 'ofta', accept: [], explanation: '«ofta».' },
+        { type: 'order', prompt: 'Ordena: «Él corre rápido»', words: ['Han', 'springer', 'snabbt'], answer: ['Han', 'springer', 'snabbt'], explanation: '«Han springer snabbt».' },
+        { type: 'order', prompt: 'Ordena: «Siempre bebo café»', words: ['Jag', 'dricker', 'alltid', 'kaffe'], answer: ['Jag', 'dricker', 'alltid', 'kaffe'], explanation: '«Jag dricker alltid kaffe».' },
+        { type: 'order', prompt: 'Ordena: «Ella habla bien sueco»', words: ['Hon', 'talar', 'bra', 'svenska'], answer: ['Hon', 'talar', 'bra', 'svenska'], explanation: '«Hon talar bra svenska».' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 29. LUGAR Y MOVIMIENTO (SFI B)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'lugar-movimiento',
+      title: 'Lugar y movimiento',
+      subtitle: 'är hemma vs går hem · här/hit',
+      icon: '🧭',
+      color: '#3B82F6',
+      level: 'B',
+      keywords: 'lugar movimiento här hit där dit hemma hem ute ut ligger står sitter donde hacia',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: '«aquí» (dónde estás) → ___', options: ['här', 'hit', 'där'], correct: 0, explanation: '«här» = aquí (ubicación, dónde estás). 🧭' },
+        { type: 'mc', text: '«(hacia) aquí» (movimiento) → ___', options: ['hit', 'här', 'dit'], correct: 0, explanation: '«hit» = hacia aquí (movimiento). El sueco distingue «estar aquí» (här) de «venir aquí» (hit).' },
+        { type: 'mc', text: '«Estoy en casa» → «Jag är ___»', options: ['hemma', 'hem', 'hus'], correct: 0, explanation: '«Jag är hemma» = estoy en casa (ubicación).' },
+        { type: 'mc', text: '«Voy a casa» → «Jag går ___»', options: ['hem', 'hemma', 'hus'], correct: 0, explanation: '«Jag går hem» = voy a casa (movimiento). ¡Ojo! hemma = estar; hem = ir.' },
+        { type: 'mc', text: '«allí» (ubicación) → ___', options: ['där', 'dit', 'här'], correct: 0, explanation: '«där» = allí (dónde algo está).' },
+        { type: 'mc', text: '«(hacia) allá» (movimiento) → ___', options: ['dit', 'där', 'hit'], correct: 0, explanation: '«dit» = hacia allá: «Jag åker dit» = voy para allá.' },
+        { type: 'mc', text: '«¡Ven aquí!» → «Kom ___»', options: ['hit', 'här'], correct: 0, explanation: '«Kom hit!» — hay movimiento hacia ti, por eso «hit».' },
+        { type: 'mc', text: 'El sueco distingue entre…', options: ['dónde estás y hacia dónde vas', 'no distingue, es igual'], correct: 0, explanation: 'Sí: här/hit, där/dit, hemma/hem, ute/ut. Ubicación vs movimiento. 🎯' },
+        { type: 'mc', text: '«afuera» (ubicación) → ___', options: ['ute', 'ut', 'in'], correct: 0, explanation: '«ute» = afuera (dónde estás): «Jag är ute».' },
+        { type: 'mc', text: '«Sal (hacia afuera)» → «Gå ___»', options: ['ut', 'ute', 'in'], correct: 0, explanation: '«Gå ut!» = ¡sal! (movimiento hacia afuera).' },
+        { type: 'mc', text: '«El libro está (acostado) en la mesa» → «Boken ___ på bordet»', options: ['ligger', 'står', 'sitter'], correct: 0, explanation: '«Boken ligger på bordet». Las cosas «acostadas» usan «ligga» (ligger).' },
+        { type: 'mc', text: '«El vaso está (parado) en la mesa» → «Glaset ___ på bordet»', options: ['står', 'ligger', 'sitter'], correct: 0, explanation: '«Glaset står på bordet». Las cosas «de pie» usan «stå» (står).' },
+        { type: 'type', prompt: '«en casa» (ubicación):', answer: 'hemma', accept: [], explanation: '«hemma» (estar en casa).' },
+        { type: 'type', prompt: '«a casa» (movimiento):', answer: 'hem', accept: [], explanation: '«hem» (ir a casa).' },
+        { type: 'type', prompt: '«aquí» (ubicación):', answer: 'här', accept: [], explanation: '«här».' },
+        { type: 'type', prompt: '«hacia aquí» (movimiento):', answer: 'hit', accept: [], explanation: '«hit».' },
+        { type: 'order', prompt: 'Ordena: «Estoy en casa»', words: ['Jag', 'är', 'hemma'], answer: ['Jag', 'är', 'hemma'], explanation: '«Jag är hemma».' },
+        { type: 'order', prompt: 'Ordena: «Voy a casa ahora»', words: ['Jag', 'går', 'hem', 'nu'], answer: ['Jag', 'går', 'hem', 'nu'], explanation: '«Jag går hem nu».' },
+        { type: 'order', prompt: 'Ordena: «¡Ven aquí!»', words: ['Kom', 'hit'], answer: ['Kom', 'hit'], explanation: '«Kom hit!».' },
+      ]
+    },
+
+    // ─────────────────────────────────────────────────────
+    // 30. RESPUESTAS CORTAS (SFI B)
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'respuestas-cortas',
+      title: 'Respuestas cortas',
+      subtitle: 'Ja, det gör jag · Nej, det är jag inte',
+      icon: '💬',
+      color: '#3B82F6',
+      level: 'B',
+      keywords: 'respuestas cortas kortsvar ja nej det gör jag jo si no responder svar',
+      sessionSize: 20,
+      questions: [
+        { type: 'mc', text: '«¿Hablas sueco? Sí» → «Ja, det ___ jag»', options: ['gör', 'är', 'har'], correct: 0, explanation: '«Ja, det gör jag». Para verbos de acción (talar, bor…) la respuesta corta usa «gör» (hago). 💬' },
+        { type: 'mc', text: '«¿Estás cansado? Sí» → «Ja, det ___ jag»', options: ['är', 'gör', 'har'], correct: 0, explanation: '«Ja, det är jag». Si la pregunta usa «är» (ser/estar), la respuesta repite «är».' },
+        { type: 'mc', text: '«¿Tienes coche? Sí» → «Ja, det ___ jag»', options: ['har', 'gör', 'är'], correct: 0, explanation: '«Ja, det har jag». Si la pregunta usa «har» (tener), la respuesta repite «har».' },
+        { type: 'mc', text: 'Para responder corto a un verbo de acción (talar, bor…) se usa…', options: ['gör', 'är', 'har'], correct: 0, explanation: '«gör» (de göra = hacer) sustituye al verbo de acción: Ja, det gör jag.' },
+        { type: 'mc', text: '«¿No vienes? — ¡Sí que voy!» se responde con…', options: ['Jo', 'Ja', 'Nej'], correct: 0, explanation: '«Jo». Cuando la pregunta es negativa y quieres decir «sí», se usa «Jo», no «Ja». 🎯' },
+        { type: 'mc', text: '«¿Vives aquí? No» → «Nej, det gör jag ___»', options: ['inte', 'ingen', 'aldrig'], correct: 0, explanation: '«Nej, det gör jag inte» = no, no vivo (aquí).' },
+        { type: 'mc', text: 'En «Ja, det gör jag», «gör» sustituye a…', options: ['el verbo de acción', 'el sujeto'], correct: 0, explanation: '«gör» reemplaza el verbo que se preguntó (talar, bor, jobbar…), para no repetirlo.' },
+        { type: 'mc', text: '«¿Eres de Suecia? No» → «Nej, det ___ jag inte»', options: ['är', 'gör', 'har'], correct: 0, explanation: '«Nej, det är jag inte». Con «är» en la pregunta, se repite «är».' },
+        { type: 'type', prompt: 'El verbo que sustituye a las acciones en respuestas cortas:', answer: 'gör', accept: [], explanation: '«gör» (Ja, det gör jag).' },
+        { type: 'type', prompt: '«sí» a una pregunta negativa (¿no vienes? — sí):', answer: 'jo', accept: [], explanation: '«Jo».' },
+        { type: 'order', prompt: 'Ordena: «Sí, (yo) hablo»', words: ['Ja', 'det', 'gör', 'jag'], answer: ['Ja', 'det', 'gör', 'jag'], explanation: '«Ja, det gör jag».' },
+        { type: 'order', prompt: 'Ordena: «No, no tengo»', words: ['Nej', 'det', 'har', 'jag', 'inte'], answer: ['Nej', 'det', 'har', 'jag', 'inte'], explanation: '«Nej, det har jag inte».' },
+        { type: 'order', prompt: 'Ordena: «Sí, (lo) estoy»', words: ['Ja', 'det', 'är', 'jag'], answer: ['Ja', 'det', 'är', 'jag'], explanation: '«Ja, det är jag».' },
+      ]
+    },
   ]
 };
 
@@ -1914,6 +2114,41 @@ const THEORY_DATA = {
       ]
     },
 
+
+    // ── Genitivo ────────────────────────────────────────────
+    {
+      id: 'u-genitivo',
+      title: 'El genitivo (de quién es)',
+      subtitle: 'Annas bok = el libro de Ana',
+      icon: '🔑',
+      color: '#10B981',
+      level: 'A',
+      grammarTopicId: 'genitivo',
+      cards: [
+        { title: 'La idea', body: 'Para decir de <strong>quién</strong> es algo, el sueco tiene un truco facilísimo: le pega una <strong>-s</strong> al dueño. <br><em>Anna</em> → <em><strong>Annas</strong> bok</em> = el libro de Ana. Sin «de», sin nada más. 🔑' },
+        { title: 'Cómo se arma', body: 'Primero el <strong>dueño</strong> (con -s), luego la <strong>cosa</strong>: <br><em>Eriks bil</em> = el coche de Erik. <br><em>pappas jobb</em> = el trabajo de papá. <br>Es como en inglés (Erik’s car), pero…' },
+        { title: '¡Sin apóstrofo!', body: 'Ojo con esto: en sueco el genitivo <strong>NO lleva apóstrofo</strong>. Se escribe pegado: <em>Annas</em>, <em>Eriks</em>, <em>Sveriges</em> (de Suecia). Nada de «Anna’s». 🎯' },
+        { title: 'También con «el/la»', body: 'Funciona igual con cosas: <br><em>hunden</em> (el perro) → <em>hundens namn</em> (el nombre del perro). <br><em>huset</em> (la casa) → <em>husets dörr</em> (la puerta de la casa). <br>Siempre: dueño + s, luego la cosa. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── Imperativo ──────────────────────────────────────────
+    {
+      id: 'u-imperativo',
+      title: 'Dar órdenes: el imperativo',
+      subtitle: 'Kom! Ät! Läs!',
+      icon: '📢',
+      color: '#10B981',
+      level: 'A',
+      grammarTopicId: 'imperativo',
+      cards: [
+        { title: 'La idea', body: 'El imperativo es la forma de <strong>mandar o instruir</strong>: «¡Ven!», «¡Come!», «¡Espera!». Lo usas todo el día: con los niños, en recetas, en instrucciones. Y en sueco es cortito. 📢' },
+        { title: 'La regla', body: 'El imperativo es casi siempre <strong>el verbo sin la persona</strong>, solo la acción: <br><em>komma</em> → <strong>Kom!</strong> (¡ven!). <br><em>äta</em> → <strong>Ät!</strong> (¡come!). <br><em>skriva</em> → <strong>Skriv!</strong> (¡escribe!). <br>No hace falta decir «du» (tú).' },
+        { title: 'Los de «-ar» guardan la -a', body: 'Los verbos que terminan en <strong>-ar</strong> mantienen la -a en el imperativo: <br><em>öppna</em> → <strong>Öppna!</strong> (¡abre!). <br><em>titta</em> → <strong>Titta!</strong> (¡mira!). <br><em>vänta</em> → <strong>Vänta!</strong> (¡espera!).' },
+        { title: 'Con amabilidad', body: 'Una orden directa puede sonar fuerte. Para suavizar, usa una pregunta: <br><em><strong>Kan du</strong> stänga dörren?</em> = ¿puedes cerrar la puerta? <br>Y para acompañar: <em>Kom <strong>hit</strong>!</em> = ¡ven aquí! ¡A practicar! 💪' },
+      ]
+    },
+
     // ── 13. Posesivos ───────────────────────────────────────
     {
       id: 'u-posesivos',
@@ -2050,6 +2285,75 @@ const THEORY_DATA = {
         { title: 'El detalle clave', body: 'Con «den här/den där», el sustantivo va en su forma <strong>con el/la</strong> (definida): <br><em>den här <strong>bilen</strong></em> (no «bil»). <br><em>det här <strong>huset</strong></em>. <br>Es como decir «este el-coche». Raro, pero así es el sueco. 🎯' },
         { title: 'Algún y ningún', body: '<strong>någon</strong> = algún/alguien: <em>Har du någon fråga?</em> (¿tienes alguna pregunta?). <br><strong>ingen</strong> = ningún/nadie: <em>Ingen är hemma</em> (nadie está en casa). <br>Con «ett»: <em>något</em> / <em>inget</em>. En plural: <em>några</em> / <em>inga</em>.' },
         { title: '¿Cuál? y todo', body: '<strong>vilken</strong> = cuál/qué: <em>Vilken bok?</em> (¿cuál libro?). Con «ett»: <em>vilket</em>. <br><strong>hela</strong> = todo/entero: <em>hela dagen</em> (todo el día). <br>Con esto ya preguntas, señalas y precisas. ¡A practicar! 💪' },
+      ]
+    },
+
+
+    // ── Reflexivos y «man» ──────────────────────────────────
+    {
+      id: 'u-reflexivos',
+      title: 'Reflexivos y «man»',
+      subtitle: 'Jag tvättar mig · Hur säger man?',
+      icon: '🔄',
+      color: '#3B82F6',
+      level: 'B',
+      grammarTopicId: 'reflexivos',
+      cards: [
+        { title: 'La idea', body: 'Algunos verbos «rebotan» sobre uno mismo: <em>lavarse</em>, <em>sentirse</em>, <em>sentarse</em>. En español usas «me, te, se». En sueco hay unas palabritas parecidas que acompañan al verbo. 🔄' },
+        { title: 'Las formas reflexivas', body: 'Son como los pronombres de objeto: <br><em>jag → <strong>mig</strong></em>, <em>du → <strong>dig</strong></em>, <em>vi → <strong>oss</strong></em>. <br>Y para él/ella/ellos, una sola: <strong>sig</strong>. <br><em>Jag tvättar <strong>mig</strong></em> = me lavo. <em>Han lär <strong>sig</strong></em> = él aprende.' },
+        { title: 'Verbos muy usados', body: '<em>känna sig</em> = sentirse: <em>Jag känner mig bra</em> (me siento bien). <br><em>lära sig</em> = aprender: <em>Hon lär sig svenska</em>. <br><em>sätta sig</em> = sentarse: <em>Sätt dig!</em> (¡siéntate!).' },
+        { title: '«man» = se / uno', body: 'Cuando no importa quién hace algo, el sueco usa <strong>man</strong> (= se / uno): <br><em>Hur säger <strong>man</strong>…?</em> = ¿cómo se dice…? <br><em>Här talar <strong>man</strong> svenska</em> = aquí se habla sueco. <br>Palabra clave para preguntar cosas. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── Adverbios ───────────────────────────────────────────
+    {
+      id: 'u-adverbios',
+      title: 'Adverbios',
+      subtitle: 'snabbt, ofta, alltid, aldrig',
+      icon: '🏃',
+      color: '#3B82F6',
+      level: 'B',
+      grammarTopicId: 'adverbios',
+      cards: [
+        { title: 'La idea', body: 'Los adverbios dicen <strong>cómo</strong>, <strong>cuándo</strong> o <strong>cuánto</strong> pasa algo: rápido, a menudo, siempre. Le dan vida a tus frases: no es lo mismo «corro» que «corro rápido». 🏃' },
+        { title: 'De adjetivo a adverbio', body: 'Muy fácil: al adjetivo le sumas <strong>-t</strong>: <br><em>snabb</em> (rápido) → <em>Han springer <strong>snabbt</strong></em> (corre rápido). <br><em>vacker</em> (bonito) → <em>Hon sjunger <strong>vackert</strong></em> (canta bonito). <br>(Excepción común: <em>bra</em> = bien, no cambia.)' },
+        { title: 'Cada cuánto (frecuencia)', body: '<strong>alltid</strong> = siempre. <strong>ofta</strong> = a menudo. <strong>ibland</strong> = a veces. <strong>aldrig</strong> = nunca. <br><em>Jag dricker <strong>alltid</strong> kaffe</em> = siempre bebo café. <br>Suelen ir justo después del verbo.' },
+        { title: 'Otros muy útiles', body: '<strong>kanske</strong> = quizás. <strong>mycket</strong> = mucho. <strong>lite</strong> = poco. <strong>nu</strong> = ahora. <br><em>Kanske imorgon</em> = quizás mañana. Con estos ya matizas casi todo. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── Lugar y movimiento ──────────────────────────────────
+    {
+      id: 'u-lugar-movimiento',
+      title: 'Lugar y movimiento',
+      subtitle: 'är hemma vs går hem',
+      icon: '🧭',
+      color: '#3B82F6',
+      level: 'B',
+      grammarTopicId: 'lugar-movimiento',
+      cards: [
+        { title: 'La idea', body: 'Aquí el sueco hace algo que el español no: usa <strong>una palabra distinta</strong> según si <strong>estás</strong> en un sitio o si <strong>vas</strong> hacia él. Parece raro, pero tiene toda la lógica. 🧭' },
+        { title: 'Estar vs. ir', body: '<strong>här</strong> = aquí (estás) · <strong>hit</strong> = hacia aquí (vas). <br><strong>där</strong> = allí (está) · <strong>dit</strong> = hacia allá (vas). <br><em>Jag är <strong>här</strong></em> (estoy aquí) vs <em>Kom <strong>hit</strong>!</em> (ven aquí).' },
+        { title: 'La estrella: hemma / hem', body: 'La más usada: <br><em>Jag är <strong>hemma</strong></em> = estoy en casa (ubicación). <br><em>Jag går <strong>hem</strong></em> = voy a casa (movimiento). <br>Mismo «casa», pero una para estar y otra para ir. Igual: <strong>ute/ut</strong> (afuera / hacia afuera).' },
+        { title: 'Cómo «están» las cosas', body: 'El sueco dice cómo está colocado un objeto: <br><em>Boken <strong>ligger</strong> på bordet</em> = el libro está (acostado) en la mesa. <br><em>Glaset <strong>står</strong> på bordet</em> = el vaso está (de pie) en la mesa. <br><em>ligga</em> = acostado, <em>stå</em> = de pie, <em>sitta</em> = sentado/pegado. ¡A practicar! 💪' },
+      ]
+    },
+
+    // ── Respuestas cortas ───────────────────────────────────
+    {
+      id: 'u-respuestas-cortas',
+      title: 'Respuestas cortas',
+      subtitle: 'Ja, det gör jag',
+      icon: '💬',
+      color: '#3B82F6',
+      level: 'B',
+      grammarTopicId: 'respuestas-cortas',
+      cards: [
+        { title: 'La idea', body: 'Cuando te preguntan algo, en sueco no se responde solo «Ja» o «Nej»: se añade una colita que suena natural y educada. <br><em>—Talar du svenska? —Ja, det <strong>gör</strong> jag.</em> (—¿Hablas sueco? —Sí.) 💬' },
+        { title: 'El comodín «gör»', body: 'Para verbos de acción (hablar, vivir, trabajar…), la respuesta usa <strong>gör</strong> (= hago), para no repetir el verbo: <br><em>Ja, det <strong>gör</strong> jag</em> = sí (lo hago). <br><em>Nej, det <strong>gör</strong> jag inte</em> = no (no lo hago).' },
+        { title: 'Con «är» y «har» se repiten', body: 'Si la pregunta usa <em>är</em> (ser/estar) o <em>har</em> (tener), la respuesta repite esa palabra: <br><em>—Är du trött? —Ja, det <strong>är</strong> jag.</em> <br><em>—Har du en bil? —Ja, det <strong>har</strong> jag.</em>' },
+        { title: 'El truco del «Jo»', body: 'Si te preguntan algo <strong>en negativo</strong> y quieres decir «sí», no usas «Ja» sino <strong>Jo</strong>: <br><em>—Kommer du inte? —<strong>Jo</strong>, det gör jag!</em> (—¿No vienes? —¡Sí que voy!). <br>Ese «Jo» te hace sonar nativo. ¡A practicar! 💪' },
       ]
     },
 
