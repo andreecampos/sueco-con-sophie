@@ -26,7 +26,7 @@
  *   export SUPABASE_URL="https://xxxx.supabase.co"
  *   export SUPABASE_SERVICE_ROLE_KEY="eyJ..."
  *   export RESEND_API_KEY="re_..."
- *   export APP_URL="https://suecoconsophie.com"                 # a dónde llega el link del correo
+ *   export APP_URL="https://app.suecoconsophie.com"                 # a dónde llega el link del correo
  *   export RESEND_FROM="Sueco con Sophie <noreply@suecoconsophie.com>"  # tu dominio verificado
  *
  *   # 2) PRUEBA sin tocar nada (solo lista lo que haría):
@@ -56,7 +56,7 @@ const {
   SUPABASE_URL,
   SUPABASE_SERVICE_ROLE_KEY,
   RESEND_API_KEY,
-  APP_URL = 'https://suecoconsophie.com',
+  APP_URL = 'https://app.suecoconsophie.com',
   RESEND_FROM = 'Sueco con Sophie <hola@suecoconsophie.com>',
 } = process.env;
 
