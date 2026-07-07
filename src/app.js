@@ -1408,16 +1408,29 @@ async function renderStudents() {
   const container = document.getElementById('students-list');
   if (!container) return;
   container.innerHTML = '<div class="text-center py-8 text-gray-400 text-sm">⏳ Cargando alumnos...</div>';
-  const students = await getStudents();
+  await getStudents();
+  paintStudents();
+}
 
-  if (students.length === 0) {
+let _studentSearch = '';
+function filterStudentCards(term) { _studentSearch = (term || '').toLowerCase().trim(); paintStudents(); }
+function paintStudents() {
+  const container = document.getElementById('students-list');
+  if (!container) return;
+  const all = _cachedStudents || [];
+  if (all.length === 0) {
     container.innerHTML = `<div class="text-center py-8 text-gray-400 text-sm">
       <div class="text-3xl mb-2">👥</div>
       <p>No hay alumnos registrados.<br>Agrega el primero arriba.</p>
     </div>`;
     return;
   }
-
+  const _q = _studentSearch;
+  const students = _q ? all.filter(s => ((s.name || '') + ' ' + (s.email || '')).toLowerCase().includes(_q)) : all;
+  if (students.length === 0) {
+    container.innerHTML = `<div class="text-center py-6 text-gray-400 text-sm">🔎 Ningún alumno coincide con la búsqueda</div>`;
+    return;
+  }
   container.innerHTML = students.map(s => {
     const lastLogin = s.lastLogin
       ? new Date(s.lastLogin).toLocaleDateString('es-ES', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' })
@@ -1430,6 +1443,10 @@ async function renderStudents() {
     const payIcon = s.paymentMethod === 'stripe' ? '💳' : '💵';
     const nextPay = s.nextPaymentDate ? s.nextPaymentDate : '—';
     const cancelsAtStr = s.cancelsAt ? new Date(s.cancelsAt).toLocaleDateString('es-ES', { day:'numeric', month:'short', year:'numeric' }) : null;
+    const _days = s.lastLogin ? Math.floor((Date.now() - new Date(s.lastLogin).getTime()) / 86400000) : null;
+    const lastAccessStr = _days === null ? 'Nunca ha entrado' : (_days === 0 ? 'hoy' : `hace ${_days} d`);
+    const lastAccessCls = (_days === null || _days >= 21) ? 'text-red-500 font-semibold' : 'text-gray-400';
+    const memberSince = s.createdAt ? new Date(s.createdAt).toLocaleDateString('es-ES', { month:'short', year:'numeric' }) : null;
     const borderColor = status === 'active' || status === 'manual' ? 'border-green-200' : status === 'cancelling' ? 'border-orange-200' : status === 'failed' ? 'border-red-200' : 'border-gray-200';
     return `
     <div class="glass rounded-2xl p-4 shadow border ${borderColor}">
@@ -1453,6 +1470,8 @@ async function renderStudents() {
         <span>${payIcon} ${price > 0 ? price + ' SEK/mes' : 'Sin precio'}</span>
         <span>·</span>
         <span>📱 ${deviceCount}/${MAX_DEVICES}</span>
+        <span>·</span><span class="${lastAccessCls}">🕒 ${lastAccessStr}</span>
+        ${memberSince ? `<span>·</span><span>📅 desde ${memberSince}</span>` : ''}
         ${cancelsAtStr ? `<span>·</span><span class="text-orange-500 font-semibold">⚠️ Pierde acceso: ${cancelsAtStr}</span>` : ''}
       </div>
 
@@ -2275,8 +2294,8 @@ function filterDashStudents(filter) {
     return;
   }
 
-  const statusLabels = { active:'✅ Activo', failed:'⚠️ Fallido', cancelled:'❌ Cancelado', pending:'⏳ Pendiente', manual:'💵 Manual' };
-  const statusClass  = { active:'status-badge-active', failed:'status-badge-failed', cancelled:'status-badge-cancelled', pending:'status-badge-pending', manual:'status-badge-manual' };
+  const statusLabels = { active:'✅ Activo', failed:'⚠️ Fallido', cancelled:'❌ Cancelado', pending:'⏳ Pendiente', manual:'💵 Manual', cancelling:'🔶 Cancela pronto' };
+  const statusClass  = { active:'status-badge-active', failed:'status-badge-failed', cancelled:'status-badge-cancelled', pending:'status-badge-pending', manual:'status-badge-manual', cancelling:'status-badge-failed' };
   const defaultPrice = (_cachedStudents ? 250 : 250); // uses cached config via renderAdminDashboard
 
   container.innerHTML = filtered.map(s => {
