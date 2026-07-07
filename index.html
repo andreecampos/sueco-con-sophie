@@ -5612,6 +5612,7 @@ async function getStudents() {
     createdAt: s.created_at,
     lastLogin: s.last_login,
     cancelsAt: s.cancels_at || null,
+    level: s.level || null,
   }));
   return _cachedStudents;
 }
@@ -5967,6 +5968,7 @@ function paintStudents() {
         <span>📱 ${deviceCount}/${MAX_DEVICES}</span>
         <span>·</span><span class="${lastAccessCls}">🕒 ${lastAccessStr}</span>
         ${memberSince ? `<span>·</span><span>📅 desde ${memberSince}</span>` : ''}
+        <span>·</span><span>🎯 ${s.level ? (typeof LEVEL_LABEL !== 'undefined' && LEVEL_LABEL[s.level] || s.level) : 'sin prueba'}</span>
         ${cancelsAtStr ? `<span>·</span><span class="text-orange-500 font-semibold">⚠️ Pierde acceso: ${cancelsAtStr}</span>` : ''}
       </div>
 
