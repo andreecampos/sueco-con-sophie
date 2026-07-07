@@ -793,7 +793,7 @@ function showToast(msg, type = 'info') {
 // ── ADMIN ─────────────────────────────────────────────────────
 function goAdmin() {
   stopSpeech();
-  if (!isAdminUser()) { showToast('No tienes acceso de administrador.', 'error'); return; }
+  if (!isAdminUser()) { showToast(window._sbSession ? 'No tienes acceso de administrador.' : 'Primero inicia sesión con tu cuenta de administrador.', 'error'); return; }
   state.adminLoggedIn = true;
   const lg = document.getElementById('admin-login'); if (lg) lg.classList.add('hidden');
   const pn = document.getElementById('admin-panel'); if (pn) pn.classList.remove('hidden');
@@ -1163,17 +1163,18 @@ async function loginStudent() {
     .eq('id', data.user.id)
     .single();
 
-  if (dbErr || !student) {
+  const _isAdmin = ADMIN_EMAILS.includes((email || '').toLowerCase());
+
+  if ((dbErr || !student) && !_isAdmin) {
     await sb.auth.signOut();
     showErr('Error al verificar tu cuenta. Contacta a Sophie.');
     return;
   }
 
-  // Los alumnos con pago inactivo SÍ pueden entrar, pero en modo bloqueado (ven pero no interactúan).
-  // El límite de dispositivos solo se controla para los activos.
-  const blocked = !student.active;
+  // Admin: entra siempre (aunque no tenga fila de alumno). Alumno inactivo: entra en modo bloqueado.
+  const blocked = student ? !student.active : false;
 
-  if (!blocked) {
+  if (student && !blocked && !_isAdmin) {
     const deviceKeys = student.device_keys || [];
     const alreadyRegistered = deviceKeys.includes(DEVICE_KEY);
     if (!alreadyRegistered && deviceKeys.length >= MAX_DEVICES) {
@@ -1187,14 +1188,19 @@ async function loginStudent() {
     await sb.from('students').update(updFields).eq('id', data.user.id);
   }
 
-  window._sbSession = { email: data.user.email, id: data.user.id, name: student.name, active: student.active, status: student.status };
+  window._sbSession = {
+    email: data.user.email, id: data.user.id,
+    name: (student && student.name) || (_isAdmin ? 'Admin' : (email || '')),
+    active: student ? student.active : true,
+    status: student ? student.status : 'active',
+  };
   errEl?.classList.add('hidden');
   if (btn) { btn.disabled = false; btn.textContent = 'Entrar'; }
   const adminBtn = document.getElementById('admin-btn-home');
   if (adminBtn) adminBtn.style.display = isAdminUser() ? '' : 'none';
   showView('home');
   renderHomeDashboard();
-  showToast(blocked ? `Hej ${student.name}. Tu suscripción está inactiva.` : `¡Välkommen, ${student.name}! 🇸🇪`, blocked ? 'info' : 'success');
+  showToast(_isAdmin ? '¡Bienvenida! Tienes acceso de administrador 👋' : (blocked ? `Hej ${student.name}. Tu suscripción está inactiva.` : `¡Välkommen, ${student.name}! 🇸🇪`), 'success');
 }
 
 async function logoutStudent() {
@@ -1261,10 +1267,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const { data: { session } } = await sb.auth.getSession();
   if (session) {
+    const _adm = ADMIN_EMAILS.includes((session.user.email || '').toLowerCase());
     const { data: student } = await sb
       .from('students').select('active, status').eq('id', session.user.id).single();
-    if (student) {
-      window._sbSession = { email: session.user.email, id: session.user.id, active: student.active, status: student.status };
+    if (student || _adm) {
+      window._sbSession = { email: session.user.email, id: session.user.id, active: student ? student.active : true, status: student ? student.status : 'active' };
       const adminBtn = document.getElementById('admin-btn-home');
       if (adminBtn) adminBtn.style.display = isAdminUser() ? '' : 'none';
       showView('home');
