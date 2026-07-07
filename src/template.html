@@ -357,8 +357,8 @@
 
       <div class="card-hover glass rounded-2xl p-6 shadow-lg border border-blue-100 text-center" onclick="selectLevel('A')">
         <div class="level-a w-14 h-14 rounded-2xl flex items-center justify-center text-white text-2xl font-black mx-auto mb-3 shadow-lg">A</div>
-        <h3 class="font-bold text-gray-800 text-lg">SFI A</h3>
-        <p class="text-gray-500 text-xs mt-1">Nybörjare</p>
+        <h3 class="font-bold text-gray-800 text-lg">Principiante</h3>
+        <p class="text-gray-500 text-xs mt-1">SFI A</p>
         <div class="mt-3 flex justify-center gap-1">
           <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
           <span class="w-2 h-2 rounded-full bg-gray-200"></span>
@@ -370,8 +370,8 @@
 
       <div class="card-hover glass rounded-2xl p-6 shadow-lg border border-blue-100 text-center" onclick="selectLevel('B')">
         <div class="level-b w-14 h-14 rounded-2xl flex items-center justify-center text-white text-2xl font-black mx-auto mb-3 shadow-lg">B</div>
-        <h3 class="font-bold text-gray-800 text-lg">SFI B</h3>
-        <p class="text-gray-500 text-xs mt-1">Grundläggande</p>
+        <h3 class="font-bold text-gray-800 text-lg">Básico</h3>
+        <p class="text-gray-500 text-xs mt-1">SFI B</p>
         <div class="mt-3 flex justify-center gap-1">
           <span class="w-2 h-2 rounded-full bg-blue-400"></span>
           <span class="w-2 h-2 rounded-full bg-blue-400"></span>
@@ -383,8 +383,8 @@
 
       <div class="card-hover glass rounded-2xl p-6 shadow-lg border border-blue-100 text-center" onclick="selectLevel('C')">
         <div class="level-c w-14 h-14 rounded-2xl flex items-center justify-center text-white text-2xl font-black mx-auto mb-3 shadow-lg">C</div>
-        <h3 class="font-bold text-gray-800 text-lg">SFI C</h3>
-        <p class="text-gray-500 text-xs mt-1">Mellannivå</p>
+        <h3 class="font-bold text-gray-800 text-lg">Intermedio</h3>
+        <p class="text-gray-500 text-xs mt-1">SFI C</p>
         <div class="mt-3 flex justify-center gap-1">
           <span class="w-2 h-2 rounded-full bg-amber-400"></span>
           <span class="w-2 h-2 rounded-full bg-amber-400"></span>
@@ -396,8 +396,8 @@
 
       <div class="card-hover glass rounded-2xl p-6 shadow-lg border border-blue-100 text-center" onclick="selectLevel('D')">
         <div class="level-d w-14 h-14 rounded-2xl flex items-center justify-center text-white text-2xl font-black mx-auto mb-3 shadow-lg">D</div>
-        <h3 class="font-bold text-gray-800 text-lg">SFI D</h3>
-        <p class="text-gray-500 text-xs mt-1">Avancerad</p>
+        <h3 class="font-bold text-gray-800 text-lg">Avanzado</h3>
+        <p class="text-gray-500 text-xs mt-1">SFI D</p>
         <div class="mt-3 flex justify-center gap-1">
           <span class="w-2 h-2 rounded-full bg-purple-400"></span>
           <span class="w-2 h-2 rounded-full bg-purple-400"></span>
@@ -477,8 +477,8 @@
             <div class="font-bold text-gray-800 text-base">Hörförståelse</div>
             <div class="text-sm text-gray-500 mt-0.5">Escucha a Sophie y responde preguntas</div>
             <div class="flex gap-2 mt-2">
-              <span class="text-xs bg-swe-blue/10 text-swe-blue px-2 py-0.5 rounded-full font-semibold">SFI A</span>
-              <span class="text-xs bg-swe-blue/10 text-swe-blue px-2 py-0.5 rounded-full font-semibold">SFI B</span>
+              <span class="text-xs bg-swe-blue/10 text-swe-blue px-2 py-0.5 rounded-full font-semibold">Principiante</span>
+              <span class="text-xs bg-swe-blue/10 text-swe-blue px-2 py-0.5 rounded-full font-semibold">Básico</span>
             </div>
           </div>
           <div class="text-swe-blue text-xl">→</div>
@@ -1321,6 +1321,7 @@
     <div style="height:4px; background:#FECC02;"></div>
   </div>
   <div class="max-w-4xl mx-auto px-4 py-5">
+    <div id="theory-tabs" class="flex gap-2 mb-4 overflow-x-auto pb-1"></div>
     <div class="glass rounded-2xl p-4 shadow border border-sky-100 mb-5">
       <div class="flex items-center justify-between mb-2">
         <span class="text-sm font-bold text-gray-700">Tu progreso</span>
@@ -1384,9 +1385,9 @@
     <div class="flex gap-2 mb-5 items-center">
       <span class="text-xs text-gray-500 font-semibold">Filtrar:</span>
       <button onclick="filterGrammar('all')" id="gf-all" data-level="all" class="grammar-filter-btn active text-xs px-3 py-1.5 rounded-full font-semibold">Todos</button>
-      <button onclick="filterGrammar('A')" id="gf-A" data-level="A" class="grammar-filter-btn text-xs px-3 py-1.5 rounded-full font-semibold">SFI A</button>
-      <button onclick="filterGrammar('B')" id="gf-B" data-level="B" class="grammar-filter-btn text-xs px-3 py-1.5 rounded-full font-semibold">SFI B</button>
-      <button onclick="filterGrammar('C')" id="gf-C" data-level="C" class="grammar-filter-btn text-xs px-3 py-1.5 rounded-full font-semibold">SFI C</button>
+      <button onclick="filterGrammar('A')" id="gf-A" data-level="A" class="grammar-filter-btn text-xs px-3 py-1.5 rounded-full font-semibold">Principiante</button>
+      <button onclick="filterGrammar('B')" id="gf-B" data-level="B" class="grammar-filter-btn text-xs px-3 py-1.5 rounded-full font-semibold">Básico</button>
+      <button onclick="filterGrammar('C')" id="gf-C" data-level="C" class="grammar-filter-btn text-xs px-3 py-1.5 rounded-full font-semibold">Intermedio</button>
     </div>
 
     <!-- Buscador de temas -->
@@ -1527,7 +1528,7 @@
     <div class="glass rounded-3xl p-6 shadow-lg border border-blue-100 text-center mb-5">
       <div class="text-5xl mb-3">🎯</div>
       <h2 class="text-2xl font-black text-gray-800 mb-2">¿Cuál es tu nivel de sueco?</h2>
-      <p class="text-gray-600 text-sm leading-relaxed">Esta prueba te ubica en <b>SFI A, B o C</b>. Empieza fácil y <b>sube de dificultad</b> poco a poco. Tómala en serio: mide de verdad lo que sabes.</p>
+      <p class="text-gray-600 text-sm leading-relaxed">Esta prueba te ubica en <b>Principiante, Básico o Intermedio</b> (SFI A, B, C). Empieza fácil y <b>sube de dificultad</b> poco a poco. Tómala en serio: mide de verdad lo que sabes.</p>
     </div>
 
     <div class="glass rounded-2xl p-5 shadow border border-blue-100 mb-5">
@@ -1654,10 +1655,10 @@
 
       <!-- Level filter -->
       <div class="flex gap-2 mb-5">
-        <button onclick="filterHorst('A')" data-hlevel="A" class="horst-filter-btn active flex-1 py-2 rounded-xl text-sm font-bold transition-all">SFI A</button>
-        <button onclick="filterHorst('B')" data-hlevel="B" class="horst-filter-btn flex-1 py-2 rounded-xl text-sm font-bold transition-all">SFI B</button>
-        <button onclick="filterHorst('C')" data-hlevel="C" class="horst-filter-btn flex-1 py-2 rounded-xl text-sm font-bold transition-all">SFI C</button>
-        <button onclick="filterHorst('D')" data-hlevel="D" class="horst-filter-btn flex-1 py-2 rounded-xl text-sm font-bold transition-all">SFI D</button>
+        <button onclick="filterHorst('A')" data-hlevel="A" class="horst-filter-btn active flex-1 py-2 rounded-xl text-sm font-bold transition-all">Principiante</button>
+        <button onclick="filterHorst('B')" data-hlevel="B" class="horst-filter-btn flex-1 py-2 rounded-xl text-sm font-bold transition-all">Básico</button>
+        <button onclick="filterHorst('C')" data-hlevel="C" class="horst-filter-btn flex-1 py-2 rounded-xl text-sm font-bold transition-all">Intermedio</button>
+        <button onclick="filterHorst('D')" data-hlevel="D" class="horst-filter-btn flex-1 py-2 rounded-xl text-sm font-bold transition-all">Avanzado</button>
       </div>
 
       <!-- Episodes grid -->

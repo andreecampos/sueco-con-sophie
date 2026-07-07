@@ -113,9 +113,9 @@ function selectLevel(level) {
 function updateMenuUI() {
   const L = state.level;
   const labels = { A: 'Nybörjare — Grundläggande svenska', B: 'Grundläggande — Mer komplex svenska', C: 'Mellannivå', D: 'Avancerad nivå' };
-  const titles = { A: 'SFI A', B: 'SFI B', C: 'SFI C', D: 'SFI D' };
+  const titles = { A: 'Principiante', B: 'Básico', C: 'Intermedio', D: 'Avanzado' };
   const classes = { A: 'level-a', B: 'level-b', C: 'level-c', D: 'level-d' };
-  document.getElementById('menu-subtitle').textContent = `SFI ${L} — Välj övning`;
+  document.getElementById('menu-subtitle').textContent = `${titles[L]} — Välj övning`;
   document.getElementById('menu-level-title').textContent = titles[L];
   document.getElementById('menu-level-desc').textContent = labels[L];
   const badge = document.getElementById('menu-level-badge');
@@ -207,7 +207,7 @@ function speakText(ctx) {
 // ── LISTEN MODE ──────────────────────────────────────────────
 function initListen() {
   const items = DB[state.level].listen || [];
-  document.getElementById('listen-header-sub').textContent = `SFI ${state.level} — Comprensión auditiva`;
+  document.getElementById('listen-header-sub').textContent = `${LEVEL_LABEL[state.level]||state.level} — Comprensión auditiva`;
   document.getElementById('audio-player-area').classList.add('hidden');
   const grid = document.getElementById('listen-grid');
   grid.innerHTML = '';
@@ -380,7 +380,7 @@ function nextAudio() {
 // ── READ MODE ─────────────────────────────────────────────────
 function initRead() {
   const items = DB[state.level].read || [];
-  document.getElementById('read-header-sub').textContent = `SFI ${state.level} — Comprensión lectora`;
+  document.getElementById('read-header-sub').textContent = `${LEVEL_LABEL[state.level]||state.level} — Comprensión lectora`;
   document.getElementById('read-area').classList.add('hidden');
   const grid = document.getElementById('read-grid');
   grid.innerHTML = '';
@@ -495,7 +495,7 @@ function nextText() {
 // ── WRITE MODE ────────────────────────────────────────────────
 function initWrite() {
   const items = DB[state.level].write || [];
-  document.getElementById('write-header-sub').textContent = `SFI ${state.level} — Producción escrita`;
+  document.getElementById('write-header-sub').textContent = `${LEVEL_LABEL[state.level]||state.level} — Producción escrita`;
   document.getElementById('write-area').classList.add('hidden');
   const grid = document.getElementById('write-grid');
   grid.innerHTML = '';
@@ -580,7 +580,7 @@ function nextWrite() {
 // ── SPEAK MODE ────────────────────────────────────────────────
 function initSpeak() {
   const items = DB[state.level].speak || [];
-  document.getElementById('speak-header-sub').textContent = `SFI ${state.level} — Expresión oral`;
+  document.getElementById('speak-header-sub').textContent = `${LEVEL_LABEL[state.level]||state.level} — Expresión oral`;
   document.getElementById('speak-area').classList.add('hidden');
   const grid = document.getElementById('speak-grid');
   grid.innerHTML = '';
@@ -648,8 +648,8 @@ function nextSpeak() {
 // ── TEST MODE ─────────────────────────────────────────────────
 function initTest() {
   const questions = DB[state.level].test || [];
-  document.getElementById('test-header-sub').textContent = `SFI ${state.level} — Prueba completa`;
-  document.getElementById('test-intro-title').textContent = `Prueba SFI ${state.level}`;
+  document.getElementById('test-header-sub').textContent = `${LEVEL_LABEL[state.level]||state.level} — Prueba completa`;
+  document.getElementById('test-intro-title').textContent = `Prueba ${LEVEL_LABEL[state.level]||state.level}`;
   document.getElementById('test-q-count').textContent = `${questions.length} preguntas`;
   document.getElementById('test-intro').classList.remove('hidden');
   document.getElementById('test-questions').classList.add('hidden');
@@ -1622,7 +1622,7 @@ function renderGrammarTopics(filter) {
       <div class="flex items-center justify-between">
         <span class="text-xs font-semibold px-2 py-0.5 rounded-full"
               style="background:${topic.color}22; color:${topic.color};">
-          SFI ${topic.level}
+          ${LEVEL_LABEL[topic.level] || topic.level}
         </span>
         <span class="text-xs text-gray-400">${topic.questions.length} preguntas</span>
       </div>
@@ -2369,7 +2369,7 @@ function renderHorstEpisodes(level) {
     grid.innerHTML = `<div class="glass rounded-2xl p-6 text-center text-gray-400">
       <div class="text-4xl mb-3">🎙️</div>
       <div class="font-semibold">Próximamente</div>
-      <div class="text-sm mt-1">Sophie está grabando los audios de SFI ${level}</div>
+      <div class="text-sm mt-1">Sophie está grabando los audios de ${LEVEL_LABEL[level]||level}</div>
     </div>`;
     return;
   }
@@ -2382,7 +2382,7 @@ function renderHorstEpisodes(level) {
         <div class="font-bold text-gray-800 text-sm">${ep.title}</div>
         <div class="text-xs text-gray-500 truncate">${ep.subtitle}</div>
         <div class="flex items-center gap-2 mt-1.5">
-          <span class="text-xs bg-swe-blue/10 text-swe-blue px-2 py-0.5 rounded-full font-semibold">SFI ${ep.level}</span>
+          <span class="text-xs bg-swe-blue/10 text-swe-blue px-2 py-0.5 rounded-full font-semibold">${LEVEL_LABEL[ep.level]||ep.level}</span>
           <span class="text-xs text-gray-400">🎧 ${ep.duration}</span>
           <span class="text-xs text-gray-400">· ${ep.questions.length} preguntas</span>
         </div>
@@ -2992,7 +2992,7 @@ async function finishNivelTest() {
   showView('nivel-result');
 
   // Insignia de nivel
-  const names = { A: 'SFI A', B: 'SFI B', C: 'SFI C' };
+  const names = { A: 'Principiante (SFI A)', B: 'Básico (SFI B)', C: 'Intermedio (SFI C)' };
   const descs = {
     A: 'Estás construyendo la base. ¡Vas por buen camino!',
     B: '¡Muy bien! Ya dominas lo básico y avanzas al nivel intermedio.',
@@ -3323,8 +3323,34 @@ function showTheory() {
 }
 
 const THEORY_LEVEL_COLORS = { A: '#10B981', B: '#3B82F6', C: '#F59E0B', D: '#8B5CF6' };
-const THEORY_LEVEL_NAMES  = { A: 'SFI A', B: 'SFI B', C: 'SFI C', D: 'SFI D' };
+const LEVEL_LABEL = { A: 'Principiante', B: 'Básico', C: 'Intermedio', D: 'Avanzado' };
+const LEVEL_SFI   = { A: 'SFI A', B: 'SFI B', C: 'SFI C', D: 'SFI D' };
 function theoryColor(u) { return THEORY_LEVEL_COLORS[(u && u.level) || 'A'] || '#10B981'; }
+
+function theoryGoLevel(lvl) {
+  const el = document.getElementById('theory-level-' + lvl);
+  if (el && el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderTheoryTabs(units, p) {
+  const tabsEl = document.getElementById('theory-tabs');
+  if (!tabsEl) return;
+  const seen = [];
+  units.forEach(u => { const l = u.level || 'A'; if (!seen.includes(l)) seen.push(l); });
+  tabsEl.innerHTML = seen.map(l => {
+    const col = THEORY_LEVEL_COLORS[l] || '#10B981';
+    const inLevel = units.filter(x => (x.level || 'A') === l);
+    const doneLevel = inLevel.filter(x => p[x.id] && p[x.id].done).length;
+    const full = doneLevel === inLevel.length && inLevel.length > 0;
+    return `
+      <button onclick="theoryGoLevel('${l}')"
+        class="flex-shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold border-2 transition-all card-hover"
+        style="background:${col}18; color:${col}; border-color:${col}55;">
+        <span class="w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] font-black" style="background:${col};">${full ? '✓' : l}</span>
+        ${LEVEL_LABEL[l] || l}
+      </button>`;
+  }).join('');
+}
 
 function renderTheoryPath() {
   const wrap = document.getElementById('theory-path');
@@ -3333,6 +3359,8 @@ function renderTheoryPath() {
   const p = getTheoryProgress();
   const doneCount = units.filter(u => p[u.id] && p[u.id].done).length;
   const firstOpen = units.findIndex(u => !(p[u.id] && p[u.id].done));
+
+  renderTheoryTabs(units, p);
 
   const bar = document.getElementById('theory-progress-bar');
   if (bar) bar.style.width = units.length ? Math.round(doneCount / units.length * 100) + '%' : '0%';
@@ -3354,10 +3382,10 @@ function renderTheoryPath() {
         ? '¡Nivel completado! 🎉'
         : `${doneLevel} de ${inLevel.length} lecciones · te faltan ${restan} para el siguiente nivel`;
       html += `
-        <div class="flex items-center gap-2 ${curLevel === null ? '' : 'mt-6'} mb-2" style="margin-top:${i === 0 ? '0' : '1.5rem'};">
+        <div id="theory-level-${lvl}" class="flex items-center gap-2 mb-2" style="margin-top:${i === 0 ? '0' : '1.5rem'}; scroll-margin-top:12px;">
           <div class="w-9 h-9 rounded-xl flex items-center justify-center text-white font-black shadow" style="background:linear-gradient(135deg, ${col}, ${col}cc);">${lvl}</div>
           <div class="flex-1">
-            <div class="text-sm font-extrabold text-gray-700">${THEORY_LEVEL_NAMES[lvl] || ('SFI ' + lvl)}</div>
+            <div class="text-sm font-extrabold text-gray-700">${LEVEL_LABEL[lvl] || lvl} <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded-full align-middle" style="background:${col}22; color:${col};">${LEVEL_SFI[lvl] || ('SFI ' + lvl)}</span></div>
             <div class="text-[11px] text-gray-400">${nota}</div>
           </div>
         </div>`;
@@ -3378,7 +3406,6 @@ function renderTheoryPath() {
           <div class="font-bold text-gray-800 text-sm leading-tight">${u.title}</div>
           <div class="text-xs text-gray-500 truncate">${u.subtitle || ''}</div>
         </div>
-        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0" style="background:${col}22; color:${col};">${lvl}</span>
         ${isNext && !done ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0" style="background:${col}; color:#fff;">Empieza aquí</span>` : ''}
         <span class="text-lg flex-shrink-0" style="color:${col};">→</span>
       </div>`;
