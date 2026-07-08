@@ -797,6 +797,7 @@ function goAdmin() {
   if (!isAdminUser()) {
     if (window._sbSession) { showToast('No tienes acceso de administrador.', 'error'); return; }
     _wantAdmin = true;
+    { const _b = document.getElementById('admin-mode-badge'); if (_b) _b.style.display = 'block'; }
     showView('login');
     showToast('Inicia sesión con tu cuenta de administrador', 'info');
     return;
@@ -1289,6 +1290,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     await sb.auth.signOut();
   }
+  if (_wantAdmin) { const _b = document.getElementById('admin-mode-badge'); if (_b) _b.style.display = 'block'; }
   showView('login');
 });
 
