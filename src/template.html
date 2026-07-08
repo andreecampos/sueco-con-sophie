@@ -211,10 +211,23 @@
       <p class="text-blue-100 text-sm">Lo que dicen quienes ya aprenden sueco con nosotros.</p>
     </div>
   </div>
-  <div class="max-w-2xl mx-auto px-4" style="margin-top:-22px;">
-    <div class="bg-white rounded-2xl p-5 shadow-lg border border-blue-100 mb-4" id="resenas-summary"></div>
+  <div class="max-w-5xl mx-auto px-4" style="margin-top:-22px;">
+    <!-- Fila 1: barras + promedio -->
+    <div class="grid md:grid-cols-2 gap-4 mb-6">
+      <div class="bg-white rounded-2xl p-5 shadow border border-gray-100 flex flex-col justify-center order-2 md:order-1" id="resenas-bars"></div>
+      <div class="rounded-2xl p-6 shadow border flex flex-col items-center justify-center text-center order-1 md:order-2" id="resenas-average" style="background:linear-gradient(135deg,#EAF3FA,#D7E9F5);border-color:#bcd9ee;"></div>
+    </div>
 
-    <div class="bg-white rounded-2xl p-5 shadow border border-gray-100 mb-6">
+    <!-- Fila 2: reseñas (izq) + formulario (der) -->
+    <div class="grid md:grid-cols-2 gap-5 items-start">
+      <div class="order-2 md:order-1">
+        <h2 class="text-lg font-black text-gray-800 mb-3">Reseñas recientes</h2>
+        <div id="resenas-list" class="space-y-4"></div>
+        <div id="resenas-pagination" class="flex items-center justify-center gap-3 py-6"></div>
+      </div>
+      <div class="order-1 md:order-2">
+        <h2 class="text-lg font-black text-gray-800 mb-3">Deja tu reseña</h2>
+        <div class="bg-white rounded-2xl p-5 shadow border border-gray-100">
       <div id="review-login-box" class="hidden text-center py-2">
         <p class="text-gray-600 text-sm mb-3">¿Ya eres alumno/a? Inicia sesión para dejar tu reseña.</p>
         <button onclick="showView('login')" class="bg-swe-blue text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-swe-dark transition-colors">Iniciar sesión</button>
@@ -233,11 +246,11 @@
         <button id="review-submit-btn" onclick="submitReview()" class="w-full bg-swe-blue text-white py-2.5 rounded-xl font-bold text-sm hover:bg-swe-dark transition-colors">Publicar reseña</button>
         <p class="text-[11px] text-gray-400 text-center mt-2">Tu reseña se publica tras una revisión rápida.</p>
       </div>
+        </div>
+      </div>
     </div>
 
-    <div id="resenas-list" class="columns-1 sm:columns-2 gap-4"></div>
-    <div id="resenas-pagination" class="flex items-center justify-center gap-3 py-6"></div>
-    <div class="text-center pb-10">
+    <div class="text-center py-8">
       <button onclick="goHome()" class="text-swe-blue text-sm font-semibold">← Volver a la plataforma</button>
     </div>
   </div>
@@ -491,13 +504,6 @@
       </div>
     </div>
 
-    <!-- ── GESTIONAR SUSCRIPCIÓN ────────────────────────── -->
-    <div class="mt-4 text-center">
-      <button onclick="manageSubscription()" class="text-xs text-gray-400 hover:text-gray-600 transition-colors underline underline-offset-2">
-        Gestionar o cancelar suscripción
-      </button>
-    </div>
-
     <!-- ── EQUIPO ─────────────────────────────────────── -->
     <div class="mt-8 mb-4">
       <div class="flex items-center gap-3 mb-5">
@@ -587,6 +593,13 @@
           </div>
         </div>
 
+      </div>
+
+      <!-- ── GESTIONAR SUSCRIPCIÓN (debajo de las fotos) ── -->
+      <div class="mt-5 text-center">
+        <button onclick="manageSubscription()" class="text-xs text-gray-400 hover:text-gray-600 transition-colors underline underline-offset-2">
+          Gestionar o cancelar suscripción
+        </button>
       </div>
 
       <!-- Tagline -->

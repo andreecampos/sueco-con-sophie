@@ -1375,25 +1375,27 @@ async function loadPublicReviews() {
 
 function renderResenasPage() {
   const r = _publicReviews;
-  const sumEl = document.getElementById('resenas-summary');
-  if (sumEl) {
-    if (r.length === 0) {
-      sumEl.innerHTML = '<div class="text-gray-400 text-sm text-center">Aún no hay reseñas. ¡Sé el primero! 🙌</div>';
-    } else {
-      const avg = r.reduce((a,x)=>a+(x.rating||0),0)/r.length;
-      const bars = [5,4,3,2,1].map(st => {
-        const c = r.filter(x=>x.rating===st).length, pct = Math.round(c/r.length*100);
-        return `<div class="flex items-center gap-2 text-xs"><span class="w-3 text-gray-500">${st}</span><span style="color:#F59E0B">★</span><div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full" style="width:${pct}%;background:#F59E0B"></div></div><span class="w-6 text-right text-gray-400">${c}</span></div>`;
-      }).join('');
-      sumEl.innerHTML = `<div class="flex items-center gap-5">
-        <div class="text-center flex-shrink-0">
-          <div class="text-4xl font-black text-gray-800">${avg.toFixed(1)}</div>
-          <div class="text-lg leading-none">${starsHtml(avg)}</div>
-          <div class="text-xs text-gray-400 mt-1">${r.length} reseña${r.length!==1?'s':''}</div>
-        </div>
-        <div class="flex-1 space-y-1">${bars}</div>
+  const barsEl = document.getElementById('resenas-bars');
+  const avgEl = document.getElementById('resenas-average');
+  if (r.length === 0) {
+    if (barsEl) barsEl.innerHTML = '<div class="text-gray-400 text-sm text-center py-4">Aún no hay reseñas. ¡Sé el primero! 🙌</div>';
+    if (avgEl) avgEl.innerHTML = '<div class="text-5xl font-black" style="color:#006AA7">–</div><div class="text-sm text-gray-400 mt-2">Sin reseñas todavía</div>';
+  } else {
+    const avg = r.reduce((a,x)=>a+(x.rating||0),0)/r.length;
+    const bars = [5,4,3,2,1].map(st => {
+      const c = r.filter(x=>x.rating===st).length, pct = Math.round(c/r.length*100);
+      return `<div class="flex items-center gap-2 text-xs mb-1.5">
+        <span class="w-3 text-gray-600 font-semibold">${st}</span>
+        <span style="color:#F5B301">★</span>
+        <div class="flex-1 h-2.5 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full" style="width:${pct}%;background:#F5B301"></div></div>
+        <span class="w-8 text-right text-gray-400">${c}</span>
       </div>`;
-    }
+    }).join('');
+    if (barsEl) barsEl.innerHTML = bars;
+    if (avgEl) avgEl.innerHTML = `
+      <div class="text-5xl font-black" style="color:#006AA7">${avg.toFixed(1)}</div>
+      <div class="text-2xl my-1">${starsHtml(avg)}</div>
+      <div class="text-sm text-gray-500 font-semibold">${r.length} reseña${r.length!==1?'s':''}</div>`;
   }
   const list = document.getElementById('resenas-list');
   const pag = document.getElementById('resenas-pagination');
@@ -1404,17 +1406,19 @@ function renderResenasPage() {
   if (list) {
     list.innerHTML = slice.map(rv => {
       const av = reviewAvatar(rv.name);
-      return `<div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-4 break-inside-avoid hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0" style="background:${av.color}">${av.initial}</div>
-          <div class="min-w-0">
-            <div class="font-bold text-gray-800 text-sm truncate">${escHtml(rv.name)}</div>
-            ${rv.verified ? '<div class="text-[11px] text-emerald-600 font-semibold">✔ Alumno verificado</div>' : '<div class="text-[11px] text-gray-400">Reseña</div>'}
+      return `<div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+        <div class="flex gap-3">
+          <div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0" style="background:${av.color}">${av.initial}</div>
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center justify-between gap-2">
+              <div class="font-bold text-gray-800 text-sm truncate">${escHtml(rv.name)}</div>
+              <div class="text-sm flex-shrink-0">${starsHtml(rv.rating)}</div>
+            </div>
+            ${rv.verified ? '<div class="text-[11px] text-emerald-600 font-semibold mb-1">✔ Alumno verificado</div>' : '<div class="text-[11px] text-gray-400 mb-1">Reseña</div>'}
+            <p class="text-gray-600 text-sm leading-relaxed">${escHtml(rv.comment)}</p>
+            <div class="text-[11px] text-gray-400 mt-1">${fmtReviewDate(rv.created_at)}</div>
           </div>
         </div>
-        <div class="text-sm mb-1">${starsHtml(rv.rating)}</div>
-        <p class="text-gray-700 text-sm leading-relaxed">${escHtml(rv.comment)}</p>
-        <div class="text-[11px] text-gray-400 mt-2">${fmtReviewDate(rv.created_at)}</div>
       </div>`;
     }).join('');
   }

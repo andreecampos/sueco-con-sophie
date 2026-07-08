@@ -211,10 +211,23 @@
       <p class="text-blue-100 text-sm">Lo que dicen quienes ya aprenden sueco con nosotros.</p>
     </div>
   </div>
-  <div class="max-w-2xl mx-auto px-4" style="margin-top:-22px;">
-    <div class="bg-white rounded-2xl p-5 shadow-lg border border-blue-100 mb-4" id="resenas-summary"></div>
+  <div class="max-w-5xl mx-auto px-4" style="margin-top:-22px;">
+    <!-- Fila 1: barras + promedio -->
+    <div class="grid md:grid-cols-2 gap-4 mb-6">
+      <div class="bg-white rounded-2xl p-5 shadow border border-gray-100 flex flex-col justify-center order-2 md:order-1" id="resenas-bars"></div>
+      <div class="rounded-2xl p-6 shadow border flex flex-col items-center justify-center text-center order-1 md:order-2" id="resenas-average" style="background:linear-gradient(135deg,#EAF3FA,#D7E9F5);border-color:#bcd9ee;"></div>
+    </div>
 
-    <div class="bg-white rounded-2xl p-5 shadow border border-gray-100 mb-6">
+    <!-- Fila 2: reseñas (izq) + formulario (der) -->
+    <div class="grid md:grid-cols-2 gap-5 items-start">
+      <div class="order-2 md:order-1">
+        <h2 class="text-lg font-black text-gray-800 mb-3">Reseñas recientes</h2>
+        <div id="resenas-list" class="space-y-4"></div>
+        <div id="resenas-pagination" class="flex items-center justify-center gap-3 py-6"></div>
+      </div>
+      <div class="order-1 md:order-2">
+        <h2 class="text-lg font-black text-gray-800 mb-3">Deja tu reseña</h2>
+        <div class="bg-white rounded-2xl p-5 shadow border border-gray-100">
       <div id="review-login-box" class="hidden text-center py-2">
         <p class="text-gray-600 text-sm mb-3">¿Ya eres alumno/a? Inicia sesión para dejar tu reseña.</p>
         <button onclick="showView('login')" class="bg-swe-blue text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-swe-dark transition-colors">Iniciar sesión</button>
@@ -233,11 +246,11 @@
         <button id="review-submit-btn" onclick="submitReview()" class="w-full bg-swe-blue text-white py-2.5 rounded-xl font-bold text-sm hover:bg-swe-dark transition-colors">Publicar reseña</button>
         <p class="text-[11px] text-gray-400 text-center mt-2">Tu reseña se publica tras una revisión rápida.</p>
       </div>
+        </div>
+      </div>
     </div>
 
-    <div id="resenas-list" class="columns-1 sm:columns-2 gap-4"></div>
-    <div id="resenas-pagination" class="flex items-center justify-center gap-3 py-6"></div>
-    <div class="text-center pb-10">
+    <div class="text-center py-8">
       <button onclick="goHome()" class="text-swe-blue text-sm font-semibold">← Volver a la plataforma</button>
     </div>
   </div>
@@ -491,13 +504,6 @@
       </div>
     </div>
 
-    <!-- ── GESTIONAR SUSCRIPCIÓN ────────────────────────── -->
-    <div class="mt-4 text-center">
-      <button onclick="manageSubscription()" class="text-xs text-gray-400 hover:text-gray-600 transition-colors underline underline-offset-2">
-        Gestionar o cancelar suscripción
-      </button>
-    </div>
-
     <!-- ── EQUIPO ─────────────────────────────────────── -->
     <div class="mt-8 mb-4">
       <div class="flex items-center gap-3 mb-5">
@@ -587,6 +593,13 @@
           </div>
         </div>
 
+      </div>
+
+      <!-- ── GESTIONAR SUSCRIPCIÓN (debajo de las fotos) ── -->
+      <div class="mt-5 text-center">
+        <button onclick="manageSubscription()" class="text-xs text-gray-400 hover:text-gray-600 transition-colors underline underline-offset-2">
+          Gestionar o cancelar suscripción
+        </button>
       </div>
 
       <!-- Tagline -->
@@ -5961,25 +5974,27 @@ async function loadPublicReviews() {
 
 function renderResenasPage() {
   const r = _publicReviews;
-  const sumEl = document.getElementById('resenas-summary');
-  if (sumEl) {
-    if (r.length === 0) {
-      sumEl.innerHTML = '<div class="text-gray-400 text-sm text-center">Aún no hay reseñas. ¡Sé el primero! 🙌</div>';
-    } else {
-      const avg = r.reduce((a,x)=>a+(x.rating||0),0)/r.length;
-      const bars = [5,4,3,2,1].map(st => {
-        const c = r.filter(x=>x.rating===st).length, pct = Math.round(c/r.length*100);
-        return `<div class="flex items-center gap-2 text-xs"><span class="w-3 text-gray-500">${st}</span><span style="color:#F59E0B">★</span><div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full" style="width:${pct}%;background:#F59E0B"></div></div><span class="w-6 text-right text-gray-400">${c}</span></div>`;
-      }).join('');
-      sumEl.innerHTML = `<div class="flex items-center gap-5">
-        <div class="text-center flex-shrink-0">
-          <div class="text-4xl font-black text-gray-800">${avg.toFixed(1)}</div>
-          <div class="text-lg leading-none">${starsHtml(avg)}</div>
-          <div class="text-xs text-gray-400 mt-1">${r.length} reseña${r.length!==1?'s':''}</div>
-        </div>
-        <div class="flex-1 space-y-1">${bars}</div>
+  const barsEl = document.getElementById('resenas-bars');
+  const avgEl = document.getElementById('resenas-average');
+  if (r.length === 0) {
+    if (barsEl) barsEl.innerHTML = '<div class="text-gray-400 text-sm text-center py-4">Aún no hay reseñas. ¡Sé el primero! 🙌</div>';
+    if (avgEl) avgEl.innerHTML = '<div class="text-5xl font-black" style="color:#006AA7">–</div><div class="text-sm text-gray-400 mt-2">Sin reseñas todavía</div>';
+  } else {
+    const avg = r.reduce((a,x)=>a+(x.rating||0),0)/r.length;
+    const bars = [5,4,3,2,1].map(st => {
+      const c = r.filter(x=>x.rating===st).length, pct = Math.round(c/r.length*100);
+      return `<div class="flex items-center gap-2 text-xs mb-1.5">
+        <span class="w-3 text-gray-600 font-semibold">${st}</span>
+        <span style="color:#F5B301">★</span>
+        <div class="flex-1 h-2.5 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full" style="width:${pct}%;background:#F5B301"></div></div>
+        <span class="w-8 text-right text-gray-400">${c}</span>
       </div>`;
-    }
+    }).join('');
+    if (barsEl) barsEl.innerHTML = bars;
+    if (avgEl) avgEl.innerHTML = `
+      <div class="text-5xl font-black" style="color:#006AA7">${avg.toFixed(1)}</div>
+      <div class="text-2xl my-1">${starsHtml(avg)}</div>
+      <div class="text-sm text-gray-500 font-semibold">${r.length} reseña${r.length!==1?'s':''}</div>`;
   }
   const list = document.getElementById('resenas-list');
   const pag = document.getElementById('resenas-pagination');
@@ -5990,17 +6005,19 @@ function renderResenasPage() {
   if (list) {
     list.innerHTML = slice.map(rv => {
       const av = reviewAvatar(rv.name);
-      return `<div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-4 break-inside-avoid hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0" style="background:${av.color}">${av.initial}</div>
-          <div class="min-w-0">
-            <div class="font-bold text-gray-800 text-sm truncate">${escHtml(rv.name)}</div>
-            ${rv.verified ? '<div class="text-[11px] text-emerald-600 font-semibold">✔ Alumno verificado</div>' : '<div class="text-[11px] text-gray-400">Reseña</div>'}
+      return `<div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+        <div class="flex gap-3">
+          <div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0" style="background:${av.color}">${av.initial}</div>
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center justify-between gap-2">
+              <div class="font-bold text-gray-800 text-sm truncate">${escHtml(rv.name)}</div>
+              <div class="text-sm flex-shrink-0">${starsHtml(rv.rating)}</div>
+            </div>
+            ${rv.verified ? '<div class="text-[11px] text-emerald-600 font-semibold mb-1">✔ Alumno verificado</div>' : '<div class="text-[11px] text-gray-400 mb-1">Reseña</div>'}
+            <p class="text-gray-600 text-sm leading-relaxed">${escHtml(rv.comment)}</p>
+            <div class="text-[11px] text-gray-400 mt-1">${fmtReviewDate(rv.created_at)}</div>
           </div>
         </div>
-        <div class="text-sm mb-1">${starsHtml(rv.rating)}</div>
-        <p class="text-gray-700 text-sm leading-relaxed">${escHtml(rv.comment)}</p>
-        <div class="text-[11px] text-gray-400 mt-2">${fmtReviewDate(rv.created_at)}</div>
       </div>`;
     }).join('');
   }
