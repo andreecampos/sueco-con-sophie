@@ -3507,13 +3507,13 @@ function renderHomeDashboard() {
       const sk = LEVEL_TEST.skills[k];
       const v = has ? (last.skills[k] != null ? last.skills[k] : 0) : 0;
       const isWeak = k === weakKey;
-      return `<div class="flex items-center gap-1.5 ${isWeak ? 'ring-1 ring-amber-300 bg-amber-50 rounded-lg px-1 py-0.5 -mx-0.5' : ''}" title="${sk.es} · ${sk.label}">
-        <span class="text-sm w-4 text-center flex-shrink-0">${sk.icon}</span>
-        <span class="text-[9px] font-semibold w-11 flex-shrink-0 leading-tight ${isWeak ? 'text-amber-700' : 'text-gray-500'}">${sk.es}</span>
-        <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+      return `<div class="flex items-center gap-2 ${isWeak ? 'ring-1 ring-amber-300 bg-amber-50 rounded-lg px-1.5 py-1 -mx-0.5' : ''}" title="${sk.es} · ${sk.label}">
+        <span class="text-base sm:text-sm w-5 sm:w-4 text-center flex-shrink-0">${sk.icon}</span>
+        <span class="text-[12px] sm:text-[10px] font-semibold w-24 sm:w-16 flex-shrink-0 leading-tight ${isWeak ? 'text-amber-700' : 'text-gray-500'}">${sk.es}</span>
+        <div class="flex-1 h-2.5 bg-gray-100 rounded-full overflow-hidden">
           <div class="h-full rounded-full" style="width:${has ? v : 6}%; background:${has ? sk.color : '#E5E7EB'}; transition:width .8s ease;"></div>
         </div>
-        <span class="text-[10px] font-bold w-7 text-right ${isWeak ? 'text-amber-600' : 'text-gray-400'}">${has ? v + '%' : '–'}</span>
+        <span class="text-[11px] sm:text-[10px] font-bold w-8 sm:w-7 text-right ${isWeak ? 'text-amber-600' : 'text-gray-400'}">${has ? v + '%' : '–'}</span>
       </div>`;
     }).join('');
     const caption = has && weakKey
