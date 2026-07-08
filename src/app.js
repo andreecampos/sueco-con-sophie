@@ -1458,7 +1458,7 @@ function renderResenasPage() {
             </div>
             ${rv.verified ? '<div class="text-[11px] text-emerald-600 font-semibold mb-1">✔ Alumno verificado</div>' : '<div class="text-[11px] text-gray-400 mb-1">Reseña</div>'}
             <p class="text-gray-600 text-sm leading-relaxed">${escHtml(rv.comment)}</p>
-            <div class="text-[11px] text-gray-400 mt-1">${fmtReviewDate(rv.created_at)}${reviewCountryLabel(rv)}</div>
+            <div class="text-[12px] text-gray-500 mt-1.5 font-medium">${fmtReviewDate(rv.created_at)}${reviewCountryLabel(rv)}</div>
           </div>
         </div>
       </div>`;
