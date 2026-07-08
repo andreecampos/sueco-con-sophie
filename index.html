@@ -245,9 +245,9 @@
         </div>
 
         <!-- Divider -->
-        <div style="height:1px; background:#f3f4f6; margin:16px 0;"></div>
+        <div id="enroll-divider" style="height:1px; background:#f3f4f6; margin:16px 0;"></div>
         <!-- Inscríbete CTA -->
-        <div style="text-align:center;">
+        <div id="enroll-cta" style="text-align:center;">
           <p style="font-size:0.72rem; color:#9ca3af; margin-bottom:10px;">¿Aún no eres alumno/a?</p>
           <button id="enroll-btn" onclick="openEnrollLink()"
             style="width:100%; background:#FECC02; color:#1a1a2e; border:none; border-radius:12px; padding:13px; font-size:0.92rem; font-weight:800; cursor:pointer; letter-spacing:0.2px; transition:all 0.2s; font-family:inherit; box-shadow:0 4px 15px rgba(254,204,2,0.35);"
@@ -4531,6 +4531,11 @@ const sb            = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
 const ADMIN_EMAILS = ['sophie.sahlin@hotmail.com', 'orlandoandree1998@gmail.com'];
 let _wantAdmin = false;
+function _adminLoginMode() {
+  const b = document.getElementById('admin-mode-badge'); if (b) b.style.display = 'block';
+  const c = document.getElementById('enroll-cta'); if (c) c.style.display = 'none';
+  const d = document.getElementById('enroll-divider'); if (d) d.style.display = 'none';
+}
 function isAdminUser() { const e = (window._sbSession?.email || '').toLowerCase(); return ADMIN_EMAILS.includes(e); }
 
 // Helper: calls the admin Edge Function
@@ -5285,7 +5290,7 @@ function goAdmin() {
   if (!isAdminUser()) {
     if (window._sbSession) { showToast('No tienes acceso de administrador.', 'error'); return; }
     _wantAdmin = true;
-    { const _b = document.getElementById('admin-mode-badge'); if (_b) _b.style.display = 'block'; }
+    _adminLoginMode();
     showView('login');
     showToast('Inicia sesión con tu cuenta de administrador', 'info');
     return;
@@ -5778,7 +5783,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     await sb.auth.signOut();
   }
-  if (_wantAdmin) { const _b = document.getElementById('admin-mode-badge'); if (_b) _b.style.display = 'block'; }
+  if (_wantAdmin) _adminLoginMode();
   showView('login');
 });
 

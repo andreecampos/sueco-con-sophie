@@ -43,6 +43,11 @@ const sb            = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
 const ADMIN_EMAILS = ['sophie.sahlin@hotmail.com', 'orlandoandree1998@gmail.com'];
 let _wantAdmin = false;
+function _adminLoginMode() {
+  const b = document.getElementById('admin-mode-badge'); if (b) b.style.display = 'block';
+  const c = document.getElementById('enroll-cta'); if (c) c.style.display = 'none';
+  const d = document.getElementById('enroll-divider'); if (d) d.style.display = 'none';
+}
 function isAdminUser() { const e = (window._sbSession?.email || '').toLowerCase(); return ADMIN_EMAILS.includes(e); }
 
 // Helper: calls the admin Edge Function
@@ -797,7 +802,7 @@ function goAdmin() {
   if (!isAdminUser()) {
     if (window._sbSession) { showToast('No tienes acceso de administrador.', 'error'); return; }
     _wantAdmin = true;
-    { const _b = document.getElementById('admin-mode-badge'); if (_b) _b.style.display = 'block'; }
+    _adminLoginMode();
     showView('login');
     showToast('Inicia sesión con tu cuenta de administrador', 'info');
     return;
@@ -1290,7 +1295,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     await sb.auth.signOut();
   }
-  if (_wantAdmin) { const _b = document.getElementById('admin-mode-badge'); if (_b) _b.style.display = 'block'; }
+  if (_wantAdmin) _adminLoginMode();
   showView('login');
 });
 
