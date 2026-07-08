@@ -811,13 +811,12 @@ function goAdmin() {
 function adminLogin() {
   if (isAdminUser()) {
     state.adminLoggedIn = true;
-    document.getElementById('admin-login').classList.add('hidden');
-    document.getElementById('admin-panel').classList.remove('hidden');
-    adminTab('dashboard'); // Open dashboard by default
-    showToast('¡Bienvenida, Sofi! 👋', 'success');
+    document.getElementById('admin-login')?.classList.add('hidden');
+    document.getElementById('admin-panel')?.classList.remove('hidden');
+    adminTab('dashboard');
+    showToast('¡Bienvenida! 👋', 'success');
   } else {
-    showToast('Contraseña incorrecta', 'error');
-    document.getElementById('admin-pwd').value = '';
+    showToast('No tienes acceso de administrador.', 'error');
   }
 }
 

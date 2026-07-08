@@ -1050,16 +1050,9 @@
   <!-- Login -->
   <div id="admin-login" class="max-w-md mx-auto px-4 py-12 text-center">
     <div class="text-5xl mb-4">🔐</div>
-    <h2 class="text-xl font-bold text-gray-800 mb-2">Administrador</h2>
-    <p class="text-gray-500 text-sm mb-6">Ingresa la contraseña para gestionar el contenido</p>
-    <div class="glass rounded-2xl p-6 shadow border border-gray-200">
-      <input type="password" id="admin-pwd" placeholder="Contraseña" onkeydown="if(event.key==='Enter')adminLogin()"
-        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-center text-lg tracking-widest focus:border-swe-blue focus:outline-none mb-4">
-      <button onclick="adminLogin()" class="w-full bg-swe-blue text-white py-3 rounded-xl font-semibold hover:bg-swe-dark transition-colors">
-        Entrar
-      </button>
-      <p class="text-xs text-gray-400 mt-3">El acceso de administrador se otorga automáticamente al entrar con tu cuenta de admin.</p>
-    </div>
+    <h2 class="text-xl font-bold text-gray-800 mb-2">Panel de administrador</h2>
+    <p class="text-gray-500 text-sm mb-6">Inicia sesión con tu cuenta de administrador para entrar.</p>
+    <button onclick="goHome()" class="bg-swe-blue text-white px-6 py-3 rounded-xl font-semibold hover:bg-swe-dark transition-colors">Ir a iniciar sesión →</button>
   </div>
 
   <!-- Admin panel content -->
@@ -5305,13 +5298,12 @@ function goAdmin() {
 function adminLogin() {
   if (isAdminUser()) {
     state.adminLoggedIn = true;
-    document.getElementById('admin-login').classList.add('hidden');
-    document.getElementById('admin-panel').classList.remove('hidden');
-    adminTab('dashboard'); // Open dashboard by default
-    showToast('¡Bienvenida, Sofi! 👋', 'success');
+    document.getElementById('admin-login')?.classList.add('hidden');
+    document.getElementById('admin-panel')?.classList.remove('hidden');
+    adminTab('dashboard');
+    showToast('¡Bienvenida! 👋', 'success');
   } else {
-    showToast('Contraseña incorrecta', 'error');
-    document.getElementById('admin-pwd').value = '';
+    showToast('No tienes acceso de administrador.', 'error');
   }
 }
 
