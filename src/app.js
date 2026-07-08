@@ -88,6 +88,7 @@ window.addEventListener('load', () => {
   updateStats();
   renderHomeDashboard();
   stopSpeech();
+  initAnnounce();
   // Pre-cargar config de Stripe para que el botón "Inscríbete" funcione instantáneamente
   getStripeConfig();
 });
@@ -1334,6 +1335,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 function goToLoginFromWelcome() {
   try { window.history.replaceState(null, '', window.location.pathname); } catch (e) {}
   showView('login');
+}
+
+// ── Aviso superior (se puede cerrar; cambia 'v1' si actualizas el mensaje) ──
+const _ANNOUNCE_KEY = 'sc_banner_v1';
+function dismissAnnounce() {
+  const el = document.getElementById('announce-banner');
+  if (el) el.style.display = 'none';
+  try { localStorage.setItem(_ANNOUNCE_KEY, '1'); } catch (e) {}
+}
+function initAnnounce() {
+  try {
+    if (localStorage.getItem(_ANNOUNCE_KEY) === '1') {
+      const el = document.getElementById('announce-banner');
+      if (el) el.style.display = 'none';
+    }
+  } catch (e) {}
 }
 
 // ═══════════════════════════════════════════════════════════

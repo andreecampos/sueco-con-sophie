@@ -388,6 +388,15 @@
 
   <div id="payment-banner" class="max-w-4xl mx-auto px-4 mt-4"></div>
 
+  <!-- ── AVISO (se puede cerrar) ─────────────────────── -->
+  <div id="announce-banner" class="max-w-4xl mx-auto px-4 mt-4">
+    <div class="rounded-2xl px-4 py-3 flex items-start gap-3" style="background:linear-gradient(135deg,#FEF9E7,#FEF3C7); border:1px solid #FDE68A;">
+      <span class="text-lg flex-shrink-0 leading-none">🚧</span>
+      <p class="text-xs text-gray-700 flex-1 leading-relaxed"><strong>Seguimos afinando la plataforma.</strong> Estará lista al 100% el <strong>1 de agosto</strong> (o antes). Lo importante es que ya estés aquí. 💛</p>
+      <button onclick="dismissAnnounce()" class="text-gray-400 hover:text-gray-600 flex-shrink-0 leading-none" style="font-size:1.3rem;" aria-label="Cerrar">×</button>
+    </div>
+  </div>
+
   <!-- ── PANEL DEL ALUMNO ─────────────────────────────── -->
   <div class="max-w-4xl mx-auto px-4 mt-6">
     <div class="glass rounded-2xl shadow-lg border border-blue-100 p-4">
@@ -4687,6 +4696,7 @@ window.addEventListener('load', () => {
   updateStats();
   renderHomeDashboard();
   stopSpeech();
+  initAnnounce();
   // Pre-cargar config de Stripe para que el botón "Inscríbete" funcione instantáneamente
   getStripeConfig();
 });
@@ -5933,6 +5943,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 function goToLoginFromWelcome() {
   try { window.history.replaceState(null, '', window.location.pathname); } catch (e) {}
   showView('login');
+}
+
+// ── Aviso superior (se puede cerrar; cambia 'v1' si actualizas el mensaje) ──
+const _ANNOUNCE_KEY = 'sc_banner_v1';
+function dismissAnnounce() {
+  const el = document.getElementById('announce-banner');
+  if (el) el.style.display = 'none';
+  try { localStorage.setItem(_ANNOUNCE_KEY, '1'); } catch (e) {}
+}
+function initAnnounce() {
+  try {
+    if (localStorage.getItem(_ANNOUNCE_KEY) === '1') {
+      const el = document.getElementById('announce-banner');
+      if (el) el.style.display = 'none';
+    }
+  } catch (e) {}
 }
 
 // ═══════════════════════════════════════════════════════════
