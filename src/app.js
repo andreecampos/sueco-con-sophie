@@ -1428,6 +1428,7 @@ async function updateStudentGroup(id, grupo) {
   if (result.error) { showToast('Error: ' + result.error, 'error'); return; }
   const s = (_cachedStudents || []).find(st => st.id === id);
   if (s) s.grupo = grupo || null;
+  paintGroupChips();
   showToast(grupo ? `👥 Grupo asignado: ${grupo}` : '👥 Grupo quitado', grupo ? 'success' : 'info');
 }
 
@@ -1498,7 +1499,24 @@ async function renderStudents() {
 }
 
 let _studentSearch = '';
+let _groupFilter = '__all__';
 function filterStudentCards(term) { _studentSearch = (term || '').toLowerCase().trim(); paintStudents(); }
+function setGroupFilter(g) { _groupFilter = g; paintStudents(); }
+
+function paintGroupChips() {
+  const box = document.getElementById('group-filter');
+  if (!box) return;
+  const all = _cachedStudents || [];
+  const count = (g) => g === '__all__' ? all.length : g === '__none__' ? all.filter(s => !s.grupo).length : all.filter(s => s.grupo === g).length;
+  const chips = [{ v: '__all__', label: '👥 Todos' }, ...GRUPOS.map(g => ({ v: g, label: g })), { v: '__none__', label: 'Sin grupo' }];
+  box.innerHTML = chips.map(c => {
+    const active = _groupFilter === c.v;
+    const cls = active
+      ? 'bg-swe-blue text-white border-swe-blue'
+      : 'bg-white text-gray-600 border-gray-200 hover:border-swe-blue';
+    return `<button onclick="setGroupFilter('${c.v}')" class="text-xs font-semibold px-3 py-1.5 rounded-full border ${cls} transition-colors">${c.label} (${count(c.v)})</button>`;
+  }).join('');
+}
 function paintStudents() {
   const container = document.getElementById('students-list');
   if (!container) return;
@@ -1510,10 +1528,13 @@ function paintStudents() {
     </div>`;
     return;
   }
+  paintGroupChips();
   const _q = _studentSearch;
-  const students = _q ? all.filter(s => ((s.name || '') + ' ' + (s.email || '')).toLowerCase().includes(_q)) : all;
+  let students = _q ? all.filter(s => ((s.name || '') + ' ' + (s.email || '')).toLowerCase().includes(_q)) : all;
+  if (_groupFilter === '__none__') students = students.filter(s => !s.grupo);
+  else if (_groupFilter !== '__all__') students = students.filter(s => s.grupo === _groupFilter);
   if (students.length === 0) {
-    container.innerHTML = `<div class="text-center py-6 text-gray-400 text-sm">🔎 Ningún alumno coincide con la búsqueda</div>`;
+    container.innerHTML = `<div class="text-center py-6 text-gray-400 text-sm">🔎 Ningún alumno coincide con el filtro</div>`;
     return;
   }
   container.innerHTML = students.map(s => {
