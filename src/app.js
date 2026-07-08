@@ -1356,6 +1356,7 @@ function fmtReviewDate(iso){ try { return new Date(iso).toLocaleDateString('es-E
 
 let _publicReviews = [];
 let _reviewRating = 0;
+let _reviewsPage = 0;
 
 async function initResenasPage() {
   try { const { data: { session } } = await sb.auth.getSession(); if (session) window._sbSession = { email: session.user.email, id: session.user.id }; } catch (e) {}
@@ -1395,10 +1396,15 @@ function renderResenasPage() {
     }
   }
   const list = document.getElementById('resenas-list');
+  const pag = document.getElementById('resenas-pagination');
+  const perPage = 10;
+  const pages = Math.max(1, Math.ceil(r.length / perPage));
+  if (_reviewsPage >= pages) _reviewsPage = 0;
+  const slice = r.slice(_reviewsPage * perPage, _reviewsPage * perPage + perPage);
   if (list) {
-    list.innerHTML = r.map(rv => {
+    list.innerHTML = slice.map(rv => {
       const av = reviewAvatar(rv.name);
-      return `<div class="bg-white rounded-2xl p-4 shadow border border-gray-100 mb-4 break-inside-avoid">
+      return `<div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-4 break-inside-avoid hover:shadow-md transition-shadow">
         <div class="flex items-center gap-3 mb-2">
           <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0" style="background:${av.color}">${av.initial}</div>
           <div class="min-w-0">
@@ -1412,6 +1418,24 @@ function renderResenasPage() {
       </div>`;
     }).join('');
   }
+  if (pag) {
+    if (pages <= 1) { pag.innerHTML = ''; }
+    else {
+      const btn = 'px-4 py-2 rounded-xl text-sm font-bold transition-colors';
+      pag.innerHTML = `
+        <button onclick="reviewsGoPage(${_reviewsPage-1})" ${_reviewsPage===0?'disabled style=\"opacity:.4;cursor:default\"':''} class="${btn} bg-white border border-gray-200 text-swe-blue hover:bg-blue-50">‹ Anterior</button>
+        <span class="text-sm text-gray-500 font-semibold">Página ${_reviewsPage+1} de ${pages}</span>
+        <button onclick="reviewsGoPage(${_reviewsPage+1})" ${_reviewsPage>=pages-1?'disabled style=\"opacity:.4;cursor:default\"':''} class="${btn} bg-white border border-gray-200 text-swe-blue hover:bg-blue-50">Siguiente ›</button>`;
+    }
+  }
+}
+
+function reviewsGoPage(n) {
+  const pages = Math.max(1, Math.ceil(_publicReviews.length / 10));
+  _reviewsPage = Math.min(Math.max(0, n), pages - 1);
+  renderResenasPage();
+  const top = document.getElementById('resenas-summary');
+  if (top) top.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function updateReviewFormVisibility() {
