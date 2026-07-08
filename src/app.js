@@ -1430,10 +1430,43 @@ async function resetStudentDevices(id) {
 async function resendAccess(id) {
   const s = (_cachedStudents || []).find(st => st.id === id);
   if (!confirm(`¿Reenviar el correo de acceso a ${s?.email || 'este alumno'}?\n\nRecibirá un enlace para crear su contraseña y entrar.`)) return;
-  showToast('📧 Enviando correo de acceso...', 'info');
+  showToast('📧 Generando enlace de acceso...', 'info');
   const result = await adminOps('resend_access', { id });
   if (result.error) { showToast('Error: ' + result.error, 'error'); return; }
-  showToast(result.sent ? `✅ Correo de acceso enviado a ${s?.email || ''}` : '⚠️ Enlace generado, pero revisa Resend Logs', result.sent ? 'success' : 'info');
+  showAccessLinkModal(result.email || s?.email || '', result.link || '', result.sent);
+}
+
+function showAccessLinkModal(email, link, sent) {
+  const old = document.getElementById('access-link-modal');
+  if (old) old.remove();
+  const wrap = document.createElement('div');
+  wrap.id = 'access-link-modal';
+  wrap.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;';
+  wrap.innerHTML = `
+    <div style="background:#fff;border-radius:18px;max-width:460px;width:100%;padding:26px 24px;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+      <div style="font-size:1.05rem;font-weight:800;color:#003f6b;margin-bottom:10px;">📧 Enlace de acceso</div>
+      <div style="font-size:0.85rem;line-height:1.6;color:${sent ? '#059669' : '#b45309'};margin-bottom:16px;">
+        ${sent
+          ? '✅ Correo enviado a <b>' + email + '</b>.<br>Si no le llega, también puedes copiar el enlace de abajo y mandárselo tú mismo.'
+          : '⚠️ El correo no salió por Resend. Copia el enlace de abajo y mándaselo tú (WhatsApp, tu correo, etc.).'}
+      </div>
+      <div style="font-size:0.72rem;color:#6b7280;margin-bottom:6px;">Enlace para crear su contraseña (válido 24 h):</div>
+      <textarea readonly id="access-link-text" onclick="this.select()" style="width:100%;height:78px;font-size:0.72rem;padding:10px;border:1px solid #d1d5db;border-radius:10px;color:#374151;resize:none;font-family:monospace;box-sizing:border-box;">${link || '(no se pudo generar el enlace)'}</textarea>
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <button onclick="copyAccessLink()" style="flex:1;background:#006AA7;color:#fff;border:none;border-radius:10px;padding:11px;font-size:0.9rem;font-weight:700;cursor:pointer;">📋 Copiar enlace</button>
+        <button onclick="document.getElementById('access-link-modal').remove()" style="background:#f3f4f6;color:#374151;border:none;border-radius:10px;padding:11px 18px;font-size:0.9rem;font-weight:700;cursor:pointer;">Cerrar</button>
+      </div>
+    </div>`;
+  document.body.appendChild(wrap);
+  wrap.addEventListener('click', (e) => { if (e.target === wrap) wrap.remove(); });
+}
+
+function copyAccessLink() {
+  const ta = document.getElementById('access-link-text');
+  if (!ta) return;
+  ta.select();
+  try { navigator.clipboard.writeText(ta.value); } catch (e) { try { document.execCommand('copy'); } catch (_e) {} }
+  showToast('📋 Enlace copiado al portapapeles', 'success');
 }
 
 async function deleteStudent(id) {

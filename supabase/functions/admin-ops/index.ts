@@ -171,7 +171,7 @@ Deno.serve(async (req) => {
         if (linkErr) throw linkErr
         const actionLink = linkData?.properties?.action_link || ''
         const sent = await sendAccessEmail(targetEmail, actionLink)
-        return new Response(JSON.stringify({ ok: true, sent, email: targetEmail }), { headers: corsHeaders })
+        return new Response(JSON.stringify({ ok: true, sent, email: targetEmail, link: actionLink }), { headers: corsHeaders })
       }
 
       case 'get_config': {
