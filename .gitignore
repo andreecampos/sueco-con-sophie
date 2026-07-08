@@ -1,3 +1,8 @@
 *.DS_Store
 node_modules/
 .env
+
+# Reportes de migracion (contienen correos de alumnos - NO subir)
+*.csv
+migracion-reporte-*.csv
+subida-precio-reporte-*.csv
