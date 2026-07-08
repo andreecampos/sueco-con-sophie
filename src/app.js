@@ -1390,6 +1390,7 @@ const REVIEW_COUNTRIES = [
 const REVIEW_COUNTRY_MAP = {};
 REVIEW_COUNTRIES.forEach(x => { REVIEW_COUNTRY_MAP[x.c] = x; });
 function reviewFlag(rv) { const co = REVIEW_COUNTRY_MAP[rv && rv.country]; return co ? co.f : ''; }
+function reviewCountryLabel(rv) { const co = REVIEW_COUNTRY_MAP[rv && rv.country]; return co ? ` · ${co.f} ${co.n}` : ''; }
 function populateCountrySelect() {
   const sel = document.getElementById('review-country');
   if (!sel || sel.dataset.filled) return;
@@ -1457,7 +1458,7 @@ function renderResenasPage() {
             </div>
             ${rv.verified ? '<div class="text-[11px] text-emerald-600 font-semibold mb-1">✔ Alumno verificado</div>' : '<div class="text-[11px] text-gray-400 mb-1">Reseña</div>'}
             <p class="text-gray-600 text-sm leading-relaxed">${escHtml(rv.comment)}</p>
-            <div class="text-[11px] text-gray-400 mt-1">${fmtReviewDate(rv.created_at)}</div>
+            <div class="text-[11px] text-gray-400 mt-1">${fmtReviewDate(rv.created_at)}${reviewCountryLabel(rv)}</div>
           </div>
         </div>
       </div>`;
@@ -1569,7 +1570,7 @@ function paintAdminReviews() {
         <div class="text-[11px]">${badge}</div>
       </div>
       <p class="text-gray-700 text-sm mb-2">${escHtml(rv.comment)}</p>
-      <div class="text-[11px] text-gray-400 mb-3">${fmtReviewDate(rv.created_at)}</div>
+      <div class="text-[11px] text-gray-400 mb-3">${fmtReviewDate(rv.created_at)}${reviewCountryLabel(rv)}</div>
       <div class="flex gap-2 flex-wrap">
         ${rv.status!=='approved' ? `<button onclick="moderateReview('${rv.id}','approved')" class="py-1.5 px-3 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-600 border border-emerald-200 hover:bg-emerald-100">✔ Aprobar</button>`:''}
         ${rv.status!=='hidden' ? `<button onclick="moderateReview('${rv.id}','hidden')" class="py-1.5 px-3 rounded-xl text-xs font-semibold bg-gray-50 text-gray-500 border border-gray-200 hover:bg-gray-100">🚫 Ocultar</button>`:''}
