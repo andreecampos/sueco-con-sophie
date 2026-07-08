@@ -163,7 +163,8 @@ async function main() {
 
   // 2. Recorrer suscripciones ACTIVAS de Stripe
   const report = [];
-  let processed = 0, created = 0, skipped = 0, emailed = 0, errors = 0;
+  const seenThisRun = new Set();
+  let processed = 0, created = 0, skipped = 0, emailed = 0, errors = 0, dupes = 0;
 
   for await (const sub of stripe.subscriptions.list({ status: 'active', expand: ['data.customer'], limit: 100 })) {
     if (processed >= LIMIT) break;
@@ -174,6 +175,16 @@ async function main() {
     const name = customer.name || '';
     if (!email || !email.includes('@')) { report.push({ email: '(sin email)', action: 'saltado-sin-email' }); continue; }
     if (ONLY_EMAIL && email !== ONLY_EMAIL) continue;
+
+    // Suscripción DUPLICADA en Stripe: misma persona con 2+ suscripciones activas.
+    // La procesamos una sola vez (evita correos dobles) y la contamos como aviso.
+    if (seenThisRun.has(email)) {
+      dupes++;
+      report.push({ email, action: 'duplicado-en-stripe (posible doble cobro)', price: null });
+      console.log(`⚠️  ${email} — suscripción DUPLICADA en Stripe (ya procesado en esta corrida · revisa si paga doble)`);
+      continue;
+    }
+    seenThisRun.add(email);
 
     const priceItem = sub.items?.data?.[0]?.price;
     const priceSek = priceItem?.unit_amount ? Math.round(priceItem.unit_amount / 100) : null;
@@ -247,6 +258,7 @@ async function main() {
   console.log('Cuentas creadas:', created);
   console.log('Correos enviados:', emailed);
   console.log('Saltados (ya existían):', skipped);
+  console.log('⚠️  Duplicados en Stripe (posible doble cobro):', dupes);
   console.log('Errores:', errors);
   if (!LIVE) console.log('\n⚠️  Fue una PRUEBA. Nada cambió. Corre con --live para ejecutar.');
 
