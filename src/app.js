@@ -1277,6 +1277,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     showView('newpass');
     return;
   }
+  if (new URLSearchParams(window.location.search).has('bienvenido')) { showView('welcome'); return; }
   if (hash === '#admin' || /\/admin\/?$/i.test(window.location.pathname || '')) _wantAdmin = true;
 
   const { data: { session } } = await sb.auth.getSession();
@@ -1300,6 +1301,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // ── Forgot password ───────────────────────────────────────
+function goToLoginFromWelcome() {
+  try { window.history.replaceState(null, '', window.location.pathname); } catch (e) {}
+  showView('login');
+}
+
 function showForgotPassword() {
   document.getElementById('forgot-email').value = '';
   document.getElementById('forgot-error').classList.add('hidden');

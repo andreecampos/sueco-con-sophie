@@ -194,6 +194,22 @@
 <!-- ════════════════════════════════════════════════════════════
      VIEW: LOGIN — Pantalla de acceso
 ════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════
+     VIEW: BIENVENIDA (después del pago) — ?bienvenido=1
+════════════════════════════════════════════════════════════ -->
+<div id="view-welcome" class="view" style="background: linear-gradient(160deg, #006AA7 0%, #004F7C 55%, #002D54 100%); min-height: 100vh;">
+  <div style="min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px;">
+    <div style="width:100%; max-width:420px; background:white; border-radius:20px; padding:36px 28px; box-shadow:0 25px 60px rgba(0,0,0,0.35); text-align:center;">
+      <div style="font-size:3rem; margin-bottom:6px;">🎉</div>
+      <h2 style="font-size:1.35rem; font-weight:800; color:#003f6b; margin-bottom:12px; line-height:1.3;">¡Bienvenido/a a Sueco con Sophie!</h2>
+      <p style="font-size:0.95rem; color:#374151; line-height:1.7; margin-bottom:6px;">Tu pago se realizó con éxito. 🇸🇪</p>
+      <p style="font-size:0.95rem; color:#374151; line-height:1.7; margin-bottom:22px;">Te enviamos un <strong>correo</strong> con un enlace para <strong>crear tu contraseña</strong> y entrar a la plataforma.</p>
+      <div style="background:#EFF6FF; border-radius:12px; padding:14px 16px; margin-bottom:22px; font-size:0.85rem; color:#006AA7; line-height:1.6;">📧 Revisa tu <strong>bandeja de entrada</strong> (y la carpeta de <strong>spam</strong>). Si no lo ves en unos minutos, escríbenos.</div>
+      <button onclick="goToLoginFromWelcome()" style="width:100%; background:#006AA7; color:white; border:none; border-radius:12px; padding:14px; font-size:1rem; font-weight:700; cursor:pointer; font-family:inherit; transition:background 0.2s;" onmouseover="this.style.background='#004F7C'" onmouseout="this.style.background='#006AA7'">Ya creé mi contraseña · Iniciar sesión →</button>
+    </div>
+  </div>
+</div>
+
 <div id="view-login" class="view active" style="background: linear-gradient(160deg, #006AA7 0%, #004F7C 55%, #002D54 100%); min-height: 100vh;">
   <div class="flex flex-col min-h-screen items-center justify-center px-4 py-10">
 
