@@ -6000,6 +6000,30 @@ const REVIEW_COUNTRY_MAP = {};
 REVIEW_COUNTRIES.forEach(x => { REVIEW_COUNTRY_MAP[x.c] = x; });
 function reviewFlag(rv) { const co = REVIEW_COUNTRY_MAP[rv && rv.country]; return co ? co.f : ''; }
 function reviewCountryLabel(rv) { const co = REVIEW_COUNTRY_MAP[rv && rv.country]; return co ? ` · ${co.f} ${co.n}` : ''; }
+// Comentario con "Ver más" si es largo (se recorta a 5 líneas y se expande al hacer clic)
+function reviewCommentHtml(rv) {
+  const c = escHtml(rv.comment);
+  if ((rv.comment || '').length > 220) {
+    return `<p class="text-gray-600 text-sm leading-relaxed" style="display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;">${c}</p>
+      <button onclick="toggleReviewText(this)" class="text-swe-blue text-xs font-bold mt-1">Ver más ▾</button>`;
+  }
+  return `<p class="text-gray-600 text-sm leading-relaxed">${c}</p>`;
+}
+function toggleReviewText(btn) {
+  const p = btn.previousElementSibling;
+  if (!p) return;
+  if (p.dataset.exp === '1') {
+    p.style.display = '-webkit-box';
+    p.style.webkitLineClamp = '5';
+    p.dataset.exp = '0';
+    btn.textContent = 'Ver más ▾';
+  } else {
+    p.style.display = 'block';
+    p.style.webkitLineClamp = '';
+    p.dataset.exp = '1';
+    btn.textContent = 'Ver menos ▴';
+  }
+}
 function populateCountrySelect() {
   const sel = document.getElementById('review-country');
   if (!sel || sel.dataset.filled) return;
@@ -6066,7 +6090,7 @@ function renderResenasPage() {
               <div class="text-sm flex-shrink-0">${starsHtml(rv.rating)}</div>
             </div>
             ${rv.verified ? '<div class="text-[11px] text-emerald-600 font-semibold mb-1">✔ Alumno verificado</div>' : '<div class="text-[11px] text-gray-400 mb-1">Reseña</div>'}
-            <p class="text-gray-600 text-sm leading-relaxed">${escHtml(rv.comment)}</p>
+            ${reviewCommentHtml(rv)}
             <div class="text-[12px] text-gray-500 mt-1.5 font-medium">${fmtReviewDate(rv.created_at)}${reviewCountryLabel(rv)}</div>
           </div>
         </div>
