@@ -1377,8 +1377,30 @@ let _publicReviews = [];
 let _reviewRating = 0;
 let _reviewsPage = 0;
 
+const REVIEW_COUNTRIES = [
+  {c:'SE',n:'Suecia',f:'🇸🇪'},{c:'PE',n:'Perú',f:'🇵🇪'},{c:'MX',n:'México',f:'🇲🇽'},
+  {c:'CO',n:'Colombia',f:'🇨🇴'},{c:'AR',n:'Argentina',f:'🇦🇷'},{c:'CL',n:'Chile',f:'🇨🇱'},
+  {c:'EC',n:'Ecuador',f:'🇪🇨'},{c:'VE',n:'Venezuela',f:'🇻🇪'},{c:'ES',n:'España',f:'🇪🇸'},
+  {c:'BO',n:'Bolivia',f:'🇧🇴'},{c:'GT',n:'Guatemala',f:'🇬🇹'},{c:'DO',n:'Rep. Dominicana',f:'🇩🇴'},
+  {c:'HN',n:'Honduras',f:'🇭🇳'},{c:'PY',n:'Paraguay',f:'🇵🇾'},{c:'SV',n:'El Salvador',f:'🇸🇻'},
+  {c:'NI',n:'Nicaragua',f:'🇳🇮'},{c:'CR',n:'Costa Rica',f:'🇨🇷'},{c:'PA',n:'Panamá',f:'🇵🇦'},
+  {c:'UY',n:'Uruguay',f:'🇺🇾'},{c:'CU',n:'Cuba',f:'🇨🇺'},{c:'PR',n:'Puerto Rico',f:'🇵🇷'},
+  {c:'US',n:'Estados Unidos',f:'🇺🇸'},{c:'OT',n:'Otro país',f:'🌎'},
+];
+const REVIEW_COUNTRY_MAP = {};
+REVIEW_COUNTRIES.forEach(x => { REVIEW_COUNTRY_MAP[x.c] = x; });
+function reviewFlag(rv) { const co = REVIEW_COUNTRY_MAP[rv && rv.country]; return co ? co.f : ''; }
+function populateCountrySelect() {
+  const sel = document.getElementById('review-country');
+  if (!sel || sel.dataset.filled) return;
+  sel.innerHTML = '<option value="">🌎 ¿De qué país eres? (opcional)</option>' +
+    REVIEW_COUNTRIES.map(x => `<option value="${x.c}">${x.f} ${x.n}</option>`).join('');
+  sel.dataset.filled = '1';
+}
+
 async function initResenasPage() {
   try { const { data: { session } } = await sb.auth.getSession(); if (session) window._sbSession = { email: session.user.email, id: session.user.id }; } catch (e) {}
+  populateCountrySelect();
   updateReviewFormVisibility();
   await loadPublicReviews();
 }
@@ -1430,7 +1452,7 @@ function renderResenasPage() {
           <div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0" style="background:${av.color}">${av.initial}</div>
           <div class="min-w-0 flex-1">
             <div class="flex items-center justify-between gap-2">
-              <div class="font-bold text-gray-800 text-sm truncate">${escHtml(rv.name)}</div>
+              <div class="font-bold text-gray-800 text-sm truncate">${reviewFlag(rv) ? reviewFlag(rv) + ' ' : ''}${escHtml(rv.name)}</div>
               <div class="text-sm flex-shrink-0">${starsHtml(rv.rating)}</div>
             </div>
             ${rv.verified ? '<div class="text-[11px] text-emerald-600 font-semibold mb-1">✔ Alumno verificado</div>' : '<div class="text-[11px] text-gray-400 mb-1">Reseña</div>'}
@@ -1480,10 +1502,11 @@ async function submitReview() {
   const comment = (document.getElementById('review-comment')?.value || '').trim();
   const nameInput = (document.getElementById('review-name')?.value || '').trim();
   const name = nameInput || (window._sbSession.email || 'Alumno').split('@')[0];
+  const country = (document.getElementById('review-country')?.value || '') || null;
   const btn = document.getElementById('review-submit-btn');
   if (btn) { btn.disabled = true; btn.textContent = 'Enviando...'; }
   try {
-    const { error } = await sb.from('reviews').insert({ user_id: window._sbSession.id, name, rating: _reviewRating, comment, verified: true, status: 'pending' });
+    const { error } = await sb.from('reviews').insert({ user_id: window._sbSession.id, name, rating: _reviewRating, comment, country, verified: true, status: 'pending' });
     if (error) throw error;
     const fb = document.getElementById('review-form-box');
     if (fb) fb.innerHTML = '<div class="text-center py-6"><div class="text-4xl mb-2">🙏</div><p class="font-bold text-gray-800">¡Gracias por tu reseña!</p><p class="text-gray-500 text-sm mt-1">La revisaremos y aparecerá pronto.</p></div>';
@@ -1541,7 +1564,7 @@ function paintAdminReviews() {
       <div class="flex items-start justify-between gap-2 mb-2">
         <div class="flex items-center gap-2">
           <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style="background:${av.color}">${av.initial}</div>
-          <div><div class="font-bold text-gray-800 text-sm">${escHtml(rv.name)} ${rv.verified?'<span class="text-emerald-600 text-[10px]">✔</span>':''}</div><div class="text-sm">${starsHtml(rv.rating)}</div></div>
+          <div><div class="font-bold text-gray-800 text-sm">${reviewFlag(rv) ? reviewFlag(rv) + ' ' : ''}${escHtml(rv.name)} ${rv.verified?'<span class="text-emerald-600 text-[10px]">✔</span>':''}</div><div class="text-sm">${starsHtml(rv.rating)}</div></div>
         </div>
         <div class="text-[11px]">${badge}</div>
       </div>
