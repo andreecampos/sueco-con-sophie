@@ -1418,7 +1418,7 @@ function renderResenasPage() {
   }
   const list = document.getElementById('resenas-list');
   const pag = document.getElementById('resenas-pagination');
-  const perPage = 10;
+  const perPage = 5;
   const pages = Math.max(1, Math.ceil(r.length / perPage));
   if (_reviewsPage >= pages) _reviewsPage = 0;
   const slice = r.slice(_reviewsPage * perPage, _reviewsPage * perPage + perPage);
@@ -1454,7 +1454,7 @@ function renderResenasPage() {
 }
 
 function reviewsGoPage(n) {
-  const pages = Math.max(1, Math.ceil(_publicReviews.length / 10));
+  const pages = Math.max(1, Math.ceil(_publicReviews.length / 5));
   _reviewsPage = Math.min(Math.max(0, n), pages - 1);
   renderResenasPage();
   const top = document.getElementById('resenas-summary');
