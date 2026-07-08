@@ -1339,14 +1339,16 @@ function goToLoginFromWelcome() {
 
 // ── Aviso superior (se puede cerrar; cambia 'v1' si actualizas el mensaje) ──
 const _ANNOUNCE_KEY = 'sc_banner_v1';
+function _todayStr() { return new Date().toISOString().slice(0, 10); }
 function dismissAnnounce() {
   const el = document.getElementById('announce-banner');
   if (el) el.style.display = 'none';
-  try { localStorage.setItem(_ANNOUNCE_KEY, '1'); } catch (e) {}
+  // Se oculta solo por HOY; vuelve a aparecer mañana.
+  try { localStorage.setItem(_ANNOUNCE_KEY, _todayStr()); } catch (e) {}
 }
 function initAnnounce() {
   try {
-    if (localStorage.getItem(_ANNOUNCE_KEY) === '1') {
+    if (localStorage.getItem(_ANNOUNCE_KEY) === _todayStr()) {
       const el = document.getElementById('announce-banner');
       if (el) el.style.display = 'none';
     }

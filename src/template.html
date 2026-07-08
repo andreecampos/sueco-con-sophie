@@ -1510,7 +1510,7 @@
     <div id="grammar-review-card" class="mb-4"></div>
 
     <!-- Level filter -->
-    <div class="flex gap-2 mb-5 items-center">
+    <div class="flex flex-wrap gap-2 mb-5 items-center">
       <span class="text-xs text-gray-500 font-semibold">Filtrar:</span>
       <button onclick="filterGrammar('all')" id="gf-all" data-level="all" class="grammar-filter-btn active text-xs px-3 py-1.5 rounded-full font-semibold">Todos</button>
       <button onclick="filterGrammar('A')" id="gf-A" data-level="A" class="grammar-filter-btn text-xs px-3 py-1.5 rounded-full font-semibold">Principiante</button>
@@ -1627,7 +1627,8 @@
 
 <style>
 .grammar-filter-btn { background:#f3f4f6; color:#6b7280; transition:all 0.2s; }
-.grammar-filter-btn.active { background:#006AA7; color:white; }
+.grammar-filter-btn:hover { background:#e5e7eb; }
+.grammar-filter-btn.active { background:#006AA7; color:white; box-shadow:0 2px 8px rgba(0,106,167,0.3); }
 .grammar-topic-card { transition: all 0.2s; cursor: pointer; }
 .grammar-topic-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,106,167,0.15); }
   .horst-filter-btn { background: #f1f5f9; color: #64748b; }
