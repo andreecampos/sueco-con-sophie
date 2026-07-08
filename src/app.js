@@ -50,8 +50,9 @@ function _adminLoginMode() {
 }
 function isAdminUser() { const e = (window._sbSession?.email || '').toLowerCase(); return ADMIN_EMAILS.includes(e); }
 
-// Helper: calls the admin Edge Function
-async function adminOps(action, data = {}) {
+// Helper: calls the admin Edge Function.
+// Auto-repara la sesión: si el token caducó (401), lo refresca y reintenta 1 vez.
+async function adminOps(action, data = {}, _retry = true) {
   try {
     let _token = SUPABASE_ANON;
     try { const { data: { session } } = await sb.auth.getSession(); if (session?.access_token) _token = session.access_token; } catch (e) {}
@@ -64,6 +65,12 @@ async function adminOps(action, data = {}) {
       },
       body: JSON.stringify({ action, data })
     });
+    // Sesión caducada → refresca el token una vez y reintenta automáticamente
+    if (res.status === 401 && _retry) {
+      try { await sb.auth.refreshSession(); } catch (e) {}
+      return await adminOps(action, data, false);
+    }
+    if (res.status === 401) return { error: 'sesion_expirada' };
     if (!res.ok) throw new Error('HTTP ' + res.status);
     return await res.json();
   } catch(e) {
@@ -1112,8 +1119,16 @@ const DEVICE_KEY = getDeviceKey();
 const MAX_DEVICES = 2;
 
 // ── Student Storage (Supabase) ────────────────────────────
+let _lastStudentsError = null;
 async function getStudents() {
   const result = await adminOps('list_students');
+  // Si hubo error (sesión/permiso), NO borres los datos que ya tenías: solo marca el error
+  if (result.error || !result.students) {
+    _lastStudentsError = result.error || 'sin_datos';
+    if (!_cachedStudents) _cachedStudents = [];
+    return _cachedStudents;
+  }
+  _lastStudentsError = null;
   // Map snake_case DB columns → camelCase for existing UI code
   _cachedStudents = (result.students || []).map(s => ({
     id: s.id,
@@ -1495,6 +1510,16 @@ async function renderStudents() {
   if (!container) return;
   container.innerHTML = '<div class="text-center py-8 text-gray-400 text-sm">⏳ Cargando alumnos...</div>';
   await getStudents();
+  if (_lastStudentsError) {
+    container.innerHTML = `<div class="text-center py-8 text-sm">
+      <div class="text-3xl mb-2">🔒</div>
+      <p class="font-bold text-gray-700 mb-1">No pudimos cargar tus alumnos</p>
+      <p class="text-gray-500 mb-1">Tu sesión pudo haber expirado (llevas mucho rato). Tus datos están a salvo.</p>
+      <p class="text-gray-400 text-xs mb-4">Solo vuelve a entrar y aparecerán todos.</p>
+      <button onclick="location.reload()" class="bg-swe-blue text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-swe-dark transition-colors">🔄 Recargar sesión</button>
+    </div>`;
+    return;
+  }
   paintStudents();
 }
 
