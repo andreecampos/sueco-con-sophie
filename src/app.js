@@ -848,6 +848,7 @@ function adminTab(tab) {
   const dashSection     = document.getElementById('admin-dashboard-section');
   const studentsSection = document.getElementById('admin-students-section');
   const configSection   = document.getElementById('admin-config-section');
+  const reviewsSection  = document.getElementById('admin-reviews-section');
   const contentList     = document.getElementById('admin-content-list');
   const levelSelector   = document.querySelector('.admin-level-selector');
 
@@ -855,6 +856,7 @@ function adminTab(tab) {
   if (dashSection)     dashSection.classList.add('hidden');
   if (studentsSection) studentsSection.classList.add('hidden');
   if (configSection)   configSection.classList.add('hidden');
+  if (reviewsSection)  reviewsSection.classList.add('hidden');
   if (contentList)     contentList.classList.remove('hidden');
   document.querySelectorAll('#admin-panel .glass').forEach(el => {
     if (el.querySelector('#admin-form') || el.querySelector('#import-file')) el.classList.remove('hidden');
@@ -881,6 +883,13 @@ function adminTab(tab) {
       if (el.querySelector('#admin-form') || el.querySelector('#import-file')) el.classList.add('hidden');
     });
     loadStripeConfigUI();
+  } else if (tab === 'reviews') {
+    if (reviewsSection) reviewsSection.classList.remove('hidden');
+    if (contentList) contentList.classList.add('hidden');
+    document.querySelectorAll('#admin-panel .glass').forEach(el => {
+      if (el.querySelector('#admin-form') || el.querySelector('#import-file')) el.classList.add('hidden');
+    });
+    renderAdminReviews();
   } else {
     renderAdminContent();
     renderAdminForm();
@@ -1294,6 +1303,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
   if (new URLSearchParams(window.location.search).has('bienvenido')) { showView('welcome'); return; }
+  // Página pública de reseñas (no requiere iniciar sesión)
+  if (/\/rese[nñ]as\/?$/i.test(window.location.pathname || '') || hash === '#resenas') {
+    showView('resenas'); initResenasPage(); return;
+  }
   if (hash === '#admin' || /\/admin\/?$/i.test(window.location.pathname || '')) _wantAdmin = true;
 
   const { data: { session } } = await sb.auth.getSession();
@@ -1320,6 +1333,196 @@ document.addEventListener('DOMContentLoaded', async () => {
 function goToLoginFromWelcome() {
   try { window.history.replaceState(null, '', window.location.pathname); } catch (e) {}
   showView('login');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  RESEÑAS (públicas) + SOPORTE
+// ═══════════════════════════════════════════════════════════
+const _AVATAR_COLORS = ['#006AA7','#10B981','#F59E0B','#8B5CF6','#EF4444','#EC4899','#0EA5E9','#14B8A6'];
+function reviewAvatar(name) {
+  const n = (name || '?').trim();
+  const initial = (n.charAt(0) || '?').toUpperCase();
+  let h = 0; for (let i=0;i<n.length;i++) h = (h*31 + n.charCodeAt(i)) & 0xffff;
+  return { initial, color: _AVATAR_COLORS[h % _AVATAR_COLORS.length] };
+}
+function starsHtml(n) {
+  n = Math.round(n||0); let s = '';
+  for (let i=1;i<=5;i++) s += `<span style="color:${i<=n?'#F59E0B':'#D1D5DB'}">★</span>`;
+  return s;
+}
+function escHtml(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function fmtReviewDate(iso){ try { return new Date(iso).toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'}); } catch(e){ return ''; } }
+
+let _publicReviews = [];
+let _reviewRating = 0;
+
+async function initResenasPage() {
+  try { const { data: { session } } = await sb.auth.getSession(); if (session) window._sbSession = { email: session.user.email, id: session.user.id }; } catch (e) {}
+  updateReviewFormVisibility();
+  await loadPublicReviews();
+}
+
+async function loadPublicReviews() {
+  try {
+    const { data, error } = await sb.from('reviews').select('*').eq('status','approved').order('created_at',{ascending:false});
+    if (error) throw error;
+    _publicReviews = data || [];
+  } catch (e) { _publicReviews = []; }
+  renderResenasPage();
+}
+
+function renderResenasPage() {
+  const r = _publicReviews;
+  const sumEl = document.getElementById('resenas-summary');
+  if (sumEl) {
+    if (r.length === 0) {
+      sumEl.innerHTML = '<div class="text-gray-400 text-sm text-center">Aún no hay reseñas. ¡Sé el primero! 🙌</div>';
+    } else {
+      const avg = r.reduce((a,x)=>a+(x.rating||0),0)/r.length;
+      const bars = [5,4,3,2,1].map(st => {
+        const c = r.filter(x=>x.rating===st).length, pct = Math.round(c/r.length*100);
+        return `<div class="flex items-center gap-2 text-xs"><span class="w-3 text-gray-500">${st}</span><span style="color:#F59E0B">★</span><div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full" style="width:${pct}%;background:#F59E0B"></div></div><span class="w-6 text-right text-gray-400">${c}</span></div>`;
+      }).join('');
+      sumEl.innerHTML = `<div class="flex items-center gap-5">
+        <div class="text-center flex-shrink-0">
+          <div class="text-4xl font-black text-gray-800">${avg.toFixed(1)}</div>
+          <div class="text-lg leading-none">${starsHtml(avg)}</div>
+          <div class="text-xs text-gray-400 mt-1">${r.length} reseña${r.length!==1?'s':''}</div>
+        </div>
+        <div class="flex-1 space-y-1">${bars}</div>
+      </div>`;
+    }
+  }
+  const list = document.getElementById('resenas-list');
+  if (list) {
+    list.innerHTML = r.map(rv => {
+      const av = reviewAvatar(rv.name);
+      return `<div class="bg-white rounded-2xl p-4 shadow border border-gray-100 mb-4 break-inside-avoid">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0" style="background:${av.color}">${av.initial}</div>
+          <div class="min-w-0">
+            <div class="font-bold text-gray-800 text-sm truncate">${escHtml(rv.name)}</div>
+            ${rv.verified ? '<div class="text-[11px] text-emerald-600 font-semibold">✔ Alumno verificado</div>' : '<div class="text-[11px] text-gray-400">Reseña</div>'}
+          </div>
+        </div>
+        <div class="text-sm mb-1">${starsHtml(rv.rating)}</div>
+        <p class="text-gray-700 text-sm leading-relaxed">${escHtml(rv.comment)}</p>
+        <div class="text-[11px] text-gray-400 mt-2">${fmtReviewDate(rv.created_at)}</div>
+      </div>`;
+    }).join('');
+  }
+}
+
+function updateReviewFormVisibility() {
+  const logged = !!(window._sbSession && window._sbSession.id);
+  const formBox = document.getElementById('review-form-box');
+  const loginBox = document.getElementById('review-login-box');
+  if (formBox) formBox.classList.toggle('hidden', !logged);
+  if (loginBox) loginBox.classList.toggle('hidden', logged);
+}
+
+function setReviewRating(n) {
+  _reviewRating = n;
+  document.querySelectorAll('#review-stars .rv-star').forEach((el,i) => { el.style.color = (i < n) ? '#F59E0B' : '#D1D5DB'; });
+}
+
+async function submitReview() {
+  if (!(window._sbSession && window._sbSession.id)) { showToast('Inicia sesión para dejar tu reseña', 'info'); return; }
+  if (_reviewRating < 1) { showToast('Elige cuántas estrellas ⭐', 'info'); return; }
+  const comment = (document.getElementById('review-comment')?.value || '').trim();
+  const nameInput = (document.getElementById('review-name')?.value || '').trim();
+  const name = nameInput || (window._sbSession.email || 'Alumno').split('@')[0];
+  const btn = document.getElementById('review-submit-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Enviando...'; }
+  try {
+    const { error } = await sb.from('reviews').insert({ user_id: window._sbSession.id, name, rating: _reviewRating, comment, verified: true, status: 'pending' });
+    if (error) throw error;
+    const fb = document.getElementById('review-form-box');
+    if (fb) fb.innerHTML = '<div class="text-center py-6"><div class="text-4xl mb-2">🙏</div><p class="font-bold text-gray-800">¡Gracias por tu reseña!</p><p class="text-gray-500 text-sm mt-1">La revisaremos y aparecerá pronto.</p></div>';
+  } catch (e) {
+    showToast('No se pudo enviar: ' + (e.message||''), 'error');
+    if (btn) { btn.disabled = false; btn.textContent = 'Publicar reseña'; }
+  }
+}
+
+async function submitSupport() {
+  const name = (document.getElementById('sup-name')?.value || '').trim();
+  const email = (document.getElementById('sup-email')?.value || '').trim();
+  const tipo = (document.getElementById('sup-tipo')?.value || 'Mensaje');
+  const message = (document.getElementById('sup-msg')?.value || '').trim();
+  if (!email || !message) { showToast('Escribe tu correo y tu mensaje', 'info'); return; }
+  const btn = document.getElementById('sup-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Enviando...'; }
+  const result = await adminOps('send_support', { name, email, tipo, message });
+  if (result.error || result.ok === false) {
+    showToast('No se pudo enviar. Intenta de nuevo.', 'error');
+    if (btn) { btn.disabled = false; btn.textContent = 'Enviar mensaje'; }
+    return;
+  }
+  const box = document.getElementById('support-box');
+  if (box) box.innerHTML = '<div class="text-center py-4"><div class="text-3xl mb-2">✅</div><p class="font-bold text-gray-800">¡Mensaje enviado!</p><p class="text-gray-500 text-sm mt-1">Te responderemos a tu correo pronto.</p></div>';
+}
+
+// ── Reseñas: panel admin ──
+let _adminReviews = [];
+async function renderAdminReviews() {
+  const container = document.getElementById('admin-reviews-list');
+  if (!container) return;
+  container.innerHTML = '<div class="text-center py-8 text-gray-400 text-sm">⏳ Cargando reseñas...</div>';
+  const result = await adminOps('list_reviews');
+  if (result.error) { container.innerHTML = '<div class="text-center py-8 text-sm text-gray-500">No se pudieron cargar las reseñas.</div>'; return; }
+  _adminReviews = result.reviews || [];
+  paintAdminReviews();
+}
+
+function paintAdminReviews() {
+  const container = document.getElementById('admin-reviews-list');
+  if (!container) return;
+  const r = _adminReviews;
+  const cnt = document.getElementById('admin-reviews-counts');
+  if (cnt) {
+    const pend = r.filter(x=>x.status==='pending').length, appr = r.filter(x=>x.status==='approved').length, hid = r.filter(x=>x.status==='hidden').length;
+    cnt.innerHTML = `<span class="text-amber-600 font-semibold">⏳ ${pend} pendientes</span> · <span class="text-emerald-600">✔ ${appr} publicadas</span> · <span class="text-gray-400">🚫 ${hid} ocultas</span>`;
+  }
+  if (r.length === 0) { container.innerHTML = '<div class="text-center py-8 text-gray-400 text-sm">Aún no hay reseñas.</div>'; return; }
+  container.innerHTML = r.map(rv => {
+    const av = reviewAvatar(rv.name);
+    const badge = rv.status==='approved' ? '<span class="text-emerald-600 font-semibold">✔ Publicada</span>' : rv.status==='hidden' ? '<span class="text-gray-400">🚫 Oculta</span>' : '<span class="text-amber-600 font-semibold">⏳ Pendiente</span>';
+    const border = rv.status==='pending' ? 'border-amber-200' : rv.status==='approved' ? 'border-emerald-200' : 'border-gray-200';
+    return `<div class="bg-white rounded-2xl p-4 shadow border ${border}">
+      <div class="flex items-start justify-between gap-2 mb-2">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style="background:${av.color}">${av.initial}</div>
+          <div><div class="font-bold text-gray-800 text-sm">${escHtml(rv.name)} ${rv.verified?'<span class="text-emerald-600 text-[10px]">✔</span>':''}</div><div class="text-sm">${starsHtml(rv.rating)}</div></div>
+        </div>
+        <div class="text-[11px]">${badge}</div>
+      </div>
+      <p class="text-gray-700 text-sm mb-2">${escHtml(rv.comment)}</p>
+      <div class="text-[11px] text-gray-400 mb-3">${fmtReviewDate(rv.created_at)}</div>
+      <div class="flex gap-2 flex-wrap">
+        ${rv.status!=='approved' ? `<button onclick="moderateReview('${rv.id}','approved')" class="py-1.5 px-3 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-600 border border-emerald-200 hover:bg-emerald-100">✔ Aprobar</button>`:''}
+        ${rv.status!=='hidden' ? `<button onclick="moderateReview('${rv.id}','hidden')" class="py-1.5 px-3 rounded-xl text-xs font-semibold bg-gray-50 text-gray-500 border border-gray-200 hover:bg-gray-100">🚫 Ocultar</button>`:''}
+        <button onclick="deleteReview('${rv.id}')" class="py-1.5 px-3 rounded-xl text-xs font-semibold bg-gray-50 text-gray-400 hover:text-red-500 border border-gray-200">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function moderateReview(id, status) {
+  const result = await adminOps('moderate_review', { id, status });
+  if (result.error) { showToast('Error: '+result.error,'error'); return; }
+  const rv = _adminReviews.find(x=>x.id===id); if (rv) rv.status = status;
+  paintAdminReviews();
+  showToast(status==='approved'?'✔ Reseña publicada':'Reseña actualizada','success');
+}
+
+async function deleteReview(id) {
+  if (!confirm('¿Eliminar esta reseña? No se puede deshacer.')) return;
+  const result = await adminOps('delete_review', { id });
+  if (result.error) { showToast('Error: '+result.error,'error'); return; }
+  _adminReviews = _adminReviews.filter(x=>x.id!==id);
+  paintAdminReviews();
+  showToast('Reseña eliminada','info');
 }
 
 function showForgotPassword() {

@@ -197,6 +197,51 @@
 <!-- ═══════════════════════════════════════════════════════════
      VIEW: BIENVENIDA (después del pago) — ?bienvenido=1
 ════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════
+     VIEW: RESEÑAS (pública) — ruta /resenas
+════════════════════════════════════════════════════════════ -->
+<div id="view-resenas" class="view" style="background:#f0f4f8; min-height:100vh;">
+  <div style="background:linear-gradient(160deg,#006AA7 0%,#004F7C 100%); padding:26px 20px 42px; color:#fff;">
+    <div class="max-w-2xl mx-auto">
+      <div class="flex items-center gap-2 mb-3">
+        <span style="font-size:1.4rem">🇸🇪</span>
+        <span class="font-black text-base">Sueco con Sophie</span>
+      </div>
+      <h1 class="text-2xl font-black mb-1">Reseñas de nuestros alumnos</h1>
+      <p class="text-blue-100 text-sm">Lo que dicen quienes ya aprenden sueco con nosotros.</p>
+    </div>
+  </div>
+  <div class="max-w-2xl mx-auto px-4" style="margin-top:-22px;">
+    <div class="bg-white rounded-2xl p-5 shadow-lg border border-blue-100 mb-4" id="resenas-summary"></div>
+
+    <div class="bg-white rounded-2xl p-5 shadow border border-gray-100 mb-6">
+      <div id="review-login-box" class="hidden text-center py-2">
+        <p class="text-gray-600 text-sm mb-3">¿Ya eres alumno/a? Inicia sesión para dejar tu reseña.</p>
+        <button onclick="showView('login')" class="bg-swe-blue text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-swe-dark transition-colors">Iniciar sesión</button>
+      </div>
+      <div id="review-form-box" class="hidden">
+        <div class="font-bold text-gray-800 mb-3">Deja tu reseña ✍️</div>
+        <div class="flex items-center gap-1 mb-3" id="review-stars">
+          <span class="rv-star cursor-pointer" style="font-size:1.9rem;color:#D1D5DB" onclick="setReviewRating(1)">★</span>
+          <span class="rv-star cursor-pointer" style="font-size:1.9rem;color:#D1D5DB" onclick="setReviewRating(2)">★</span>
+          <span class="rv-star cursor-pointer" style="font-size:1.9rem;color:#D1D5DB" onclick="setReviewRating(3)">★</span>
+          <span class="rv-star cursor-pointer" style="font-size:1.9rem;color:#D1D5DB" onclick="setReviewRating(4)">★</span>
+          <span class="rv-star cursor-pointer" style="font-size:1.9rem;color:#D1D5DB" onclick="setReviewRating(5)">★</span>
+        </div>
+        <input id="review-name" type="text" placeholder="Tu nombre (como quieres que aparezca)" class="w-full border-2 border-gray-200 rounded-xl px-3 py-2 text-sm mb-2 focus:border-swe-blue focus:outline-none" />
+        <textarea id="review-comment" rows="3" placeholder="Cuéntanos tu experiencia…" class="w-full border-2 border-gray-200 rounded-xl px-3 py-2 text-sm mb-3 focus:border-swe-blue focus:outline-none resize-none"></textarea>
+        <button id="review-submit-btn" onclick="submitReview()" class="w-full bg-swe-blue text-white py-2.5 rounded-xl font-bold text-sm hover:bg-swe-dark transition-colors">Publicar reseña</button>
+        <p class="text-[11px] text-gray-400 text-center mt-2">Tu reseña se publica tras una revisión rápida.</p>
+      </div>
+    </div>
+
+    <div id="resenas-list" class="pb-6"></div>
+    <div class="text-center pb-10">
+      <button onclick="goHome()" class="text-swe-blue text-sm font-semibold">← Volver a la plataforma</button>
+    </div>
+  </div>
+</div>
+
 <div id="view-welcome" class="view" style="background: linear-gradient(160deg, #006AA7 0%, #004F7C 55%, #002D54 100%); min-height: 100vh;">
   <div style="min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px;">
     <div style="width:100%; max-width:420px; background:white; border-radius:20px; padding:36px 28px; box-shadow:0 25px 60px rgba(0,0,0,0.35); text-align:center;">
@@ -547,6 +592,28 @@
       <div class="mt-4 text-center py-4 bg-gradient-to-r from-swe-blue to-swe-dark rounded-2xl text-white">
         <p class="text-xs font-medium opacity-80">Tu coach de sueco para latinos</p>
         <p class="text-sm font-bold mt-0.5">Aprende sueco. Conéctate. Expande tu mundo.</p>
+      </div>
+
+      <!-- Soporte / contacto -->
+      <div id="support-box" class="glass rounded-2xl p-5 shadow border border-gray-100 mt-4">
+        <div class="font-bold text-gray-800 mb-1">💬 ¿Necesitas ayuda?</div>
+        <p class="text-gray-500 text-xs mb-3">¿Algo no funciona o tienes una duda? Escríbenos y te respondemos a tu correo.</p>
+        <input id="sup-name" type="text" placeholder="Tu nombre" class="w-full border-2 border-gray-200 rounded-xl px-3 py-2 text-sm mb-2 focus:border-swe-blue focus:outline-none" />
+        <input id="sup-email" type="email" placeholder="Tu correo" class="w-full border-2 border-gray-200 rounded-xl px-3 py-2 text-sm mb-2 focus:border-swe-blue focus:outline-none" />
+        <select id="sup-tipo" class="w-full border-2 border-gray-200 rounded-xl px-3 py-2 text-sm mb-2 bg-white focus:border-swe-blue focus:outline-none">
+          <option>Problema técnico</option>
+          <option>Duda</option>
+          <option>Sugerencia / Feedback</option>
+          <option>Pago / suscripción</option>
+          <option>Otro</option>
+        </select>
+        <textarea id="sup-msg" rows="3" placeholder="Cuéntanos…" class="w-full border-2 border-gray-200 rounded-xl px-3 py-2 text-sm mb-3 focus:border-swe-blue focus:outline-none resize-none"></textarea>
+        <button id="sup-btn" onclick="submitSupport()" class="w-full bg-swe-blue text-white py-2.5 rounded-xl font-bold text-sm hover:bg-swe-dark transition-colors">Enviar mensaje</button>
+      </div>
+
+      <!-- Ver reseñas -->
+      <div class="text-center mt-4 mb-2">
+        <button onclick="showView('resenas'); initResenasPage();" class="text-swe-blue text-sm font-semibold">⭐ Ver reseñas de alumnos</button>
       </div>
     </div>
 
@@ -1088,6 +1155,7 @@
       <button onclick="adminTab('write')" class="admin-tab-btn text-xs px-4 py-2 rounded-xl font-semibold whitespace-nowrap" data-tab="write">✍️ Skriva</button>
       <button onclick="adminTab('speak')" class="admin-tab-btn text-xs px-4 py-2 rounded-xl font-semibold whitespace-nowrap" data-tab="speak">🗣️ Tala</button>
       <button onclick="adminTab('test')" class="admin-tab-btn text-xs px-4 py-2 rounded-xl font-semibold whitespace-nowrap" data-tab="test">🏆 Prov</button>
+      <button onclick="adminTab('reviews')" class="admin-tab-btn text-xs px-4 py-2 rounded-xl font-semibold whitespace-nowrap" data-tab="reviews">⭐ Reseñas</button>
       <button onclick="adminTab('config')" class="admin-tab-btn text-xs px-4 py-2 rounded-xl font-semibold whitespace-nowrap" data-tab="config">⚙️ Config</button>
     </div>
 
@@ -1278,6 +1346,18 @@
       <div id="group-filter" class="flex flex-wrap gap-2 mb-3"></div>
       <div id="students-list" class="space-y-3"></div>
 
+    </div>
+
+    <!-- Reseñas (moderación) -->
+    <div id="admin-reviews-section" class="hidden">
+      <div class="glass rounded-2xl p-4 shadow border border-amber-100 mb-4">
+        <div class="flex items-center justify-between mb-1">
+          <h3 class="font-bold text-gray-800">⭐ Reseñas</h3>
+          <button onclick="renderAdminReviews()" class="text-xs text-swe-blue font-semibold">🔄 Actualizar</button>
+        </div>
+        <div id="admin-reviews-counts" class="text-xs text-gray-500"></div>
+      </div>
+      <div id="admin-reviews-list" class="space-y-3"></div>
     </div>
 
     <!-- Content list -->

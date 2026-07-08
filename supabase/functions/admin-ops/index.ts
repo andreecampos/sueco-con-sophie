@@ -68,9 +68,9 @@ Deno.serve(async (req) => {
     )
 
     // Seguridad: verificar que quien llama es admin POR SU LOGIN (su token de sesión),
-    // no por una contraseña compartida. create_portal_session queda libre porque la usan
-    // los propios alumnos para abrir su portal de pago.
-    if (action !== 'create_portal_session') {
+    // no por una contraseña compartida. create_portal_session y send_support quedan libres
+    // porque las usan los propios alumnos (portal de pago / enviar mensaje de soporte).
+    if (action !== 'create_portal_session' && action !== 'send_support') {
       const ADMIN_EMAILS = (Deno.env.get('ADMIN_EMAILS') || 'sophie.sahlin@hotmail.com,orlandoandree1998@gmail.com')
         .split(',').map((e) => e.trim().toLowerCase())
       const jwt = (req.headers.get('Authorization') || '').replace('Bearer ', '').trim()
@@ -172,6 +172,71 @@ Deno.serve(async (req) => {
         const actionLink = linkData?.properties?.action_link || ''
         const sent = await sendAccessEmail(targetEmail, actionLink)
         return new Response(JSON.stringify({ ok: true, sent, email: targetEmail, link: actionLink }), { headers: corsHeaders })
+      }
+
+      // ── Soporte: el alumno envía un mensaje → te llega a tu correo ──
+      case 'send_support': {
+        const { name = '', email = '', message = '', tipo = 'Mensaje' } = data
+        if (!message || !email) {
+          return new Response(JSON.stringify({ error: 'Falta correo o mensaje' }), { status: 400, headers: corsHeaders })
+        }
+        const resendKey = Deno.env.get('RESEND_API_KEY')
+        const toInbox = Deno.env.get('SUPPORT_EMAIL') || 'orlandoandree1998@gmail.com'
+        if (!resendKey) {
+          return new Response(JSON.stringify({ error: 'Correo no configurado' }), { status: 500, headers: corsHeaders })
+        }
+        const safe = (s: string) => String(s).replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        const html = `<div style="font-family:Helvetica,Arial,sans-serif;max-width:600px;margin:0 auto;">
+          <div style="background:#003f6b;color:#fff;padding:18px 24px;border-radius:12px 12px 0 0;">
+            <h2 style="margin:0;font-size:18px;">📨 Soporte Sueco con Sophie</h2>
+            <p style="margin:4px 0 0;color:#90cdf4;font-size:13px;">${safe(tipo)}</p>
+          </div>
+          <div style="border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px;padding:24px;">
+            <p style="margin:0 0 8px;color:#374151;"><strong>De:</strong> ${safe(name) || '(sin nombre)'} &lt;${safe(email)}&gt;</p>
+            <p style="margin:0 0 16px;color:#374151;"><strong>Mensaje:</strong></p>
+            <div style="background:#f7fafc;border-radius:10px;padding:16px;color:#1f2937;line-height:1.7;white-space:pre-wrap;">${safe(message)}</div>
+            <p style="margin:20px 0 0;color:#9ca3af;font-size:12px;">Responde directamente a este correo para contestarle a ${safe(email)}.</p>
+          </div>
+        </div>`
+        const res = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            from: 'Soporte Sueco con Sophie <hola@suecoconsophie.com>',
+            to: toInbox,
+            reply_to: email,
+            subject: `Soporte Sueco con Sophie — ${tipo} de ${name || email}`,
+            html,
+          }),
+        })
+        const r = await res.json()
+        console.log('send_support Resend:', JSON.stringify(r))
+        return new Response(JSON.stringify({ ok: res.ok }), { headers: corsHeaders })
+      }
+
+      // ── Reseñas: moderación (solo admin) ──────────────────────
+      case 'list_reviews': {
+        const { data: reviews, error } = await sb
+          .from('reviews').select('*').order('created_at', { ascending: false })
+        if (error) throw error
+        return new Response(JSON.stringify({ reviews: reviews || [] }), { headers: corsHeaders })
+      }
+
+      case 'moderate_review': {
+        const { id, status } = data // 'approved' | 'hidden' | 'pending'
+        if (!id || !['approved', 'hidden', 'pending'].includes(status)) {
+          return new Response(JSON.stringify({ error: 'Datos inválidos' }), { status: 400, headers: corsHeaders })
+        }
+        const { error } = await sb.from('reviews').update({ status }).eq('id', id)
+        if (error) throw error
+        return new Response(JSON.stringify({ ok: true }), { headers: corsHeaders })
+      }
+
+      case 'delete_review': {
+        const { id } = data
+        const { error } = await sb.from('reviews').delete().eq('id', id)
+        if (error) throw error
+        return new Response(JSON.stringify({ ok: true }), { headers: corsHeaders })
       }
 
       case 'get_config': {
