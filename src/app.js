@@ -1132,6 +1132,7 @@ async function getStudents() {
     lastLogin: s.last_login,
     cancelsAt: s.cancels_at || null,
     level: s.level || null,
+    grupo: s.grupo || null,
   }));
   return _cachedStudents;
 }
@@ -1420,6 +1421,16 @@ async function toggleStudent(id) {
   renderStudents();
 }
 
+const GRUPOS = ['Vamos svenska 1', 'Vamos svenska 2', 'Vamos svenska 3', 'Vamos svenska 4'];
+
+async function updateStudentGroup(id, grupo) {
+  const result = await adminOps('update_student', { id, fields: { grupo: grupo || null } });
+  if (result.error) { showToast('Error: ' + result.error, 'error'); return; }
+  const s = (_cachedStudents || []).find(st => st.id === id);
+  if (s) s.grupo = grupo || null;
+  showToast(grupo ? `👥 Grupo asignado: ${grupo}` : '👥 Grupo quitado', grupo ? 'success' : 'info');
+}
+
 async function resetStudentDevices(id) {
   const result = await adminOps('reset_devices', { id });
   if (result.error) { showToast('Error: ' + result.error, 'error'); return; }
@@ -1522,6 +1533,7 @@ function paintStudents() {
     const lastAccessCls = (_days === null || _days >= 21) ? 'text-red-500 font-semibold' : 'text-gray-400';
     const memberSince = s.createdAt ? new Date(s.createdAt).toLocaleDateString('es-ES', { month:'short', year:'numeric' }) : null;
     const borderColor = status === 'active' || status === 'manual' ? 'border-green-200' : status === 'cancelling' ? 'border-orange-200' : status === 'failed' ? 'border-red-200' : 'border-gray-200';
+    const grupoOpts = '<option value="">— Sin grupo —</option>' + GRUPOS.map(g => `<option value="${g}" ${s.grupo === g ? 'selected' : ''}>${g}</option>`).join('');
     return `
     <div class="glass rounded-2xl p-4 shadow border ${borderColor}">
       <div class="flex items-start justify-between gap-3 mb-2">
@@ -1548,6 +1560,14 @@ function paintStudents() {
         ${memberSince ? `<span>·</span><span>📅 desde ${memberSince}</span>` : ''}
         <span>·</span><span>🎯 ${s.level ? (typeof LEVEL_LABEL !== 'undefined' && LEVEL_LABEL[s.level] || s.level) : 'sin prueba'}</span>
         ${cancelsAtStr ? `<span>·</span><span class="text-orange-500 font-semibold">⚠️ Pierde acceso: ${cancelsAtStr}</span>` : ''}
+      </div>
+
+      <div class="flex items-center gap-2 mb-2">
+        <span class="text-xs text-gray-400 flex-shrink-0">👥 Grupo:</span>
+        <select onchange="updateStudentGroup('${s.id}', this.value)"
+          class="flex-1 py-1.5 px-2 rounded-xl text-xs font-semibold bg-purple-50 border border-purple-200 text-purple-700 focus:outline-none focus:border-purple-400">
+          ${grupoOpts}
+        </select>
       </div>
 
       <div class="flex gap-2 flex-wrap">
