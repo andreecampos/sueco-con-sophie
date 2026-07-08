@@ -1303,8 +1303,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
   if (new URLSearchParams(window.location.search).has('bienvenido')) { showView('welcome'); return; }
-  // Página pública de reseñas (no requiere iniciar sesión)
-  if (/\/rese[nñ]as\/?$/i.test(window.location.pathname || '') || hash === '#resenas') {
+  // Página pública de reseñas (no requiere iniciar sesión). Acepta /reseñas y /resenas.
+  const _rpath = (() => { try { return decodeURIComponent(window.location.pathname || ''); } catch (e) { return window.location.pathname || ''; } })();
+  if (/\/rese[nñ]as\/?$/i.test(_rpath) || hash === '#resenas' || hash === '#reseñas') {
     showView('resenas'); initResenasPage(); return;
   }
   if (hash === '#admin' || /\/admin\/?$/i.test(window.location.pathname || '')) _wantAdmin = true;
