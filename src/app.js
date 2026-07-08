@@ -1453,7 +1453,7 @@ function renderResenasPage() {
           <div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0" style="background:${av.color}">${av.initial}</div>
           <div class="min-w-0 flex-1">
             <div class="flex items-center justify-between gap-2">
-              <div class="font-bold text-gray-800 text-sm truncate">${reviewFlag(rv) ? reviewFlag(rv) + ' ' : ''}${escHtml(rv.name)}</div>
+              <div class="font-bold text-gray-800 text-sm truncate">${escHtml(rv.name)}</div>
               <div class="text-sm flex-shrink-0">${starsHtml(rv.rating)}</div>
             </div>
             ${rv.verified ? '<div class="text-[11px] text-emerald-600 font-semibold mb-1">✔ Alumno verificado</div>' : '<div class="text-[11px] text-gray-400 mb-1">Reseña</div>'}
@@ -1565,7 +1565,7 @@ function paintAdminReviews() {
       <div class="flex items-start justify-between gap-2 mb-2">
         <div class="flex items-center gap-2">
           <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style="background:${av.color}">${av.initial}</div>
-          <div><div class="font-bold text-gray-800 text-sm">${reviewFlag(rv) ? reviewFlag(rv) + ' ' : ''}${escHtml(rv.name)} ${rv.verified?'<span class="text-emerald-600 text-[10px]">✔</span>':''}</div><div class="text-sm">${starsHtml(rv.rating)}</div></div>
+          <div><div class="font-bold text-gray-800 text-sm">${escHtml(rv.name)} ${rv.verified?'<span class="text-emerald-600 text-[10px]">✔</span>':''}</div><div class="text-sm">${starsHtml(rv.rating)}</div></div>
         </div>
         <div class="text-[11px]">${badge}</div>
       </div>
