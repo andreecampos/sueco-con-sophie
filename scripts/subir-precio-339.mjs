@@ -105,10 +105,13 @@ async function main() {
     const current = item.price?.unit_amount ?? null;
     processed++;
 
-    if (current === NEW_AMOUNT) {
+    // Solo subimos a los que pagan MENOS de 339 (250/300).
+    // A los que ya pagan 339 o MÁS (p.ej. los nuevos de 399) NO se les toca.
+    if (current != null && current >= NEW_AMOUNT) {
       already++;
-      report.push({ email, from: current / 100, to: 339, action: 'ya-en-339' });
-      console.log(`⏭️  ${email} — ya está en 339`);
+      const cur = current / 100;
+      report.push({ email, from: cur, to: cur, action: current === NEW_AMOUNT ? 'ya-en-339' : 'ya-paga-mas (no se toca)' });
+      console.log(`⏭️  ${email} — ya paga ${cur} kr (>= 339, no se toca)`);
       continue;
     }
 
