@@ -140,72 +140,63 @@ Deno.serve(async (req) => {
       const pricePaid = session.amount_total ? Math.round(session.amount_total / 100) : 339
       console.log('New checkout:', email, '| price paid:', pricePaid, 'SEK')
 
-      // 1. Ver si ya existe
+      // 1. Crear u obtener el usuario — SIN depender del correo (así no falla aunque
+      //    Resend esté al límite). createUser NO envía correo.
       const { data: existingUsers } = await sb.auth.admin.listUsers()
       const existing = existingUsers?.users?.find(u => u.email === email)
-      let userId: string | null = null
-      let actionLink = ''
+      let userId: string | null = existing?.id ?? null
 
       if (!existing) {
-        // Usuario nuevo: invitar vía Supabase (envía email automáticamente)
-        const { data: inviteData, error: inviteError } = await sb.auth.admin.inviteUserByEmail(email, {
-          data: { name },
-          options: { redirectTo: 'https://app.suecoconsophie.com' }
-        } as any)
-        if (inviteError) {
-          console.error('inviteUser error:', inviteError.message)
-          return new Response(JSON.stringify({ error: inviteError.message }), { status: 500 })
-        }
-        userId = inviteData?.user?.id ?? null
-        console.log('User invited (email sent by Supabase):', email)
-
-        // Intentar también con Resend para el email bonito (si hay dominio configurado)
-        const { data: linkData } = await sb.auth.admin.generateLink({
-          type: 'recovery',
+        const { data: created, error: createErr } = await sb.auth.admin.createUser({
           email,
-          options: { redirectTo: 'https://app.suecoconsophie.com' }
+          email_confirm: true,
+          user_metadata: { name },
         })
-        if (linkData?.properties?.action_link) {
-          actionLink = linkData.properties.action_link
-          await sendWelcomeEmail(email, actionLink)
+        if (createErr || !created?.user?.id) {
+          console.error('createUser error:', createErr?.message)
+          return new Response(JSON.stringify({ error: createErr?.message || 'no user' }), { status: 500 })
         }
-
+        userId = created.user.id
+        console.log('User created:', email)
       } else {
-        userId = existing.id
         console.log('User already exists:', email)
+      }
 
-        // Para alumnos que repagan, enviar link de acceso
-        const { data: linkData } = await sb.auth.admin.generateLink({
-          type: 'recovery',
+      // 2. Guardar en students PRIMERO (esto es lo crítico para el acceso).
+      //    Reintento resistente: si falta alguna columna nueva, guarda lo esencial igual.
+      if (userId) {
+        const base = {
+          id: userId,
+          name: name || email.split('@')[0],
           email,
-          options: { redirectTo: 'https://app.suecoconsophie.com' }
-        })
-        if (linkData?.properties?.action_link) {
-          actionLink = linkData.properties.action_link
-          await sendWelcomeEmail(email, actionLink)
+          active: true,
+          status: 'active',
+          price: pricePaid,
+          payment_method: 'stripe',
+          stripe_customer_id: typeof session.customer === 'string' ? session.customer : null,
+          stripe_subscription_id: typeof session.subscription === 'string' ? session.subscription : null,
+          created_at: new Date().toISOString(),
+        }
+        const fullRow = { ...base, cancels_at: null, payer_email: (studentEmail && studentEmail !== payerEmail) ? payerEmail : null }
+        const { error: upErr } = await sb.from('students').upsert(fullRow, { onConflict: 'id' })
+        if (upErr) {
+          console.error('Upsert error, reintento con lo esencial:', upErr.message)
+          const { error: up2 } = await sb.from('students').upsert(base, { onConflict: 'id' })
+          if (up2) console.error('Upsert esencial también falló:', up2.message)
         }
       }
 
-      // 2. Guardar en tabla students (precio real detectado de Stripe)
-      if (userId) {
-        const { error: upsertError } = await sb.from('students').upsert({
-          id:                     userId,
-          name:                   name || email.split('@')[0],
+      // 3. Enviar el correo de acceso — NO crítico: si falla, la cuenta YA existe.
+      try {
+        const { data: linkData } = await sb.auth.admin.generateLink({
+          type: 'recovery',
           email,
-          active:                 true,
-          status:                 'active',
-          cancels_at:             null,
-          price:                  pricePaid,
-          payment_method:         'stripe',
-          payer_email:            (studentEmail && studentEmail !== payerEmail) ? payerEmail : null,
-          stripe_customer_id:     typeof session.customer === 'string' ? session.customer : null,
-          stripe_subscription_id: typeof session.subscription === 'string' ? session.subscription : null,
-          created_at:             new Date().toISOString(),
-        }, { onConflict: 'id' })
-
-        if (upsertError) {
-          console.error('Upsert error:', upsertError.message)
-        }
+          options: { redirectTo: 'https://app.suecoconsophie.com' },
+        })
+        const actionLink = linkData?.properties?.action_link
+        if (actionLink) await sendWelcomeEmail(email, actionLink)
+      } catch (mailErr) {
+        console.error('Correo no enviado (no crítico):', (mailErr as any)?.message)
       }
 
       return new Response(JSON.stringify({ ok: true, email }), { status: 200 })
