@@ -197,6 +197,7 @@ Deno.serve(async (req) => {
           cancels_at:             null,
           price:                  pricePaid,
           payment_method:         'stripe',
+          payer_email:            (studentEmail && studentEmail !== payerEmail) ? payerEmail : null,
           stripe_customer_id:     typeof session.customer === 'string' ? session.customer : null,
           stripe_subscription_id: typeof session.subscription === 'string' ? session.subscription : null,
           created_at:             new Date().toISOString(),

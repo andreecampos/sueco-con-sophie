@@ -1168,6 +1168,7 @@ async function getStudents() {
     level: s.level || null,
     grupo: s.grupo || null,
     lastPaymentDate: s.last_payment_date || null,
+    payerEmail: s.payer_email || null,
   }));
   return _cachedStudents;
 }
@@ -1823,7 +1824,8 @@ async function updateStudentGroup(id, grupo) {
 
 async function changeStudentEmail(id) {
   const s = (_cachedStudents || []).find(x => x.id === id);
-  const newEmail = prompt(`Cambiar el correo de "${s?.name || 'este alumno'}" (actual: ${s?.email || ''}).\n\nEscribe el correo de la persona que USARÁ esta cuenta:`, '');
+  const oldEmail = s?.email || '';
+  const newEmail = prompt(`Cambiar el correo de "${s?.name || 'este alumno'}" (actual: ${oldEmail}).\n\nEscribe el correo de la persona que USARÁ esta cuenta:`, '');
   if (!newEmail) return;
   const email = newEmail.trim().toLowerCase();
   if (!email.includes('@')) { showToast('Correo no válido', 'error'); return; }
@@ -1833,8 +1835,26 @@ async function changeStudentEmail(id) {
   if (r.error) { showToast('Error: ' + r.error, 'error'); return; }
   const st = (_cachedStudents || []).find(x => x.id === id);
   if (st) st.email = r.email;
+  // Guardar el correo anterior como "quién paga" (el que estaba pagando)
+  if (oldEmail && oldEmail !== email && !(st && st.payerEmail)) {
+    await adminOps('update_student', { id, fields: { payer_email: oldEmail } });
+    if (st) st.payerEmail = oldEmail;
+  }
   showAccessLinkModal(r.email, r.link || '', r.sent);
   renderStudents();
+}
+
+async function editPayerEmail(id) {
+  const s = (_cachedStudents || []).find(x => x.id === id);
+  const val = prompt(`¿Quién PAGA por "${s?.name || 'este alumno'}"?\nEscribe el correo de quien paga (déjalo vacío para quitar):`, s?.payerEmail || '');
+  if (val === null) return;
+  const payer = val.trim().toLowerCase() || null;
+  const r = await adminOps('update_student', { id, fields: { payer_email: payer } });
+  if (r.error) { showToast('Error: ' + r.error, 'error'); return; }
+  const st = (_cachedStudents || []).find(x => x.id === id);
+  if (st) st.payerEmail = payer;
+  paintStudents();
+  showToast(payer ? '💳 Pagador guardado' : 'Pagador quitado', payer ? 'success' : 'info');
 }
 
 async function resetStudentDevices(id) {
@@ -1996,6 +2016,7 @@ function paintStudents() {
         ${memberSince ? `<span>·</span><span>📅 desde ${memberSince}</span>` : ''}
         <span>·</span><span>🎯 ${s.level ? (typeof LEVEL_LABEL !== 'undefined' && LEVEL_LABEL[s.level] || s.level) : 'sin prueba'}</span>
         ${cancelsAtStr ? `<span>·</span><span class="text-orange-500 font-semibold">⚠️ Pierde acceso: ${cancelsAtStr}</span>` : ''}
+        <span>·</span><span onclick="editPayerEmail('${s.id}')" class="cursor-pointer hover:text-swe-blue" title="Editar quién paga">💳 Paga: ${s.payerEmail ? escHtml(s.payerEmail) : '—'}</span>
       </div>
 
       <div class="flex items-center gap-2 mb-2">
