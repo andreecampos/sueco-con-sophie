@@ -5051,7 +5051,8 @@ function initRead() {
 
 function openText(index) {
   const items = DB[state.level].read || [];
-  state.currentText = items[index];
+  const _t = items[index];
+  state.currentText = _t ? { ..._t, questions: (_t.questions || []).map(shuffleOptions) } : _t;
   state.readQIndex = 0;
   state.readAnswers = [];
 
@@ -5303,7 +5304,7 @@ function initTest() {
 function startTest() {
   const all = [...(DB[state.level].test || [])];
   // Shuffle
-  state.testQuestions = all.sort(() => Math.random() - 0.5);
+  state.testQuestions = all.sort(() => Math.random() - 0.5).map(shuffleOptions);
   state.testIndex = 0;
   state.testScore = 0;
   state.testAnswered = false;
@@ -5424,6 +5425,19 @@ function showToast(msg, type = 'info') {
   t.textContent = msg;
   t.classList.remove('hidden');
   setTimeout(() => t.classList.add('hidden'), 3000);
+}
+
+// ── Mezclar las opciones de una pregunta (para que la correcta no sea siempre la A) ──
+// Solo aplica a opción múltiple (options + correct numérico). No toca 'ordenar palabras'.
+function shuffleOptions(q) {
+  if (!q || !Array.isArray(q.options) || typeof q.correct !== 'number') return q;
+  if (q.type === 'order') return q;
+  const paired = q.options.map((opt, i) => ({ opt, ok: i === q.correct }));
+  for (let i = paired.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [paired[i], paired[j]] = [paired[j], paired[i]];
+  }
+  return { ...q, options: paired.map(p => p.opt), correct: paired.findIndex(p => p.ok) };
 }
 
 // ── ADMIN ─────────────────────────────────────────────────────
@@ -6761,7 +6775,7 @@ function startReviewMistakes() {
   grammarState.fromTheory = null;
   grammarState.limit = null;
   grammarState.topic = topic;
-  grammarState.questions = [...topic.questions].sort(() => Math.random() - 0.5);
+  grammarState.questions = [...topic.questions].sort(() => Math.random() - 0.5).map(shuffleOptions);
   grammarState.index = 0;
   grammarState.score = 0;
   grammarState.answered = false;
@@ -6838,7 +6852,7 @@ function startGrammarTopic(topicId) {
   const _cap = grammarState.fromTheory ? 10 : null;
   grammarState.limit = _cap;
   // Shuffle questions (Fisher-Yates)
-  grammarState.questions = [...topic.questions].sort(() => Math.random() - 0.5).slice(0, _cap || topic.sessionSize || topic.questions.length);
+  grammarState.questions = [...topic.questions].sort(() => Math.random() - 0.5).slice(0, _cap || topic.sessionSize || topic.questions.length).map(shuffleOptions);
   grammarState.index = 0;
   grammarState.score = 0;
   grammarState.answered = false;
@@ -7043,7 +7057,7 @@ function nextGrammarQuestion() {
   if (grammarState.index >= grammarState.questions.length) {
     const t = grammarState.topic;
     if (t) {
-      const more = [...t.questions].sort(() => Math.random() - 0.5).slice(0, t.sessionSize || t.questions.length);
+      const more = [...t.questions].sort(() => Math.random() - 0.5).slice(0, t.sessionSize || t.questions.length).map(shuffleOptions);
       grammarState.questions.push(...more);
     }
   }
@@ -7606,7 +7620,7 @@ function startHorstEpisode(epId, level) {
   if (!ep) return;
 
   horstState.episode = ep;
-  horstState.questions = [...ep.questions];
+  horstState.questions = [...ep.questions].map(shuffleOptions);
   horstState.index = 0;
   horstState.score = 0;
   horstState.answered = false;
@@ -7972,11 +7986,12 @@ function startNivelTest() {
   nivelState.answered = false;
   nivelState.answers = [];
   nivelState.order = { pool: [], built: [] };
+  nivelState.questions = LEVEL_TEST.questions.map(shuffleOptions);
   showView('nivel-quiz');
   renderNivelQuestion();
 }
 
-function nivelCurrent() { return LEVEL_TEST.questions[nivelState.i]; }
+function nivelCurrent() { return (nivelState.questions || LEVEL_TEST.questions)[nivelState.i]; }
 
 // ── Pintar la pregunta actual ────────────────────────────────
 function renderNivelQuestion() {
