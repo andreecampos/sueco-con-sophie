@@ -850,6 +850,7 @@ function adminTab(tab) {
   const studentsSection = document.getElementById('admin-students-section');
   const configSection   = document.getElementById('admin-config-section');
   const reviewsSection  = document.getElementById('admin-reviews-section');
+  const cobrosSection   = document.getElementById('admin-cobros-section');
   const contentList     = document.getElementById('admin-content-list');
   const levelSelector   = document.querySelector('.admin-level-selector');
 
@@ -858,6 +859,7 @@ function adminTab(tab) {
   if (studentsSection) studentsSection.classList.add('hidden');
   if (configSection)   configSection.classList.add('hidden');
   if (reviewsSection)  reviewsSection.classList.add('hidden');
+  if (cobrosSection)   cobrosSection.classList.add('hidden');
   if (contentList)     contentList.classList.remove('hidden');
   document.querySelectorAll('#admin-panel .glass').forEach(el => {
     if (el.querySelector('#admin-form') || el.querySelector('#import-file')) el.classList.remove('hidden');
@@ -891,6 +893,13 @@ function adminTab(tab) {
       if (el.querySelector('#admin-form') || el.querySelector('#import-file')) el.classList.add('hidden');
     });
     renderAdminReviews();
+  } else if (tab === 'cobros') {
+    if (cobrosSection) cobrosSection.classList.remove('hidden');
+    if (contentList) contentList.classList.add('hidden');
+    document.querySelectorAll('#admin-panel .glass').forEach(el => {
+      if (el.querySelector('#admin-form') || el.querySelector('#import-file')) el.classList.add('hidden');
+    });
+    renderCashPayments();
   } else {
     renderAdminContent();
     renderAdminForm();
@@ -1158,6 +1167,7 @@ async function getStudents() {
     cancelsAt: s.cancels_at || null,
     level: s.level || null,
     grupo: s.grupo || null,
+    lastPaymentDate: s.last_payment_date || null,
   }));
   return _cachedStudents;
 }
@@ -1557,6 +1567,71 @@ async function submitSupport() {
   }
   const box = document.getElementById('support-box');
   if (box) box.innerHTML = '<div class="text-center py-4"><div class="text-3xl mb-2">✅</div><p class="font-bold text-gray-800">¡Mensaje enviado!</p><p class="text-gray-500 text-sm mt-1">Te responderemos a tu correo pronto.</p></div>';
+}
+
+// ── Cobros en efectivo / manual (recordatorios) ──
+function _plusMonth(dateStr) {
+  const d = dateStr ? new Date(dateStr) : new Date();
+  d.setMonth(d.getMonth() + 1);
+  return d.toISOString().slice(0, 10);
+}
+function _fmtDate(s) { if (!s) return '—'; try { return new Date(s).toLocaleDateString('es-ES', { day:'numeric', month:'short', year:'numeric' }); } catch(e){ return s; } }
+
+async function renderCashPayments() {
+  const container = document.getElementById('admin-cobros-list');
+  if (!container) return;
+  container.innerHTML = '<div class="text-center py-8 text-gray-400 text-sm">⏳ Cargando...</div>';
+  await getStudents();
+  if (_lastStudentsError) { container.innerHTML = '<div class="text-center py-8 text-sm text-gray-500">No se pudieron cargar. Vuelve a iniciar sesión.</div>'; return; }
+  const manual = (_cachedStudents || []).filter(s => s.paymentMethod === 'manual' || s.status === 'manual');
+  const cnt = document.getElementById('admin-cobros-count');
+  const vencidos = manual.filter(s => s.nextPaymentDate && (new Date(s.nextPaymentDate) - Date.now()) < 0).length;
+  if (cnt) cnt.innerHTML = `${manual.length} alumno${manual.length!==1?'s':''} de pago manual · <span class="text-red-600 font-bold">🔴 ${vencidos} vencido${vencidos!==1?'s':''}</span>`;
+  if (!manual.length) { container.innerHTML = '<div class="text-center py-8 text-gray-400 text-sm">No hay alumnos de pago manual/efectivo.</div>'; return; }
+  // Ordenar: los que cobran antes primero (vencidos arriba)
+  manual.sort((a, b) => (a.nextPaymentDate || '9999-12-31') < (b.nextPaymentDate || '9999-12-31') ? -1 : 1);
+  container.innerHTML = manual.map(s => {
+    let badge = '<span class="text-gray-400 text-xs">Sin fecha registrada</span>';
+    let border = 'border-gray-200';
+    if (s.nextPaymentDate) {
+      const days = Math.ceil((new Date(s.nextPaymentDate) - Date.now()) / 86400000);
+      if (days < 0) { badge = `<span class="text-red-600 font-bold text-xs">🔴 Vencido hace ${-days} día${-days!==1?'s':''}</span>`; border = 'border-red-200'; }
+      else if (days <= 5) { badge = `<span class="text-amber-600 font-bold text-xs">🟡 Cobra en ${days} día${days!==1?'s':''}</span>`; border = 'border-amber-200'; }
+      else { badge = `<span class="text-emerald-600 font-semibold text-xs">🟢 Cobra en ${days} días</span>`; border = 'border-emerald-200'; }
+    }
+    return `<div class="bg-white rounded-2xl p-4 shadow-sm border ${border}">
+      <div class="flex items-start justify-between gap-2 mb-2">
+        <div><div class="font-bold text-gray-800 text-sm">${escHtml(s.name)}</div><div class="text-xs text-gray-500">${escHtml(s.email)}</div></div>
+        <div>${badge}</div>
+      </div>
+      <div class="text-xs text-gray-500 mb-3">💵 Último pago: <b>${_fmtDate(s.lastPaymentDate)}</b> · 📅 Próximo cobro: <b>${_fmtDate(s.nextPaymentDate)}</b></div>
+      <div class="flex gap-2 flex-wrap items-center">
+        <button onclick="registerCashPayment('${s.id}')" class="py-1.5 px-3 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-600 border border-emerald-200 hover:bg-emerald-100">✅ Registrar pago (hoy)</button>
+        <label class="text-xs text-gray-400">Próximo:</label>
+        <input type="date" value="${s.nextPaymentDate || ''}" onchange="setNextPaymentDate('${s.id}', this.value)" class="py-1 px-2 rounded-lg text-xs border border-gray-200 focus:outline-none focus:border-swe-blue">
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function registerCashPayment(id) {
+  const today = new Date().toISOString().slice(0, 10);
+  const next = _plusMonth(today);
+  const r = await adminOps('update_student', { id, fields: { last_payment_date: today, next_payment_date: next } });
+  if (r.error) { showToast('Error: ' + r.error, 'error'); return; }
+  const s = (_cachedStudents || []).find(x => x.id === id);
+  if (s) { s.lastPaymentDate = today; s.nextPaymentDate = next; }
+  showToast('💵 Pago registrado. Próximo cobro: ' + _fmtDate(next), 'success');
+  renderCashPayments();
+}
+
+async function setNextPaymentDate(id, val) {
+  const r = await adminOps('update_student', { id, fields: { next_payment_date: val || null } });
+  if (r.error) { showToast('Error: ' + r.error, 'error'); return; }
+  const s = (_cachedStudents || []).find(x => x.id === id);
+  if (s) s.nextPaymentDate = val || null;
+  showToast('📅 Próximo cobro actualizado', 'success');
+  renderCashPayments();
 }
 
 // ── Reseñas: panel admin ──

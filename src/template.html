@@ -1179,6 +1179,7 @@
       <button onclick="adminTab('write')" class="admin-tab-btn text-xs px-4 py-2 rounded-xl font-semibold whitespace-nowrap" data-tab="write">✍️ Skriva</button>
       <button onclick="adminTab('speak')" class="admin-tab-btn text-xs px-4 py-2 rounded-xl font-semibold whitespace-nowrap" data-tab="speak">🗣️ Tala</button>
       <button onclick="adminTab('test')" class="admin-tab-btn text-xs px-4 py-2 rounded-xl font-semibold whitespace-nowrap" data-tab="test">🏆 Prov</button>
+      <button onclick="adminTab('cobros')" class="admin-tab-btn text-xs px-4 py-2 rounded-xl font-semibold whitespace-nowrap" data-tab="cobros">💵 Cobros</button>
       <button onclick="adminTab('reviews')" class="admin-tab-btn text-xs px-4 py-2 rounded-xl font-semibold whitespace-nowrap" data-tab="reviews">⭐ Reseñas</button>
       <button onclick="adminTab('config')" class="admin-tab-btn text-xs px-4 py-2 rounded-xl font-semibold whitespace-nowrap" data-tab="config">⚙️ Config</button>
     </div>
@@ -1370,6 +1371,18 @@
       <div id="group-filter" class="flex flex-wrap gap-2 mb-3"></div>
       <div id="students-list" class="space-y-3"></div>
 
+    </div>
+
+    <!-- Cobros en efectivo / manual -->
+    <div id="admin-cobros-section" class="hidden">
+      <div class="glass rounded-2xl p-4 shadow border border-emerald-100 mb-4">
+        <div class="flex items-center justify-between mb-1">
+          <h3 class="font-bold text-gray-800">💵 Cobros en efectivo / manual</h3>
+          <button onclick="renderCashPayments()" class="text-xs text-swe-blue font-semibold">🔄 Actualizar</button>
+        </div>
+        <div id="admin-cobros-count" class="text-xs text-gray-500"></div>
+      </div>
+      <div id="admin-cobros-list" class="space-y-3"></div>
     </div>
 
     <!-- Reseñas (moderación) -->
