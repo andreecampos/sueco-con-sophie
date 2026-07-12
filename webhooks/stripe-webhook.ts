@@ -116,8 +116,21 @@ Deno.serve(async (req) => {
     // ── Nuevo pago completado ────────────────────────────────
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object as Stripe.Checkout.Session
-      const email   = session.customer_details?.email ?? session.customer_email ?? ''
-      const name    = session.customer_details?.name ?? ''
+
+      // El correo del ALUMNO puede venir en un campo personalizado del checkout
+      // (para cuando alguien paga por otra persona: pareja, mamá, etc.).
+      // Así, un mismo pagador puede comprar varias suscripciones para correos distintos.
+      const payerEmail = (session.customer_details?.email ?? session.customer_email ?? '').trim().toLowerCase()
+      let studentEmail = ''
+      const cf = (session.custom_fields || []).find((f: any) =>
+        ['studentemail','student_email','correoalumno','correo_alumno','emailalumno','email_alumno'].includes(String(f.key || '').toLowerCase()) ||
+        String(f.label?.custom || '').toLowerCase().includes('alumno'))
+      if (cf?.text?.value) studentEmail = String(cf.text.value).trim().toLowerCase()
+
+      // Si hay correo del alumno válido, esa es la cuenta; si no, la del pagador.
+      const email = (studentEmail && studentEmail.includes('@')) ? studentEmail : payerEmail
+      const name  = session.customer_details?.name ?? ''
+      console.log('Checkout emails → pagador:', payerEmail, '| alumno:', studentEmail || '(mismo)', '| cuenta:', email)
 
       if (!email || !email.includes('@')) {
         return new Response(JSON.stringify({ error: 'No email in session' }), { status: 400 })
