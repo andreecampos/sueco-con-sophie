@@ -174,6 +174,26 @@ Deno.serve(async (req) => {
         return new Response(JSON.stringify({ ok: true, sent, email: targetEmail, link: actionLink }), { headers: corsHeaders })
       }
 
+      // ── Cambiar el correo de un alumno (ej. el esposo pagó, pero la cuenta la usa la esposa) ──
+      case 'change_email': {
+        const { id, newEmail } = data
+        const email = String(newEmail || '').trim().toLowerCase()
+        if (!id || !email.includes('@')) {
+          return new Response(JSON.stringify({ error: 'Correo no válido' }), { status: 400, headers: corsHeaders })
+        }
+        const { error: authErr } = await sb.auth.admin.updateUserById(id, { email, email_confirm: true })
+        if (authErr) throw authErr
+        const { error: dbErr } = await sb.from('students').update({ email }).eq('id', id)
+        if (dbErr) throw dbErr
+        // Generar link de acceso para el nuevo correo y (si se puede) enviarlo
+        const { data: linkData } = await sb.auth.admin.generateLink({
+          type: 'recovery', email, options: { redirectTo: 'https://app.suecoconsophie.com' }
+        })
+        const actionLink = linkData?.properties?.action_link || ''
+        const sent = await sendAccessEmail(email, actionLink)
+        return new Response(JSON.stringify({ ok: true, sent, email, link: actionLink }), { headers: corsHeaders })
+      }
+
       // ── Soporte: el alumno envía un mensaje → te llega a tu correo ──
       case 'send_support': {
         const { name = '', email = '', message = '', tipo = 'Mensaje' } = data
