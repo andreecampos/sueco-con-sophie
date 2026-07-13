@@ -142,9 +142,17 @@ Deno.serve(async (req) => {
 
       case 'delete_student': {
         const { id } = data
+        // Protección: si el correo es de un ADMIN, NO borrar su cuenta de Auth
+        // (para no quedarte sin acceso a /admin al borrarte como alumno).
+        const ADMIN_EMAILS2 = (Deno.env.get('ADMIN_EMAILS') || 'sophie.sahlin@hotmail.com,orlandoandree1998@gmail.com')
+          .split(',').map((e) => e.trim().toLowerCase())
+        const { data: st } = await sb.from('students').select('email').eq('id', id).single()
+        const isAdmin = st?.email && ADMIN_EMAILS2.includes(String(st.email).toLowerCase())
         await sb.from('students').delete().eq('id', id)
-        await sb.auth.admin.deleteUser(id)
-        return new Response(JSON.stringify({ ok: true }), { headers: corsHeaders })
+        if (!isAdmin) {
+          await sb.auth.admin.deleteUser(id)
+        }
+        return new Response(JSON.stringify({ ok: true, keptAuth: !!isAdmin }), { headers: corsHeaders })
       }
 
       case 'reset_devices': {
