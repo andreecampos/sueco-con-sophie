@@ -1261,6 +1261,13 @@ async function loginStudent() {
   if (btn) { btn.disabled = false; btn.textContent = 'Entrar'; }
   const adminBtn = document.getElementById('admin-btn-home');
   if (adminBtn) adminBtn.style.display = isAdminUser() ? '' : 'none';
+  // Si el alumno venía desde /reseñas a dejar una reseña, lo devolvemos ahí.
+  if (_returnToResenas) {
+    _returnToResenas = false;
+    showView('resenas'); initResenasPage();
+    showToast('¡Listo! Ya puedes dejar tu reseña ⭐', 'success');
+    return;
+  }
   showView('home');
   renderHomeDashboard();
   showToast(_isAdmin ? '¡Bienvenida! Tienes acceso de administrador 👋' : (blocked ? `Hej ${student.name}. Tu suscripción está inactiva.` : `¡Välkommen, ${student.name}! 🇸🇪`), 'success');
@@ -1454,6 +1461,9 @@ function populateCountrySelect() {
   sel.dataset.filled = '1';
 }
 
+let _returnToResenas = false;
+function goLoginFromResenas() { _returnToResenas = true; showView('login'); }
+
 async function signInWithGoogle() {
   try {
     const { error } = await sb.auth.signInWithOAuth({
@@ -1482,19 +1492,45 @@ async function renderProfileWidget() {
     if (avatar) avEl.innerHTML = `<img src="${avatar}" class="w-11 h-11 rounded-full object-cover border-2 border-white shadow" referrerpolicy="no-referrer" alt="">`;
     else { const a = reviewAvatar(name); avEl.innerHTML = `<div class="w-11 h-11 rounded-full flex items-center justify-center text-white font-bold shadow" style="background:${a.color}">${a.initial}</div>`; }
   }
+  // Aviso: si no tiene foto, invitarlo a subirla
+  const btnEl = document.getElementById('profile-photo-btn');
+  if (btnEl) {
+    if (avatar) { btnEl.textContent = '📷 Cambiar foto'; btnEl.className = 'text-xs text-swe-blue font-semibold'; }
+    else { btnEl.textContent = '📷 ¡Sube tu foto de perfil!'; btnEl.className = 'text-xs text-amber-600 font-bold'; }
+  }
+}
+
+// Comprime la imagen a máx 400px y JPEG → la foto guardada pesa ~50–100 KB.
+function _compressImage(file, maxSize = 400, quality = 0.85) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      let { width, height } = img;
+      if (width >= height && width > maxSize) { height = Math.round(height * maxSize / width); width = maxSize; }
+      else if (height > width && height > maxSize) { width = Math.round(width * maxSize / height); height = maxSize; }
+      const canvas = document.createElement('canvas');
+      canvas.width = width; canvas.height = height;
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+      canvas.toBlob(b => b ? resolve(b) : reject(new Error('No se pudo procesar la imagen')), 'image/jpeg', quality);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Imagen inválida')); };
+    img.src = url;
+  });
 }
 
 async function uploadProfilePhoto(file) {
   if (!file) return;
   if (!/^image\//.test(file.type)) { showToast('Elige una imagen', 'error'); return; }
-  if (file.size > 3 * 1024 * 1024) { showToast('La imagen es muy grande (máx 3 MB)', 'error'); return; }
+  if (file.size > 12 * 1024 * 1024) { showToast('La imagen es demasiado grande (máx 12 MB)', 'error'); return; }
   showToast('Subiendo foto...', 'info');
   try {
     const { data: { session } } = await sb.auth.getSession();
     if (!session) { showToast('Inicia sesión primero', 'error'); return; }
-    const ext = ((file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '')) || 'jpg';
-    const path = `${session.user.id}/avatar.${ext}`;
-    const { error: upErr } = await sb.storage.from('avatars').upload(path, file, { upsert: true, contentType: file.type });
+    const blob = await _compressImage(file); // siempre queda pequeña
+    const path = `${session.user.id}/avatar.jpg`;
+    const { error: upErr } = await sb.storage.from('avatars').upload(path, blob, { upsert: true, contentType: 'image/jpeg' });
     if (upErr) throw upErr;
     const { data: pub } = sb.storage.from('avatars').getPublicUrl(path);
     const url = (pub?.publicUrl || '') + '?t=' + Date.now();

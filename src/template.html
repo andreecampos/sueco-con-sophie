@@ -234,7 +234,7 @@
           <span class="font-black text-base"><span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span></span>
           <span>Continuar con Google</span>
         </button>
-        <button onclick="showView('login')" class="text-swe-blue text-xs font-semibold">o entra con tu correo de alumno →</button>
+        <button onclick="goLoginFromResenas()" class="text-swe-blue text-xs font-semibold">o entra con tu correo de alumno →</button>
       </div>
       <div id="review-form-box" class="hidden">
         <div class="font-bold text-gray-800 mb-3">Deja tu reseña ✍️</div>
@@ -408,7 +408,7 @@
       <div id="profile-avatar" onclick="document.getElementById('profile-photo-input').click()" class="cursor-pointer flex-shrink-0" title="Cambiar foto"></div>
       <div class="min-w-0">
         <div id="profile-name" class="font-bold text-gray-800 text-sm truncate"></div>
-        <button onclick="document.getElementById('profile-photo-input').click()" class="text-xs text-swe-blue font-semibold">📷 Cambiar foto</button>
+        <button id="profile-photo-btn" onclick="document.getElementById('profile-photo-input').click()" class="text-xs text-swe-blue font-semibold">📷 Cambiar foto</button>
       </div>
       <input type="file" id="profile-photo-input" accept="image/*" class="hidden" onchange="uploadProfilePhoto(this.files && this.files[0])">
     </div>
