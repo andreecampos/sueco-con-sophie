@@ -64,6 +64,26 @@ const DEFAULT_DATA = {
           { text: '¿Qué puede caer en Estocolmo por la noche?', options: ['Granizo', 'Nieve', 'Lluvia intensa', 'Nada'], correct: 1, explanation: 'Möjligen lite snö på natten = posiblemente algo de nieve por la noche.' },
         ]
       },
+      {
+        id: 'a-l-5', title: 'På posten', topic: 'Correos / trámites', icon: '📦', duration: '~40s',
+        text: `Hej! Jag skulle vilja skicka det här paketet till Spanien. Ja, självklart. Vad väger paketet? Jag tror att det väger ungefär två kilo. Då kostar det etthundrafemtio kronor. Hur lång tid tar det? Ungefär en vecka. Vill du ha spårning? Ja, tack, det vill jag gärna ha. Kan jag betala med kort? Absolut. Skriv mottagarens adress här, tack. Varsågod. Tack så mycket! Ha en bra dag!`,
+        questions: [
+          { text: '¿Adónde envía el paquete?', options: ['A Italia', 'A España', 'A Portugal', 'Dentro de Suecia'], correct: 1, explanation: 'Skicka det här paketet till Spanien = enviar este paquete a España.' },
+          { text: '¿Cuánto pesa el paquete?', options: ['1 kilo', '2 kilos', '3 kilos', '5 kilos'], correct: 1, explanation: 'Det väger ungefär två kilo = pesa unos dos kilos.' },
+          { text: '¿Cuánto tarda en llegar?', options: ['Un día', 'Una semana', 'Un mes', 'Dos semanas'], correct: 1, explanation: 'Ungefär en vecka = aproximadamente una semana.' },
+          { text: '¿Qué pide el cliente además del envío?', options: ['Un sobre', 'Seguimiento (spårning)', 'Una caja', 'Sellos'], correct: 1, explanation: 'Vill ha spårning = quiere seguimiento del paquete.' },
+        ]
+      },
+      {
+        id: 'a-l-6', title: 'Boka tid på telefon', topic: 'Teléfono / cita', icon: '📞', duration: '~40s',
+        text: `Frisör Klipp och Stil, god morgon! Hej, jag skulle vilja boka en tid för klippning. Javisst. När passar det för dig? Har ni något på fredag? På fredag har vi en tid klockan fjorton eller klockan sexton. Klockan sexton passar bra. Vad heter du? Jag heter Sofia. Och ett telefonnummer? Sjuttio, tolv, trettiofyra, femtiosex. Perfekt, då ses vi på fredag klockan sexton. Tack så mycket. Välkommen!`,
+        questions: [
+          { text: '¿Para qué llama Sofia?', options: ['Para cancelar', 'Para reservar un corte de pelo', 'Para preguntar precios', 'Para comprar productos'], correct: 1, explanation: 'Boka en tid för klippning = reservar cita para corte de pelo.' },
+          { text: '¿Qué día quiere la cita?', options: ['Lunes', 'Miércoles', 'Viernes', 'Sábado'], correct: 2, explanation: 'Har ni något på fredag? = ¿tienen algo el viernes?' },
+          { text: '¿A qué hora es la cita?', options: ['A las 14:00', 'A las 15:00', 'A las 16:00', 'A las 17:00'], correct: 2, explanation: 'Klockan sexton = a las 16:00.' },
+          { text: '¿Qué datos da Sofia?', options: ['Solo su nombre', 'Su nombre y teléfono', 'Su dirección', 'Su correo'], correct: 1, explanation: 'Da su nombre (Sofia) y su número de teléfono.' },
+        ]
+      },
     ],
 
     read: [
@@ -282,6 +302,26 @@ const DEFAULT_DATA = {
           { text: '¿Están permitidas las mascotas?', options: ['Sí, cualquier mascota', 'Solo perros pequeños', 'No, no están permitidas', 'Solo gatos'], correct: 2, explanation: 'Inga husdjur = no hay mascotas.' },
           { text: '¿Cuándo es la fecha de entrada?', options: ['1 de junio', '1 de julio', '1 de agosto', '15 de julio'], correct: 1, explanation: 'Inflyttningsdatum är den första juli = la fecha de entrada es el primero de julio.' },
           { text: '¿Qué necesita el solicitante?', options: ['Solo una carta de trabajo', 'Empleo fijo o 3 meses de garantía', 'Pasaporte y contrato de trabajo', 'Solo pasar la revisión de crédito'], correct: 1, explanation: 'Fast anställning eller tre månaders hyra i garantier = empleo fijo o tres meses de alquiler en garantías.' },
+        ]
+      },
+      {
+        id: 'b-l-5', title: 'På banken', topic: 'Banco / trámites', icon: '🏦', duration: '~55s',
+        text: `Hej, hur kan jag hjälpa dig? Hej, jag skulle vilja öppna ett bankkonto. Har du personnummer och legitimation? Ja, här är min legitimation. Bra. Är du folkbokförd i Sverige? Ja, sedan tre månader. Perfekt. Vill du också ha ett bankkort och BankID? Ja, tack, det behöver jag för att betala räkningar och logga in på Mina sidor. Absolut. BankID är väldigt viktigt i Sverige. Då fyller vi i en ansökan tillsammans. Det tar bara några minuter.`,
+        questions: [
+          { text: '¿Qué quiere hacer el cliente?', options: ['Pedir un préstamo', 'Abrir una cuenta bancaria', 'Cambiar dinero', 'Cerrar una cuenta'], correct: 1, explanation: 'Öppna ett bankkonto = abrir una cuenta bancaria.' },
+          { text: '¿Qué necesita mostrar?', options: ['Un contrato', 'Su legitimación (ID)', 'Una factura', 'Nada'], correct: 1, explanation: 'Personnummer och legitimation = número de persona e identificación.' },
+          { text: '¿Desde cuándo está empadronado en Suecia?', options: ['Una semana', 'Un mes', 'Tres meses', 'Un año'], correct: 2, explanation: 'Folkbokförd sedan tre månader = empadronado desde hace tres meses.' },
+          { text: '¿Para qué necesita el BankID?', options: ['Para viajar', 'Para pagar facturas e iniciar sesión', 'Para comprar comida', 'Para trabajar'], correct: 1, explanation: 'För att betala räkningar och logga in på Mina sidor.' },
+        ]
+      },
+      {
+        id: 'b-l-6', title: 'Sjukanmälan på jobbet', topic: 'Trabajo / salud', icon: '🤒', duration: '~45s',
+        text: `Hej, det är Carlos. Hej Carlos, hur är det? Inte så bra faktiskt. Jag är sjuk idag. Jag har feber och ont i halsen. Åh, vad tråkigt. Då ska du stanna hemma och vila. Ja, jag kan tyvärr inte komma till jobbet. Ingen fara, jag meddelar de andra. Krya på dig! Tack. Om jag är sjuk imorgon också, ska jag ringa igen? Ja, sjukanmäl dig varje morgon du är borta. Och glöm inte läkarintyg om du är sjuk mer än en vecka. Okej, tack för informationen.`,
+        questions: [
+          { text: '¿Por qué llama Carlos?', options: ['Para pedir vacaciones', 'Para avisar que está enfermo', 'Para renunciar', 'Para pedir un aumento'], correct: 1, explanation: 'Jag är sjuk idag = estoy enfermo hoy (sjukanmälan).' },
+          { text: '¿Qué síntomas tiene?', options: ['Dolor de espalda', 'Fiebre y dolor de garganta', 'Dolor de cabeza', 'Ninguno'], correct: 1, explanation: 'Feber och ont i halsen = fiebre y dolor de garganta.' },
+          { text: '¿Qué debe hacer cada mañana que falte?', options: ['Ir al médico', 'Volver a avisar (sjukanmäla)', 'Nada', 'Enviar un correo'], correct: 1, explanation: 'Sjukanmäl dig varje morgon du är borta.' },
+          { text: '¿Cuándo necesita un justificante médico (läkarintyg)?', options: ['Siempre', 'Si está enfermo más de una semana', 'Nunca', 'Solo el primer día'], correct: 1, explanation: 'Läkarintyg om du är sjuk mer än en vecka.' },
         ]
       },
     ],
@@ -574,7 +614,29 @@ const DEFAULT_DATA = {
         criteria: ['Contenido: producto, problema y petición', 'Registro: formal', 'Vocabulario: reklamation, kvitto, garanti', 'Claridad del mensaje']
       },
     ],
-    speak: [],
+    speak: [
+      {
+        id: 'c-s-1', title: 'Möte på Arbetsförmedlingen', icon: '💼', context: 'En el centro de empleo (Arbetsförmedlingen)',
+        cardA: 'Eres una persona que busca trabajo. Tienes formación como cocinero pero no tienes experiencia sueca.\n\nDebes:\n• Explicar tu situación\n• Preguntar qué necesitas para trabajar\n• Preguntar sobre prácticas (praktik)\n• Pedir ayuda con el CV',
+        cardB: 'Eres asesor/a del Arbetsförmedlingen. Ayuda a la persona.\n\nDebes:\n• Preguntar por su formación y experiencia\n• Sugerir una práctica o curso\n• Explicar cómo validar el título\n• Ofrecer una cita de seguimiento',
+        teacherQuestions: ['Vad har du för utbildning?', 'Har du arbetat i Sverige tidigare?', 'Är du intresserad av en praktikplats?', 'Kan du börja direkt?', 'Vad har du för mål med ditt jobbsökande?'],
+        phrases: ['Jag söker jobb som...', 'Jag har utbildning inom...', 'Jag skulle vilja göra praktik.', 'Kan ni hjälpa mig med mitt CV?', 'Hur validerar jag min utbildning?', 'När kan vi träffas igen?']
+      },
+      {
+        id: 'c-s-2', title: 'Samtal med läraren', icon: '🏫', context: 'Reunión con el maestro (utvecklingssamtal)',
+        cardA: 'Eres madre/padre. Vas a hablar con el maestro sobre tu hijo/a.\n\nDebes:\n• Preguntar cómo le va en la escuela\n• Preguntar sobre las tareas (läxor)\n• Explicar una preocupación\n• Preguntar cómo puedes ayudar en casa',
+        cardB: 'Eres el maestro/a. Habla con la madre/el padre.\n\nDebes:\n• Explicar cómo va el niño\n• Comentar sus fortalezas y lo que debe mejorar\n• Dar consejos para casa\n• Responder a sus preguntas',
+        teacherQuestions: ['Hur går det för mitt barn i skolan?', 'Gör han/hon sina läxor?', 'Hur är det med kompisarna?', 'Vad kan vi göra hemma?', 'Behöver mitt barn extra hjälp?'],
+        phrases: ['Hur trivs mitt barn?', 'Är det något jag bör veta?', 'Vi hjälper till hemma.', 'Tack för informationen.', 'Vad rekommenderar ni?', 'Vi hörs igen snart.']
+      },
+      {
+        id: 'c-s-3', title: 'Reklamera en vara', icon: '⚠️', context: 'En una tienda (reclamación)',
+        cardA: 'Compraste unos zapatos que se rompieron después de una semana. Vas a la tienda a reclamar.\n\nDebes:\n• Explicar qué compraste y el problema\n• Mostrar el recibo (kvitto)\n• Pedir cambio o devolución\n• Insistir educadamente si dicen que no',
+        cardB: 'Eres el/la dependiente/a. El cliente quiere reclamar.\n\nDebes:\n• Preguntar qué pasó y cuándo lo compró\n• Pedir el recibo\n• Ofrecer una solución (reparación o cambio)\n• Explicar la política de garantía',
+        teacherQuestions: ['Vad är problemet?', 'När köpte du varan?', 'Har du kvittot?', 'Vill du ha pengarna tillbaka eller en ny vara?', 'Följde du skötselråden?'],
+        phrases: ['Jag vill reklamera de här skorna.', 'De gick sönder efter en vecka.', 'Här är kvittot.', 'Jag vill få dem utbytta.', 'Enligt konsumentlagen har jag rätt till...', 'Kan ni hjälpa mig med detta?']
+      },
+    ],
     test: [
       { category: 'Grammatik', text: 'Välj rätt form: Om jag _____ tid, skulle jag hjälpa dig.', options: ['har', 'hade', 'haft', 'ha'], correct: 1, explanation: 'Villkorssats (condicional): Om jag HADE tid... = si tuviera tiempo.' },
       { category: 'Grammatik', text: 'Vilket är rätt: Boken _____ jag läste var spännande.', options: ['som', 'vad', 'vilken', 'det'], correct: 0, explanation: '"som" es el pronombre relativo: Boken SOM jag läste = el libro que leí.' },
@@ -726,7 +788,29 @@ const DEFAULT_DATA = {
         criteria: ['Contenido: postura + 2 propuestas justificadas', 'Coherencia y conectores de causa/consecuencia', 'Registro adecuado a un debate', 'Riqueza léxica y corrección gramatical']
       },
     ],
-    speak: [],
+    speak: [
+      {
+        id: 'd-s-1', title: 'Anställningsintervju', icon: '🤝', context: 'Entrevista de trabajo (avanzado)',
+        cardA: 'Eres el/la candidato/a a un puesto cualificado. Vende tu perfil con seguridad.\n\nDebes:\n• Presentarte profesionalmente\n• Hablar de tus fortalezas con ejemplos\n• Mencionar una debilidad y cómo la manejas\n• Hacer preguntas inteligentes sobre el puesto',
+        cardB: 'Eres el/la reclutador/a. Entrevista al candidato en profundidad.\n\nDebes:\n• Preguntar por su experiencia y logros\n• Preguntar cómo maneja el estrés/conflictos\n• Preguntar por qué quiere el puesto\n• Explicar el siguiente paso del proceso',
+        teacherQuestions: ['Kan du berätta om dig själv?', 'Vad är dina största styrkor?', 'Hur hanterar du stress och konflikter?', 'Varför söker du den här tjänsten?', 'Var ser du dig själv om fem år?'],
+        phrases: ['Jag har lång erfarenhet av...', 'En av mina styrkor är att...', 'Under press brukar jag...', 'Jag motiveras av...', 'Vilka utvecklingsmöjligheter finns det?', 'Hur ser nästa steg ut?']
+      },
+      {
+        id: 'd-s-2', title: 'Diskutera en samhällsfråga', icon: '🗣️', context: 'Debate sobre un tema social',
+        cardA: 'Defiende esta postura: "Kollektivtrafiken borde vara gratis." (El transporte público debería ser gratis).\n\nDebes:\n• Presentar tu opinión con argumentos\n• Dar ejemplos concretos\n• Responder a los contraargumentos\n• Mantener un tono respetuoso',
+        cardB: 'Defiende la postura contraria: el transporte gratis es demasiado caro y hay que priorizar otras cosas.\n\nDebes:\n• Presentar tus argumentos\n• Cuestionar los del otro\n• Proponer alternativas\n• Buscar puntos en común',
+        teacherQuestions: ['Vad tycker du om frågan?', 'Vilka argument har du?', 'Hur svarar du på motargumentet?', 'Kan du ge ett exempel?', 'Finns det en kompromiss?'],
+        phrases: ['Jag anser att...', 'Ett starkt argument är att...', 'Å andra sidan...', 'Jag håller delvis med, men...', 'Om vi ser till exemplet...', 'Vi kanske kan enas om att...']
+      },
+      {
+        id: 'd-s-3', title: 'Presentera en idé på jobbet', icon: '📊', context: 'Reunión de trabajo',
+        cardA: 'Tienes una idea para mejorar algo en tu trabajo (por ejemplo, un nuevo horario o proceso). Preséntala en la reunión.\n\nDebes:\n• Explicar la idea claramente\n• Justificar los beneficios\n• Anticipar objeciones\n• Proponer un plan concreto',
+        cardB: 'Eres un/a colega o jefe/a. Escucha la idea y evalúala críticamente.\n\nDebes:\n• Hacer preguntas sobre costes y tiempo\n• Plantear posibles problemas\n• Pedir detalles del plan\n• Dar tu opinión final',
+        teacherQuestions: ['Kan du förklara din idé?', 'Vilka fördelar ser du?', 'Vad kostar det i tid och pengar?', 'Hur löser vi eventuella problem?', 'Vad är nästa steg?'],
+        phrases: ['Jag har ett förslag.', 'Fördelen med detta är...', 'Jag förstår oron, men...', 'Vi skulle kunna testa det under...', 'Vad tycker ni om förslaget?', 'Låt oss ta ett beslut.']
+      },
+    ],
     test: [
       { category: 'Grammatik', text: 'S-passiv: Beslutet _____ av styrelsen igår.', options: ['fattade', 'fattades', 'har fattat', 'fatta'], correct: 1, explanation: 'S-pasiva en pretérito: fattaDES = fue tomado. Beslutet fattades av styrelsen.' },
       { category: 'Grammatik', text: 'Välj rätt: Om jag _____ rik, skulle jag resa jorden runt.', options: ['är', 'var', 'vore', 'blev'], correct: 2, explanation: 'Konjunktiv/hipotético: "vore" (formal) = si yo fuera. Om jag vore rik...' },
