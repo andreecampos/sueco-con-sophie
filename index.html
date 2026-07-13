@@ -1872,8 +1872,136 @@ const DEFAULT_DATA = {
   },
 
   // ── SFI C y D (placeholder) ─────────────────────────────
-  C: { listen: [], read: [], write: [], speak: [], test: [] },
-  D: { listen: [], read: [], write: [], speak: [], test: [] },
+  C: {
+    listen: [
+      {
+        id: 'c-l-1', title: 'På Arbetsförmedlingen', topic: 'Jobb & samhälle', icon: '💼', duration: '~60s',
+        text: `God morgon! Välkommen. Vad kan jag hjälpa dig med idag? Hej. Jag söker jobb och behöver hjälp med mitt CV. Absolut. Vad har du för utbildning och erfarenhet? Jag är utbildad sjuksköterska från mitt hemland, men jag har inte fått min legitimation i Sverige ännu. Jag förstår. Då rekommenderar jag att du kontaktar Socialstyrelsen för att validera din utbildning. Under tiden kan du söka jobb som undersköterska. Har du gått en SFI-kurs? Ja, jag är klar med SFI och läser nu svenska på nivå C. Utmärkt. God svenska är mycket viktigt inom vården.`,
+        questions: [
+          { text: 'Vad arbetade personen med i sitt hemland?', options: ['Läkare', 'Sjuksköterska', 'Undersköterska', 'Lärare'], correct: 1, explanation: 'Jag är utbildad sjuksköterska = la persona es enfermera de profesión.' },
+          { text: 'Vilken myndighet ska personen kontakta för att validera utbildningen?', options: ['Skatteverket', 'Försäkringskassan', 'Socialstyrelsen', 'Migrationsverket'], correct: 2, explanation: 'Kontakta Socialstyrelsen för att validera din utbildning.' },
+          { text: 'Vad kan personen jobba som under tiden?', options: ['Läkare', 'Undersköterska', 'Chef', 'Tolk'], correct: 1, explanation: 'Du kan söka jobb som undersköterska mientras valida el título.' },
+          { text: 'Vilken svensknivå läser personen nu?', options: ['Nivå A', 'Nivå B', 'Nivå C', 'Nivå D'], correct: 2, explanation: 'Läser nu svenska på nivå C.' },
+        ]
+      },
+      {
+        id: 'c-l-2', title: 'Föräldramötet', topic: 'Skola & familj', icon: '🏫', duration: '~55s',
+        text: `Hej och välkomna till föräldramötet. Jag är Anna, klasslärare för årskurs tre. Idag vill jag prata om läxor och närvaro. Det är viktigt att barnen kommer i tid till skolan varje morgon. Om ert barn är sjukt, ska ni anmäla frånvaro före klockan åtta. Har alla förstått hur man gör en sjukanmälan? En förälder frågar: Ursäkta, hur anmäler man om man inte kan svenska så bra? Bra fråga. Ni kan ringa skolans expedition eller använda appen. Vi har också information på flera språk.`,
+        questions: [
+          { text: 'Vilken årskurs undervisar Anna?', options: ['Årskurs ett', 'Årskurs tre', 'Årskurs fem', 'Förskolan'], correct: 1, explanation: 'Klasslärare för årskurs tre.' },
+          { text: 'Före vilken tid ska man anmäla frånvaro?', options: ['Klockan sju', 'Klockan åtta', 'Klockan nio', 'Klockan tio'], correct: 1, explanation: 'Anmäla frånvaro före klockan åtta.' },
+          { text: 'Vad handlar mötet om?', options: ['Betyg och prov', 'Läxor och närvaro', 'Skolmaten', 'Sommarlovet'], correct: 1, explanation: 'Prata om läxor och närvaro.' },
+          { text: 'Hur kan en förälder anmäla frånvaro?', options: ['Bara personligen', 'Ringa expeditionen eller använda appen', 'Skicka brev', 'Det går inte'], correct: 1, explanation: 'Ni kan ringa skolans expedition eller använda appen.' },
+        ]
+      },
+      {
+        id: 'c-l-3', title: 'Hos hyresvärden', topic: 'Boende', icon: '🏠', duration: '~55s',
+        text: `Hej, jag ringer angående lägenheten på Storgatan. Är den fortfarande ledig? Ja, den är ledig från och med första maj. Vad bra. Hur mycket är hyran? Hyran är niotusen kronor i månaden, och då ingår värme och vatten. Ingår el också? Nej, el betalar du själv. Behöver jag betala deposition? Nej, men vi vill se ett anställningsbevis och en inkomstuppgift. Jag har fast anställning, så det är inga problem. Perfekt. Då kan vi boka en visning på torsdag klockan sjutton.`,
+        questions: [
+          { text: 'När är lägenheten ledig?', options: ['Första april', 'Första maj', 'Första juni', 'Direkt'], correct: 1, explanation: 'Ledig från och med första maj.' },
+          { text: 'Vad ingår i hyran?', options: ['El', 'Värme och vatten', 'Internet', 'Ingenting'], correct: 1, explanation: 'Då ingår värme och vatten.' },
+          { text: 'Vad vill hyresvärden se?', options: ['Pass och visum', 'Anställningsbevis och inkomstuppgift', 'Betyg', 'Körkort'], correct: 1, explanation: 'Vi vill se ett anställningsbevis och en inkomstuppgift.' },
+          { text: 'När är visningen?', options: ['Måndag', 'Onsdag', 'Torsdag klockan sjutton', 'Fredag'], correct: 2, explanation: 'Boka en visning på torsdag klockan sjutton.' },
+        ]
+      },
+      {
+        id: 'c-l-4', title: 'På vårdcentralen', topic: 'Hälsa', icon: '🩺', duration: '~55s',
+        text: `Vårdcentralen, hur kan jag hjälpa dig? Hej, jag skulle vilja boka en tid. Jag har ont i ryggen sedan en vecka. Har du feber eller andra symtom? Nej, bara ont i ryggen, särskilt på morgonen. Har du provat receptfria smärtstillande? Ja, men det hjälper inte så mycket. Då bokar jag en tid till dig i morgon klockan halv tre. Kom ihåg att ta med legitimation. Ska jag betala något? Ja, patientavgiften är tvåhundra kronor. Om du har frikort betalar du inget.`,
+        questions: [
+          { text: 'Hur länge har personen haft ont i ryggen?', options: ['En dag', 'En vecka', 'En månad', 'Ett år'], correct: 1, explanation: 'Ont i ryggen sedan en vecka.' },
+          { text: 'När är tiden bokad?', options: ['Idag', 'I morgon klockan halv tre', 'Nästa vecka', 'Om en timme'], correct: 1, explanation: 'En tid i morgon klockan halv tre.' },
+          { text: 'Vad ska personen ta med?', options: ['Pengar', 'Legitimation', 'Recept', 'En vän'], correct: 1, explanation: 'Kom ihåg att ta med legitimation.' },
+          { text: 'Vad betalar man med frikort?', options: ['Tvåhundra kronor', 'Hundra kronor', 'Inget', 'Femtio kronor'], correct: 2, explanation: 'Om du har frikort betalar du inget.' },
+        ]
+      },
+      {
+        id: 'c-l-5', title: 'Kundtjänst — en reklamation', topic: 'Konsument', icon: '📞', duration: '~55s',
+        text: `Kundtjänst, du talar med Erik. Hej, jag köpte en tvättmaskin för två veckor sedan och den fungerar inte. Vad tråkigt. Vad är problemet? Den startar inte alls, trots att jag följt instruktionerna. Har du kvar kvittot? Ja, jag har både kvitto och garantibevis. Bra. Enligt konsumentlagen har du rätt att få den lagad eller utbytt. Vi skickar en tekniker inom tre arbetsdagar. Kan jag få en ny maskin istället? Om den inte går att laga, får du en ny utan extra kostnad.`,
+        questions: [
+          { text: 'Vad är problemet med tvättmaskinen?', options: ['Den läcker vatten', 'Den startar inte', 'Den är för dyr', 'Den är fel färg'], correct: 1, explanation: 'Den startar inte alls.' },
+          { text: 'Vad har kunden kvar?', options: ['Bara kvittot', 'Kvitto och garantibevis', 'Ingenting', 'Bara kartongen'], correct: 1, explanation: 'Jag har både kvitto och garantibevis.' },
+          { text: 'Vad säger konsumentlagen?', options: ['Man får inga pengar tillbaka', 'Man har rätt att få den lagad eller utbytt', 'Man måste betala reparationen', 'Garantin gäller inte'], correct: 1, explanation: 'Du har rätt att få den lagad eller utbytt.' },
+          { text: 'När kommer teknikern?', options: ['Samma dag', 'Inom tre arbetsdagar', 'Nästa månad', 'Aldrig'], correct: 1, explanation: 'Vi skickar en tekniker inom tre arbetsdagar.' },
+        ]
+      },
+      {
+        id: 'c-l-6', title: 'Kollektivtrafiken', topic: 'Resor', icon: '🚆', duration: '~50s',
+        text: `Information till resenärer. Tåget mot Stockholm är cirka femton minuter försenat på grund av ett tekniskt fel. Vi beklagar förseningen. En resenär frågar en annan: Ursäkta, vet du om jag hinner byta till bussen? Om tåget är femton minuter sent, då missar du nog bussen som går kvart över. Men det går en till en halvtimme senare. Måste jag köpa en ny biljett? Nej, din biljett gäller i sjuttiofem minuter, så du kan byta utan att betala igen. Tack så mycket för hjälpen!`,
+        questions: [
+          { text: 'Varför är tåget försenat?', options: ['Dåligt väder', 'Ett tekniskt fel', 'För många resenärer', 'En olycka'], correct: 1, explanation: 'Försenat på grund av ett tekniskt fel.' },
+          { text: 'Hur mycket är tåget försenat?', options: ['Fem minuter', 'Femton minuter', 'En timme', 'En halvtimme'], correct: 1, explanation: 'Cirka femton minuter försenat.' },
+          { text: 'Hur länge gäller biljetten?', options: ['Trettio minuter', 'Sextio minuter', 'Sjuttiofem minuter', 'Hela dagen'], correct: 2, explanation: 'Din biljett gäller i sjuttiofem minuter.' },
+          { text: 'Måste resenären köpa en ny biljett för att byta?', options: ['Ja, alltid', 'Nej, biljetten gäller vid byte', 'Bara på helger', 'Bara om tåget är sent'], correct: 1, explanation: 'Du kan byta utan att betala igen.' },
+        ]
+      },
+    ],
+    read: [], write: [], speak: [], test: []
+  },
+  D: {
+    listen: [
+      {
+        id: 'd-l-1', title: 'Nyheter — arbetsmarknaden', topic: 'Samhälle', icon: '📰', duration: '~60s',
+        text: `Här är dagens ekonominyheter. Arbetslösheten i Sverige har minskat något under det senaste kvartalet, enligt Statistiska centralbyrån. Framför allt är det inom vård, omsorg och teknik som efterfrågan på arbetskraft är stor. Experter menar att kompetensbrist är ett växande problem, särskilt eftersom många erfarna medarbetare snart går i pension. Regeringen satsar därför på vuxenutbildning och yrkesutbildningar för att fler ska kunna omskola sig. Samtidigt betonar fackförbunden vikten av trygga anställningar och rättvisa löner.`,
+        questions: [
+          { text: 'Vad har hänt med arbetslösheten?', options: ['Den har ökat kraftigt', 'Den har minskat något', 'Den är oförändrad', 'Den har försvunnit'], correct: 1, explanation: 'Arbetslösheten har minskat något under det senaste kvartalet.' },
+          { text: 'Inom vilka områden är efterfrågan störst?', options: ['Handel och turism', 'Vård, omsorg och teknik', 'Jordbruk', 'Media'], correct: 1, explanation: 'Inom vård, omsorg och teknik är efterfrågan stor.' },
+          { text: 'Varför uppstår kompetensbrist?', options: ['Färre studerar', 'Många erfarna går i pension', 'Lönerna är för höga', 'Företagen flyttar'], correct: 1, explanation: 'Många erfarna medarbetare går snart i pension.' },
+          { text: 'Vad satsar regeringen på?', options: ['Lägre skatter', 'Vuxenutbildning och yrkesutbildningar', 'Fler poliser', 'Nya vägar'], correct: 1, explanation: 'Regeringen satsar på vuxenutbildning och yrkesutbildningar.' },
+        ]
+      },
+      {
+        id: 'd-l-2', title: 'Anställningsintervjun', topic: 'Arbetsliv', icon: '🤝', duration: '~60s',
+        text: `Tack för att du kom. Kan du börja med att berätta lite om dig själv? Ja, gärna. Jag har jobbat som projektledare i fem år och trivs med att ta ansvar och leda team. Vad ser du som din största styrka? Jag är strukturerad och bra på att kommunicera, även under press. Och en svaghet? Ibland är jag för noggrann, men jag har lärt mig att prioritera bättre. Varför söker du just den här tjänsten? Jag vill utvecklas i en större organisation och er värdegrund passar mig. Har du några frågor till oss? Ja, hur ser möjligheterna till kompetensutveckling ut?`,
+        questions: [
+          { text: 'Hur länge har personen arbetat som projektledare?', options: ['Två år', 'Tre år', 'Fem år', 'Tio år'], correct: 2, explanation: 'Jag har jobbat som projektledare i fem år.' },
+          { text: 'Vilken styrka nämner personen?', options: ['Snabbhet', 'Strukturerad och bra på att kommunicera', 'Kreativitet', 'Tålamod'], correct: 1, explanation: 'Jag är strukturerad och bra på att kommunicera.' },
+          { text: 'Vad beskriver personen som en svaghet?', options: ['Att komma sent', 'Att vara för noggrann', 'Att vara blyg', 'Att inte kunna svenska'], correct: 1, explanation: 'Ibland är jag för noggrann.' },
+          { text: 'Vad frågar personen intervjuaren om?', options: ['Lönen', 'Semestern', 'Möjligheter till kompetensutveckling', 'Kontorets läge'], correct: 2, explanation: 'Hur ser möjligheterna till kompetensutveckling ut?' },
+        ]
+      },
+      {
+        id: 'd-l-3', title: 'Möte på jobbet', topic: 'Arbetsliv', icon: '📊', duration: '~60s',
+        text: `Då sätter vi igång mötet. Första punkten är projektets tidsplan. Som ni vet ligger vi lite efter schemat. Vad beror förseningen på? Främst på att vi väntat på material från leverantören. Kan vi lösa det? Ja, jag föreslår att vi delar upp arbetet i mindre etapper så att vi kan börja med det vi har. Bra idé. Vem tar ansvar för planeringen? Jag kan göra ett utkast till på fredag. Utmärkt. Då bokar vi ett uppföljningsmöte nästa vecka. Är alla överens? Ja, det låter rimligt.`,
+        questions: [
+          { text: 'Vad är första punkten på mötet?', options: ['Budgeten', 'Projektets tidsplan', 'Semesterschemat', 'Nyanställningar'], correct: 1, explanation: 'Första punkten är projektets tidsplan.' },
+          { text: 'Varför ligger projektet efter?', options: ['Personalbrist', 'Väntat på material från leverantören', 'Dåligt väder', 'För lite pengar'], correct: 1, explanation: 'Vi har väntat på material från leverantören.' },
+          { text: 'Vad föreslås som lösning?', options: ['Avsluta projektet', 'Dela upp arbetet i mindre etapper', 'Anställa fler', 'Vänta längre'], correct: 1, explanation: 'Dela upp arbetet i mindre etapper.' },
+          { text: 'När ska utkastet vara klart?', options: ['På måndag', 'På onsdag', 'På fredag', 'Nästa månad'], correct: 2, explanation: 'Jag kan göra ett utkast till på fredag.' },
+        ]
+      },
+      {
+        id: 'd-l-4', title: 'Debatt om integration', topic: 'Samhälle', icon: '🗣️', duration: '~65s',
+        text: `Välkomna till dagens debatt om integration. Vår första gäst menar att språket är nyckeln till ett lyckat samhälle. Absolut. Utan svenska är det svårt att få jobb och delta fullt ut. Men vår andra gäst invänder: Språket är viktigt, men vi får inte glömma att diskriminering på arbetsmarknaden också är ett stort hinder. Många med utländsk bakgrund söker hundratals jobb utan att få svar. Håller du med om det? Delvis. Både språk och lika möjligheter behövs. Samhället tjänar på mångfald, men det kräver att alla får en rättvis chans.`,
+        questions: [
+          { text: 'Vad menar den första gästen är nyckeln?', options: ['Pengar', 'Språket', 'Utbildning', 'Kontakter'], correct: 1, explanation: 'Språket är nyckeln till ett lyckat samhälle.' },
+          { text: 'Vilket hinder tar den andra gästen upp?', options: ['Höga skatter', 'Diskriminering på arbetsmarknaden', 'Dåligt väder', 'Brist på bostäder'], correct: 1, explanation: 'Diskriminering på arbetsmarknaden är ett stort hinder.' },
+          { text: 'Vad sägs om personer med utländsk bakgrund?', options: ['De får jobb direkt', 'De söker många jobb utan svar', 'De vill inte jobba', 'De föredrar studier'], correct: 1, explanation: 'Många söker hundratals jobb utan att få svar.' },
+          { text: 'Vad är slutsatsen?', options: ['Bara språk behövs', 'Både språk och lika möjligheter behövs', 'Ingenting kan göras', 'Mångfald är dåligt'], correct: 1, explanation: 'Både språk och lika möjligheter behövs.' },
+        ]
+      },
+      {
+        id: 'd-l-5', title: 'Föreläsning om det svenska samhället', topic: 'Samhälle', icon: '🎓', duration: '~65s',
+        text: `Idag ska vi prata om den svenska modellen. Ett centralt begrepp är balansen mellan individ och kollektiv. Å ena sidan värdesätter svenskar självständighet och personlig frihet. Å andra sidan finns en stark tro på solidaritet och ett gemensamt ansvar, till exempel genom skattefinansierad välfärd. Skolan, sjukvården och äldreomsorgen bekostas till stor del av skatter. Detta system bygger på tillit, både mellan medborgare och till myndigheter. Kritiker påpekar dock att systemet är kostsamt och att köerna ibland är långa. Ändå har det bidragit till hög levnadsstandard.`,
+        questions: [
+          { text: 'Vad handlar föreläsningen om?', options: ['Svensk mat', 'Den svenska modellen', 'Svensk historia', 'Svenskt väder'], correct: 1, explanation: 'Idag ska vi prata om den svenska modellen.' },
+          { text: 'Vad finansierar skatterna?', options: ['Bara vägar', 'Skola, sjukvård och äldreomsorg', 'Bara försvaret', 'Privata företag'], correct: 1, explanation: 'Skolan, sjukvården och äldreomsorgen bekostas av skatter.' },
+          { text: 'Vad bygger systemet på?', options: ['Rädsla', 'Tillit', 'Tur', 'Konkurrens'], correct: 1, explanation: 'Systemet bygger på tillit.' },
+          { text: 'Vad påpekar kritiker?', options: ['Att det är gratis', 'Att systemet är kostsamt och köerna långa', 'Att ingen betalar skatt', 'Att skolan är dålig'], correct: 1, explanation: 'Systemet är kostsamt och köerna ibland långa.' },
+        ]
+      },
+      {
+        id: 'd-l-6', title: 'Radioprogram — miljö och vardag', topic: 'Miljö', icon: '🌍', duration: '~60s',
+        text: `Välkomna tillbaka till programmet. Idag talar vi om hållbarhet i vardagen. Vår gäst är miljöforskare. Vad kan en vanlig person göra för klimatet? Mycket, faktiskt. Att äta mindre kött, resa kollektivt och återvinna gör skillnad. Men räcker det med individens val? Nej, individen kan inte lösa allt själv. Vi behöver också politiska beslut och att företagen tar ansvar. Är du optimistisk inför framtiden? Ja, jag ser att fler unga engagerar sig och att tekniken utvecklas snabbt. Förändring tar tid, men den är på gång.`,
+        questions: [
+          { text: 'Vad handlar programmet om?', options: ['Sport', 'Hållbarhet i vardagen', 'Matlagning', 'Resor'], correct: 1, explanation: 'Idag talar vi om hållbarhet i vardagen.' },
+          { text: 'Vad kan en vanlig person göra?', options: ['Ingenting', 'Äta mindre kött, resa kollektivt och återvinna', 'Bara rösta', 'Flytta utomlands'], correct: 1, explanation: 'Äta mindre kött, resa kollektivt och återvinna.' },
+          { text: 'Räcker det med individens val?', options: ['Ja, det räcker', 'Nej, det behövs också politik och företagsansvar', 'Individen kan inte göra något', 'Bara politiken spelar roll'], correct: 1, explanation: 'Vi behöver också politiska beslut och att företagen tar ansvar.' },
+          { text: 'Varför är gästen optimistisk?', options: ['Vädret blir bättre', 'Fler unga engagerar sig och tekniken utvecklas', 'Problemet är löst', 'Ingen bryr sig'], correct: 1, explanation: 'Fler unga engagerar sig och tekniken utvecklas snabbt.' },
+        ]
+      },
+    ],
+    read: [], write: [], speak: [], test: []
+  },
 };
 
 // Load data (merge with localStorage)
