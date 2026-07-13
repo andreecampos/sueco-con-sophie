@@ -198,6 +198,85 @@
      VIEW: BIENVENIDA (después del pago) — ?bienvenido=1
 ════════════════════════════════════════════════════════════ -->
 <!-- ═══════════════════════════════════════════════════════════
+     VIEWS: PRACTICANDO CON JUANITA
+════════════════════════════════════════════════════════════ -->
+<div id="view-juanita-home" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="bg-swe-blue text-white" style="border-bottom:4px solid #FECC02;">
+    <div class="max-w-2xl mx-auto px-4 py-4 flex items-center gap-3">
+      <button onclick="goHome()" class="text-white text-2xl leading-none" aria-label="Volver">‹</button>
+      <div><div class="font-black text-lg">🍲 Practicando con Juanita</div><div class="text-xs text-blue-100">Practica sueco con tu mamá latina favorita</div></div>
+    </div>
+  </div>
+  <div class="max-w-2xl mx-auto px-4 py-6">
+    <div class="text-center mb-5">
+      <img id="juanita-home-img" src="" alt="Juanita saludando" loading="lazy" class="w-32 h-32 object-contain mx-auto mb-3" onerror="this.onerror=null;this.src='https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/juanita/juanita-neutral.webp'">
+      <div id="juanita-greet" class="font-bold text-gray-800 text-lg leading-snug px-2">Hola. ¿Qué quieres practicar hoy?</div>
+    </div>
+    <div class="grid grid-cols-4 gap-2 mb-4">
+      <div class="bg-white rounded-xl p-3 text-center shadow-sm border border-gray-100"><div class="text-xl font-black text-swe-blue" id="juanita-streak">0</div><div class="text-[10px] text-gray-500">🔥 racha</div></div>
+      <div class="bg-white rounded-xl p-3 text-center shadow-sm border border-gray-100"><div class="text-xl font-black text-swe-blue" id="juanita-total-q">0</div><div class="text-[10px] text-gray-500">preguntas</div></div>
+      <div class="bg-white rounded-xl p-3 text-center shadow-sm border border-gray-100"><div class="text-xl font-black text-swe-blue" id="juanita-pct">0%</div><div class="text-[10px] text-gray-500">aciertos</div></div>
+      <div class="bg-white rounded-xl p-3 text-center shadow-sm border border-gray-100"><div class="text-xl font-black text-swe-blue" id="juanita-xp">0</div><div class="text-[10px] text-gray-500">XP</div></div>
+    </div>
+    <div class="text-center text-xs text-gray-500 mb-4">Último nivel practicado: <span id="juanita-last-level" class="font-bold text-gray-700">—</span></div>
+    <button id="juanita-continue-btn" onclick="juanitaResume()" class="w-full bg-swe-blue text-white py-3 rounded-2xl font-bold mb-4 hover:bg-swe-dark transition-colors" style="display:none;">▶ Continuar donde lo dejé</button>
+    <div class="font-bold text-gray-700 mb-2 text-center">Empezar una práctica nueva</div>
+    <div class="space-y-3">
+      <button onclick="startJuanitaPractice('principiante')" class="w-full flex items-center gap-3 bg-white rounded-2xl p-4 shadow-sm border-2 border-emerald-200 hover:border-emerald-400 transition-colors text-left"><span class="text-2xl">🌱</span><div><div class="font-bold text-gray-800">Principiante</div><div class="text-xs text-gray-500">Lo básico, paso a paso</div></div></button>
+      <button onclick="startJuanitaPractice('intermedio')" class="w-full flex items-center gap-3 bg-white rounded-2xl p-4 shadow-sm border-2 border-blue-200 hover:border-blue-400 transition-colors text-left"><span class="text-2xl">📘</span><div><div class="font-bold text-gray-800">Intermedio</div><div class="text-xs text-gray-500">Gramática y vocabulario</div></div></button>
+      <button onclick="startJuanitaPractice('avanzado')" class="w-full flex items-center gap-3 bg-white rounded-2xl p-4 shadow-sm border-2 border-purple-200 hover:border-purple-400 transition-colors text-left"><span class="text-2xl">🎓</span><div><div class="font-bold text-gray-800">Avanzado</div><div class="text-xs text-gray-500">Nivel SVA1, en sueco</div></div></button>
+    </div>
+  </div>
+</div>
+
+<div id="view-juanita-quiz" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="max-w-2xl mx-auto px-4 py-4">
+    <div class="flex items-center gap-3 mb-3">
+      <button onclick="juanitaExit()" class="text-gray-400 text-xl leading-none" aria-label="Salir de la práctica">✕</button>
+      <div class="flex-1 h-2.5 bg-gray-200 rounded-full overflow-hidden"><div id="jq-bar" class="h-full bg-swe-blue rounded-full" style="width:0%;transition:width .3s ease"></div></div>
+      <span id="jq-num" class="text-xs text-gray-500 font-semibold whitespace-nowrap">1 / 10</span>
+    </div>
+    <div class="flex items-center gap-2 mb-3 text-xs">
+      <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-semibold" id="jq-level">Nivel</span>
+      <span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full" id="jq-cat">Categoría</span>
+    </div>
+    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-4">
+      <p id="jq-question" class="font-bold text-gray-800 text-base mb-4 leading-snug"></p>
+      <div id="jq-options" class="space-y-2"></div>
+    </div>
+    <div id="jq-explain" class="hidden bg-blue-50 rounded-2xl p-4 mb-4 border border-blue-100"></div>
+    <div id="jq-check-hint" class="text-center text-xs text-gray-400 mb-4">Elige una respuesta 👆</div>
+    <button id="jq-next-btn" onclick="juanitaNext()" class="hidden w-full bg-swe-blue text-white py-3 rounded-2xl font-bold mb-28 hover:bg-swe-dark transition-colors">Siguiente →</button>
+  </div>
+  <div class="fixed bottom-3 right-3 z-40 flex items-end gap-2" style="max-width:78vw; pointer-events:none;">
+    <div id="jq-bubble" class="hidden bg-white rounded-2xl rounded-br-none px-3 py-2 shadow-lg border border-gray-100 text-xs text-gray-700 font-medium" style="max-width:210px; pointer-events:auto;"></div>
+    <img id="jq-juanita-img" src="" alt="Juanita, tu asistente" loading="lazy" class="w-20 h-20 sm:w-28 sm:h-28 object-contain flex-shrink-0" style="filter:drop-shadow(0 4px 8px rgba(0,0,0,0.2));" onerror="this.onerror=null;this.src='https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/juanita/juanita-neutral.webp'">
+  </div>
+</div>
+
+<div id="view-juanita-result" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="max-w-2xl mx-auto px-4 py-8 text-center">
+    <img id="jr-img" src="" alt="Juanita" loading="lazy" class="w-32 h-32 object-contain mx-auto mb-3" onerror="this.onerror=null;this.src='https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/juanita/juanita-neutral.webp'">
+    <div id="jr-msg" class="font-bold text-gray-800 text-lg mb-4 px-2">¡Buen trabajo!</div>
+    <div class="bg-white rounded-2xl p-5 shadow border border-gray-100 mb-4">
+      <div class="text-5xl font-black text-swe-blue mb-1" id="jr-score">0%</div>
+      <div class="text-xs text-gray-400 mb-3" id="jr-compare"></div>
+      <div class="grid grid-cols-3 gap-2">
+        <div><div class="text-xl font-bold text-green-600" id="jr-correct">0</div><div class="text-[10px] text-gray-500">correctas</div></div>
+        <div><div class="text-xl font-bold text-red-500" id="jr-wrong">0</div><div class="text-[10px] text-gray-500">errores</div></div>
+        <div><div class="text-xl font-bold text-amber-500" id="jr-xp">+0</div><div class="text-[10px] text-gray-500">XP</div></div>
+      </div>
+    </div>
+    <div id="jr-achievements" class="flex flex-wrap justify-center gap-2 mb-5"></div>
+    <div class="space-y-2">
+      <button onclick="juanitaResume()" class="w-full bg-swe-blue text-white py-3 rounded-2xl font-bold hover:bg-swe-dark transition-colors">🔄 Practicar otra vez</button>
+      <button onclick="showGrammar()" class="w-full border-2 border-swe-blue text-swe-blue py-3 rounded-2xl font-bold hover:bg-blue-50 transition-colors">📝 Repasar mis errores</button>
+      <button onclick="showJuanita()" class="w-full text-gray-500 py-2 text-sm font-semibold">Volver al inicio de Juanita</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
      VIEW: LANDING /alumnos — página de venta
 ════════════════════════════════════════════════════════════ -->
 <div id="view-alumnos" class="view" style="background:#f4f7fb; min-height:100vh;">
@@ -652,6 +731,17 @@
           <span class="text-xl text-sky-500">→</span>
         </div>
       </div>
+      <div class="glass rounded-2xl p-5 shadow border-2 border-pink-300/50 mb-6 cursor-pointer card-hover" onclick="showJuanita()">
+        <div class="flex items-center gap-4">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background:linear-gradient(135deg,#EC4899,#F59E0B);">🍲</div>
+          <div class="flex-1">
+            <div class="font-black text-gray-800 text-base">Practicando con Juanita</div>
+            <div class="text-xs text-gray-500 mt-0.5">Practica con Juanita, tu mamá latina. ¡Divertido y con memoria!</div>
+          </div>
+          <span class="text-xl text-pink-500">→</span>
+        </div>
+      </div>
+
       <div class="glass rounded-2xl p-5 shadow border-2 border-swe-yellow/40 mb-6 cursor-pointer card-hover" onclick="showGrammar()">
         <div class="flex items-center gap-4">
           <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background:linear-gradient(135deg,#FECC02,#F59E0B);">🎯</div>
@@ -5141,6 +5231,353 @@ try {
 
 </script>
 <script>
+// ═══════════════════════════════════════════════════════════════
+//  PRACTICANDO CON JUANITA — Frases e imágenes (editable)
+//  Aquí editas las frases y las imágenes de Juanita. No toques app.js.
+// ═══════════════════════════════════════════════════════════════
+
+// Dónde viven las imágenes (Supabase Storage, bucket 'assets', carpeta 'juanita').
+// Sube ahí los archivos con estos nombres exactos (formato .webp).
+const JUANITA_IMG_BASE = 'https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/juanita/';
+const JUANITA_STATES = {
+  neutral:     'juanita-neutral.webp',
+  feliz:       'juanita-feliz.webp',
+  orgullosa:   'juanita-orgullosa.webp',
+  pensando:    'juanita-pensando.webp',
+  riendo:      'juanita-riendo.webp',
+  seria:       'juanita-seria.webp',
+  sorprendida: 'juanita-sorprendida.webp',
+  aplaudiendo: 'juanita-aplaudiendo.webp',
+  cafe:        'juanita-cafe.webp',
+  chancleta:   'juanita-chancleta.webp',
+  explicando:  'juanita-explicando.webp',
+};
+function juanitaImg(emotion) {
+  const file = JUANITA_STATES[emotion] || JUANITA_STATES.neutral;
+  return JUANITA_IMG_BASE + file;
+}
+
+// Cada banco: emotions = expresiones posibles (Juanita varía), list = frases {id, text}.
+// El sistema evita repetir las últimas 10 frases mostradas.
+const JUANITA_MSG = {
+  correct_answer: {
+    emotions: ['feliz', 'orgullosa', 'riendo', 'aplaudiendo'],
+    list: [
+      { id: 'c1',  text: '¡Eso era! Sabía que tú podías.' },
+      { id: 'c2',  text: 'Muy bien, mi amor. Sigue así.' },
+      { id: 'c3',  text: '¡Correcto! Ves que sí sabes.' },
+      { id: 'c4',  text: 'Así se hace, corazón.' },
+      { id: 'c5',  text: 'Muy bien pensado.' },
+      { id: 'c6',  text: '¡Excelente! Hoy has venido despierto/a. ¿Qué te digo…?' },
+      { id: 'c7',  text: 'Eso me pone orgullosa…' },
+      { id: 'c8',  text: '¡Perfecto! Una más para la colección.' },
+      { id: 'c9',  text: 'Muy bien, hijito/a. No era tan difícil.' },
+      { id: 'c10', text: '¡Eso! Con seguridad. Sin miedo al éxito.' },
+      { id: 'c11', text: 'Vas aprendiendo rapidito. ¿Qué te digo, Albert Einstein?' },
+      { id: 'c12', text: 'Muy bien. Se nota que estás practicando. ¡Al fin…!' },
+      { id: 'c13', text: '¡Correcto! Ahora sí estamos hablando.' },
+      { id: 'c14', text: 'Así me gusta: atento/a y concentrado/a.' },
+      { id: 'c15', text: 'Muy bien, corazón. Continúa.' },
+      { id: 'c16', text: '¡Mira qué bonito respondes cuando lees bien!' },
+      { id: 'c17', text: 'Exactamente. Esa era la respuesta.' },
+      { id: 'c18', text: 'Muy bien. Tu sueco está mejorando.' },
+      { id: 'c19', text: '¡Bravo! Te salió perfecto.' },
+      { id: 'c20', text: 'Ves que cuando te concentras, puedes.' },
+      { id: 'c21', text: '¡Correctísimo!' },
+      { id: 'c22', text: 'Muy bien, hijito/a. Sigue con esa energía.' },
+      { id: 'c23', text: 'Esa respuesta estuvo impecable. Como tu habitación.' },
+      { id: 'c24', text: '¡Qué orgullo! Lo hiciste muy bien.' },
+      { id: 'c25', text: 'Así sí, mi amor.' },
+      { id: 'c26', text: 'Muy bien. Juanita aprueba esta respuesta.' },
+      { id: 'c27', text: '¡Eso merece un aplauso!' },
+      { id: 'c28', text: 'Perfecto. Vamos por la siguiente.' },
+      { id: 'c29', text: 'Muy bien. Ya le estás agarrando el truco. Ya era hora.' },
+      { id: 'c30', text: '¡Qué elegante esa respuesta!' },
+      { id: 'c31', text: 'Así se responde.' },
+      { id: 'c32', text: 'Muy bien. Hoy estás imparable. ¿Qué has comido?' },
+      { id: 'c33', text: '¡Excelente trabajo!' },
+      { id: 'c34', text: 'Correcto, corazón. Vamos avanzando.' },
+      { id: 'c35', text: 'Muy bien. Confía más en lo que sabes.' },
+      { id: 'c36', text: '¡Eso! Sin miedo al sueco.' },
+      { id: 'c37', text: 'Muy bien. Cada respuesta cuenta.' },
+      { id: 'c38', text: '¡Perfecto! Me sorprendiste.' },
+      { id: 'c39', text: 'Así se aprende: practicando.' },
+      { id: 'c40', text: 'Muy bien. Te felicito de verdad.' },
+      { id: 'c41', text: '¡Correcto! Ya casi pareces un/a vikingo/a.' },
+      { id: 'c42', text: 'Muy bien, hijito/a. Estoy orgullosa.' },
+      { id: 'c43', text: '¡Eso salió redondito!' },
+      { id: 'c44', text: 'Excelente. Mantén la concentración.' },
+      { id: 'c45', text: 'Muy bien. Una respuesta más y seguimos creciendo.' },
+      { id: 'c46', text: '¡Perfecto! No cambies el ritmo.' },
+      { id: 'c47', text: 'Eso estuvo muy bien pensado.' },
+      { id: 'c48', text: '¡Correcto! Juanita está contenta.' },
+      { id: 'c49', text: 'Muy bien, mi amor. Vamos por otra.' },
+    ]
+  },
+  wrong_answer: {
+    emotions: ['seria', 'pensando', 'sorprendida', 'chancleta'],
+    list: [
+      { id: 'w1',  text: '¿Qué pasó, hijito/a? Lee otra vez con calma.' },
+      { id: 'w2',  text: 'No me hagas renegar. Mira bien la pregunta.' },
+      { id: 'w3',  text: 'Casi, mi amor. Inténtalo nuevamente.' },
+      { id: 'w4',  text: 'Respira, piensa y vuelve a mirar.' },
+      { id: 'w5',  text: 'Ay, hijito/a. Esa no era, pero seguimos.' },
+      { id: 'w6',  text: 'Te estoy mirando… concéntrate.' },
+      { id: 'w7',  text: 'No corras. Lee cada palabra.' },
+      { id: 'w8',  text: 'Casi lo tenías. Vamos otra vez.' },
+      { id: 'w9',  text: 'Con calma, corazón. Tú sí puedes.' },
+      { id: 'w10', text: 'Esa respuesta se nos escapó.' },
+      { id: 'w11', text: 'No pasa nada. Ahora aprende por qué.' },
+      { id: 'w12', text: 'Hijito/a, primero piensa y después responde, ¿okey?' },
+      { id: 'w13', text: 'Esa no era, pero te salvo esta vez.' },
+      { id: 'w14', text: 'Ay, mi amor. Mira bien la explicación.' },
+      { id: 'w15', text: 'No adivines. Usa lo que ya aprendiste.' },
+      { id: 'w16', text: 'Cuidado con esa palabra, que ahí estaba la trampa.' },
+      { id: 'w17', text: 'Ya pues, concéntrate un poquito más.' },
+      { id: 'w18', text: 'Casi, casi. Te faltó mirar un detalle.' },
+      { id: 'w19', text: 'No te preocupes. Los errores también enseñan.' },
+      { id: 'w20', text: 'Esa no era, corazón. Vamos a entenderla.' },
+      { id: 'w21', text: 'Juanita no está convencida con esa respuesta.' },
+      { id: 'w22', text: 'Hijito/a, esa opción estaba sospechosa.' },
+      { id: 'w23', text: 'Léela nuevamente y verás la diferencia.' },
+      { id: 'w24', text: 'No me respondas tan rápido.' },
+      { id: 'w25', text: 'Esa respuesta necesita otra vuelta.' },
+      { id: 'w26', text: 'Ay, hijito/a. Hoy me vas a hacer tomar otro café.' },
+      { id: 'w27', text: 'Te perdono, pero aprende la explicación.' },
+      { id: 'w28', text: 'No pasa nada. La próxima sí sale.' },
+      { id: 'w29', text: 'Mira con atención cuál era la respuesta correcta.' },
+      { id: 'w30', text: 'Te faltó poquito. No te rindas.' },
+      { id: 'w31', text: 'Esa no era, pero seguimos avanzando.' },
+      { id: 'w32', text: 'Con paciencia. Nadie aprende todo a la primera.' },
+      { id: 'w33', text: 'Aquí había que pensar un poquito más.' },
+      { id: 'w34', text: 'Hijito/a, no ignores las pistas.' },
+      { id: 'w35', text: 'Ay, corazón. Esa palabra te confundió.' },
+      { id: 'w36', text: 'Casi me sacas la chancleta… pero te daré otra oportunidad.' },
+      { id: 'w37', text: 'No me hagas buscar mis lentes. Mira bien.' },
+      { id: 'w38', text: 'Esa respuesta salió apurada.' },
+      { id: 'w39', text: 'Aprende esta regla y no volverás a caer.' },
+      { id: 'w40', text: 'No te castigues. Solo corrige y continúa.' },
+      { id: 'w41', text: 'Esta vez ganó la pregunta, pero la próxima ganas tú.' },
+      { id: 'w42', text: 'Hijito/a, esa respuesta no pasó la inspección de Juanita.' },
+      { id: 'w43', text: 'Vamos de nuevo. Tú sabes más de lo que crees.' },
+      { id: 'w44', text: 'No era esa, mi amor. Revisa la explicación.' },
+      { id: 'w45', text: 'Aquí faltó concentración, nada más.' },
+      { id: 'w46', text: 'Esa opción parecía bonita, pero era una trampa.' },
+      { id: 'w47', text: 'No te rindas por una respuesta.' },
+      { id: 'w48', text: 'Con calma y buena letra, hijito/a.' },
+      { id: 'w49', text: 'Hoy te equivocaste, mañana ya no.' },
+      { id: 'w50', text: 'Seguimos. Juanita no abandona a sus alumnos.' },
+    ]
+  },
+  first_visit: {
+    emotions: ['feliz', 'orgullosa'],
+    list: [
+      { id: 'fv1', text: 'Hola, hijito/a. Bienvenido/a a nuestra primera práctica.' },
+      { id: 'fv2', text: 'Qué alegría tenerte aquí. Vamos a aprender juntos.' },
+      { id: 'fv3', text: 'Hoy comenzamos. Sin miedo y con mucha paciencia.' },
+      { id: 'fv4', text: 'Bienvenido/a, corazón. Juanita te acompañará.' },
+      { id: 'fv5', text: 'Esta es tu primera práctica. Vamos paso a paso.' },
+    ]
+  },
+  same_day_return: {
+    emotions: ['feliz', 'riendo'],
+    list: [
+      { id: 'sd1', text: '¿Otra vez por aquí? Así me gusta, con ganas.' },
+      { id: 'sd2', text: 'Volviste el mismo día. ¡Esa es la actitud!' },
+      { id: 'sd3', text: 'Qué bueno tenerte de nuevo hoy. Sigamos.' },
+      { id: 'sd4', text: 'Dos prácticas en un día. Juanita está feliz.' },
+    ]
+  },
+  daily_return: {
+    emotions: ['feliz', 'orgullosa'],
+    list: [
+      { id: 'dr1', text: '¡Mira quién volvió! Así se crea una buena costumbre.' },
+      { id: 'dr2', text: 'Muy bien, hijito/a. Dos días practicando.' },
+      { id: 'dr3', text: 'Así me gusta: constante y responsable.' },
+      { id: 'dr4', text: 'Te estaba esperando. Continuemos.' },
+      { id: 'dr5', text: 'Volviste rápido. Eso me pone contenta.' },
+    ]
+  },
+  short_absence: {
+    emotions: ['neutral', 'pensando', 'feliz'],
+    list: [
+      { id: 'sa1', text: 'Ya te estaba extrañando, hijito/a.' },
+      { id: 'sa2', text: 'Qué bueno que regresaste. Vamos a retomar.' },
+      { id: 'sa3', text: 'Te tomaste un descansito, pero ya estamos de vuelta.' },
+      { id: 'sa4', text: 'No pasa nada. Lo importante es regresar.' },
+      { id: 'sa5', text: '¿Tú crees que esto es un hotel? ¡Vamos a practicar!' },
+    ]
+  },
+  medium_absence: {
+    emotions: ['sorprendida', 'seria', 'neutral'],
+    list: [
+      { id: 'ma1', text: '¿Dónde te habías metido, hijito/a? Vamos a practicar.' },
+      { id: 'ma2', text: 'Ya pensaba que te habías olvidado de Juanita.' },
+      { id: 'ma3', text: 'Pasaron varios días, pero empezamos nuevamente.' },
+      { id: 'ma4', text: 'Bienvenido/a de regreso. Sin culpas y con ganas.' },
+      { id: 'ma5', text: 'Vamos a despertar ese sueco que estaba descansando.' },
+    ]
+  },
+  long_absence: {
+    emotions: ['sorprendida', 'chancleta', 'riendo'],
+    list: [
+      { id: 'la1',  text: '¡Hijito/a! Ya estaba por mandarte a buscar.' },
+      { id: 'la2',  text: 'Cuánto tiempo sin verte. Vamos poco a poco.' },
+      { id: 'la3',  text: 'Te desapareciste, pero Juanita todavía te guarda tu lugar.' },
+      { id: 'la4',  text: 'Bienvenido/a nuevamente. Hoy empezamos sin presión.' },
+      { id: 'la5',  text: 'Lo importante no es cuánto tardaste, sino que regresaste.' },
+      { id: 'la6',  text: 'Tu sueco estaba de vacaciones. Vamos a despertarlo.' },
+      { id: 'la7',  text: 'No te voy a regañar… mucho. Comencemos.' },
+      { id: 'la8',  text: 'Hace tiempo que no practicábamos. Vamos con algo sencillo.' },
+      { id: 'la9',  text: 'Aquí nadie pierde su oportunidad. Empezamos otra vez.' },
+      { id: 'la10', text: 'Al fin regresaste, ¡ya casi llamo a la policía para que te busque!' },
+    ]
+  },
+  three_correct: {
+    emotions: ['feliz', 'orgullosa'],
+    list: [
+      { id: 't3_1', text: 'Tres seguidas, hijito/a. Así me gusta.' },
+      { id: 't3_2', text: 'Vas agarrando ritmo.' },
+      { id: 't3_3', text: 'Muy bien. Ya estás calentando motores.' },
+      { id: 't3_4', text: 'Tres correctas. Sigue concentrado/a.' },
+      { id: 't3_5', text: 'Esto se está poniendo bueno.' },
+    ]
+  },
+  five_correct: {
+    emotions: ['orgullosa', 'aplaudiendo', 'riendo'],
+    list: [
+      { id: 'f5_1', text: '¡Cinco seguidas! Hoy estás imparable.' },
+      { id: 'f5_2', text: 'Mira nomás qué nivel.' },
+      { id: 'f5_3', text: 'Cinco correctas. Juanita está orgullosa.' },
+      { id: 'f5_4', text: 'Así se demuestra la constancia.' },
+      { id: 'f5_5', text: 'Sigue así y pronto no me necesitarás.' },
+    ]
+  },
+  needs_support: {
+    emotions: ['seria', 'pensando', 'cafe'],
+    list: [
+      { id: 'ns1',  text: 'Detengámonos un momento. Respira y seguimos.' },
+      { id: 'ns2',  text: 'No pasa nada, hijito/a. Vamos más despacio.' },
+      { id: 'ns3',  text: 'Parece que este tema necesita un poquito más de práctica.' },
+      { id: 'ns4',  text: 'No adivines. Lee con calma la siguiente.' },
+      { id: 'ns5',  text: 'Los errores no mandan aquí. Tú continúas.' },
+      { id: 'ns6',  text: 'Vamos a cambiar de estrategia.' },
+      { id: 'ns7',  text: 'Mira bien las explicaciones. Ahí está la clave.' },
+      { id: 'ns8',  text: 'No te desesperes, corazón.' },
+      { id: 'ns9',  text: 'Hoy este tema está terco, pero nosotros más.' },
+      { id: 'ns10', text: 'Vamos paso a paso. Juanita está contigo.' },
+    ]
+  },
+  streak_lost: {
+    emotions: ['neutral', 'seria'],
+    list: [
+      { id: 'sl1', text: 'La racha terminó, pero tu aprendizaje continúa.' },
+      { id: 'sl2', text: 'No pasa nada. Hoy podemos empezar una nueva.' },
+      { id: 'sl3', text: 'Una racha no define todo lo que aprendiste.' },
+      { id: 'sl4', text: 'Volvemos a empezar, sin culpa.' },
+      { id: 'sl5', text: 'Hoy empieza una nueva oportunidad.' },
+    ]
+  },
+  streak_milestone: {
+    emotions: ['orgullosa', 'aplaudiendo'],
+    list: [
+      { id: 'sm1',  text: 'Tres días seguidos. Muy bien, hijito/a.' },
+      { id: 'sm2',  text: 'Tu constancia está creciendo.' },
+      { id: 'sm3',  text: 'Mira esa racha tan bonita.' },
+      { id: 'sm4',  text: 'Cada día suma.' },
+      { id: 'sm5',  text: 'Juanita está orgullosa de tu disciplina.' },
+      { id: 'sm6',  text: 'Ya van siete días. Eso sí es compromiso.' },
+      { id: 'sm7',  text: 'Dos semanas practicando. Qué maravilla.' },
+      { id: 'sm8',  text: 'Un mes de constancia merece celebración.' },
+      { id: 'sm9',  text: 'Tu esfuerzo ya se está notando.' },
+      { id: 'sm10', text: 'Sigue cuidando esa racha.' },
+    ]
+  },
+  improved_score: {
+    emotions: ['orgullosa', 'aplaudiendo', 'feliz'],
+    list: [
+      { id: 'is1', text: '¡Mejoraste tu puntuación anterior! Así se avanza.' },
+      { id: 'is2', text: 'Cada vez lo haces mejor, hijito/a.' },
+      { id: 'is3', text: 'Subiste tu marca. Juanita está orgullosa.' },
+      { id: 'is4', text: 'Ese progreso no es casualidad, es tu esfuerzo.' },
+    ]
+  },
+  session_complete: {
+    emotions: ['feliz', 'orgullosa', 'cafe'],
+    list: [
+      { id: 'sc1',  text: 'Muy buen trabajo por hoy. Ahora descansa.' },
+      { id: 'sc2',  text: 'Terminamos, hijito/a. Mañana seguimos.' },
+      { id: 'sc3',  text: 'Cada práctica te acerca a tu meta.' },
+      { id: 'sc4',  text: 'Estoy orgullosa de que hayas terminado.' },
+      { id: 'sc5',  text: 'Hoy aprendiste algo nuevo, y eso es suficiente.' },
+      { id: 'sc6',  text: 'Buen trabajo. Cierra la sesión con orgullo.' },
+      { id: 'sc7',  text: 'Terminamos por hoy. Ve a tomar agua.' },
+      { id: 'sc8',  text: 'Juanita aprueba tu esfuerzo. Descansa.' },
+      { id: 'sc9',  text: 'Gracias por no rendirte.' },
+      { id: 'sc10', text: 'Nos vemos en la próxima práctica.' },
+    ]
+  },
+  level_complete: {
+    emotions: ['orgullosa', 'aplaudiendo', 'riendo'],
+    list: [
+      { id: 'lc1',  text: '¡Lo lograste, hijito/a! Nivel completado.' },
+      { id: 'lc2',  text: 'Sabía que ibas a conseguirlo.' },
+      { id: 'lc3',  text: 'Juanita está muy orgullosa de ti.' },
+      { id: 'lc4',  text: 'Todo ese esfuerzo dio resultado.' },
+      { id: 'lc5',  text: 'Ya estás preparado/a para el siguiente nivel.' },
+      { id: 'lc6',  text: 'Qué alegría verte avanzar.' },
+      { id: 'lc7',  text: 'Esto merece una celebración.' },
+      { id: 'lc8',  text: 'Mira hasta dónde has llegado.' },
+      { id: 'lc9',  text: 'Un nivel menos y mucho sueco aprendido.' },
+      { id: 'lc10', text: 'Felicidades, corazón. Te lo ganaste.' },
+    ]
+  },
+};
+
+</script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  PRACTICANDO CON JUANITA — Banco de preguntas (editable, escalable)
+//  Agrega preguntas aquí sin tocar la lógica (app.js).
+//  Campos: id, level, category, question, options, correctAnswer (índice),
+//          explanation, difficulty (1-3), xp, active.
+//  level: 'principiante' | 'intermedio' | 'avanzado'
+// ═══════════════════════════════════════════════════════════════
+
+const JUANITA_QUESTIONS = [
+  // ── PRINCIPIANTE ──────────────────────────────────────────────
+  { id: 'jp1', level: 'principiante', category: 'Saludos', question: '¿Cómo se dice "hola" en sueco?', options: ['Tack', 'Hej', 'Adjö', 'Ja'], correctAnswer: 1, explanation: '"Hej" = hola. "Tack" = gracias, "Adjö" = adiós, "Ja" = sí.', difficulty: 1, xp: 10, active: true },
+  { id: 'jp2', level: 'principiante', category: 'En / Ett', question: 'Elige el artículo correcto: _____ hus (una casa).', options: ['en', 'ett', 'den', 'de'], correctAnswer: 1, explanation: '"Hus" es un ett-ord (neutro): ett hus.', difficulty: 1, xp: 10, active: true },
+  { id: 'jp3', level: 'principiante', category: 'Verbos', question: 'Conjuga: Jag _____ (bo) i Sverige.', options: ['bor', 'boar', 'bo', 'bar'], correctAnswer: 0, explanation: 'Att bo → jag bor (presente).', difficulty: 1, xp: 10, active: true },
+  { id: 'jp4', level: 'principiante', category: 'Vocabulario', question: '¿Qué significa "vatten"?', options: ['Pan', 'Agua', 'Leche', 'Café'], correctAnswer: 1, explanation: '"Vatten" = agua.', difficulty: 1, xp: 10, active: true },
+  { id: 'jp5', level: 'principiante', category: 'Números', question: '¿Cómo se dice "tres" en sueco?', options: ['två', 'tre', 'fyra', 'fem'], correctAnswer: 1, explanation: '"Tre" = tres. två=2, fyra=4, fem=5.', difficulty: 1, xp: 10, active: true },
+  { id: 'jp6', level: 'principiante', category: 'Pronombres', question: 'Pronombre para "ella": _____ heter Anna.', options: ['han', 'hon', 'den', 'jag'], correctAnswer: 1, explanation: '"Hon" = ella. "Han" = él.', difficulty: 1, xp: 10, active: true },
+  { id: 'jp7', level: 'principiante', category: 'Negación', question: 'Negación correcta: Jag _____ kaffe.', options: ['inte gillar', 'gillar inte', 'ingen gillar', 'gillar ingen'], correctAnswer: 1, explanation: '"inte" va después del verbo: Jag gillar INTE kaffe.', difficulty: 2, xp: 10, active: true },
+  { id: 'jp8', level: 'principiante', category: 'Días', question: '¿Cómo se dice "lunes"?', options: ['Tisdag', 'Måndag', 'Fredag', 'Söndag'], correctAnswer: 1, explanation: '"Måndag" = lunes.', difficulty: 1, xp: 10, active: true },
+
+  // ── INTERMEDIO ────────────────────────────────────────────────
+  { id: 'ji1', level: 'intermedio', category: 'Perfekt', question: 'Perfekt: Jag _____ redan _____ maten.', options: ['har / lagat', 'har / laga', 'hade / lagar', 'är / lagat'], correctAnswer: 0, explanation: 'Perfekt: har + supinum (lagat).', difficulty: 2, xp: 15, active: true },
+  { id: 'ji2', level: 'intermedio', category: 'Preposiciones', question: 'Jag är intresserad _____ musik.', options: ['på', 'av', 'i', 'för'], correctAnswer: 1, explanation: '"Intresserad AV" = interesado en (preposición fija).', difficulty: 2, xp: 15, active: true },
+  { id: 'ji3', level: 'intermedio', category: 'Comparativo', question: 'Det här huset är _____ än det andra.', options: ['stor', 'större', 'störst', 'mer stor'], correctAnswer: 1, explanation: 'Comparativo de stor → STÖRRE.', difficulty: 2, xp: 15, active: true },
+  { id: 'ji4', level: 'intermedio', category: 'Bisats', question: 'Orden en bisats: Jag vet att hon _____.', options: ['inte kommer', 'kommer inte', 'inte kom', 'kommer aldrig inte'], correctAnswer: 0, explanation: 'En bisats "inte" va antes del verbo: ...att hon INTE KOMMER.', difficulty: 3, xp: 15, active: true },
+  { id: 'ji5', level: 'intermedio', category: 'Partikelverb', question: 'Kan du _____ lampan? (encender)', options: ['sätta på', 'sätta av', 'ta på', 'stänga på'], correctAnswer: 0, explanation: 'Sätta PÅ = encender. Stänga AV = apagar.', difficulty: 2, xp: 15, active: true },
+  { id: 'ji6', level: 'intermedio', category: 'Plural', question: 'Plural definido: Jag ser _____ (los coches).', options: ['bilar', 'bilarna', 'biler', 'bilen'], correctAnswer: 1, explanation: 'bil → bilar → BILARNA (los coches).', difficulty: 2, xp: 15, active: true },
+  { id: 'ji7', level: 'intermedio', category: 'Vocabulario', question: 'Vad betyder "att ansöka om"?', options: ['Agradecer', 'Solicitar / pedir', 'Pagar', 'Olvidar'], correctAnswer: 1, explanation: 'Ansöka om = solicitar (ej. ansöka om jobb).', difficulty: 2, xp: 15, active: true },
+  { id: 'ji8', level: 'intermedio', category: 'Condicional', question: 'Om jag _____ tid, skulle jag hjälpa dig.', options: ['har', 'hade', 'haft', 'ha'], correctAnswer: 1, explanation: 'Condicional: Om jag HADE tid = si tuviera tiempo.', difficulty: 3, xp: 15, active: true },
+
+  // ── AVANZADO ──────────────────────────────────────────────────
+  { id: 'ja1', level: 'avanzado', category: 'S-passiv', question: 'S-passiv: Beslutet _____ av styrelsen igår.', options: ['fattade', 'fattades', 'har fattat', 'fatta'], correctAnswer: 1, explanation: 'S-pasiva en pretérito: fattaDES = fue tomado.', difficulty: 3, xp: 20, active: true },
+  { id: 'ja2', level: 'avanzado', category: 'Konjunktiv', question: 'Om jag _____ rik, skulle jag resa jorden runt.', options: ['är', 'var', 'vore', 'blev'], correctAnswer: 2, explanation: '"vore" (formal/hipotético) = si yo fuera.', difficulty: 3, xp: 20, active: true },
+  { id: 'ja3', level: 'avanzado', category: 'Bli-passiv', question: 'Han _____ vald till ordförande.', options: ['blev', 'var', 'hade', 'skulle'], correctAnswer: 0, explanation: 'Bli-passiv (acción): Han BLEV vald = fue elegido.', difficulty: 3, xp: 20, active: true },
+  { id: 'ja4', level: 'avanzado', category: 'Konnektor', question: 'Hon pluggade hårt, _____ klarade hon provet.', options: ['därför', 'trots att', 'eftersom', 'medan'], correctAnswer: 0, explanation: '"därför" (por eso) = consecuencia.', difficulty: 3, xp: 20, active: true },
+  { id: 'ja5', level: 'avanzado', category: 'Ordföljd', question: 'När solen gick ner, _____ vi hem.', options: ['vi gick', 'gick vi', 'vi gå', 'har vi gått'], correctAnswer: 1, explanation: 'Regla V2: tras la bisats inicial, verbo primero: GICK VI hem.', difficulty: 3, xp: 20, active: true },
+  { id: 'ja6', level: 'avanzado', category: 'Vocabulario', question: 'Vad betyder "hållbar utveckling"?', options: ['desarrollo rápido', 'desarrollo sostenible', 'desarrollo económico', 'desarrollo detenido'], correctAnswer: 1, explanation: 'Hållbar utveckling = desarrollo sostenible.', difficulty: 3, xp: 20, active: true },
+  { id: 'ja7', level: 'avanzado', category: 'Particip', question: 'Particip como adjetivo: en _____ dörr (stänga).', options: ['stängande', 'stängd', 'stänga', 'stängt'], correctAnswer: 1, explanation: 'Perfekt particip: en STÄNGD dörr = una puerta cerrada.', difficulty: 3, xp: 20, active: true },
+  { id: 'ja8', level: 'avanzado', category: 'Preposiciones', question: 'Rätt preposition: Det beror _____ situationen.', options: ['av', 'på', 'om', 'för'], correctAnswer: 1, explanation: 'Bero PÅ = depender de.', difficulty: 3, xp: 20, active: true },
+];
+
+</script>
+<script>
 // ═══════════════════════════════════════════════════════════
 //  SUECO CON SOFI — Lógica de la aplicación
 // ═══════════════════════════════════════════════════════════
@@ -5959,6 +6396,210 @@ function shuffleOptions(q) {
     [paired[i], paired[j]] = [paired[j], paired[i]];
   }
   return { ...q, options: paired.map(p => p.opt), correct: paired.findIndex(p => p.ok) };
+}
+
+// ═══════════════════════════════════════════════════════════
+//  PRACTICANDO CON JUANITA
+// ═══════════════════════════════════════════════════════════
+const JUANITA_LEVELS = { principiante: 'Principiante', intermedio: 'Intermedio', avanzado: 'Avanzado' };
+const JUANITA_SESSION_SIZE = 10;
+let juanitaProgress = null;
+let jState = null;
+
+function juanitaGender() {
+  const n = (window._sbSession?.name || window._sbSession?.email || '').trim().toLowerCase();
+  const first = (n.split(/[\s@._-]/)[0] || '');
+  return first.endsWith('a') ? 'f' : 'm';
+}
+function juanitaHijo() { return juanitaGender() === 'f' ? 'hijita' : 'hijito'; }
+
+async function loadJuanitaProgress() {
+  const s = window._sbSession; if (!s?.id) { juanitaProgress = null; return null; }
+  try { const { data } = await sb.from('juanita_progress').select('*').eq('user_id', s.id).maybeSingle(); juanitaProgress = data || null; }
+  catch (e) { juanitaProgress = null; }
+  return juanitaProgress;
+}
+async function saveJuanitaProgress(fields) {
+  const s = window._sbSession; if (!s?.id) return;
+  const row = { user_id: s.id, updated_at: new Date().toISOString(), ...fields };
+  juanitaProgress = { ...(juanitaProgress || {}), ...row };
+  try { await sb.from('juanita_progress').upsert(row, { onConflict: 'user_id' }); } catch (e) {}
+}
+function _daysSince(dateStr) {
+  if (!dateStr) return null;
+  const d = new Date(dateStr), now = new Date();
+  return Math.floor((new Date(now.toDateString()) - new Date(d.toDateString())) / 86400000);
+}
+// Elige frase evitando las últimas 10 (memoria en RAM; se persiste al terminar la sesión)
+function pickJuanitaMsg(category) {
+  const bank = JUANITA_MSG[category]; if (!bank) return null;
+  if (!juanitaProgress) juanitaProgress = {};
+  const recent = juanitaProgress.recent_message_ids || [];
+  let pool = bank.list.filter(m => !recent.includes(m.id));
+  if (!pool.length) pool = bank.list;
+  const msg = pool[Math.floor(Math.random() * pool.length)];
+  const emotion = bank.emotions[Math.floor(Math.random() * bank.emotions.length)];
+  juanitaProgress.recent_message_ids = [msg.id, ...recent].slice(0, 10);
+  return { text: msg.text, emotion };
+}
+function juanitaWelcomeMsg() {
+  const p = juanitaProgress;
+  if (!p || !p.last_practice_date) return pickJuanitaMsg('first_visit');
+  const d = _daysSince(p.last_practice_date);
+  if (d === 0) return pickJuanitaMsg('same_day_return');
+  if (d === 1) return pickJuanitaMsg('daily_return');
+  if (d <= 3) return pickJuanitaMsg('short_absence');
+  if (d <= 7) return pickJuanitaMsg('medium_absence');
+  return pickJuanitaMsg('long_absence');
+}
+
+async function showJuanita() {
+  if (!requireAccess()) return;
+  stopSpeech();
+  showView('juanita-home');
+  await loadJuanitaProgress();
+  renderJuanitaHome();
+}
+function renderJuanitaHome() {
+  const p = juanitaProgress || {};
+  const wm = juanitaWelcomeMsg();
+  const greetEl = document.getElementById('juanita-greet');
+  if (greetEl) greetEl.textContent = `Hola, ${juanitaHijo()}. ${wm ? wm.text : '¿Qué quieres practicar hoy?'}`;
+  const imgEl = document.getElementById('juanita-home-img');
+  if (imgEl) imgEl.src = juanitaImg(wm ? wm.emotion : 'feliz');
+  const pct = p.total_questions ? Math.round((p.total_correct / p.total_questions) * 100) : 0;
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  set('juanita-streak', p.current_streak || 0);
+  set('juanita-total-q', p.total_questions || 0);
+  set('juanita-pct', pct + '%');
+  set('juanita-xp', p.total_xp || 0);
+  set('juanita-last-level', p.last_practice_level ? (JUANITA_LEVELS[p.last_practice_level] || p.last_practice_level) : '—');
+  const contBtn = document.getElementById('juanita-continue-btn');
+  if (contBtn) contBtn.style.display = p.last_practice_level ? '' : 'none';
+}
+function shuffleJuanitaOptions(q) {
+  const paired = q.options.map((opt, i) => ({ opt, ok: i === q.correctAnswer }));
+  for (let i = paired.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [paired[i], paired[j]] = [paired[j], paired[i]]; }
+  return { ...q, options: paired.map(p => p.opt), correctAnswer: paired.findIndex(p => p.ok) };
+}
+function startJuanitaPractice(level) {
+  const pool = (typeof JUANITA_QUESTIONS !== 'undefined' ? JUANITA_QUESTIONS : []).filter(q => q.level === level && q.active !== false);
+  if (!pool.length) { showToast('Pronto habrá más preguntas de este nivel 🙂', 'info'); return; }
+  const qs = [...pool].sort(() => Math.random() - 0.5).slice(0, JUANITA_SESSION_SIZE).map(shuffleJuanitaOptions);
+  jState = { level, qs, i: 0, correct: 0, wrong: 0, xp: 0, answered: false, consecCorrect: 0, consecWrong: 0 };
+  showView('juanita-quiz');
+  renderJuanitaQuestion();
+}
+function setJuanita(emotion, text) {
+  const img = document.getElementById('jq-juanita-img');
+  if (img) { img.src = juanitaImg(emotion); img.alt = 'Juanita ' + emotion; }
+  const bubble = document.getElementById('jq-bubble');
+  if (bubble) { if (text) { bubble.textContent = text; bubble.classList.remove('hidden'); } else { bubble.classList.add('hidden'); } }
+}
+function renderJuanitaQuestion() {
+  const q = jState.qs[jState.i];
+  jState.answered = false;
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  set('jq-level', JUANITA_LEVELS[jState.level] || jState.level);
+  set('jq-cat', q.category || '');
+  set('jq-num', `${jState.i + 1} / ${jState.qs.length}`);
+  const bar = document.getElementById('jq-bar'); if (bar) bar.style.width = Math.round((jState.i / jState.qs.length) * 100) + '%';
+  set('jq-question', q.question);
+  const opts = document.getElementById('jq-options');
+  if (opts) opts.innerHTML = q.options.map((o, i) => `<button onclick="juanitaCheck(${i})" class="jq-opt w-full text-left px-4 py-3 border-2 border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:border-swe-blue transition-colors" aria-label="Opción ${i + 1}">${escHtml(o)}</button>`).join('');
+  setJuanita('pensando', '');
+  const ex = document.getElementById('jq-explain'); if (ex) ex.classList.add('hidden');
+  const hint = document.getElementById('jq-check-hint'); if (hint) hint.classList.remove('hidden');
+  const nextBtn = document.getElementById('jq-next-btn'); if (nextBtn) nextBtn.classList.add('hidden');
+}
+function juanitaCheck(idx) {
+  if (!jState || jState.answered) return;
+  jState.answered = true;
+  const q = jState.qs[jState.i];
+  const correct = idx === q.correctAnswer;
+  document.querySelectorAll('#jq-options .jq-opt').forEach((b, i) => { b.disabled = true; if (i === q.correctAnswer) b.classList.add('jq-correct'); else if (i === idx) b.classList.add('jq-wrong'); });
+  const ex = document.getElementById('jq-explain');
+  if (ex) { ex.innerHTML = `<div class="font-bold ${correct ? 'text-green-700' : 'text-red-700'} mb-1">${correct ? '✅ ¡Correcto!' : '❌ La respuesta correcta es: ' + escHtml(q.options[q.correctAnswer])}</div><div class="text-sm text-gray-600">${escHtml(q.explanation || '')}</div>`; ex.classList.remove('hidden'); }
+  const hint = document.getElementById('jq-check-hint'); if (hint) hint.classList.add('hidden');
+  if (correct) {
+    jState.correct++; jState.xp += (q.xp || 10); jState.consecCorrect++; jState.consecWrong = 0;
+    let cat = 'correct_answer';
+    if (jState.consecCorrect === 5) cat = 'five_correct'; else if (jState.consecCorrect === 3) cat = 'three_correct';
+    const m = pickJuanitaMsg(cat); setJuanita(m.emotion, m.text);
+    juanitaCelebrate();
+  } else {
+    jState.wrong++; jState.consecWrong++; jState.consecCorrect = 0;
+    addMistake({ text: q.question, options: q.options, correct: q.correctAnswer, explanation: q.explanation });
+    const cat = jState.consecWrong >= 3 ? 'needs_support' : 'wrong_answer';
+    const m = pickJuanitaMsg(cat); setJuanita(m.emotion, m.text);
+  }
+  const nextBtn = document.getElementById('jq-next-btn'); if (nextBtn) nextBtn.classList.remove('hidden');
+}
+function juanitaCelebrate() {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const el = document.getElementById('jq-juanita-img');
+  if (el) { el.style.transition = 'transform .3s ease'; el.style.transform = 'scale(1.09)'; setTimeout(() => { el.style.transform = 'scale(1)'; }, 300); }
+}
+function juanitaNext() {
+  if (!jState) return;
+  if (!jState.answered) { showToast('Primero comprueba tu respuesta', 'info'); return; }
+  jState.i++;
+  if (jState.i >= jState.qs.length) { finishJuanitaSession(); return; }
+  renderJuanitaQuestion();
+}
+function juanitaExit() { if (confirm('¿Salir de la práctica? El progreso de esta sesión se guardará al terminarla.')) showJuanita(); }
+function juanitaResume() { startJuanitaPractice(juanitaProgress?.last_practice_level || 'principiante'); }
+
+async function finishJuanitaSession() {
+  const total = jState.qs.length;
+  const pct = total ? Math.round((jState.correct / total) * 100) : 0;
+  const p = juanitaProgress || {};
+  const today = new Date().toISOString().slice(0, 10);
+  const dSince = _daysSince(p.last_practice_date);
+  let streak = p.current_streak || 0;
+  if (dSince === null) streak = 1; else if (dSince === 0) streak = streak || 1; else if (dSince === 1) streak = streak + 1; else streak = 1;
+  const longest = Math.max(p.longest_streak || 0, streak);
+  const bestScore = Math.max(p.best_session_score || 0, pct);
+  const prevScore = p.last_session_score || 0;
+  const improved = prevScore > 0 && pct > prevScore;
+  const alreadyCompleted = (p.completed_levels || []).includes(jState.level);
+  const completedLevels = new Set(p.completed_levels || []);
+  if (pct >= 80) completedLevels.add(jState.level);
+  await saveJuanitaProgress({
+    last_practice_date: today, last_practice_level: jState.level,
+    current_streak: streak, longest_streak: longest,
+    total_sessions: (p.total_sessions || 0) + 1, total_questions: (p.total_questions || 0) + total,
+    total_correct: (p.total_correct || 0) + jState.correct, total_incorrect: (p.total_incorrect || 0) + jState.wrong,
+    total_xp: (p.total_xp || 0) + jState.xp, completed_levels: [...completedLevels],
+    recent_message_ids: juanitaProgress.recent_message_ids || [],
+    last_session_score: pct, best_session_score: bestScore,
+    consecutive_correct: jState.consecCorrect, consecutive_wrong: jState.consecWrong,
+    created_at: p.created_at || new Date().toISOString(),
+  });
+  let emotion = 'feliz';
+  if (pct >= 90) emotion = 'aplaudiendo'; else if (pct >= 70) emotion = 'feliz'; else if (pct >= 50) emotion = 'pensando'; else emotion = 'seria';
+  let cat = 'session_complete';
+  if (pct >= 80 && !alreadyCompleted) cat = 'level_complete'; else if (improved) cat = 'improved_score';
+  const m = pickJuanitaMsg(cat) || pickJuanitaMsg('session_complete');
+  showView('juanita-result');
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  const jrImg = document.getElementById('jr-img'); if (jrImg) jrImg.src = juanitaImg(emotion);
+  set('jr-msg', m ? m.text : '¡Buen trabajo!');
+  set('jr-score', pct + '%'); set('jr-correct', jState.correct); set('jr-wrong', jState.wrong); set('jr-xp', '+' + jState.xp);
+  set('jr-compare', prevScore ? `Sesión anterior: ${prevScore}%` : 'Tu primera sesión de este tipo');
+  checkJuanitaAchievements();
+}
+function checkJuanitaAchievements() {
+  const p = juanitaProgress || {};
+  const got = [];
+  if ((p.total_sessions || 0) >= 1) got.push('🎉 Primera práctica');
+  if ((p.total_correct || 0) >= 10) got.push('✅ 10 correctas');
+  if ((p.total_correct || 0) >= 50) got.push('🏅 50 correctas');
+  if ((p.current_streak || 0) >= 3) got.push('🔥 Racha de 3 días');
+  if ((p.current_streak || 0) >= 7) got.push('🔥 Racha de 7 días');
+  if ((p.best_session_score || 0) === 100) got.push('⭐ Sesión perfecta');
+  const box = document.getElementById('jr-achievements');
+  if (box) box.innerHTML = got.map(a => `<span class="text-xs bg-amber-50 text-amber-700 border border-amber-200 rounded-full px-2.5 py-1">${a}</span>`).join('');
 }
 
 // ── ADMIN ─────────────────────────────────────────────────────
@@ -9724,6 +10365,11 @@ function backToTheory() {
 .grammar-filter-btn { background:#f3f4f6; color:#6b7280; transition:all 0.2s; }
 .grammar-filter-btn:hover { background:#e5e7eb; }
 .grammar-filter-btn.active { background:#006AA7; color:white; box-shadow:0 2px 8px rgba(0,106,167,0.3); }
+.jq-opt:disabled { cursor:default; }
+.jq-opt.jq-correct { background:#dcfce7; border-color:#22c55e !important; color:#166534; font-weight:700; }
+.jq-opt.jq-correct::after { content:' ✓'; }
+.jq-opt.jq-wrong { background:#fee2e2; border-color:#ef4444 !important; color:#991b1b; font-weight:700; }
+.jq-opt.jq-wrong::after { content:' ✗'; }
 .grammar-topic-card { transition: all 0.2s; cursor: pointer; }
 .grammar-topic-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,106,167,0.15); }
   .horst-filter-btn { background: #f1f5f9; color: #64748b; }

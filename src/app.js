@@ -818,6 +818,210 @@ function shuffleOptions(q) {
   return { ...q, options: paired.map(p => p.opt), correct: paired.findIndex(p => p.ok) };
 }
 
+// ═══════════════════════════════════════════════════════════
+//  PRACTICANDO CON JUANITA
+// ═══════════════════════════════════════════════════════════
+const JUANITA_LEVELS = { principiante: 'Principiante', intermedio: 'Intermedio', avanzado: 'Avanzado' };
+const JUANITA_SESSION_SIZE = 10;
+let juanitaProgress = null;
+let jState = null;
+
+function juanitaGender() {
+  const n = (window._sbSession?.name || window._sbSession?.email || '').trim().toLowerCase();
+  const first = (n.split(/[\s@._-]/)[0] || '');
+  return first.endsWith('a') ? 'f' : 'm';
+}
+function juanitaHijo() { return juanitaGender() === 'f' ? 'hijita' : 'hijito'; }
+
+async function loadJuanitaProgress() {
+  const s = window._sbSession; if (!s?.id) { juanitaProgress = null; return null; }
+  try { const { data } = await sb.from('juanita_progress').select('*').eq('user_id', s.id).maybeSingle(); juanitaProgress = data || null; }
+  catch (e) { juanitaProgress = null; }
+  return juanitaProgress;
+}
+async function saveJuanitaProgress(fields) {
+  const s = window._sbSession; if (!s?.id) return;
+  const row = { user_id: s.id, updated_at: new Date().toISOString(), ...fields };
+  juanitaProgress = { ...(juanitaProgress || {}), ...row };
+  try { await sb.from('juanita_progress').upsert(row, { onConflict: 'user_id' }); } catch (e) {}
+}
+function _daysSince(dateStr) {
+  if (!dateStr) return null;
+  const d = new Date(dateStr), now = new Date();
+  return Math.floor((new Date(now.toDateString()) - new Date(d.toDateString())) / 86400000);
+}
+// Elige frase evitando las últimas 10 (memoria en RAM; se persiste al terminar la sesión)
+function pickJuanitaMsg(category) {
+  const bank = JUANITA_MSG[category]; if (!bank) return null;
+  if (!juanitaProgress) juanitaProgress = {};
+  const recent = juanitaProgress.recent_message_ids || [];
+  let pool = bank.list.filter(m => !recent.includes(m.id));
+  if (!pool.length) pool = bank.list;
+  const msg = pool[Math.floor(Math.random() * pool.length)];
+  const emotion = bank.emotions[Math.floor(Math.random() * bank.emotions.length)];
+  juanitaProgress.recent_message_ids = [msg.id, ...recent].slice(0, 10);
+  return { text: msg.text, emotion };
+}
+function juanitaWelcomeMsg() {
+  const p = juanitaProgress;
+  if (!p || !p.last_practice_date) return pickJuanitaMsg('first_visit');
+  const d = _daysSince(p.last_practice_date);
+  if (d === 0) return pickJuanitaMsg('same_day_return');
+  if (d === 1) return pickJuanitaMsg('daily_return');
+  if (d <= 3) return pickJuanitaMsg('short_absence');
+  if (d <= 7) return pickJuanitaMsg('medium_absence');
+  return pickJuanitaMsg('long_absence');
+}
+
+async function showJuanita() {
+  if (!requireAccess()) return;
+  stopSpeech();
+  showView('juanita-home');
+  await loadJuanitaProgress();
+  renderJuanitaHome();
+}
+function renderJuanitaHome() {
+  const p = juanitaProgress || {};
+  const wm = juanitaWelcomeMsg();
+  const greetEl = document.getElementById('juanita-greet');
+  if (greetEl) greetEl.textContent = `Hola, ${juanitaHijo()}. ${wm ? wm.text : '¿Qué quieres practicar hoy?'}`;
+  const imgEl = document.getElementById('juanita-home-img');
+  if (imgEl) imgEl.src = juanitaImg(wm ? wm.emotion : 'feliz');
+  const pct = p.total_questions ? Math.round((p.total_correct / p.total_questions) * 100) : 0;
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  set('juanita-streak', p.current_streak || 0);
+  set('juanita-total-q', p.total_questions || 0);
+  set('juanita-pct', pct + '%');
+  set('juanita-xp', p.total_xp || 0);
+  set('juanita-last-level', p.last_practice_level ? (JUANITA_LEVELS[p.last_practice_level] || p.last_practice_level) : '—');
+  const contBtn = document.getElementById('juanita-continue-btn');
+  if (contBtn) contBtn.style.display = p.last_practice_level ? '' : 'none';
+}
+function shuffleJuanitaOptions(q) {
+  const paired = q.options.map((opt, i) => ({ opt, ok: i === q.correctAnswer }));
+  for (let i = paired.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [paired[i], paired[j]] = [paired[j], paired[i]]; }
+  return { ...q, options: paired.map(p => p.opt), correctAnswer: paired.findIndex(p => p.ok) };
+}
+function startJuanitaPractice(level) {
+  const pool = (typeof JUANITA_QUESTIONS !== 'undefined' ? JUANITA_QUESTIONS : []).filter(q => q.level === level && q.active !== false);
+  if (!pool.length) { showToast('Pronto habrá más preguntas de este nivel 🙂', 'info'); return; }
+  const qs = [...pool].sort(() => Math.random() - 0.5).slice(0, JUANITA_SESSION_SIZE).map(shuffleJuanitaOptions);
+  jState = { level, qs, i: 0, correct: 0, wrong: 0, xp: 0, answered: false, consecCorrect: 0, consecWrong: 0 };
+  showView('juanita-quiz');
+  renderJuanitaQuestion();
+}
+function setJuanita(emotion, text) {
+  const img = document.getElementById('jq-juanita-img');
+  if (img) { img.src = juanitaImg(emotion); img.alt = 'Juanita ' + emotion; }
+  const bubble = document.getElementById('jq-bubble');
+  if (bubble) { if (text) { bubble.textContent = text; bubble.classList.remove('hidden'); } else { bubble.classList.add('hidden'); } }
+}
+function renderJuanitaQuestion() {
+  const q = jState.qs[jState.i];
+  jState.answered = false;
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  set('jq-level', JUANITA_LEVELS[jState.level] || jState.level);
+  set('jq-cat', q.category || '');
+  set('jq-num', `${jState.i + 1} / ${jState.qs.length}`);
+  const bar = document.getElementById('jq-bar'); if (bar) bar.style.width = Math.round((jState.i / jState.qs.length) * 100) + '%';
+  set('jq-question', q.question);
+  const opts = document.getElementById('jq-options');
+  if (opts) opts.innerHTML = q.options.map((o, i) => `<button onclick="juanitaCheck(${i})" class="jq-opt w-full text-left px-4 py-3 border-2 border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:border-swe-blue transition-colors" aria-label="Opción ${i + 1}">${escHtml(o)}</button>`).join('');
+  setJuanita('pensando', '');
+  const ex = document.getElementById('jq-explain'); if (ex) ex.classList.add('hidden');
+  const hint = document.getElementById('jq-check-hint'); if (hint) hint.classList.remove('hidden');
+  const nextBtn = document.getElementById('jq-next-btn'); if (nextBtn) nextBtn.classList.add('hidden');
+}
+function juanitaCheck(idx) {
+  if (!jState || jState.answered) return;
+  jState.answered = true;
+  const q = jState.qs[jState.i];
+  const correct = idx === q.correctAnswer;
+  document.querySelectorAll('#jq-options .jq-opt').forEach((b, i) => { b.disabled = true; if (i === q.correctAnswer) b.classList.add('jq-correct'); else if (i === idx) b.classList.add('jq-wrong'); });
+  const ex = document.getElementById('jq-explain');
+  if (ex) { ex.innerHTML = `<div class="font-bold ${correct ? 'text-green-700' : 'text-red-700'} mb-1">${correct ? '✅ ¡Correcto!' : '❌ La respuesta correcta es: ' + escHtml(q.options[q.correctAnswer])}</div><div class="text-sm text-gray-600">${escHtml(q.explanation || '')}</div>`; ex.classList.remove('hidden'); }
+  const hint = document.getElementById('jq-check-hint'); if (hint) hint.classList.add('hidden');
+  if (correct) {
+    jState.correct++; jState.xp += (q.xp || 10); jState.consecCorrect++; jState.consecWrong = 0;
+    let cat = 'correct_answer';
+    if (jState.consecCorrect === 5) cat = 'five_correct'; else if (jState.consecCorrect === 3) cat = 'three_correct';
+    const m = pickJuanitaMsg(cat); setJuanita(m.emotion, m.text);
+    juanitaCelebrate();
+  } else {
+    jState.wrong++; jState.consecWrong++; jState.consecCorrect = 0;
+    addMistake({ text: q.question, options: q.options, correct: q.correctAnswer, explanation: q.explanation });
+    const cat = jState.consecWrong >= 3 ? 'needs_support' : 'wrong_answer';
+    const m = pickJuanitaMsg(cat); setJuanita(m.emotion, m.text);
+  }
+  const nextBtn = document.getElementById('jq-next-btn'); if (nextBtn) nextBtn.classList.remove('hidden');
+}
+function juanitaCelebrate() {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const el = document.getElementById('jq-juanita-img');
+  if (el) { el.style.transition = 'transform .3s ease'; el.style.transform = 'scale(1.09)'; setTimeout(() => { el.style.transform = 'scale(1)'; }, 300); }
+}
+function juanitaNext() {
+  if (!jState) return;
+  if (!jState.answered) { showToast('Primero comprueba tu respuesta', 'info'); return; }
+  jState.i++;
+  if (jState.i >= jState.qs.length) { finishJuanitaSession(); return; }
+  renderJuanitaQuestion();
+}
+function juanitaExit() { if (confirm('¿Salir de la práctica? El progreso de esta sesión se guardará al terminarla.')) showJuanita(); }
+function juanitaResume() { startJuanitaPractice(juanitaProgress?.last_practice_level || 'principiante'); }
+
+async function finishJuanitaSession() {
+  const total = jState.qs.length;
+  const pct = total ? Math.round((jState.correct / total) * 100) : 0;
+  const p = juanitaProgress || {};
+  const today = new Date().toISOString().slice(0, 10);
+  const dSince = _daysSince(p.last_practice_date);
+  let streak = p.current_streak || 0;
+  if (dSince === null) streak = 1; else if (dSince === 0) streak = streak || 1; else if (dSince === 1) streak = streak + 1; else streak = 1;
+  const longest = Math.max(p.longest_streak || 0, streak);
+  const bestScore = Math.max(p.best_session_score || 0, pct);
+  const prevScore = p.last_session_score || 0;
+  const improved = prevScore > 0 && pct > prevScore;
+  const alreadyCompleted = (p.completed_levels || []).includes(jState.level);
+  const completedLevels = new Set(p.completed_levels || []);
+  if (pct >= 80) completedLevels.add(jState.level);
+  await saveJuanitaProgress({
+    last_practice_date: today, last_practice_level: jState.level,
+    current_streak: streak, longest_streak: longest,
+    total_sessions: (p.total_sessions || 0) + 1, total_questions: (p.total_questions || 0) + total,
+    total_correct: (p.total_correct || 0) + jState.correct, total_incorrect: (p.total_incorrect || 0) + jState.wrong,
+    total_xp: (p.total_xp || 0) + jState.xp, completed_levels: [...completedLevels],
+    recent_message_ids: juanitaProgress.recent_message_ids || [],
+    last_session_score: pct, best_session_score: bestScore,
+    consecutive_correct: jState.consecCorrect, consecutive_wrong: jState.consecWrong,
+    created_at: p.created_at || new Date().toISOString(),
+  });
+  let emotion = 'feliz';
+  if (pct >= 90) emotion = 'aplaudiendo'; else if (pct >= 70) emotion = 'feliz'; else if (pct >= 50) emotion = 'pensando'; else emotion = 'seria';
+  let cat = 'session_complete';
+  if (pct >= 80 && !alreadyCompleted) cat = 'level_complete'; else if (improved) cat = 'improved_score';
+  const m = pickJuanitaMsg(cat) || pickJuanitaMsg('session_complete');
+  showView('juanita-result');
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  const jrImg = document.getElementById('jr-img'); if (jrImg) jrImg.src = juanitaImg(emotion);
+  set('jr-msg', m ? m.text : '¡Buen trabajo!');
+  set('jr-score', pct + '%'); set('jr-correct', jState.correct); set('jr-wrong', jState.wrong); set('jr-xp', '+' + jState.xp);
+  set('jr-compare', prevScore ? `Sesión anterior: ${prevScore}%` : 'Tu primera sesión de este tipo');
+  checkJuanitaAchievements();
+}
+function checkJuanitaAchievements() {
+  const p = juanitaProgress || {};
+  const got = [];
+  if ((p.total_sessions || 0) >= 1) got.push('🎉 Primera práctica');
+  if ((p.total_correct || 0) >= 10) got.push('✅ 10 correctas');
+  if ((p.total_correct || 0) >= 50) got.push('🏅 50 correctas');
+  if ((p.current_streak || 0) >= 3) got.push('🔥 Racha de 3 días');
+  if ((p.current_streak || 0) >= 7) got.push('🔥 Racha de 7 días');
+  if ((p.best_session_score || 0) === 100) got.push('⭐ Sesión perfecta');
+  const box = document.getElementById('jr-achievements');
+  if (box) box.innerHTML = got.map(a => `<span class="text-xs bg-amber-50 text-amber-700 border border-amber-200 rounded-full px-2.5 py-1">${a}</span>`).join('');
+}
+
 // ── ADMIN ─────────────────────────────────────────────────────
 function goAdmin() {
   stopSpeech();

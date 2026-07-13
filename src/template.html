@@ -198,6 +198,85 @@
      VIEW: BIENVENIDA (después del pago) — ?bienvenido=1
 ════════════════════════════════════════════════════════════ -->
 <!-- ═══════════════════════════════════════════════════════════
+     VIEWS: PRACTICANDO CON JUANITA
+════════════════════════════════════════════════════════════ -->
+<div id="view-juanita-home" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="bg-swe-blue text-white" style="border-bottom:4px solid #FECC02;">
+    <div class="max-w-2xl mx-auto px-4 py-4 flex items-center gap-3">
+      <button onclick="goHome()" class="text-white text-2xl leading-none" aria-label="Volver">‹</button>
+      <div><div class="font-black text-lg">🍲 Practicando con Juanita</div><div class="text-xs text-blue-100">Practica sueco con tu mamá latina favorita</div></div>
+    </div>
+  </div>
+  <div class="max-w-2xl mx-auto px-4 py-6">
+    <div class="text-center mb-5">
+      <img id="juanita-home-img" src="" alt="Juanita saludando" loading="lazy" class="w-32 h-32 object-contain mx-auto mb-3" onerror="this.onerror=null;this.src='https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/juanita/juanita-neutral.webp'">
+      <div id="juanita-greet" class="font-bold text-gray-800 text-lg leading-snug px-2">Hola. ¿Qué quieres practicar hoy?</div>
+    </div>
+    <div class="grid grid-cols-4 gap-2 mb-4">
+      <div class="bg-white rounded-xl p-3 text-center shadow-sm border border-gray-100"><div class="text-xl font-black text-swe-blue" id="juanita-streak">0</div><div class="text-[10px] text-gray-500">🔥 racha</div></div>
+      <div class="bg-white rounded-xl p-3 text-center shadow-sm border border-gray-100"><div class="text-xl font-black text-swe-blue" id="juanita-total-q">0</div><div class="text-[10px] text-gray-500">preguntas</div></div>
+      <div class="bg-white rounded-xl p-3 text-center shadow-sm border border-gray-100"><div class="text-xl font-black text-swe-blue" id="juanita-pct">0%</div><div class="text-[10px] text-gray-500">aciertos</div></div>
+      <div class="bg-white rounded-xl p-3 text-center shadow-sm border border-gray-100"><div class="text-xl font-black text-swe-blue" id="juanita-xp">0</div><div class="text-[10px] text-gray-500">XP</div></div>
+    </div>
+    <div class="text-center text-xs text-gray-500 mb-4">Último nivel practicado: <span id="juanita-last-level" class="font-bold text-gray-700">—</span></div>
+    <button id="juanita-continue-btn" onclick="juanitaResume()" class="w-full bg-swe-blue text-white py-3 rounded-2xl font-bold mb-4 hover:bg-swe-dark transition-colors" style="display:none;">▶ Continuar donde lo dejé</button>
+    <div class="font-bold text-gray-700 mb-2 text-center">Empezar una práctica nueva</div>
+    <div class="space-y-3">
+      <button onclick="startJuanitaPractice('principiante')" class="w-full flex items-center gap-3 bg-white rounded-2xl p-4 shadow-sm border-2 border-emerald-200 hover:border-emerald-400 transition-colors text-left"><span class="text-2xl">🌱</span><div><div class="font-bold text-gray-800">Principiante</div><div class="text-xs text-gray-500">Lo básico, paso a paso</div></div></button>
+      <button onclick="startJuanitaPractice('intermedio')" class="w-full flex items-center gap-3 bg-white rounded-2xl p-4 shadow-sm border-2 border-blue-200 hover:border-blue-400 transition-colors text-left"><span class="text-2xl">📘</span><div><div class="font-bold text-gray-800">Intermedio</div><div class="text-xs text-gray-500">Gramática y vocabulario</div></div></button>
+      <button onclick="startJuanitaPractice('avanzado')" class="w-full flex items-center gap-3 bg-white rounded-2xl p-4 shadow-sm border-2 border-purple-200 hover:border-purple-400 transition-colors text-left"><span class="text-2xl">🎓</span><div><div class="font-bold text-gray-800">Avanzado</div><div class="text-xs text-gray-500">Nivel SVA1, en sueco</div></div></button>
+    </div>
+  </div>
+</div>
+
+<div id="view-juanita-quiz" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="max-w-2xl mx-auto px-4 py-4">
+    <div class="flex items-center gap-3 mb-3">
+      <button onclick="juanitaExit()" class="text-gray-400 text-xl leading-none" aria-label="Salir de la práctica">✕</button>
+      <div class="flex-1 h-2.5 bg-gray-200 rounded-full overflow-hidden"><div id="jq-bar" class="h-full bg-swe-blue rounded-full" style="width:0%;transition:width .3s ease"></div></div>
+      <span id="jq-num" class="text-xs text-gray-500 font-semibold whitespace-nowrap">1 / 10</span>
+    </div>
+    <div class="flex items-center gap-2 mb-3 text-xs">
+      <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-semibold" id="jq-level">Nivel</span>
+      <span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full" id="jq-cat">Categoría</span>
+    </div>
+    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-4">
+      <p id="jq-question" class="font-bold text-gray-800 text-base mb-4 leading-snug"></p>
+      <div id="jq-options" class="space-y-2"></div>
+    </div>
+    <div id="jq-explain" class="hidden bg-blue-50 rounded-2xl p-4 mb-4 border border-blue-100"></div>
+    <div id="jq-check-hint" class="text-center text-xs text-gray-400 mb-4">Elige una respuesta 👆</div>
+    <button id="jq-next-btn" onclick="juanitaNext()" class="hidden w-full bg-swe-blue text-white py-3 rounded-2xl font-bold mb-28 hover:bg-swe-dark transition-colors">Siguiente →</button>
+  </div>
+  <div class="fixed bottom-3 right-3 z-40 flex items-end gap-2" style="max-width:78vw; pointer-events:none;">
+    <div id="jq-bubble" class="hidden bg-white rounded-2xl rounded-br-none px-3 py-2 shadow-lg border border-gray-100 text-xs text-gray-700 font-medium" style="max-width:210px; pointer-events:auto;"></div>
+    <img id="jq-juanita-img" src="" alt="Juanita, tu asistente" loading="lazy" class="w-20 h-20 sm:w-28 sm:h-28 object-contain flex-shrink-0" style="filter:drop-shadow(0 4px 8px rgba(0,0,0,0.2));" onerror="this.onerror=null;this.src='https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/juanita/juanita-neutral.webp'">
+  </div>
+</div>
+
+<div id="view-juanita-result" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="max-w-2xl mx-auto px-4 py-8 text-center">
+    <img id="jr-img" src="" alt="Juanita" loading="lazy" class="w-32 h-32 object-contain mx-auto mb-3" onerror="this.onerror=null;this.src='https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/juanita/juanita-neutral.webp'">
+    <div id="jr-msg" class="font-bold text-gray-800 text-lg mb-4 px-2">¡Buen trabajo!</div>
+    <div class="bg-white rounded-2xl p-5 shadow border border-gray-100 mb-4">
+      <div class="text-5xl font-black text-swe-blue mb-1" id="jr-score">0%</div>
+      <div class="text-xs text-gray-400 mb-3" id="jr-compare"></div>
+      <div class="grid grid-cols-3 gap-2">
+        <div><div class="text-xl font-bold text-green-600" id="jr-correct">0</div><div class="text-[10px] text-gray-500">correctas</div></div>
+        <div><div class="text-xl font-bold text-red-500" id="jr-wrong">0</div><div class="text-[10px] text-gray-500">errores</div></div>
+        <div><div class="text-xl font-bold text-amber-500" id="jr-xp">+0</div><div class="text-[10px] text-gray-500">XP</div></div>
+      </div>
+    </div>
+    <div id="jr-achievements" class="flex flex-wrap justify-center gap-2 mb-5"></div>
+    <div class="space-y-2">
+      <button onclick="juanitaResume()" class="w-full bg-swe-blue text-white py-3 rounded-2xl font-bold hover:bg-swe-dark transition-colors">🔄 Practicar otra vez</button>
+      <button onclick="showGrammar()" class="w-full border-2 border-swe-blue text-swe-blue py-3 rounded-2xl font-bold hover:bg-blue-50 transition-colors">📝 Repasar mis errores</button>
+      <button onclick="showJuanita()" class="w-full text-gray-500 py-2 text-sm font-semibold">Volver al inicio de Juanita</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
      VIEW: LANDING /alumnos — página de venta
 ════════════════════════════════════════════════════════════ -->
 <div id="view-alumnos" class="view" style="background:#f4f7fb; min-height:100vh;">
@@ -652,6 +731,17 @@
           <span class="text-xl text-sky-500">→</span>
         </div>
       </div>
+      <div class="glass rounded-2xl p-5 shadow border-2 border-pink-300/50 mb-6 cursor-pointer card-hover" onclick="showJuanita()">
+        <div class="flex items-center gap-4">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background:linear-gradient(135deg,#EC4899,#F59E0B);">🍲</div>
+          <div class="flex-1">
+            <div class="font-black text-gray-800 text-base">Practicando con Juanita</div>
+            <div class="text-xs text-gray-500 mt-0.5">Practica con Juanita, tu mamá latina. ¡Divertido y con memoria!</div>
+          </div>
+          <span class="text-xl text-pink-500">→</span>
+        </div>
+      </div>
+
       <div class="glass rounded-2xl p-5 shadow border-2 border-swe-yellow/40 mb-6 cursor-pointer card-hover" onclick="showGrammar()">
         <div class="flex items-center gap-4">
           <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background:linear-gradient(135deg,#FECC02,#F59E0B);">🎯</div>
@@ -1559,6 +1649,8 @@
 </style>
 
 <script src="data.js"></script>
+<script src="juanitaMessages.js"></script>
+<script src="juanitaQuestions.js"></script>
 <script src="app.js"></script>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -1762,6 +1854,11 @@
 .grammar-filter-btn { background:#f3f4f6; color:#6b7280; transition:all 0.2s; }
 .grammar-filter-btn:hover { background:#e5e7eb; }
 .grammar-filter-btn.active { background:#006AA7; color:white; box-shadow:0 2px 8px rgba(0,106,167,0.3); }
+.jq-opt:disabled { cursor:default; }
+.jq-opt.jq-correct { background:#dcfce7; border-color:#22c55e !important; color:#166534; font-weight:700; }
+.jq-opt.jq-correct::after { content:' ✓'; }
+.jq-opt.jq-wrong { background:#fee2e2; border-color:#ef4444 !important; color:#991b1b; font-weight:700; }
+.jq-opt.jq-wrong::after { content:' ✗'; }
 .grammar-topic-card { transition: all 0.2s; cursor: pointer; }
 .grammar-topic-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,106,167,0.15); }
   .horst-filter-btn { background: #f1f5f9; color: #64748b; }
