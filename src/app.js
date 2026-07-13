@@ -886,7 +886,7 @@ function renderJuanitaHome() {
   const greetEl = document.getElementById('juanita-greet');
   if (greetEl) greetEl.textContent = `Hola, ${juanitaHijo()}. ${wm ? wm.text : '¿Qué quieres practicar hoy?'}`;
   const imgEl = document.getElementById('juanita-home-img');
-  if (imgEl) imgEl.src = juanitaImg(wm ? wm.emotion : 'feliz');
+  if (imgEl) imgEl.src = juanitaImg('principal');
   const pct = p.total_questions ? Math.round((p.total_correct / p.total_questions) * 100) : 0;
   const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
   set('juanita-streak', p.current_streak || 0);
