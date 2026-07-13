@@ -229,8 +229,12 @@
         <h2 class="text-lg font-black text-gray-800 mb-3">Deja tu reseña</h2>
         <div class="bg-white rounded-2xl p-5 shadow border border-gray-100">
       <div id="review-login-box" class="hidden text-center py-2">
-        <p class="text-gray-600 text-sm mb-3">¿Ya eres alumno/a? Inicia sesión para dejar tu reseña.</p>
-        <button onclick="showView('login')" class="bg-swe-blue text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-swe-dark transition-colors">Iniciar sesión</button>
+        <p class="text-gray-600 text-sm mb-3">Inicia sesión para dejar tu reseña.</p>
+        <button onclick="signInWithGoogle()" class="w-full flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-gray-50 transition-colors mb-2">
+          <span class="font-black text-base"><span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span></span>
+          <span>Continuar con Google</span>
+        </button>
+        <button onclick="showView('login')" class="text-swe-blue text-xs font-semibold">o entra con tu correo de alumno →</button>
       </div>
       <div id="review-form-box" class="hidden">
         <div class="font-bold text-gray-800 mb-3">Deja tu reseña ✍️</div>

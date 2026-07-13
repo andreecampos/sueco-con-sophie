@@ -229,8 +229,12 @@
         <h2 class="text-lg font-black text-gray-800 mb-3">Deja tu reseña</h2>
         <div class="bg-white rounded-2xl p-5 shadow border border-gray-100">
       <div id="review-login-box" class="hidden text-center py-2">
-        <p class="text-gray-600 text-sm mb-3">¿Ya eres alumno/a? Inicia sesión para dejar tu reseña.</p>
-        <button onclick="showView('login')" class="bg-swe-blue text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-swe-dark transition-colors">Iniciar sesión</button>
+        <p class="text-gray-600 text-sm mb-3">Inicia sesión para dejar tu reseña.</p>
+        <button onclick="signInWithGoogle()" class="w-full flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-gray-50 transition-colors mb-2">
+          <span class="font-black text-base"><span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span></span>
+          <span>Continuar con Google</span>
+        </button>
+        <button onclick="showView('login')" class="text-swe-blue text-xs font-semibold">o entra con tu correo de alumno →</button>
       </div>
       <div id="review-form-box" class="hidden">
         <div class="font-bold text-gray-800 mb-3">Deja tu reseña ✍️</div>
@@ -6414,6 +6418,12 @@ function reviewAvatar(name) {
   let h = 0; for (let i=0;i<n.length;i++) h = (h*31 + n.charCodeAt(i)) & 0xffff;
   return { initial, color: _AVATAR_COLORS[h % _AVATAR_COLORS.length] };
 }
+// Muestra la foto de Google si existe; si no, un avatar con inicial y color.
+function reviewAvatarHtml(rv, cls) {
+  if (rv.avatar_url) return `<img src="${escHtml(rv.avatar_url)}" class="${cls} rounded-full object-cover flex-shrink-0" alt="" referrerpolicy="no-referrer">`;
+  const av = reviewAvatar(rv.name);
+  return `<div class="${cls} rounded-full flex items-center justify-center text-white font-bold flex-shrink-0" style="background:${av.color}">${av.initial}</div>`;
+}
 function starsHtml(n) {
   n = Math.round(n||0); let s = '';
   for (let i=1;i<=5;i++) s += `<span style="color:${i<=n?'#F59E0B':'#D1D5DB'}">★</span>`;
@@ -6472,10 +6482,33 @@ function populateCountrySelect() {
   sel.dataset.filled = '1';
 }
 
+async function signInWithGoogle() {
+  try {
+    const { error } = await sb.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.origin + '/resenas' }
+    });
+    if (error) showToast('No se pudo iniciar con Google: ' + error.message, 'error');
+  } catch (e) { showToast('Error al iniciar con Google', 'error'); }
+}
+
 async function initResenasPage() {
-  try { const { data: { session } } = await sb.auth.getSession(); if (session) window._sbSession = { email: session.user.email, id: session.user.id }; } catch (e) {}
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      const u = session.user;
+      window._sbSession = {
+        email: u.email, id: u.id,
+        avatar: u.user_metadata?.avatar_url || u.user_metadata?.picture || null,
+        gname: u.user_metadata?.full_name || u.user_metadata?.name || null,
+      };
+    }
+  } catch (e) {}
   populateCountrySelect();
   updateReviewFormVisibility();
+  // Prellenar el nombre con el de Google si existe
+  const nameInput = document.getElementById('review-name');
+  if (nameInput && !nameInput.value && window._sbSession?.gname) nameInput.value = window._sbSession.gname;
   await loadPublicReviews();
 }
 
@@ -6523,7 +6556,7 @@ function renderResenasPage() {
       const av = reviewAvatar(rv.name);
       return `<div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
         <div class="flex gap-3">
-          <div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0" style="background:${av.color}">${av.initial}</div>
+          ${reviewAvatarHtml(rv, 'w-12 h-12 text-lg')}
           <div class="min-w-0 flex-1">
             <div class="flex items-center justify-between gap-2">
               <div class="font-bold text-gray-800 text-sm truncate">${escHtml(rv.name)}</div>
@@ -6580,7 +6613,7 @@ async function submitReview() {
   const btn = document.getElementById('review-submit-btn');
   if (btn) { btn.disabled = true; btn.textContent = 'Enviando...'; }
   try {
-    const { error } = await sb.from('reviews').insert({ user_id: window._sbSession.id, name, rating: _reviewRating, comment, country, verified: true, status: 'pending' });
+    const { error } = await sb.from('reviews').insert({ user_id: window._sbSession.id, name, rating: _reviewRating, comment, country, verified: true, status: 'pending', avatar_url: window._sbSession.avatar || null });
     if (error) throw error;
     const fb = document.getElementById('review-form-box');
     if (fb) fb.innerHTML = '<div class="text-center py-6"><div class="text-4xl mb-2">🙏</div><p class="font-bold text-gray-800">¡Gracias por tu reseña!</p><p class="text-gray-500 text-sm mt-1">La revisaremos y aparecerá pronto.</p></div>';
@@ -6702,7 +6735,7 @@ function paintAdminReviews() {
     return `<div class="bg-white rounded-2xl p-4 shadow border ${border}">
       <div class="flex items-start justify-between gap-2 mb-2">
         <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style="background:${av.color}">${av.initial}</div>
+          ${reviewAvatarHtml(rv, 'w-8 h-8 text-xs')}
           <div><div class="font-bold text-gray-800 text-sm">${escHtml(rv.name)} ${rv.verified?'<span class="text-emerald-600 text-[10px]">✔</span>':''}</div><div class="text-sm">${starsHtml(rv.rating)}</div></div>
         </div>
         <div class="text-[11px]">${badge}</div>
