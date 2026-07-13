@@ -1341,6 +1341,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (/\/rese[nñ]as\/?$/i.test(_rpath) || hash === '#resenas' || hash === '#reseñas') {
     showView('resenas'); initResenasPage(); return;
   }
+  // Landing de venta (pública)
+  if (/\/alumnos\/?$/i.test(_rpath) || hash === '#alumnos') {
+    showView('alumnos'); initAlumnosPage(); return;
+  }
   if (hash === '#admin' || /\/admin\/?$/i.test(window.location.pathname || '')) _wantAdmin = true;
 
   const { data: { session } } = await sb.auth.getSession();
@@ -1463,6 +1467,40 @@ function populateCountrySelect() {
 
 let _returnToResenas = false;
 function goLoginFromResenas() { _returnToResenas = true; showView('login'); }
+
+// ── Landing /alumnos: animaciones + reseñas ──
+async function initAlumnosPage() {
+  // Contadores que suben
+  document.querySelectorAll('#view-alumnos .count-up').forEach(el => {
+    const target = parseInt(el.dataset.target, 10) || 0;
+    let cur = 0; const step = Math.max(1, Math.round(target / 40));
+    const t = setInterval(() => { cur += step; if (cur >= target) { cur = target; clearInterval(t); } el.textContent = String(cur); }, 25);
+  });
+  // Barras que se llenan
+  setTimeout(() => {
+    document.querySelectorAll('#landing-bars .bar-fill').forEach(bar => {
+      const target = parseInt(bar.dataset.target, 10) || 0;
+      bar.style.width = target + '%';
+      const pctEl = bar.parentElement && bar.parentElement.parentElement ? bar.parentElement.parentElement.querySelector('.bar-pct') : null;
+      if (pctEl) { let c = 0; const t = setInterval(() => { c += 3; if (c >= target) { c = target; clearInterval(t); } pctEl.textContent = c + '%'; }, 30); }
+    });
+  }, 200);
+  // Reseñas + valoración
+  try {
+    const { data } = await sb.from('reviews').select('*').eq('status', 'approved').order('created_at', { ascending: false }).limit(4);
+    const revs = data || [];
+    const ratingEl = document.getElementById('landing-rating');
+    if (ratingEl && revs.length) { const avg = revs.reduce((a, x) => a + (x.rating || 0), 0) / revs.length; ratingEl.textContent = avg.toFixed(1); }
+    const box = document.getElementById('landing-reviews');
+    if (box) {
+      if (!revs.length) { box.innerHTML = '<div class="sm:col-span-2 text-center text-gray-400 text-sm py-4">Pronto verás aquí las reseñas de nuestros alumnos. 🙌</div>'; }
+      else box.innerHTML = revs.map(rv => `<div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+        <div class="flex items-center gap-2 mb-2">${reviewAvatarHtml(rv, 'w-9 h-9 text-sm')}<div class="min-w-0"><div class="font-bold text-gray-800 text-sm truncate">${escHtml(rv.name)}</div><div class="text-xs">${starsHtml(rv.rating)}</div></div></div>
+        <p class="text-gray-600 text-sm leading-relaxed" style="display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;">${escHtml(rv.comment)}</p>
+      </div>`).join('');
+    }
+  } catch (e) {}
+}
 
 async function signInWithGoogle() {
   try {
