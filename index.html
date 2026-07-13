@@ -1652,6 +1652,14 @@ const DEFAULT_DATA = {
       { category: 'Comprensión', text: '"Jag är hungrig och vill äta." ¿Qué quiere la persona?', options: ['Dormir', 'Beber algo', 'Comer algo', 'Salir'], correct: 2, explanation: 'Hungrig = hambrienta. Äta = comer. Quiere comer algo.' },
       { category: 'Vocabulario', text: '¿Cómo se dice "gato" en sueco?', options: ['Hund', 'Katt', 'Fågel', 'Fisk'], correct: 1, explanation: 'Katt = gato. Hund = perro. Fågel = pájaro. Fisk = pez.' },
       { category: 'Gramática', text: 'Orden correcto de palabras: [Igår / köpte / Maria / bröd]', options: ['Maria köpte igår bröd.', 'Igår köpte Maria bröd.', 'Igår Maria köpte bröd.', 'Bröd köpte Maria igår.'], correct: 1, explanation: 'Regla V2: con adverbio temporal al inicio, el verbo va en 2ª posición. Igår KÖPTE Maria...' },
+      { category: 'Gramática', text: 'Plural correcto: en bok → tre _____.', options: ['boker', 'böcker', 'bokar', 'bokor'], correct: 1, explanation: 'Plural irregular: en bok → BÖCKER (con cambio de vocal).' },
+      { category: 'Gramática', text: 'Forma definida: _____ (la casa) är gammal.', options: ['Hus', 'Huset', 'En hus', 'Husen'], correct: 1, explanation: 'Definido singular de hus (ett-ord): HUSET = la casa.' },
+      { category: 'Gramática', text: 'Verbo en futuro: I morgon _____ jag jobba.', options: ['ska', 'skulle', 'har', 'är'], correct: 0, explanation: 'Futuro: SKA + infinitivo. I morgon ska jag jobba.' },
+      { category: 'Gramática', text: 'Posesivo correcto: Det är _____ bok. (mi)', options: ['min', 'mitt', 'mina', 'jag'], correct: 0, explanation: 'Bok es en-ord → MIN bok. (mitt para ett-ord, mina en plural).' },
+      { category: 'Vocabulario', text: '¿Qué significa "att handla"?', options: ['Cocinar', 'Comprar/hacer la compra', 'Limpiar', 'Dormir'], correct: 1, explanation: 'Handla = comprar, hacer las compras.' },
+      { category: 'Vocabulario', text: '¿Cómo se dice "ayer" en sueco?', options: ['I dag', 'I morgon', 'Igår', 'I kväll'], correct: 2, explanation: 'Igår = ayer. I dag = hoy. I morgon = mañana.' },
+      { category: 'Comprensión', text: '"Tåget går klockan halv nio." ¿A qué hora sale el tren?', options: ['A las 8:30', 'A las 9:30', 'A las 8:00', 'A las 9:00'], correct: 0, explanation: 'Halv nio = 8:30 (media hora ANTES de las 9, sistema sueco).' },
+      { category: 'Comprensión', text: '"Jag måste gå till jobbet nu." ¿Qué debe hacer la persona?', options: ['Descansar', 'Ir al trabajo', 'Ir de compras', 'Llamar a un amigo'], correct: 1, explanation: 'Måste gå till jobbet = debe ir al trabajo.' },
     ]
   },
 
@@ -1868,6 +1876,14 @@ const DEFAULT_DATA = {
       { category: 'Comprensión', text: '"Ansökan behandlas inom tre veckor." ¿Qué significa?', options: ['La solicitud se envía en tres semanas', 'La solicitud se procesa en tres semanas', 'La solicitud caduca en tres semanas', 'Tardas tres semanas en rellenarla'], correct: 1, explanation: 'Behandlas = se trata/procesa. Ansökan = solicitud. La solicitud SE PROCESA en tres semanas.' },
       { category: 'Vocabulario', text: '¿Qué significa "tillgänglig"?', options: ['Cansado', 'Ausente', 'Disponible', 'Ocupado'], correct: 2, explanation: 'Tillgänglig = disponible. Sinónimo: ledig (en este contexto).' },
       { category: 'Gramática', text: 'Passiv med "bli": "Skolan _____ byggd år 2000."', options: ['var', 'blev', 'är', 'hade'], correct: 1, explanation: 'Passiv med bli i preteritum: skolan BLEV byggd = la escuela FUE construida.' },
+      { category: 'Gramática', text: 'Comparativo/superlativo: "Det här är den _____ boken." (mejor)', options: ['bra', 'bättre', 'bäst', 'bästa'], correct: 3, explanation: 'Superlativo definido: bra → bäst → den BÄSTA boken.' },
+      { category: 'Gramática', text: 'Relativo correcto: "Mannen _____ bor här är läkare."', options: ['som', 'vad', 'vilken', 'det'], correct: 0, explanation: '"som" = que (relativo): Mannen SOM bor här = el hombre que vive aquí.' },
+      { category: 'Gramática', text: 'Partikelverb: "Kan du _____ ljuset?" (apagar)', options: ['stänga av', 'sätta på', 'ta av', 'gå av'], correct: 0, explanation: 'Stänga AV = apagar. Sätta på = encender.' },
+      { category: 'Gramática', text: 'Ordföljd tras bisats: "När jag kom hem, _____ jag mat."', options: ['jag lagade', 'lagade jag', 'jag lagar', 'har jag lagat'], correct: 1, explanation: 'Regla V2: tras la bisats, el verbo va primero: ...LAGADE JAG mat.' },
+      { category: 'Vocabulario', text: '¿Qué significa "att ansöka"?', options: ['Rechazar', 'Solicitar', 'Pagar', 'Firmar'], correct: 1, explanation: 'Ansöka = solicitar (ej. ansöka om jobb = solicitar un trabajo).' },
+      { category: 'Vocabulario', text: 'Antónimo de "billig":', options: ['dyr', 'ny', 'stor', 'lång'], correct: 0, explanation: 'Billig (barato) ↔ DYR (caro).' },
+      { category: 'Comprensión', text: '"Om du blir sjuk, ring vårdcentralen." ¿Qué debes hacer si te enfermas?', options: ['Ir al hospital directo', 'Llamar al centro de salud', 'Esperar', 'Tomar medicina'], correct: 1, explanation: 'Ring vårdcentralen = llama al centro de salud (vårdcentral).' },
+      { category: 'Comprensión', text: '"Hyran ska betalas senast den femte varje månad." ¿Cuándo se paga el alquiler?', options: ['El día 15', 'A más tardar el día 5', 'Cuando quieras', 'Cada semana'], correct: 1, explanation: 'Senast den femte = a más tardar el día 5 de cada mes.' },
     ]
   },
 
