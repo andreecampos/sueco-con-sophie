@@ -493,7 +493,29 @@ const DEFAULT_DATA = {
         ]
       },
     ],
-    read: [], write: [], speak: [], test: []
+    read: [], write: [], speak: [],
+    test: [
+      { category: 'Grammatik', text: 'Välj rätt form: Om jag _____ tid, skulle jag hjälpa dig.', options: ['har', 'hade', 'haft', 'ha'], correct: 1, explanation: 'Villkorssats (condicional): Om jag HADE tid... = si tuviera tiempo.' },
+      { category: 'Grammatik', text: 'Vilket är rätt: Boken _____ jag läste var spännande.', options: ['som', 'vad', 'vilken', 'det'], correct: 0, explanation: '"som" es el pronombre relativo: Boken SOM jag läste = el libro que leí.' },
+      { category: 'Grammatik', text: 'Partikelverb: Kan du _____ lampan? (encender)', options: ['sätta på', 'sätta av', 'ta på', 'stänga på'], correct: 0, explanation: 'Sätta PÅ = encender. Stänga AV = apagar.' },
+      { category: 'Grammatik', text: 'Bisats med "att": Han sa _____ han var trött.', options: ['att', 'som', 'för', 'och'], correct: 0, explanation: 'Han sa ATT han var trött = dijo QUE estaba cansado.' },
+      { category: 'Grammatik', text: 'Ordföljd i bisats: Jag vet att hon _____.', options: ['inte kommer', 'kommer inte', 'inte kom', 'kommer aldrig inte'], correct: 0, explanation: 'En bisats: "inte" va ANTES del verbo. ...att hon INTE KOMMER.' },
+      { category: 'Grammatik', text: 'Perfekt: Vi _____ redan _____ maten.', options: ['har / lagat', 'har / laga', 'hade / lagar', 'är / lagat'], correct: 0, explanation: 'Perfekt: HAR + supinum (lagat). Vi har redan lagat maten.' },
+      { category: 'Grammatik', text: 'Komparativ: Det här huset är _____ än det andra.', options: ['stor', 'större', 'störst', 'mer stor'], correct: 1, explanation: 'Comparativo de stor → STÖRRE (más grande).' },
+      { category: 'Grammatik', text: 'Preposition: Jag är intresserad _____ musik.', options: ['på', 'av', 'i', 'för'], correct: 1, explanation: 'Intresserad AV = interesado en. Es una preposición fija.' },
+      { category: 'Grammatik', text: 'Bestämd form plural: Jag ser _____ (los coches).', options: ['bilar', 'bilarna', 'biler', 'bilen'], correct: 1, explanation: 'Plural definido de bil: bilar → BILARNA (los coches).' },
+      { category: 'Grammatik', text: 'Framtid: I morgon _____ jag arbeta.', options: ['ska', 'skulle', 'har', 'vore'], correct: 0, explanation: 'Futuro: SKA + infinitivo. I morgon ska jag arbeta.' },
+      { category: 'Ordförråd', text: 'Vad betyder "att ansöka om"?', options: ['Att tacka nej', 'Att solicitar/pedir', 'Att betala', 'Att glömma'], correct: 1, explanation: 'Ansöka om = solicitar (ej. ansöka om jobb, bidrag).' },
+      { category: 'Ordförråd', text: 'Motsatsen till "tidig" är:', options: ['snabb', 'sen', 'lång', 'ny'], correct: 1, explanation: 'Tidig (temprano) ↔ SEN (tarde).' },
+      { category: 'Ordförråd', text: '"Hyra" betyder:', options: ['comprar', 'alquiler/alquilar', 'vender', 'prestar'], correct: 1, explanation: 'Hyra = alquiler (sustantivo) / alquilar (verbo).' },
+      { category: 'Ordförråd', text: 'Vad är en "arbetsgivare"?', options: ['El empleado', 'El empleador/patrón', 'El sindicato', 'El desempleado'], correct: 1, explanation: 'ArbetsGIVARE = quien DA trabajo (empleador). Arbetstagare = empleado.' },
+      { category: 'Ordförråd', text: '"Trots att" betyder:', options: ['porque', 'a pesar de que', 'si', 'cuando'], correct: 1, explanation: 'Trots att = a pesar de que (concesivo).' },
+      { category: 'Ordförråd', text: 'Vad betyder uttrycket "att ta ansvar"?', options: ['Tomar un descanso', 'Asumir la responsabilidad', 'Tener miedo', 'Pedir ayuda'], correct: 1, explanation: 'Ta ansvar = asumir/tomar responsabilidad.' },
+      { category: 'Läsförståelse', text: '"Butiken har öppet vardagar men stängt på helger." När är butiken stängd?', options: ['Måndag till fredag', 'Lördag och söndag', 'Bara söndag', 'Aldrig'], correct: 1, explanation: 'Helger = fines de semana (lördag och söndag).' },
+      { category: 'Läsförståelse', text: '"För att få bostad måste du stå i kö." Vad krävs för att få bostad?', options: ['Betala mer', 'Stå i kö', 'Ha ett jobb direkt', 'Inget'], correct: 1, explanation: 'Stå i kö = hacer cola/estar en lista de espera.' },
+      { category: 'Läsförståelse', text: '"Anna trivs på jobbet trots att lönen är låg." Hur känner Anna för sitt jobb?', options: ['Hon vantrivs', 'Hon trivs', 'Hon vill sluta', 'Hon är arbetslös'], correct: 1, explanation: 'Trivs = está a gusto, aunque el sueldo sea bajo.' },
+      { category: 'Läsförståelse', text: '"Om du är sjuk ska du sjukanmäla dig innan klockan nio." Vad ska man göra om man är sjuk?', options: ['Gå till jobbet', 'Sjukanmäla sig före nio', 'Vänta en vecka', 'Ringa efter nio'], correct: 1, explanation: 'Sjukanmäla sig innan klockan nio = avisar que se está enfermo antes de las 9.' },
+    ]
   },
   D: {
     listen: [
@@ -558,7 +580,29 @@ const DEFAULT_DATA = {
         ]
       },
     ],
-    read: [], write: [], speak: [], test: []
+    read: [], write: [], speak: [],
+    test: [
+      { category: 'Grammatik', text: 'S-passiv: Beslutet _____ av styrelsen igår.', options: ['fattade', 'fattades', 'har fattat', 'fatta'], correct: 1, explanation: 'S-pasiva en pretérito: fattaDES = fue tomado. Beslutet fattades av styrelsen.' },
+      { category: 'Grammatik', text: 'Välj rätt: Om jag _____ rik, skulle jag resa jorden runt.', options: ['är', 'var', 'vore', 'blev'], correct: 2, explanation: 'Konjunktiv/hipotético: "vore" (formal) = si yo fuera. Om jag vore rik...' },
+      { category: 'Grammatik', text: 'Particip som adjektiv: en _____ dörr (stänga).', options: ['stängande', 'stängd', 'stänga', 'stängt'], correct: 1, explanation: 'Perfekt particip: en STÄNGD dörr = una puerta cerrada.' },
+      { category: 'Grammatik', text: 'Konnektor: Hon pluggade hårt, _____ klarade hon provet.', options: ['därför', 'trots att', 'eftersom', 'medan'], correct: 0, explanation: '"därför" (por eso) indica consecuencia. Estudió mucho, POR ESO aprobó.' },
+      { category: 'Grammatik', text: 'Bisats med omvänd ordföljd (efter bisats): När solen gick ner, _____ vi hem.', options: ['vi gick', 'gick vi', 'vi gå', 'har vi gått'], correct: 1, explanation: 'Regla V2: tras una bisats inicial, verbo primero: ...GICK VI hem.' },
+      { category: 'Grammatik', text: 'Bli-passiv: Han _____ vald till ordförande.', options: ['blev', 'var', 'hade', 'skulle'], correct: 0, explanation: 'Bli-passiv (acción/cambio): Han BLEV vald = fue elegido.' },
+      { category: 'Grammatik', text: 'Rätt preposition: Det beror _____ situationen.', options: ['av', 'på', 'om', 'för'], correct: 1, explanation: 'Bero PÅ = depender de. Det beror på situationen.' },
+      { category: 'Grammatik', text: 'Satsadverbial: Jag har _____ inte sett filmen.', options: ['ännu', 'redan', 'aldrig', 'ofta'], correct: 0, explanation: '"ännu inte" = todavía no. Jag har ännu inte sett filmen.' },
+      { category: 'Grammatik', text: 'Vilket ord passar: Det är en fråga _____ vi måste diskutera noga.', options: ['som', 'vad', 'vilket', 'vars'], correct: 0, explanation: 'Relativo correcto: en fråga SOM vi måste diskutera = una pregunta QUE debemos discutir.' },
+      { category: 'Grammatik', text: 'Konjunktion: _____ det regnade, gick vi ut.', options: ['Fastän', 'Eftersom', 'Så att', 'Innan'], correct: 0, explanation: 'Fastän = aunque (concesivo). Aunque llovía, salimos.' },
+      { category: 'Ordförråd', text: '"Att ifrågasätta" betyder:', options: ['aceptar sin más', 'cuestionar', 'preguntar la hora', 'responder'], correct: 1, explanation: 'Ifrågasätta = cuestionar, poner en duda.' },
+      { category: 'Ordförråd', text: '"En förutsättning" är:', options: ['una consecuencia', 'una condición/requisito previo', 'un error', 'una opinión'], correct: 1, explanation: 'Förutsättning = condición previa, requisito.' },
+      { category: 'Ordförråd', text: 'Vad betyder "hållbar utveckling"?', options: ['desarrollo rápido', 'desarrollo sostenible', 'desarrollo económico', 'desarrollo detenido'], correct: 1, explanation: 'Hållbar utveckling = desarrollo sostenible.' },
+      { category: 'Ordförråd', text: '"Att bidra till" betyder:', options: ['restar/quitar', 'contribuir a', 'oponerse a', 'esperar'], correct: 1, explanation: 'Bidra till = contribuir a.' },
+      { category: 'Ordförråd', text: 'Motsatsen till "öka" är:', options: ['växa', 'minska', 'stiga', 'höja'], correct: 1, explanation: 'Öka (aumentar) ↔ MINSKA (disminuir).' },
+      { category: 'Ordförråd', text: '"Jämställdhet" handlar om:', options: ['igualdad de género', 'la economía', 'el clima', 'la salud'], correct: 0, explanation: 'Jämställdhet = igualdad (especialmente de género).' },
+      { category: 'Läsförståelse', text: '"Trots ökade satsningar kvarstår problemet med långa vårdköer." Vad säger meningen?', options: ['El problema se resolvió', 'A pesar de más inversión, el problema persiste', 'No hubo inversión', 'Las colas desaparecieron'], correct: 1, explanation: 'Trots ökade satsningar kvarstår problemet = a pesar de más inversión, el problema persiste.' },
+      { category: 'Läsförståelse', text: '"Enligt rapporten har sysselsättningen förbättrats markant." Vad har hänt?', options: ['El empleo empeoró', 'El empleo mejoró notablemente', 'No hubo cambios', 'La rapport se perdió'], correct: 1, explanation: 'Sysselsättningen har förbättrats markant = el empleo ha mejorado notablemente.' },
+      { category: 'Läsförståelse', text: '"Deltagandet är frivilligt men rekommenderas starkt." Är deltagandet obligatoriskt?', options: ['Ja, är obligatoriskt', 'Nej, men rekommenderas starkt', 'Det är förbjudet', 'Bara för vuxna'], correct: 1, explanation: 'Frivilligt = voluntario; men rekommenderas starkt = pero se recomienda mucho.' },
+      { category: 'Läsförståelse', text: '"Han hävdar att förändringen är nödvändig, medan kritikerna är skeptiska." Vad tycker kritikerna?', options: ['De håller med helt', 'De är skeptiska/tveksamma', 'De vet inte', 'De föreslog det'], correct: 1, explanation: 'Kritikerna är skeptiska = los críticos son escépticos/dudan.' },
+    ]
   },
 };
 
