@@ -2191,7 +2191,15 @@ function renderGrammarTopics(filter) {
 
   const _q = (grammarState.search || '').trim().toLowerCase();
   if (_q) {
-    topics = topics.filter(t => ((t.title||'') + ' ' + (t.subtitle||'') + ' ' + (t.keywords||'')).toLowerCase().includes(_q));
+    // Búsqueda flexible: busca en título, subtítulo, keywords Y dentro de las preguntas/opciones.
+    // Así "mycket" encuentra el tema de cantidad, y "på" o "i" encuentran preposiciones.
+    topics = topics.filter(t => {
+      const hay = (
+        (t.title || '') + ' ' + (t.subtitle || '') + ' ' + (t.keywords || '') + ' ' +
+        (t.questions || []).map(q => (q.text || '') + ' ' + ((q.options || []).join(' '))).join(' ')
+      ).toLowerCase();
+      return hay.includes(_q);
+    });
   }
 
   if (!topics.length) {
