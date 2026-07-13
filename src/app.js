@@ -118,7 +118,7 @@ function goMenu() {
 
 function selectLevel(level) {
   if (!requireAccess()) return;
-  const available = ['A','B'];
+  const available = ['A','B','C','D'];
   if (!available.includes(level)) {
     showToast('¡Próximamente! Este nivel estará disponible pronto.', 'info');
     return;
