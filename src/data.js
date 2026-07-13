@@ -509,7 +509,72 @@ const DEFAULT_DATA = {
         ]
       },
     ],
-    read: [], write: [], speak: [],
+    read: [
+      {
+        id: 'c-r-1', title: 'Att söka jobb i Sverige', tag: 'Arbete', icon: '💼',
+        text: `När man söker jobb i Sverige är det viktigt att skriva ett bra CV och ett personligt brev. I CV:t skriver du din utbildning, din arbetslivserfarenhet och dina språkkunskaper. Det personliga brevet ska förklara varför du passar för tjänsten. Många jobb hittar man på Arbetsförmedlingen eller på företagens egna hemsidor. Det är också vanligt att kontakter, ett så kallat nätverk, hjälper dig att få jobb. Kom ihåg att alltid vara ärlig och att anpassa din ansökan efter varje tjänst.`,
+        questions: [
+          { text: 'Vad ska man skriva när man söker jobb?', options: ['Bara ett telefonnummer', 'Ett CV och ett personligt brev', 'Endast namn', 'Ett recept'], correct: 1, explanation: 'Ett bra CV och ett personligt brev.' },
+          { text: 'Vad förklarar det personliga brevet?', options: ['Din adress', 'Varför du passar för tjänsten', 'Din lön', 'Ditt telefonnummer'], correct: 1, explanation: 'Det personliga brevet ska förklara varför du passar för tjänsten.' },
+          { text: 'Var kan man hitta jobb?', options: ['Bara på tidningen', 'På Arbetsförmedlingen och företagens hemsidor', 'Bara genom vänner', 'På sjukhuset'], correct: 1, explanation: 'På Arbetsförmedlingen eller på företagens egna hemsidor.' },
+          { text: 'Vad betyder ett "nätverk" här?', options: ['Internet', 'Kontakter som hjälper dig', 'En dator', 'Ett fiskenät'], correct: 1, explanation: 'Kontakter, ett så kallat nätverk, hjälper dig att få jobb.' },
+        ]
+      },
+      {
+        id: 'c-r-2', title: 'Sjukvården i Sverige', tag: 'Hälsa', icon: '🏥',
+        text: `Om du blir sjuk i Sverige ska du oftast först kontakta en vårdcentral. Där kan du träffa en läkare eller en sjuksköterska. Om det är akut och livshotande ringer du 112. För råd kan du ringa 1177, som är sjukvårdsupplysningen. Barn upp till arton år får oftast gratis vård. Vuxna betalar en patientavgift, men när du har betalat ett visst belopp under ett år får du ett frikort och slipper betala mer. Det är viktigt att boka tid i förväg, utom vid akuta fall.`,
+        questions: [
+          { text: 'Vem kontaktar man först när man blir sjuk?', options: ['Ett sjukhus direkt', 'En vårdcentral', 'Polisen', 'Apoteket'], correct: 1, explanation: 'Först kontakta en vårdcentral.' },
+          { text: 'Vilket nummer ringer man vid akut och livshotande fara?', options: ['1177', '112', '90000', '114 14'], correct: 1, explanation: 'Om det är akut och livshotande ringer du 112.' },
+          { text: 'Vad är 1177?', options: ['Ett apotek', 'Sjukvårdsupplysningen (råd)', 'En taxi', 'En bank'], correct: 1, explanation: '1177 är sjukvårdsupplysningen.' },
+          { text: 'Vad händer när du betalat ett visst belopp under ett år?', options: ['Du får böta', 'Du får ett frikort och slipper betala mer', 'Du måste betala dubbelt', 'Ingenting'], correct: 1, explanation: 'Du får ett frikort och slipper betala mer.' },
+        ]
+      },
+      {
+        id: 'c-r-3', title: 'Att hyra en bostad', tag: 'Boende', icon: '🏠',
+        text: `Att hitta en bostad i storstäderna kan vara svårt. Många ställer sig i en bostadskö, ibland i flera år, för att få en hyresrätt med förstahandskontrakt. Ett förstahandskontrakt betyder att du hyr direkt av hyresvärden och har trygga rättigheter. Ett andrahandskontrakt betyder att du hyr av någon som själv hyr lägenheten. Innan du skriver på ett kontrakt bör du läsa det noga och kontrollera hyran, uppsägningstiden och vad som ingår. Var försiktig med bedragare som ber om pengar i förväg utan att visa lägenheten.`,
+        questions: [
+          { text: 'Vad gör många för att få en hyresrätt?', options: ['Köper direkt', 'Ställer sig i en bostadskö', 'Flyttar utomlands', 'Bygger själva'], correct: 1, explanation: 'Många ställer sig i en bostadskö.' },
+          { text: 'Vad betyder förstahandskontrakt?', options: ['Du hyr av någon som hyr själv', 'Du hyr direkt av hyresvärden', 'Du äger lägenheten', 'Du bor gratis'], correct: 1, explanation: 'Du hyr direkt av hyresvärden och har trygga rättigheter.' },
+          { text: 'Vad bör du kontrollera i kontraktet?', options: ['Bara färgen', 'Hyran, uppsägningstiden och vad som ingår', 'Grannarnas namn', 'Vädret'], correct: 1, explanation: 'Kontrollera hyran, uppsägningstiden och vad som ingår.' },
+          { text: 'Vad varnar texten för?', options: ['Höga hyror', 'Bedragare som ber om pengar i förväg', 'Små lägenheter', 'Långa köer'], correct: 1, explanation: 'Var försiktig med bedragare som ber om pengar i förväg.' },
+        ]
+      },
+      {
+        id: 'c-r-4', title: 'Att vara förälder i Sverige', tag: 'Familj & samhälle', icon: '👨‍👩‍👧',
+        text: `I Sverige har föräldrar rätt till föräldraledighet. Det betyder att man kan vara hemma med sitt barn och ändå få pengar från Försäkringskassan. Föräldrarna kan dela på dagarna, och det är vanligt att både mamman och pappan är hemma en tid. När barnet är litet kan det gå på förskola medan föräldrarna arbetar. Skolan är obligatorisk och gratis från sex års ålder. Samhället uppmuntrar jämställdhet, vilket betyder att kvinnor och män ska ha samma möjligheter både hemma och på jobbet.`,
+        questions: [
+          { text: 'Vad är föräldraledighet?', options: ['Semester utomlands', 'Att vara hemma med sitt barn och få pengar', 'En skola', 'Ett jobb'], correct: 1, explanation: 'Vara hemma med sitt barn och ändå få pengar från Försäkringskassan.' },
+          { text: 'Vem betalar under föräldraledigheten?', options: ['Arbetsgivaren ensam', 'Försäkringskassan', 'Skolan', 'Ingen'], correct: 1, explanation: 'Man får pengar från Försäkringskassan.' },
+          { text: 'Från vilken ålder är skolan obligatorisk?', options: ['Tre år', 'Sex år', 'Tio år', 'Arton år'], correct: 1, explanation: 'Skolan är obligatorisk och gratis från sex års ålder.' },
+          { text: 'Vad betyder jämställdhet?', options: ['Att alla är rika', 'Att kvinnor och män har samma möjligheter', 'Att skolan är gratis', 'Att alla jobbar hemma'], correct: 1, explanation: 'Kvinnor och män ska ha samma möjligheter.' },
+        ]
+      },
+    ],
+    write: [
+      {
+        id: 'c-w-1', title: 'Skriv ett formellt mejl till hyresvärden', icon: '📧', words: '60–90 ord',
+        prompt: 'Hay un problema en tu apartamento (por ejemplo, la calefacción no funciona). Escribe un correo FORMAL a tu casero (hyresvärd) en sueco.\n\nDebes:\n• Explicar el problema\n• Decir desde cuándo ocurre\n• Pedir que lo arreglen pronto\n• Preguntar cuándo pueden venir',
+        checklist: ['Formell hälsning: Hej / Hej [namn]', 'Beskriv problemet tydligt', 'Säg sedan när: "Sedan i måndags fungerar inte..."', 'Be om åtgärd: "Jag vill be er att åtgärda detta snarast."', 'Avsluta formellt: "Med vänliga hälsningar, [namn]"'],
+        example: 'Hej,\n\nJag hyr lägenheten på Storgatan 5. Sedan i måndags fungerar inte värmen i vardagsrummet, och det är väldigt kallt. Jag vill be er att åtgärda detta snarast. När kan en tekniker komma?\n\nMed vänliga hälsningar,\nPedro Gómez',
+        criteria: ['Contenido: explica el problema y pide solución', 'Registro: formal y educado', 'Gramática: orden de palabras y verbos correctos', 'Estructura: saludo, cuerpo, despedida']
+      },
+      {
+        id: 'c-w-2', title: 'Ett personligt brev för ett jobb', icon: '💼', words: '70–100 ord',
+        prompt: 'Estás solicitando un trabajo (por ejemplo, undersköterska). Escribe un breve "personligt brev" en sueco.\n\nIncluye:\n• Qué trabajo solicitas\n• Tu experiencia\n• Por qué eres adecuado/a\n• Tu disponibilidad',
+        checklist: ['"Jag söker tjänsten som..."', 'Beskriv erfarenhet: "Jag har arbetat som..."', 'Motivera: "Jag är ansvarsfull och tycker om att arbeta med människor."', 'Tillgänglighet: "Jag kan börja..."'],
+        example: 'Hej,\n\nJag söker tjänsten som undersköterska på ert boende. Jag har arbetat inom vården i tre år och trivs med att hjälpa människor. Jag är ansvarsfull, punktlig och talar svenska och spanska. Jag kan börja omgående och arbetar gärna både dag och kväll.\n\nMed vänliga hälsningar,\nMaría López',
+        criteria: ['Contenido: menciona puesto, experiencia y motivación', 'Registro: formal', 'Vocabulario: laboral (erfarenhet, ansvarsfull)', 'Coherencia: ideas ordenadas']
+      },
+      {
+        id: 'c-w-3', title: 'En reklamation', icon: '⚠️', words: '50–80 ord',
+        prompt: 'Compraste un producto que está defectuoso. Escribe una reclamación (reklamation) a la tienda en sueco.\n\nDebes:\n• Decir qué compraste y cuándo\n• Explicar el problema\n• Decir qué quieres (reparación, cambio o devolución)',
+        checklist: ['"Jag köpte en ... den ..."', 'Beskriv felet', 'Krav: "Jag vill få den lagad / utbytt / pengarna tillbaka."', 'Hänvisa till kvitto/garanti'],
+        example: 'Hej,\n\nJag köpte en kaffebryggare hos er den 3 maj. Tyvärr fungerar den inte, den startar inte alls. Jag har kvittot kvar. Jag vill få den utbytt eller pengarna tillbaka enligt konsumentlagen.\n\nMed vänliga hälsningar,\nAhmed Ali',
+        criteria: ['Contenido: producto, problema y petición', 'Registro: formal', 'Vocabulario: reklamation, kvitto, garanti', 'Claridad del mensaje']
+      },
+    ],
+    speak: [],
     test: [
       { category: 'Grammatik', text: 'Välj rätt form: Om jag _____ tid, skulle jag hjälpa dig.', options: ['har', 'hade', 'haft', 'ha'], correct: 1, explanation: 'Villkorssats (condicional): Om jag HADE tid... = si tuviera tiempo.' },
       { category: 'Grammatik', text: 'Vilket är rätt: Boken _____ jag läste var spännande.', options: ['som', 'vad', 'vilken', 'det'], correct: 0, explanation: '"som" es el pronombre relativo: Boken SOM jag läste = el libro que leí.' },
@@ -596,7 +661,72 @@ const DEFAULT_DATA = {
         ]
       },
     ],
-    read: [], write: [], speak: [],
+    read: [
+      {
+        id: 'd-r-1', title: 'Arbetsmarknaden och integration', tag: 'Samhälle', icon: '📊',
+        text: `Att komma in på den svenska arbetsmarknaden kan vara en utmaning för nyanlända. Även personer med hög utbildning möter ibland hinder, till exempel krav på svensk erfarenhet eller svårigheter att få sina examina validerade. Forskning visar dessutom att diskriminering förekommer: personer med utländskt klingande namn blir oftare bortsorterade redan i ansökningsprocessen. Samtidigt finns det stora möjligheter, särskilt inom bristyrken som vård, teknik och bygg. Experter betonar att både språkkunskaper och ett brett kontaktnät ökar chanserna att få ett arbete som motsvarar ens kompetens.`,
+        questions: [
+          { text: 'Vilket hinder nämns för högutbildade?', options: ['För höga löner', 'Krav på svensk erfarenhet och validering av examina', 'För få jobb totalt', 'Brist på datorer'], correct: 1, explanation: 'Krav på svensk erfarenhet eller svårigheter att få examina validerade.' },
+          { text: 'Vad visar forskningen?', options: ['Att alla får jobb snabbt', 'Att diskriminering förekommer', 'Att lönerna sjunker', 'Att ingen söker jobb'], correct: 1, explanation: 'Diskriminering förekommer, särskilt i ansökningsprocessen.' },
+          { text: 'Inom vilka områden finns stora möjligheter?', options: ['Vård, teknik och bygg', 'Turism och media', 'Endast handel', 'Jordbruk'], correct: 0, explanation: 'Bristyrken som vård, teknik och bygg.' },
+          { text: 'Vad ökar chanserna till rätt jobb, enligt experterna?', options: ['Tur', 'Språkkunskaper och ett brett kontaktnät', 'Att flytta ofta', 'Att sänka sina krav'], correct: 1, explanation: 'Både språkkunskaper och ett brett kontaktnät.' },
+        ]
+      },
+      {
+        id: 'd-r-2', title: 'Den svenska demokratin', tag: 'Samhälle', icon: '🗳️',
+        text: `Sverige är en demokrati där medborgarna vart fjärde år röstar i allmänna val till riksdagen, regionerna och kommunerna. Rösträtten är en grundläggande rättighet, och valdeltagandet i Sverige är bland de högsta i världen. Demokratin bygger inte bara på att rösta, utan också på yttrandefrihet, fria medier och möjligheten att engagera sig i föreningar och partier. Makten är delad mellan riksdagen, som stiftar lagar, och regeringen, som styr landet. Domstolarna är oberoende. En viktig princip är att alla är lika inför lagen, oavsett bakgrund eller ställning.`,
+        questions: [
+          { text: 'Hur ofta hålls allmänna val?', options: ['Varje år', 'Vart fjärde år', 'Vartannat år', 'Vart tionde år'], correct: 1, explanation: 'Vart fjärde år röstar medborgarna.' },
+          { text: 'Vad bygger demokratin också på, förutom att rösta?', options: ['Höga skatter', 'Yttrandefrihet, fria medier och engagemang', 'En stark kung', 'Militären'], correct: 1, explanation: 'Yttrandefrihet, fria medier och möjligheten att engagera sig.' },
+          { text: 'Vad gör riksdagen?', options: ['Styr landet dagligen', 'Stiftar lagar', 'Dömer brottslingar', 'Sätter skatter själv'], correct: 1, explanation: 'Riksdagen stiftar lagar; regeringen styr landet.' },
+          { text: 'Vad innebär principen som nämns i slutet?', options: ['Alla är lika inför lagen', 'Bara rika har rättigheter', 'Kungen bestämmer allt', 'Domstolarna styrs av regeringen'], correct: 0, explanation: 'Alla är lika inför lagen, oavsett bakgrund.' },
+        ]
+      },
+      {
+        id: 'd-r-3', title: 'Klimat och hållbarhet', tag: 'Miljö', icon: '🌱',
+        text: `Klimatfrågan är en av vår tids största utmaningar. Sverige har som mål att inte ha några nettoutsläpp av växthusgaser år 2045. För att nå dit krävs förändringar inom transport, energi och industri. Många kommuner satsar på kollektivtrafik, cykelvägar och förnybar energi som vind- och vattenkraft. Även individen spelar en roll: att återvinna, konsumera mindre och välja tåget framför flyget gör skillnad. Kritiker påpekar dock att individens ansvar inte får överskugga behovet av politiska beslut och att stora företag måste ta sitt ansvar. Förändring kräver samarbete på alla nivåer.`,
+        questions: [
+          { text: 'Vilket mål har Sverige till år 2045?', options: ['Fler bilar', 'Inga nettoutsläpp av växthusgaser', 'Billigare flyg', 'Mer kol'], correct: 1, explanation: 'Inga nettoutsläpp av växthusgaser år 2045.' },
+          { text: 'Vad satsar många kommuner på?', options: ['Fler motorvägar', 'Kollektivtrafik, cykelvägar och förnybar energi', 'Mer flygtrafik', 'Kolkraft'], correct: 1, explanation: 'Kollektivtrafik, cykelvägar och förnybar energi.' },
+          { text: 'Vad kan individen göra?', options: ['Ingenting', 'Återvinna, konsumera mindre, välja tåget', 'Bara rösta', 'Köpa mer'], correct: 1, explanation: 'Återvinna, konsumera mindre och välja tåget framför flyget.' },
+          { text: 'Vad påpekar kritikerna?', options: ['Att individen ensam kan lösa allt', 'Att politik och företag också måste ta ansvar', 'Att klimatet inte spelar roll', 'Att tåg är dåligt'], correct: 1, explanation: 'Individens ansvar får inte överskugga politiska beslut och företagens ansvar.' },
+        ]
+      },
+      {
+        id: 'd-r-4', title: 'Det digitala samhället', tag: 'Teknik & samhälle', icon: '💻',
+        text: `Sverige är ett av världens mest digitaliserade länder. Många tjänster sköts numera via internet: du kan deklarera skatt, boka läkartid, betala räkningar och kontakta myndigheter med hjälp av BankID, en digital legitimation. Digitaliseringen gör vardagen enklare och sparar tid, men den skapar också utmaningar. Alla har inte samma vana eller möjlighet att använda digitala verktyg, vilket kan leda till ett så kallat digitalt utanförskap, särskilt bland äldre. Därför är det viktigt att samhället erbjuder stöd och att det fortfarande går att få hjälp på annat sätt än digitalt.`,
+        questions: [
+          { text: 'Vad är BankID?', options: ['En bank', 'En digital legitimation', 'En app för spel', 'Ett socialt medium'], correct: 1, explanation: 'BankID är en digital legitimation.' },
+          { text: 'Vad kan man göra digitalt enligt texten?', options: ['Bara spela', 'Deklarera skatt, boka läkartid och betala räkningar', 'Ingenting viktigt', 'Bara mejla'], correct: 1, explanation: 'Deklarera skatt, boka läkartid, betala räkningar och kontakta myndigheter.' },
+          { text: 'Vad är "digitalt utanförskap"?', options: ['Att ha snabbt internet', 'Att inte kunna eller ha möjlighet att använda digitala verktyg', 'Att gilla teknik', 'Att jobba med datorer'], correct: 1, explanation: 'Alla har inte vana/möjlighet att använda digitala verktyg.' },
+          { text: 'Vilka drabbas särskilt?', options: ['Barn', 'Äldre', 'Företag', 'Studenter'], correct: 1, explanation: 'Särskilt bland äldre.' },
+        ]
+      },
+    ],
+    write: [
+      {
+        id: 'd-w-1', title: 'Skriv en åsiktstext', icon: '✍️', words: '100–150 ord',
+        prompt: 'Escribe un texto de OPINIÓN (åsiktstext) en sueco sobre este tema:\n"Ska mobiltelefoner vara förbjudna i skolan?" (¿Deberían prohibirse los móviles en la escuela?)\n\nDebes:\n• Presentar tu opinión claramente\n• Dar al menos dos argumentos\n• Considerar el otro punto de vista\n• Terminar con una conclusión',
+        checklist: ['Inled med din åsikt: "Jag anser att..."', 'Argument 1: "För det första..."', 'Argument 2: "Dessutom..."', 'Motargument: "Visserligen... men..."', 'Avsluta: "Sammanfattningsvis..."'],
+        example: 'Jag anser att mobiltelefoner borde begränsas i skolan. För det första stör de koncentrationen, eftersom eleverna lätt distraheras. Dessutom kan mobiler bidra till mobbning på sociala medier. Visserligen kan telefoner vara användbara för att söka information, men det finns datorer för det. Sammanfattningsvis tror jag att en tydlig regel skulle förbättra både studiero och trivsel i klassrummet.',
+        criteria: ['Contenido: opinión clara + argumentos + contraargumento + conclusión', 'Estructura: introducción, desarrollo, cierre', 'Conectores: för det första, dessutom, visserligen, sammanfattningsvis', 'Gramática avanzada y vocabulario preciso']
+      },
+      {
+        id: 'd-w-2', title: 'Ett formellt klagomål till en myndighet', icon: '🏛️', words: '90–130 ord',
+        prompt: 'Escribe una carta FORMAL de queja a una autoridad (myndighet) en sueco. Por ejemplo: has esperado demasiado por una decisión, o recibiste información incorrecta.\n\nDebes:\n• Explicar el asunto y tu caso (con datos)\n• Describir el problema con claridad\n• Explicar cómo te ha afectado\n• Pedir una acción concreta',
+        checklist: ['Formell inledning: "Till [myndighet]"', 'Beskriv ärendet: "Jag skriver angående..."', 'Redogör för problemet sakligt', 'Konsekvens: "Detta har lett till..."', 'Krav: "Jag begär att..." och avsluta formellt'],
+        example: 'Till Migrationsverket,\n\nJag skriver angående mitt ärende med nummer 12345. Jag lämnade in min ansökan för åtta månader sedan och har ännu inte fått något beslut, trots att handläggningstiden uppges vara kortare. Detta har lett till att jag inte kan påbörja mitt arbete. Jag begär därför att mitt ärende prioriteras och att jag får besked om när ett beslut kan väntas.\n\nMed vänlig hälsning,\nOmar Haddad',
+        criteria: ['Contenido: asunto, problema, consecuencia y petición', 'Registro: formal e impersonal', 'Vocabulario administrativo (ärende, handläggning, begära)', 'Estructura de carta formal']
+      },
+      {
+        id: 'd-w-3', title: 'Diskussionsinlägg', icon: '💬', words: '80–120 ord',
+        prompt: 'Escribe una intervención (inlägg) para un foro/debate en sueco sobre:\n"Hur kan integrationen i Sverige förbättras?" (¿Cómo se puede mejorar la integración en Suecia?)\n\nDebes:\n• Dar tu punto de vista\n• Proponer al menos dos soluciones concretas\n• Justificar por qué funcionarían',
+        checklist: ['Ta ställning: "Enligt min mening..."', 'Förslag 1 + motivering', 'Förslag 2 + motivering', 'Använd sambandsord: eftersom, därför att, på så sätt', 'Avsluta med en uppmaning eller slutsats'],
+        example: 'Enligt min mening kräver bättre integration insatser från både samhället och individen. För det första bör fler få möjlighet att kombinera SFI med praktik, eftersom man lär sig språket snabbare när man använder det på en arbetsplats. Dessutom skulle mentorprogram, där etablerade svenskar hjälper nyanlända, kunna bygga viktiga kontakter. På så sätt minskar avståndet mellan grupper. Integration är ett gemensamt ansvar, och små konkreta åtgärder kan göra stor skillnad.',
+        criteria: ['Contenido: postura + 2 propuestas justificadas', 'Coherencia y conectores de causa/consecuencia', 'Registro adecuado a un debate', 'Riqueza léxica y corrección gramatical']
+      },
+    ],
+    speak: [],
     test: [
       { category: 'Grammatik', text: 'S-passiv: Beslutet _____ av styrelsen igår.', options: ['fattade', 'fattades', 'har fattat', 'fatta'], correct: 1, explanation: 'S-pasiva en pretérito: fattaDES = fue tomado. Beslutet fattades av styrelsen.' },
       { category: 'Grammatik', text: 'Välj rätt: Om jag _____ rik, skulle jag resa jorden runt.', options: ['är', 'var', 'vore', 'blev'], correct: 2, explanation: 'Konjunktiv/hipotético: "vore" (formal) = si yo fuera. Om jag vore rik...' },
