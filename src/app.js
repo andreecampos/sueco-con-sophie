@@ -1464,7 +1464,52 @@ async function signInWithGoogle() {
   } catch (e) { showToast('Error al iniciar con Google', 'error'); }
 }
 
+// ── Foto de perfil del alumno (esquina del home + reseñas) ──
+async function renderProfileWidget() {
+  let name = 'Alumno', avatar = null;
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      const u = session.user;
+      avatar = u.user_metadata?.avatar_url || u.user_metadata?.picture || null;
+      name = u.user_metadata?.full_name || u.user_metadata?.name || (u.email || '').split('@')[0];
+    }
+  } catch (e) {}
+  const nameEl = document.getElementById('profile-name');
+  const avEl = document.getElementById('profile-avatar');
+  if (nameEl) nameEl.textContent = name;
+  if (avEl) {
+    if (avatar) avEl.innerHTML = `<img src="${avatar}" class="w-11 h-11 rounded-full object-cover border-2 border-white shadow" referrerpolicy="no-referrer" alt="">`;
+    else { const a = reviewAvatar(name); avEl.innerHTML = `<div class="w-11 h-11 rounded-full flex items-center justify-center text-white font-bold shadow" style="background:${a.color}">${a.initial}</div>`; }
+  }
+}
+
+async function uploadProfilePhoto(file) {
+  if (!file) return;
+  if (!/^image\//.test(file.type)) { showToast('Elige una imagen', 'error'); return; }
+  if (file.size > 3 * 1024 * 1024) { showToast('La imagen es muy grande (máx 3 MB)', 'error'); return; }
+  showToast('Subiendo foto...', 'info');
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) { showToast('Inicia sesión primero', 'error'); return; }
+    const ext = ((file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '')) || 'jpg';
+    const path = `${session.user.id}/avatar.${ext}`;
+    const { error: upErr } = await sb.storage.from('avatars').upload(path, file, { upsert: true, contentType: file.type });
+    if (upErr) throw upErr;
+    const { data: pub } = sb.storage.from('avatars').getPublicUrl(path);
+    const url = (pub?.publicUrl || '') + '?t=' + Date.now();
+    await sb.auth.updateUser({ data: { avatar_url: url } });
+    if (window._sbSession) window._sbSession.avatar = url;
+    renderProfileWidget();
+    showToast('✅ Foto de perfil actualizada', 'success');
+  } catch (e) {
+    showToast('No se pudo subir: ' + (e.message || 'error'), 'error');
+  }
+}
+
+let _resenaIsStudent = false;
 async function initResenasPage() {
+  _resenaIsStudent = false;
   try {
     const { data: { session } } = await sb.auth.getSession();
     if (session) {
@@ -1474,6 +1519,9 @@ async function initResenasPage() {
         avatar: u.user_metadata?.avatar_url || u.user_metadata?.picture || null,
         gname: u.user_metadata?.full_name || u.user_metadata?.name || null,
       };
+      // ¿Es alumno de verdad? Solo si tiene fila en students. Un login de Google
+      // (solo para reseña) NO es alumno y NO debe poder entrar a la plataforma.
+      try { const { data: st } = await sb.from('students').select('id').eq('id', u.id).maybeSingle(); _resenaIsStudent = !!st; } catch (e) {}
     }
   } catch (e) {}
   populateCountrySelect();
@@ -1481,6 +1529,9 @@ async function initResenasPage() {
   // Prellenar el nombre con el de Google si existe
   const nameInput = document.getElementById('review-name');
   if (nameInput && !nameInput.value && window._sbSession?.gname) nameInput.value = window._sbSession.gname;
+  // El botón "Volver a la plataforma" SOLO para alumnos reales
+  const backBtn = document.getElementById('resenas-back-btn');
+  if (backBtn) backBtn.style.display = _resenaIsStudent ? '' : 'none';
   await loadPublicReviews();
 }
 
@@ -3974,6 +4025,7 @@ function renderPaymentBanner() {
 
 function renderHomeDashboard() {
   renderPaymentBanner();
+  renderProfileWidget();
   const ring = document.getElementById('dash-ring-fg');
   if (!ring) return;
   const { avance, last } = computeAvance();

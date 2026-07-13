@@ -256,7 +256,7 @@
     </div>
 
     <div class="text-center py-8">
-      <button onclick="goHome()" class="text-swe-blue text-sm font-semibold">← Volver a la plataforma</button>
+      <button id="resenas-back-btn" onclick="goHome()" class="text-swe-blue text-sm font-semibold" style="display:none;">← Volver a la plataforma</button>
     </div>
   </div>
 </div>
@@ -399,6 +399,18 @@
       <span class="text-lg flex-shrink-0 leading-none">🚧</span>
       <p class="text-xs text-gray-700 flex-1 leading-relaxed"><strong>Seguimos afinando la plataforma.</strong> Estará lista al 100% el <strong>1 de agosto</strong> (o antes). Lo importante es que ya estés aquí. 💛</p>
       <button onclick="dismissAnnounce()" class="text-gray-400 hover:text-gray-600 flex-shrink-0 leading-none" style="font-size:1.3rem;" aria-label="Cerrar">×</button>
+    </div>
+  </div>
+
+  <!-- Perfil del alumno (foto + nombre) -->
+  <div class="max-w-4xl mx-auto px-4 mt-4">
+    <div class="flex items-center gap-3">
+      <div id="profile-avatar" onclick="document.getElementById('profile-photo-input').click()" class="cursor-pointer flex-shrink-0" title="Cambiar foto"></div>
+      <div class="min-w-0">
+        <div id="profile-name" class="font-bold text-gray-800 text-sm truncate"></div>
+        <button onclick="document.getElementById('profile-photo-input').click()" class="text-xs text-swe-blue font-semibold">📷 Cambiar foto</button>
+      </div>
+      <input type="file" id="profile-photo-input" accept="image/*" class="hidden" onchange="uploadProfilePhoto(this.files && this.files[0])">
     </div>
   </div>
 
