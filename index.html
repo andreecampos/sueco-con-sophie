@@ -209,7 +209,7 @@
   </div>
   <div class="max-w-2xl mx-auto px-4 py-6">
     <div class="text-center mb-5">
-      <img id="juanita-home-img" src="" alt="Juanita saludando" loading="lazy" class="w-32 h-32 object-contain mx-auto mb-3" onerror="this.onerror=null;this.src='https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/juanita/juanita-neutral.webp'">
+      <img id="juanita-home-img" src="" alt="Juanita saludando" loading="lazy" class="w-32 h-32 object-contain mx-auto mb-3" onerror="this.onerror=null;this.src='/juanita/juanita-neutral.webp'">
       <div id="juanita-greet" class="font-bold text-gray-800 text-lg leading-snug px-2">Hola. ¿Qué quieres practicar hoy?</div>
     </div>
     <div class="grid grid-cols-4 gap-2 mb-4">
@@ -250,13 +250,13 @@
   </div>
   <div class="fixed bottom-3 right-3 z-40 flex items-end gap-2" style="max-width:78vw; pointer-events:none;">
     <div id="jq-bubble" class="hidden bg-white rounded-2xl rounded-br-none px-3 py-2 shadow-lg border border-gray-100 text-xs text-gray-700 font-medium" style="max-width:210px; pointer-events:auto;"></div>
-    <img id="jq-juanita-img" src="" alt="Juanita, tu asistente" loading="lazy" class="w-20 h-20 sm:w-28 sm:h-28 object-contain flex-shrink-0" style="filter:drop-shadow(0 4px 8px rgba(0,0,0,0.2));" onerror="this.onerror=null;this.src='https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/juanita/juanita-neutral.webp'">
+    <img id="jq-juanita-img" src="" alt="Juanita, tu asistente" loading="lazy" class="w-20 h-20 sm:w-28 sm:h-28 object-contain flex-shrink-0" style="filter:drop-shadow(0 4px 8px rgba(0,0,0,0.2));" onerror="this.onerror=null;this.src='/juanita/juanita-neutral.webp'">
   </div>
 </div>
 
 <div id="view-juanita-result" class="view" style="background:#f4f7fb; min-height:100vh;">
   <div class="max-w-2xl mx-auto px-4 py-8 text-center">
-    <img id="jr-img" src="" alt="Juanita" loading="lazy" class="w-32 h-32 object-contain mx-auto mb-3" onerror="this.onerror=null;this.src='https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/juanita/juanita-neutral.webp'">
+    <img id="jr-img" src="" alt="Juanita" loading="lazy" class="w-32 h-32 object-contain mx-auto mb-3" onerror="this.onerror=null;this.src='/juanita/juanita-neutral.webp'">
     <div id="jr-msg" class="font-bold text-gray-800 text-lg mb-4 px-2">¡Buen trabajo!</div>
     <div class="bg-white rounded-2xl p-5 shadow border border-gray-100 mb-4">
       <div class="text-5xl font-black text-swe-blue mb-1" id="jr-score">0%</div>
@@ -5238,7 +5238,7 @@ try {
 
 // Dónde viven las imágenes (Supabase Storage, bucket 'assets', carpeta 'juanita').
 // Sube ahí los archivos con estos nombres exactos (formato .webp).
-const JUANITA_IMG_BASE = 'https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/juanita/';
+const JUANITA_IMG_BASE = '/juanita/';
 const JUANITA_STATES = {
   principal:   'juanita-principal.webp',
   neutral:     'juanita-neutral.webp',

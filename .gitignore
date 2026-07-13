@@ -6,3 +6,6 @@ node_modules/
 *.csv
 migracion-reporte-*.csv
 subida-precio-reporte-*.csv
+
+# PNG fuente de Juanita (las webp deployadas estan en /juanita)
+juanita-src/

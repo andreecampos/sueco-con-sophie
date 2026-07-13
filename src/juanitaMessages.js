@@ -5,7 +5,7 @@
 
 // Dónde viven las imágenes (Supabase Storage, bucket 'assets', carpeta 'juanita').
 // Sube ahí los archivos con estos nombres exactos (formato .webp).
-const JUANITA_IMG_BASE = 'https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/juanita/';
+const JUANITA_IMG_BASE = '/juanita/';
 const JUANITA_STATES = {
   principal:   'juanita-principal.webp',
   neutral:     'juanita-neutral.webp',
