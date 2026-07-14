@@ -202,6 +202,17 @@ Deno.serve(async (req) => {
         return new Response(JSON.stringify({ ok: true, sent, email, link: actionLink }), { headers: corsHeaders })
       }
 
+      // ── Cambiar la contraseña de un alumno (la pone el admin) ──
+      case 'set_password': {
+        const { id, password } = data
+        if (!id || !password || String(password).length < 6) {
+          return new Response(JSON.stringify({ error: 'La contraseña debe tener al menos 6 caracteres' }), { status: 400, headers: corsHeaders })
+        }
+        const { error } = await sb.auth.admin.updateUserById(id, { password: String(password) })
+        if (error) throw error
+        return new Response(JSON.stringify({ ok: true }), { headers: corsHeaders })
+      }
+
       // ── Soporte: el alumno envía un mensaje → te llega a tu correo ──
       case 'send_support': {
         const { name = '', email = '', message = '', tipo = 'Mensaje' } = data

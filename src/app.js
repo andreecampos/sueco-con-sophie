@@ -2008,6 +2008,29 @@ async function updateStudentGroup(id, grupo) {
   showToast(grupo ? `👥 Grupo asignado: ${grupo}` : '👥 Grupo quitado', grupo ? 'success' : 'info');
 }
 
+async function setStudentPassword(id) {
+  const s = (_cachedStudents || []).find(x => x.id === id);
+  const pw = prompt(`Ponle una contraseña a "${s?.name || s?.email || 'este alumno'}" (mínimo 6 caracteres).\n\nEl alumno entrará con ella y después podrá cambiarla él mismo.`, '');
+  if (pw === null) return;
+  const pass = pw.trim();
+  if (pass.length < 6) { showToast('Mínimo 6 caracteres', 'error'); return; }
+  showToast('Guardando contraseña...', 'info');
+  const r = await adminOps('set_password', { id, password: pass });
+  if (r.error) { showToast('Error: ' + r.error, 'error'); return; }
+  showToast('🔑 Contraseña actualizada. Compártela con el alumno.', 'success');
+}
+
+// El alumno cambia su propia contraseña (estando dentro de la plataforma)
+async function changeMyPassword() {
+  const pw = prompt('Escribe tu nueva contraseña (mínimo 6 caracteres):', '');
+  if (pw === null) return;
+  const pass = pw.trim();
+  if (pass.length < 6) { showToast('Mínimo 6 caracteres', 'info'); return; }
+  showToast('Guardando...', 'info');
+  try { const { error } = await sb.auth.updateUser({ password: pass }); if (error) throw error; showToast('✅ Contraseña actualizada', 'success'); }
+  catch (e) { showToast('No se pudo: ' + (e.message || ''), 'error'); }
+}
+
 async function changeStudentEmail(id) {
   const s = (_cachedStudents || []).find(x => x.id === id);
   const oldEmail = s?.email || '';
@@ -2229,6 +2252,10 @@ function paintStudents() {
         <button onclick="changeStudentEmail('${s.id}')"
           class="py-1.5 px-3 rounded-xl text-xs font-semibold bg-indigo-50 text-indigo-600 hover:bg-indigo-100 border border-indigo-200 transition-colors">
           ✏️ Cambiar correo
+        </button>
+        <button onclick="setStudentPassword('${s.id}')"
+          class="py-1.5 px-3 rounded-xl text-xs font-semibold bg-amber-50 text-amber-600 hover:bg-amber-100 border border-amber-200 transition-colors">
+          🔑 Contraseña
         </button>
         <button onclick="resetStudentDevices('${s.id}')"
           class="py-1.5 px-3 rounded-xl text-xs font-semibold bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-200 transition-colors">

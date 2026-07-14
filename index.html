@@ -514,6 +514,7 @@
         <div class="flex items-center gap-3">
           <button id="profile-photo-btn" onclick="document.getElementById('profile-photo-input').click()" class="text-xs text-swe-blue font-semibold">📷 Cambiar foto</button>
           <button onclick="editProfileName()" class="text-xs text-gray-400 font-semibold hover:text-swe-blue">✏️ Editar nombre</button>
+          <button onclick="changeMyPassword()" class="text-xs text-gray-400 font-semibold hover:text-swe-blue">🔑 Contraseña</button>
         </div>
       </div>
       <input type="file" id="profile-photo-input" accept="image/*" class="hidden" onchange="uploadProfilePhoto(this.files && this.files[0])">
@@ -757,10 +758,6 @@
         <button id="sup-btn" onclick="submitSupport()" class="w-full bg-swe-blue text-white py-2.5 rounded-xl font-bold text-sm hover:bg-swe-dark transition-colors">Enviar mensaje</button>
       </div>
 
-      <!-- Ver reseñas -->
-      <div class="text-center mt-4 mb-2">
-        <button onclick="showView('resenas'); initResenasPage();" class="text-swe-blue text-sm font-semibold">⭐ Ver reseñas de alumnos</button>
-      </div>
     </div>
 
   </div>
@@ -791,17 +788,6 @@
 
   <div class="max-w-4xl mx-auto px-4 -mt-5 pb-12">
     <div class="grid grid-cols-1 gap-3">
-
-      <button class="mode-btn glass rounded-2xl p-5 shadow border border-blue-100 flex items-center gap-4 text-left" onclick="selectMode('listen')">
-        <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0">🎧</div>
-        <div class="flex-1">
-          <div class="font-bold text-gray-800 text-lg">Lyssna</div>
-          <div class="text-gray-500 text-sm">Escucha y responde preguntas</div>
-        </div>
-        <div class="text-blue-300">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        </div>
-      </button>
 
       <button class="mode-btn glass rounded-2xl p-5 shadow border border-blue-100 flex items-center gap-4 text-left" onclick="selectMode('read')">
         <div class="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0">📖</div>
@@ -982,9 +968,6 @@
             <h3 class="font-bold text-gray-800 text-lg" id="read-title">Texto</h3>
             <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full" id="read-tag">Tema</span>
           </div>
-          <button onclick="speakText('read')" class="ml-auto text-swe-blue hover:text-swe-dark text-sm flex items-center gap-1">
-            🔊 <span class="text-xs">Escuchar</span>
-          </button>
         </div>
         <div class="bg-gray-50 rounded-xl p-4 text-gray-700 leading-relaxed text-sm md:text-base" id="read-text-content">
           <!-- Text here -->
@@ -7154,6 +7137,29 @@ async function updateStudentGroup(id, grupo) {
   showToast(grupo ? `👥 Grupo asignado: ${grupo}` : '👥 Grupo quitado', grupo ? 'success' : 'info');
 }
 
+async function setStudentPassword(id) {
+  const s = (_cachedStudents || []).find(x => x.id === id);
+  const pw = prompt(`Ponle una contraseña a "${s?.name || s?.email || 'este alumno'}" (mínimo 6 caracteres).\n\nEl alumno entrará con ella y después podrá cambiarla él mismo.`, '');
+  if (pw === null) return;
+  const pass = pw.trim();
+  if (pass.length < 6) { showToast('Mínimo 6 caracteres', 'error'); return; }
+  showToast('Guardando contraseña...', 'info');
+  const r = await adminOps('set_password', { id, password: pass });
+  if (r.error) { showToast('Error: ' + r.error, 'error'); return; }
+  showToast('🔑 Contraseña actualizada. Compártela con el alumno.', 'success');
+}
+
+// El alumno cambia su propia contraseña (estando dentro de la plataforma)
+async function changeMyPassword() {
+  const pw = prompt('Escribe tu nueva contraseña (mínimo 6 caracteres):', '');
+  if (pw === null) return;
+  const pass = pw.trim();
+  if (pass.length < 6) { showToast('Mínimo 6 caracteres', 'info'); return; }
+  showToast('Guardando...', 'info');
+  try { const { error } = await sb.auth.updateUser({ password: pass }); if (error) throw error; showToast('✅ Contraseña actualizada', 'success'); }
+  catch (e) { showToast('No se pudo: ' + (e.message || ''), 'error'); }
+}
+
 async function changeStudentEmail(id) {
   const s = (_cachedStudents || []).find(x => x.id === id);
   const oldEmail = s?.email || '';
@@ -7375,6 +7381,10 @@ function paintStudents() {
         <button onclick="changeStudentEmail('${s.id}')"
           class="py-1.5 px-3 rounded-xl text-xs font-semibold bg-indigo-50 text-indigo-600 hover:bg-indigo-100 border border-indigo-200 transition-colors">
           ✏️ Cambiar correo
+        </button>
+        <button onclick="setStudentPassword('${s.id}')"
+          class="py-1.5 px-3 rounded-xl text-xs font-semibold bg-amber-50 text-amber-600 hover:bg-amber-100 border border-amber-200 transition-colors">
+          🔑 Contraseña
         </button>
         <button onclick="resetStudentDevices('${s.id}')"
           class="py-1.5 px-3 rounded-xl text-xs font-semibold bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-200 transition-colors">
