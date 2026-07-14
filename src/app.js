@@ -147,12 +147,25 @@ function talaLevelStatus() {
   const byLevel = { A: [], B: [], C: [], D: [] };
   sits.forEach(s => { if (byLevel[s.level]) byLevel[s.level].push(s); });
   const levelDone = lv => byLevel[lv].length > 0 && byLevel[lv].every(s => talaProgressMap[s.id]?.completed);
-  const unlocked = { A: true };
-  for (let i = 1; i < TALA_LEVELS.length; i++) {
-    const lv = TALA_LEVELS[i], prev = TALA_LEVELS[i - 1];
-    unlocked[lv] = unlocked[prev] && levelDone(prev);
-  }
+  // Disponibilidad = nivel asignado por la prueba ∪ progresión (completar el nivel anterior).
+  // Un alumno asignado a SFI C entra directo a C; A y B quedan de repaso; D bloqueado hasta completar C.
+  const assignedIdx = (typeof assignedLevel === 'function') ? TALA_LEVELS.indexOf(assignedLevel()) : 0;
+  let progIdx = 0;
+  for (let i = 0; i < TALA_LEVELS.length; i++) { if (levelDone(TALA_LEVELS[i])) progIdx = i + 1; else break; }
+  const maxIdx = Math.max(assignedIdx < 0 ? 0 : assignedIdx, Math.min(progIdx, TALA_LEVELS.length - 1));
+  const unlocked = {};
+  TALA_LEVELS.forEach((lv, i) => { unlocked[lv] = i <= maxIdx; });
   return { byLevel, unlocked, levelDone };
+}
+
+// ¿Situación desbloqueada? (nivel disponible + secuencial dentro del nivel)
+function talaSituationUnlocked(sit) {
+  const { unlocked, byLevel } = talaLevelStatus();
+  if (!unlocked[sit.level]) return false;
+  const arr = byLevel[sit.level] || [];
+  const idx = arr.findIndex(s => s.id === sit.id);
+  if (idx <= 0) return true;                     // primera del nivel siempre abierta
+  return !!(talaProgressMap[arr[idx - 1].id] && talaProgressMap[arr[idx - 1].id].completed);
 }
 
 // Se abre DENTRO del nivel elegido (state.level) → muestra SOLO las situaciones de ese nivel.
@@ -197,20 +210,41 @@ function renderTalaList(lvl) {
     </div>`;
   }
 
-  html += '<div class="space-y-2">' + sits.map(sit => {
+  let prevCompleted = true; // la primera situación del nivel abierto siempre está disponible
+  html += '<div class="space-y-2">' + sits.map((sit, idx) => {
     const prog = talaProgressMap[sit.id] || {};
     const done = !!prog.completed;
-    const badge = done
-      ? `<span class="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">✓ ${prog.best_score || 0}%</span>`
-      : '';
-    return `<button ${open ? `onclick="startTalaSituation('${sit.id}')"` : 'disabled'}
-      class="w-full flex items-center gap-3 rounded-2xl p-4 shadow-sm border-2 text-left transition-colors ${open ? 'bg-white border-blue-200 hover:border-blue-400' : 'bg-gray-50 border-gray-100 opacity-50'}">
-      <span class="text-2xl flex-shrink-0 ${open ? '' : 'grayscale'}">${sit.icon}</span>
-      <div class="flex-1">
+    const totalSteps = (sit.steps || []).length;
+    const inProgress = !done && prog && prog.current_step > 0 && prog.current_step < totalSteps;
+    const sitUnlocked = open && (idx === 0 || prevCompleted);
+    prevCompleted = done; // la siguiente depende de que ÉSTA esté completa
+
+    // Estado visual + acción
+    let right, cardCls, iconCls = '', clickable = sitUnlocked, sub = sit.context;
+    if (!open) {
+      right = ''; cardCls = 'bg-gray-50 border-gray-100 opacity-50'; iconCls = 'grayscale'; clickable = false;
+    } else if (done) {
+      right = `<span class="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">✓ Completada · ${prog.best_score || 0}%</span><span class="text-gray-300 ml-1">↻</span>`;
+      cardCls = 'bg-white border-green-200 hover:border-green-400';
+    } else if (inProgress) {
+      right = `<span class="text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-bold">▷ Continuar · paso ${prog.current_step + 1}/${totalSteps}</span>`;
+      cardCls = 'bg-white border-amber-200 hover:border-amber-400';
+    } else if (sitUnlocked) {
+      right = `<span class="text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold">Comenzar</span><span class="text-gray-300 ml-1">›</span>`;
+      cardCls = 'bg-white border-blue-200 hover:border-blue-400';
+    } else {
+      right = '<span class="text-gray-400 text-lg">🔒</span>';
+      cardCls = 'bg-gray-50 border-gray-100 opacity-60'; iconCls = 'grayscale'; clickable = false;
+      sub = 'Completa la situación anterior para desbloquearla';
+    }
+    return `<button ${clickable ? `onclick="startTalaSituation('${sit.id}')"` : 'disabled'}
+      class="w-full flex items-center gap-3 rounded-2xl p-4 shadow-sm border-2 text-left transition-colors ${cardCls}">
+      <span class="text-2xl flex-shrink-0 ${iconCls}">${sit.icon}</span>
+      <div class="flex-1 min-w-0">
         <div class="font-bold text-gray-800">${sit.title}</div>
-        <div class="text-xs text-gray-500">${sit.context}</div>
+        <div class="text-xs text-gray-500">${sub}</div>
       </div>
-      <div class="flex items-center gap-2">${badge}${open ? '<span class="text-gray-300">›</span>' : ''}</div>
+      <div class="flex items-center gap-1 flex-shrink-0">${right}</div>
     </button>`;
   }).join('') + '</div>';
   list.innerHTML = html;
@@ -219,9 +253,11 @@ function renderTalaList(lvl) {
 function startTalaSituation(id) {
   const sit = (window.TALA_SITUATIONS || []).find(s => s.id === id);
   if (!sit || !sit.steps || !sit.steps.length) return;
-  const { unlocked } = talaLevelStatus();
-  if (!unlocked[sit.level]) { showToast('Primero completa el nivel anterior 🔒', 'info'); return; }
-  talaState = { sit, stepIdx: 0, bank: [], built: [], answered: false, stepWrong: false, stepHint: false, firstTry: 0, errors: 0, hints: 0 };
+  if (!talaSituationUnlocked(sit)) { showToast('Completa la situación anterior primero 🔒', 'info'); return; }
+  // Reanudar donde quedó si estaba en progreso (no completada)
+  const prog = talaProgressMap[sit.id] || {};
+  const resumeStep = (!prog.completed && prog.current_step > 0 && prog.current_step < sit.steps.length) ? prog.current_step : 0;
+  talaState = { sit, stepIdx: resumeStep, bank: [], built: [], answered: false, stepWrong: false, stepHint: false, firstTry: 0, errors: 0, hints: 0 };
   showView('tala-play');
   document.getElementById('tp-title').textContent = `${sit.icon} ${sit.title}`;
   document.getElementById('tp-level').textContent = sit.level;
@@ -329,6 +365,8 @@ function talaNext() {
   const st = talaState; if (!st) return;
   st.stepIdx++;
   if (st.stepIdx >= st.sit.steps.length) { finishTala(); return; }
+  // Guarda "en progreso" (paso actual) para poder Continuar después.
+  try { saveTalaProgress(st.sit.id, { current_step: st.stepIdx }); } catch (e) {}
   renderTalaStep();
 }
 
@@ -2654,16 +2692,24 @@ function renderGrammarTopics(filter) {
     return;
   }
 
-  grid.innerHTML = topics.map(topic => `
+  grid.innerHTML = topics.map(topic => {
+    const tpct = (typeof grammarTopicPct === 'function') ? grammarTopicPct(topic.id) : 0;
+    const tdone = tpct >= 100;
+    const tpctTxt = (typeof fmtPct === 'function') ? fmtPct(tpct) : Math.round(tpct) + ' %';
+    return `
     <div class="grammar-topic-card rounded-2xl p-3.5 shadow-md border-2 cursor-pointer card-hover flex flex-col"
          style="background: linear-gradient(135deg, ${topic.color}15, ${topic.color}30); border-color: ${topic.color}40;"
          onclick="startGrammarTopic('${topic.id}')">
-      <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-2xl mb-2.5 shadow-sm"
-           style="background: linear-gradient(135deg, ${topic.color}dd, ${topic.color}aa);">
-        ${topic.icon}
+      <div class="flex items-start justify-between">
+        <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-2xl mb-2.5 shadow-sm"
+             style="background: linear-gradient(135deg, ${topic.color}dd, ${topic.color}aa);">
+          ${topic.icon}
+        </div>
+        <span class="text-[11px] font-black" style="color:${topic.color};">${tdone ? '✓' : tpctTxt}</span>
       </div>
       <div class="font-bold text-gray-800 text-sm leading-tight mb-1">${topic.title}</div>
-      <div class="text-xs text-gray-500 mb-3" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.4em;">${topic.subtitle}</div>
+      <div class="text-xs text-gray-500 mb-2" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.4em;">${topic.subtitle}</div>
+      <div class="h-1.5 bg-gray-200/70 rounded-full overflow-hidden mb-2"><div class="h-full rounded-full" style="width:${tpct}%; background:${topic.color};"></div></div>
       <div class="mt-auto flex items-center gap-2 flex-wrap">
         <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap"
               style="background:${topic.color}22; color:${topic.color};">
@@ -2672,7 +2718,38 @@ function renderGrammarTopics(filter) {
         <span class="text-[11px] text-gray-400 whitespace-nowrap">${topic.questions.length} preguntas</span>
       </div>
     </div>
-  `).join('');
+  `; }).join('');
+}
+
+// ── Progreso de Gramática (Supabase = fuente de verdad) ──────
+// "Dominar" un tema = acertar cada pregunta al menos una vez.
+// % del tema = preguntas dominadas / total. Completado al 100 %. Repetir NO infla
+// (una pregunta ya dominada no vuelve a contar). El set local es solo para deduplicar;
+// el % autoritativo se guarda en Supabase (user_progress.progress_value).
+function _gramMasterAll() { try { return JSON.parse(localStorage.getItem('sc_gram_master') || '{}'); } catch (e) { return {}; } }
+function _gramMasterSave(m) { try { localStorage.setItem('sc_gram_master', JSON.stringify(m)); } catch (e) {} }
+function grammarTopicPct(topicId) {
+  const topic = GRAMMAR_DATA.topics.find(t => t.id === topicId);
+  const total = topic ? topic.questions.length : 0;
+  if (!total) return 0;
+  const m = _gramMasterAll()[topicId] || [];
+  let pct = (typeof pctClamp === 'function') ? pctClamp(m.length, total) : Math.min(100, m.length / total * 100);
+  try { const row = UNIFIED_PROGRESS['grammar|' + topicId]; if (row && row.progress_value > pct) pct = Math.min(100, row.progress_value); } catch (e) {}
+  return pct;
+}
+function grammarMarkCorrect(topic, q) {
+  if (!topic) return;
+  const key = (typeof _gkey === 'function') ? _gkey(q) : (q.text || '');
+  const m = _gramMasterAll();
+  const set = m[topic.id] || [];
+  if (set.indexOf(key) >= 0) return;         // ya dominada → no cuenta de nuevo
+  set.push(key); m[topic.id] = set; _gramMasterSave(m);
+  const total = topic.questions.length || 1;
+  const pct = (typeof pctClamp === 'function') ? pctClamp(set.length, total) : Math.min(100, set.length / total * 100);
+  try {
+    if (typeof progressMark === 'function')
+      progressMark('grammar', topic.id, { status: pct >= 100 ? 'completed' : 'in_progress', level: topic.level || null, progress_value: pct });
+  } catch (e) {}
 }
 
 // ── Start a grammar topic quiz ───────────────────────────────
@@ -2828,6 +2905,7 @@ function _gradeGrammar(q, isCorrect) {
     grammarState.score++; grammarState.streak++;
     if (grammarState.streak > grammarState.best) grammarState.best = grammarState.streak;
     removeMistake(q);
+    try { grammarMarkCorrect(grammarState.topic, q); } catch (e) {}
   } else {
     grammarState.streak = 0;
     grammarState.questions.push(q);
@@ -3427,11 +3505,13 @@ function renderHorstEpisodes(level) {
     </div>`;
     return;
   }
-  grid.innerHTML = episodes.map((ep, i) => `
-    <div class="glass rounded-2xl p-4 shadow border border-white/60 cursor-pointer card-hover flex items-center gap-4"
+  grid.innerHTML = episodes.map((ep, i) => {
+    const epDone = (typeof isCompleted === 'function') && isCompleted('listening', level + ':' + ep.id);
+    return `
+    <div class="glass rounded-2xl p-4 shadow border ${epDone ? 'border-green-300' : 'border-white/60'} cursor-pointer card-hover flex items-center gap-4"
          onclick="startHorstEpisode('${ep.id}', '${level}')">
-      <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 shadow-sm"
-           style="background:linear-gradient(135deg,#006AA7,#004F7C);">${ep.icon}</div>
+      <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 shadow-sm relative"
+           style="background:linear-gradient(135deg,#006AA7,#004F7C);">${ep.icon}${epDone ? '<span class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-green-500 text-white text-[11px] flex items-center justify-center shadow">✓</span>' : ''}</div>
       <div class="flex-1 min-w-0">
         <div class="font-bold text-gray-800 text-sm">${ep.title}</div>
         <div class="text-xs text-gray-500 truncate">${ep.subtitle}</div>
@@ -3441,9 +3521,9 @@ function renderHorstEpisodes(level) {
           <span class="text-xs text-gray-400">· ${ep.questions.length} preguntas</span>
         </div>
       </div>
-      <div class="text-swe-blue text-lg flex-shrink-0">▶</div>
+      <div class="${epDone ? 'text-green-500' : 'text-swe-blue'} text-lg flex-shrink-0">${epDone ? '↻' : '▶'}</div>
     </div>
-  `).join('');
+  `; }).join('');
 }
 
 // ── Start an episode ─────────────────────────────────────────
@@ -3737,6 +3817,15 @@ function showHorstResult() {
   const total = horstState.questions.length;
   const pct   = Math.round((score / total) * 100);
   const passed = pct >= 70;
+
+  // Completado = terminar la actividad aprobando (no por reproducir el audio).
+  // Idempotente: repetir no sube el progreso por encima de 100 %.
+  try {
+    if (passed && typeof markCompleted === 'function' && horstState.episode) {
+      const lvl = horstState.level || horstState.episode.level || 'A';
+      markCompleted('listening', lvl + ':' + horstState.episode.id, lvl, pct);
+    }
+  } catch (e) {}
 
   const qaEl = document.getElementById('hq-question-area');
   if (qaEl) qaEl.classList.add('hidden');
@@ -4496,9 +4585,24 @@ function renderHomeDashboard() {
 // ═══════════════════════════════════════════════════════════
 const theoryState = { unitId: null, card: 0 };
 
-// ── Progreso (formato listo para subir a una columna JSONB) ──
+// ── Progreso de Teoría ──
+// Fuente de verdad = Supabase (user_progress). localStorage es solo caché rápida
+// (para pintar al instante y funcionar offline). Al leer, superponemos lo de
+// Supabase para que el progreso sincronice entre dispositivos.
 function getTheoryProgress() {
-  try { return JSON.parse(localStorage.getItem('sc_theory') || '{}'); } catch (e) { return {}; }
+  let p = {};
+  try { p = JSON.parse(localStorage.getItem('sc_theory') || '{}'); } catch (e) { p = {}; }
+  try {
+    if (typeof UNIFIED_PROGRESS === 'object' && UNIFIED_PROGRESS) {
+      for (const k in UNIFIED_PROGRESS) {
+        if (k.indexOf('theory|') === 0 && UNIFIED_PROGRESS[k].status === 'completed') {
+          const id = k.slice(7);
+          p[id] = { ...(p[id] || {}), read: true, done: true, bestScore: Math.max((p[id] && p[id].bestScore) || 0, (UNIFIED_PROGRESS[k].score || 0) / 100) };
+        }
+      }
+    }
+  } catch (e) {}
+  return p;
 }
 function saveTheoryProgress(p) {
   try { localStorage.setItem('sc_theory', JSON.stringify(p)); } catch (e) {}
@@ -4516,6 +4620,13 @@ function markTheoryDone(id, score) {
     date: new Date().toISOString().slice(0, 10)
   };
   saveTheoryProgress(p);
+  // Fuente de verdad: Supabase (una fila por lección, upsert). Idempotente.
+  try {
+    if (typeof markCompleted === 'function') {
+      const u = (typeof THEORY_DATA !== 'undefined' && THEORY_DATA.units) ? THEORY_DATA.units.find(x => String(x.id) === String(id)) : null;
+      markCompleted('theory', id, u ? u.level : null, Math.round((score || 0) * 100));
+    }
+  } catch (e) {}
 }
 
 // ── Camino (lista de unidades) ───────────────────────────────
