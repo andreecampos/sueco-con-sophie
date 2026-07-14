@@ -2317,6 +2317,148 @@ async function changeMyPassword() {
   catch (e) { showToast('No se pudo: ' + (e.message || ''), 'error'); }
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   MODAL "Mi cuenta" — foto / nombre / contraseña
+   Seguridad: cada alumno solo edita SU cuenta (sb.auth.updateUser actúa
+   sobre la sesión actual; el Storage usa su propio user.id). Sin service key.
+   ═══════════════════════════════════════════════════════════════════ */
+let _accPhotoBlob = null;
+function _accMsg(id, text, kind) {
+  const e = document.getElementById(id); if (!e) return;
+  const col = kind === 'error' ? 'text-red-600' : (kind === 'ok' ? 'text-green-600' : 'text-gray-500');
+  e.className = 'text-xs mt-2 ' + col; e.textContent = text || '';
+}
+function _accBusy(btnId, busy, label) {
+  const b = document.getElementById(btnId); if (!b) return;
+  if (busy) { b.dataset._t = b.textContent; b.disabled = true; b.textContent = '⏳ Guardando…'; }
+  else { b.disabled = false; b.textContent = label || b.dataset._t || 'Guardar'; }
+}
+function _accCurrent() {
+  const s = window._sbSession || {};
+  return { name: s.name || '', avatar: s.avatar || null };
+}
+function openAccountModal() {
+  const cur = _accCurrent();
+  _accPhotoBlob = null;
+  // Foto actual
+  const pv = document.getElementById('acc-photo-preview');
+  if (pv) {
+    if (cur.avatar) pv.innerHTML = `<img src="${cur.avatar}" class="w-16 h-16 object-cover" referrerpolicy="no-referrer" alt="">`;
+    else { const a = (typeof reviewAvatar === 'function') ? reviewAvatar(cur.name || 'A') : { initial: '🙂', color: '#94a3b8' }; pv.innerHTML = `<div class="w-16 h-16 flex items-center justify-center text-white text-xl font-bold" style="background:${a.color}">${a.initial}</div>`; }
+  }
+  const ps = document.getElementById('acc-photo-save'); if (ps) ps.disabled = true;
+  _accMsg('acc-photo-msg', '');
+  // Nombre
+  const ni = document.getElementById('acc-name-input'); if (ni) ni.value = cur.name || '';
+  _accMsg('acc-name-msg', '');
+  // Contraseña
+  const p1 = document.getElementById('acc-pass1'); const p2 = document.getElementById('acc-pass2');
+  if (p1) p1.value = ''; if (p2) p2.value = '';
+  _accMsg('acc-pass-msg', '');
+  const m = document.getElementById('account-modal');
+  if (m) { m.classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
+}
+function closeAccountModal() {
+  const m = document.getElementById('account-modal');
+  if (m) m.classList.add('hidden');
+  document.body.style.overflow = '';
+  _accPhotoBlob = null;
+}
+
+// ── Foto ──
+async function accPhotoPick(file) {
+  if (!file) return;
+  if (!/^image\//.test(file.type)) { _accMsg('acc-photo-msg', 'Ese archivo no es una imagen.', 'error'); return; }
+  if (file.size > 12 * 1024 * 1024) { _accMsg('acc-photo-msg', 'La imagen es muy grande (máx 12 MB).', 'error'); return; }
+  try {
+    _accMsg('acc-photo-msg', 'Procesando…');
+    _accPhotoBlob = await _compressImage(file);
+    const url = URL.createObjectURL(_accPhotoBlob);
+    const pv = document.getElementById('acc-photo-preview');
+    if (pv) pv.innerHTML = `<img src="${url}" class="w-16 h-16 object-cover" alt="">`;
+    const ps = document.getElementById('acc-photo-save'); if (ps) ps.disabled = false;
+    _accMsg('acc-photo-msg', 'Vista previa lista. Pulsa “Guardar foto”.', 'ok');
+  } catch (e) { _accMsg('acc-photo-msg', 'No se pudo procesar la imagen.', 'error'); }
+}
+function accPhotoCancel() {
+  _accPhotoBlob = null;
+  const ps = document.getElementById('acc-photo-save'); if (ps) ps.disabled = true;
+  const cur = _accCurrent();
+  const pv = document.getElementById('acc-photo-preview');
+  if (pv) { if (cur.avatar) pv.innerHTML = `<img src="${cur.avatar}" class="w-16 h-16 object-cover" referrerpolicy="no-referrer" alt="">`; else pv.innerHTML = ''; }
+  _accMsg('acc-photo-msg', '');
+}
+async function accSavePhoto() {
+  if (!_accPhotoBlob) { _accMsg('acc-photo-msg', 'Primero elige una imagen.', 'error'); return; }
+  _accBusy('acc-photo-save', true);
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) throw new Error('Inicia sesión de nuevo');
+    const path = `${session.user.id}/avatar.jpg`;
+    const { error: upErr } = await sb.storage.from('avatars').upload(path, _accPhotoBlob, { upsert: true, contentType: 'image/jpeg' });
+    if (upErr) throw upErr;
+    const { data: pub } = sb.storage.from('avatars').getPublicUrl(path);
+    const url = (pub?.publicUrl || '') + '?t=' + Date.now();
+    await sb.auth.updateUser({ data: { avatar_url: url } });
+    if (window._sbSession) window._sbSession.avatar = url;
+    _accPhotoBlob = null;
+    renderProfileWidget();
+    _accBusy('acc-photo-save', false, 'Guardar foto');
+    document.getElementById('acc-photo-save').disabled = true;
+    _accMsg('acc-photo-msg', '✅ Foto actualizada.', 'ok');
+  } catch (e) {
+    _accBusy('acc-photo-save', false, 'Guardar foto');
+    _accMsg('acc-photo-msg', 'No se pudo subir: ' + (e.message || 'error'), 'error');
+  }
+}
+
+// ── Nombre ──
+function accResetName() { const ni = document.getElementById('acc-name-input'); if (ni) ni.value = _accCurrent().name || ''; _accMsg('acc-name-msg', ''); }
+async function accSaveName() {
+  const ni = document.getElementById('acc-name-input');
+  const name = (ni ? ni.value : '').trim();
+  if (!name) { _accMsg('acc-name-msg', 'El nombre no puede estar vacío.', 'error'); return; }
+  _accBusy('acc-name-save', true);
+  try {
+    const { error } = await sb.auth.updateUser({ data: { name, full_name: name } });
+    if (error) throw error;
+    if (window._sbSession) window._sbSession.name = name;
+    renderProfileWidget();
+    _accBusy('acc-name-save', false, 'Guardar cambios');
+    _accMsg('acc-name-msg', '✅ Nombre actualizado.', 'ok');
+  } catch (e) {
+    _accBusy('acc-name-save', false, 'Guardar cambios');
+    _accMsg('acc-name-msg', 'No se pudo guardar: ' + (e.message || ''), 'error');
+  }
+}
+
+// ── Contraseña ──
+function accTogglePass() {
+  const p1 = document.getElementById('acc-pass1'), p2 = document.getElementById('acc-pass2'), t = document.getElementById('acc-pass-toggle');
+  const show = p1 && p1.type === 'password';
+  if (p1) p1.type = show ? 'text' : 'password';
+  if (p2) p2.type = show ? 'text' : 'password';
+  if (t) t.textContent = show ? '🙈 Ocultar' : '👁 Mostrar';
+}
+function accResetPass() { const p1 = document.getElementById('acc-pass1'), p2 = document.getElementById('acc-pass2'); if (p1) p1.value = ''; if (p2) p2.value = ''; _accMsg('acc-pass-msg', ''); }
+async function accSavePassword() {
+  const p1 = document.getElementById('acc-pass1'), p2 = document.getElementById('acc-pass2');
+  const a = p1 ? p1.value : '', b = p2 ? p2.value : '';
+  if (a.length < 6) { _accMsg('acc-pass-msg', 'La contraseña debe tener al menos 6 caracteres.', 'error'); return; }
+  if (a !== b) { _accMsg('acc-pass-msg', 'Las dos contraseñas no coinciden.', 'error'); return; }
+  _accBusy('acc-pass-save', true);
+  try {
+    const { error } = await sb.auth.updateUser({ password: a });
+    if (error) throw error;
+    accResetPass();
+    _accBusy('acc-pass-save', false, 'Guardar contraseña');
+    _accMsg('acc-pass-msg', '✅ Contraseña actualizada.', 'ok');
+  } catch (e) {
+    _accBusy('acc-pass-save', false, 'Guardar contraseña');
+    _accMsg('acc-pass-msg', 'No se pudo: ' + (e.message || ''), 'error');
+  }
+}
+
 async function changeStudentEmail(id) {
   const s = (_cachedStudents || []).find(x => x.id === id);
   const oldEmail = s?.email || '';
@@ -4479,29 +4621,58 @@ function renderPaymentBanner() {
   }
 }
 
-// Carga el progreso unificado (una consulta) + Tala, y pinta el dashboard.
+// Carga el progreso unificado (una consulta) + Tala + nivel asignado, y pinta el dashboard.
 async function initUnifiedProgress() {
   try { if (typeof loadTalaProgress === 'function') await loadTalaProgress(); } catch (e) {}
   try { if (typeof loadUnifiedProgress === 'function') await loadUnifiedProgress(); } catch (e) {}
+  try { await loadAssignedLevelFromDB(); } catch (e) {}
   renderDashboardProgress();
+}
+
+// Lee el nivel más reciente de la prueba desde Supabase (robusto entre dispositivos).
+async function loadAssignedLevelFromDB() {
+  const s = window._sbSession;
+  if (!s || !s.id || typeof sb === 'undefined' || typeof setAssignedLevelDB !== 'function') return;
+  try {
+    const { data } = await sb.from('nivel_resultados').select('nivel, created_at').eq('student_id', s.id).order('created_at', { ascending: false }).limit(1);
+    if (data && data[0] && data[0].nivel) setAssignedLevelDB(data[0].nivel);
+  } catch (e) {}
 }
 
 // Pinta porcentajes del dashboard desde el sistema unificado (usa la caché ya cargada).
 function renderDashboardProgress() {
   if (typeof overallProgress !== 'function') return;
   const setTxt = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  const setBar = (id, pct, key) => { const e = document.getElementById(id); if (e && typeof progressBar === 'function') e.innerHTML = progressBar(pct, key); };
   try {
     const ov = overallProgress();
     setTxt('stat-overall', fmtPct(ov.pct));
-    setTxt('stat-activities', ov.done);
-    setTxt('stat-situations', moduleProgress('tala').done);
+    setTxt('stat-activities', completedCount());          // entero, nunca decimal
+    setTxt('stat-situations', Math.round(moduleProgress('tala').done));
     const th = moduleProgress('theory'), gr = moduleProgress('grammar'), li = moduleProgress('listening');
-    setTxt('pct-theory', fmtPct(th.pct));
-    setTxt('pct-grammar', fmtPct(gr.pct));
-    setTxt('pct-listening', fmtPct(li.pct));
-    const bt = document.getElementById('bar-theory');
-    if (bt && typeof progressBar === 'function') bt.innerHTML = progressBar(th.pct);
+    setTxt('pct-theory', fmtPct(th.pct)); setBar('bar-theory', th.pct);
+    setTxt('pct-grammar', fmtPct(gr.pct)); setBar('bar-grammar', gr.pct);
+    setTxt('pct-listening', fmtPct(li.pct)); setBar('bar-listening', li.pct);
+    renderLevelCards();
   } catch (e) {}
+}
+
+// Pinta el % por nivel (barra + estado) en las 4 tarjetas de nivel del home.
+function renderLevelCards() {
+  if (typeof levelProgress !== 'function') return;
+  ['A', 'B', 'C', 'D'].forEach(lv => {
+    const el = document.getElementById('levelcard-' + lv);
+    if (!el) return;
+    const lp = levelProgress(lv);
+    const col = (typeof LEVEL_COLORS !== 'undefined' && LEVEL_COLORS[lv]) ? LEVEL_COLORS[lv] : { bar: 'bg-swe-blue', text: 'text-swe-blue', soft: 'bg-blue-50' };
+    if (!lp.available) {
+      el.innerHTML = `<div class="text-xs text-gray-400 font-semibold bg-gray-100 rounded-lg py-1">🔒 Bloqueado</div>`;
+      return;
+    }
+    el.innerHTML = `
+      <div class="h-2 bg-gray-200 rounded-full overflow-hidden mb-1"><div class="h-full ${col.bar} rounded-full" style="width:${lp.pct}%;transition:width .4s ease"></div></div>
+      <div class="text-xs font-bold ${col.text}">${lp.total ? fmtPct(lp.pct) : 'Disponible'}</div>`;
+  });
 }
 
 function renderHomeDashboard() {

@@ -591,11 +591,7 @@
       <div id="profile-avatar" onclick="document.getElementById('profile-photo-input').click()" class="cursor-pointer flex-shrink-0" title="Cambiar foto"></div>
       <div class="min-w-0">
         <div id="profile-name" class="font-bold text-gray-800 text-sm truncate"></div>
-        <div class="flex items-center gap-3">
-          <button id="profile-photo-btn" onclick="document.getElementById('profile-photo-input').click()" class="text-xs text-swe-blue font-semibold">📷 Cambiar foto</button>
-          <button onclick="editProfileName()" class="text-xs text-gray-400 font-semibold hover:text-swe-blue">✏️ Editar nombre</button>
-          <button onclick="changeMyPassword()" class="text-xs text-gray-400 font-semibold hover:text-swe-blue">🔑 Contraseña</button>
-        </div>
+        <button id="profile-photo-btn" onclick="openAccountModal()" class="text-xs text-swe-blue font-semibold hover:underline">⚙️ Mi cuenta</button>
       </div>
       <input type="file" id="profile-photo-input" accept="image/*" class="hidden" onchange="uploadProfilePhoto(this.files && this.files[0])">
     </div>
@@ -649,52 +645,28 @@
         <div class="level-a w-14 h-14 rounded-2xl flex items-center justify-center text-white text-2xl font-black mx-auto mb-3 shadow-lg">A</div>
         <h3 class="font-bold text-gray-800 text-lg">Principiante</h3>
         <p class="text-gray-500 text-xs mt-1">SFI A</p>
-        <div class="mt-3 flex justify-center gap-1">
-          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-          <span class="w-2 h-2 rounded-full bg-gray-200"></span>
-          <span class="w-2 h-2 rounded-full bg-gray-200"></span>
-          <span class="w-2 h-2 rounded-full bg-gray-200"></span>
-        </div>
-        <div class="mt-3 text-xs text-emerald-600 font-medium bg-emerald-50 rounded-lg py-1">✓ Tillgänglig</div>
+        <div id="levelcard-A" class="mt-3"></div>
       </div>
 
       <div class="card-hover glass rounded-2xl p-6 shadow-lg border border-blue-100 text-center" onclick="selectLevel('B')">
         <div class="level-b w-14 h-14 rounded-2xl flex items-center justify-center text-white text-2xl font-black mx-auto mb-3 shadow-lg">B</div>
         <h3 class="font-bold text-gray-800 text-lg">Básico</h3>
         <p class="text-gray-500 text-xs mt-1">SFI B</p>
-        <div class="mt-3 flex justify-center gap-1">
-          <span class="w-2 h-2 rounded-full bg-blue-400"></span>
-          <span class="w-2 h-2 rounded-full bg-blue-400"></span>
-          <span class="w-2 h-2 rounded-full bg-gray-200"></span>
-          <span class="w-2 h-2 rounded-full bg-gray-200"></span>
-        </div>
-        <div class="mt-3 text-xs text-blue-600 font-medium bg-blue-50 rounded-lg py-1">✓ Tillgänglig</div>
+        <div id="levelcard-B" class="mt-3"></div>
       </div>
 
       <div class="card-hover glass rounded-2xl p-6 shadow-lg border border-blue-100 text-center" onclick="selectLevel('C')">
         <div class="level-c w-14 h-14 rounded-2xl flex items-center justify-center text-white text-2xl font-black mx-auto mb-3 shadow-lg">C</div>
         <h3 class="font-bold text-gray-800 text-lg">Intermedio</h3>
         <p class="text-gray-500 text-xs mt-1">SFI C</p>
-        <div class="mt-3 flex justify-center gap-1">
-          <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-          <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-          <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-          <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-        </div>
-        <div class="mt-3 text-xs text-emerald-600 font-medium bg-emerald-50 rounded-lg py-1">✓ Disponible</div>
+        <div id="levelcard-C" class="mt-3"></div>
       </div>
 
       <div class="card-hover glass rounded-2xl p-6 shadow-lg border border-blue-100 text-center" onclick="selectLevel('D')">
         <div class="level-d w-14 h-14 rounded-2xl flex items-center justify-center text-white text-2xl font-black mx-auto mb-3 shadow-lg">D</div>
         <h3 class="font-bold text-gray-800 text-lg">Avanzado</h3>
         <p class="text-gray-500 text-xs mt-1">SFI D</p>
-        <div class="mt-3 flex justify-center gap-1">
-          <span class="w-2 h-2 rounded-full bg-purple-400"></span>
-          <span class="w-2 h-2 rounded-full bg-purple-400"></span>
-          <span class="w-2 h-2 rounded-full bg-purple-400"></span>
-          <span class="w-2 h-2 rounded-full bg-purple-400"></span>
-        </div>
-        <div class="mt-3 text-xs text-emerald-600 font-medium bg-emerald-50 rounded-lg py-1">✓ Disponible</div>
+        <div id="levelcard-D" class="mt-3"></div>
       </div>
 
     </div>
@@ -743,8 +715,9 @@
         <div class="flex items-center gap-4">
           <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background:linear-gradient(135deg,#FECC02,#F59E0B);">🎯</div>
           <div class="flex-1">
-            <div class="flex items-center justify-between"><div class="font-black text-gray-800 text-base">Practica Gramática</div><span class="text-xs font-black text-amber-600" id="pct-grammar">0 %</span></div>
+            <div class="font-black text-gray-800 text-base">Practica Gramática</div>
             <div class="text-xs text-gray-500 mt-0.5">Busca o elige un tema y practica sin límite</div>
+            <div class="mt-2 flex items-center gap-2"><div class="flex-1 max-w-[160px]" id="bar-grammar"></div><span class="text-xs font-black text-amber-600" id="pct-grammar">0 %</span></div>
             <div class="flex flex-wrap gap-1 mt-2">
               <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">Verbos</span>
               <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Pronombres</span>
@@ -760,8 +733,9 @@
         <div class="flex items-center gap-4">
           <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background:linear-gradient(135deg,#006AA7,#004F7C);">🎧</div>
           <div class="flex-1">
-            <div class="flex items-center justify-between"><div class="font-bold text-gray-800 text-base">Hörförståelse</div><span class="text-xs font-black text-swe-blue" id="pct-listening">0 %</span></div>
+            <div class="font-bold text-gray-800 text-base">Hörförståelse</div>
             <div class="text-sm text-gray-500 mt-0.5">Escucha a Sophie y responde preguntas</div>
+            <div class="mt-2 flex items-center gap-2"><div class="flex-1 max-w-[160px]" id="bar-listening"></div><span class="text-xs font-black text-swe-blue" id="pct-listening">0 %</span></div>
             <div class="flex gap-2 mt-2">
               <span class="text-xs bg-swe-blue/10 text-swe-blue px-2 py-0.5 rounded-full font-semibold">Principiante</span>
               <span class="text-xs bg-swe-blue/10 text-swe-blue px-2 py-0.5 rounded-full font-semibold">Básico</span>
@@ -1626,6 +1600,67 @@
 .status-badge-pending { background:#fef3c7; color:#92400e; }
 .status-badge-manual  { background:#ede9fe; color:#6d28d9; }
 </style>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MODAL: Mi cuenta (foto / nombre / contraseña)
+════════════════════════════════════════════════════════════ -->
+<div id="account-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4" style="background:rgba(15,23,42,0.55);backdrop-filter:blur(2px);" onclick="if(event.target===this)closeAccountModal()">
+  <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl max-h-[90vh] overflow-y-auto" style="animation:fadeIn .25s ease;">
+    <div class="sticky top-0 bg-white flex items-center justify-between px-5 py-4 border-b border-gray-100 rounded-t-3xl">
+      <div class="font-black text-gray-800 text-lg">⚙️ Mi cuenta</div>
+      <button onclick="closeAccountModal()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 flex items-center justify-center" aria-label="Cerrar">✕</button>
+    </div>
+    <div class="p-5 space-y-5">
+
+      <!-- FOTO -->
+      <div class="rounded-2xl border border-gray-100 p-4">
+        <div class="font-bold text-gray-700 text-sm mb-3">📷 Foto de perfil</div>
+        <div class="flex items-center gap-4">
+          <div id="acc-photo-preview" class="w-16 h-16 rounded-full bg-gray-100 flex-shrink-0 overflow-hidden flex items-center justify-center text-gray-400"></div>
+          <div class="flex-1">
+            <input type="file" id="acc-photo-input" accept="image/*" class="hidden" onchange="accPhotoPick(this.files && this.files[0])">
+            <button onclick="document.getElementById('acc-photo-input').click()" class="text-sm font-semibold text-swe-blue hover:underline">Elegir imagen…</button>
+            <div class="text-[11px] text-gray-400 mt-0.5">JPG o PNG · se optimiza sola antes de subir</div>
+          </div>
+        </div>
+        <div id="acc-photo-msg" class="text-xs mt-2"></div>
+        <div class="flex gap-2 mt-3">
+          <button id="acc-photo-save" onclick="accSavePhoto()" disabled class="flex-1 py-2 rounded-xl text-sm font-bold text-white bg-swe-blue hover:bg-swe-dark disabled:opacity-40">Guardar foto</button>
+          <button onclick="accPhotoCancel()" class="py-2 px-4 rounded-xl text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200">Cancelar</button>
+        </div>
+      </div>
+
+      <!-- NOMBRE -->
+      <div class="rounded-2xl border border-gray-100 p-4">
+        <div class="font-bold text-gray-700 text-sm mb-3">✏️ Nombre</div>
+        <input id="acc-name-input" type="text" maxlength="60" class="w-full border-2 border-gray-200 rounded-xl px-3 py-2 text-sm focus:border-swe-blue focus:outline-none" placeholder="Tu nombre">
+        <div id="acc-name-msg" class="text-xs mt-2"></div>
+        <div class="flex gap-2 mt-3">
+          <button id="acc-name-save" onclick="accSaveName()" class="flex-1 py-2 rounded-xl text-sm font-bold text-white bg-swe-blue hover:bg-swe-dark disabled:opacity-40">Guardar cambios</button>
+          <button onclick="accResetName()" class="py-2 px-4 rounded-xl text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200">Cancelar</button>
+        </div>
+      </div>
+
+      <!-- CONTRASEÑA -->
+      <div class="rounded-2xl border border-gray-100 p-4">
+        <div class="font-bold text-gray-700 text-sm mb-3">🔑 Contraseña</div>
+        <div class="relative mb-2">
+          <input id="acc-pass1" type="password" class="w-full border-2 border-gray-200 rounded-xl px-3 py-2 text-sm focus:border-swe-blue focus:outline-none" placeholder="Nueva contraseña (mín. 6)">
+        </div>
+        <div class="relative">
+          <input id="acc-pass2" type="password" class="w-full border-2 border-gray-200 rounded-xl px-3 py-2 text-sm focus:border-swe-blue focus:outline-none" placeholder="Repite la contraseña">
+          <button type="button" onclick="accTogglePass()" class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 font-semibold" id="acc-pass-toggle">👁 Mostrar</button>
+        </div>
+        <div id="acc-pass-msg" class="text-xs mt-2"></div>
+        <div class="flex gap-2 mt-3">
+          <button id="acc-pass-save" onclick="accSavePassword()" class="flex-1 py-2 rounded-xl text-sm font-bold text-white bg-swe-blue hover:bg-swe-dark disabled:opacity-40">Guardar contraseña</button>
+          <button onclick="accResetPass()" class="py-2 px-4 rounded-xl text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200">Cancelar</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <script src="data.js"></script>
 <script src="talaSituations.js"></script>
