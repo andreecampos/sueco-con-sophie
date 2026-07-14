@@ -116,6 +116,242 @@ function goMenu() {
   showView('menu');
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   TALA — Conversaciones interactivas (ordenar palabras tocando)
+   Desbloqueo por nivel: hay que completar TODAS las situaciones de un
+   nivel para abrir el siguiente (A → B → C → D).
+   Progreso en Supabase (tabla tala_progress): 1 fila por alumno+situación.
+   ═══════════════════════════════════════════════════════════════════ */
+let talaState = null;
+let talaProgressMap = {};
+const TALA_LEVELS = ['A', 'B', 'C', 'D'];
+
+async function loadTalaProgress() {
+  talaProgressMap = {};
+  const s = window._sbSession; if (!s?.id) return;
+  try {
+    const { data } = await sb.from('tala_progress').select('*').eq('user_id', s.id);
+    (data || []).forEach(r => { talaProgressMap[r.situation_id] = r; });
+  } catch (e) {}
+}
+async function saveTalaProgress(situationId, fields) {
+  talaProgressMap[situationId] = { ...(talaProgressMap[situationId] || {}), situation_id: situationId, ...fields };
+  const s = window._sbSession; if (!s?.id) return;
+  const row = { user_id: s.id, situation_id: situationId, updated_at: new Date().toISOString(), ...fields };
+  try { await sb.from('tala_progress').upsert(row, { onConflict: 'user_id,situation_id' }); } catch (e) {}
+}
+
+// Estado de desbloqueo: un nivel se abre solo si TODOS los del nivel anterior están completos.
+function talaLevelStatus() {
+  const sits = window.TALA_SITUATIONS || [];
+  const byLevel = { A: [], B: [], C: [], D: [] };
+  sits.forEach(s => { if (byLevel[s.level]) byLevel[s.level].push(s); });
+  const levelDone = lv => byLevel[lv].length > 0 && byLevel[lv].every(s => talaProgressMap[s.id]?.completed);
+  const unlocked = { A: true };
+  for (let i = 1; i < TALA_LEVELS.length; i++) {
+    const lv = TALA_LEVELS[i], prev = TALA_LEVELS[i - 1];
+    unlocked[lv] = unlocked[prev] && levelDone(prev);
+  }
+  return { byLevel, unlocked, levelDone };
+}
+
+async function showTala() {
+  if (!requireAccess()) return;
+  stopSpeech();
+  showView('tala');
+  await loadTalaProgress();
+  renderTalaList();
+}
+
+function renderTalaList() {
+  const list = document.getElementById('tala-list');
+  if (!list) return;
+  const { byLevel, unlocked } = talaLevelStatus();
+  const LV = { A: 'SFI A', B: 'SFI B', C: 'SFI C', D: 'SFI D' };
+  let html = '';
+  TALA_LEVELS.forEach((lv, idx) => {
+    const sits = byLevel[lv] || [];
+    if (!sits.length) return;
+    const open = unlocked[lv];
+    const doneCount = sits.filter(s => talaProgressMap[s.id]?.completed).length;
+    html += `<div>
+      <div class="flex items-center justify-between mb-2">
+        <div class="font-black text-gray-700">${LV[lv]} <span class="text-xs font-semibold text-gray-400">· ${doneCount}/${sits.length} completadas</span></div>
+        ${open ? '' : '<span class="text-xs text-gray-400">🔒</span>'}
+      </div>`;
+    if (!open) {
+      const prev = LV[TALA_LEVELS[idx - 1]];
+      html += `<div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-2 text-sm text-amber-800 font-semibold">
+        🔒 Desbloquea <strong>${prev}</strong> para poder seguir aquí.
+        <div class="text-xs font-normal text-amber-600 mt-1">Completa todas las situaciones de ${prev} y este nivel se abrirá.</div>
+      </div>`;
+    }
+    html += '<div class="space-y-2">' + sits.map(sit => {
+      const prog = talaProgressMap[sit.id] || {};
+      const done = !!prog.completed;
+      const badge = done
+        ? `<span class="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">✓ ${prog.best_score || 0}%</span>`
+        : '';
+      return `<button ${open ? `onclick="startTalaSituation('${sit.id}')"` : 'disabled'}
+        class="w-full flex items-center gap-3 rounded-2xl p-4 shadow-sm border-2 text-left transition-colors ${open ? 'bg-white border-blue-200 hover:border-blue-400' : 'bg-gray-50 border-gray-100 opacity-50'}">
+        <span class="text-2xl flex-shrink-0 ${open ? '' : 'grayscale'}">${sit.icon}</span>
+        <div class="flex-1">
+          <div class="font-bold text-gray-800">${sit.title}</div>
+          <div class="text-xs text-gray-500">${sit.context}</div>
+        </div>
+        <div class="flex items-center gap-2">${badge}${open ? '<span class="text-gray-300">›</span>' : ''}</div>
+      </button>`;
+    }).join('') + '</div></div>';
+  });
+  list.innerHTML = html;
+}
+
+function startTalaSituation(id) {
+  const sit = (window.TALA_SITUATIONS || []).find(s => s.id === id);
+  if (!sit || !sit.steps || !sit.steps.length) return;
+  const { unlocked } = talaLevelStatus();
+  if (!unlocked[sit.level]) { showToast('Primero completa el nivel anterior 🔒', 'info'); return; }
+  talaState = { sit, stepIdx: 0, bank: [], built: [], answered: false, stepWrong: false, stepHint: false, firstTry: 0, errors: 0, hints: 0 };
+  showView('tala-play');
+  document.getElementById('tp-title').textContent = `${sit.icon} ${sit.title}`;
+  document.getElementById('tp-level').textContent = sit.level;
+  renderTalaStep();
+}
+
+function renderTalaStep() {
+  const st = talaState; if (!st) return;
+  const step = st.sit.steps[st.stepIdx];
+  const total = st.sit.steps.length;
+  const showEs = st.sit.level === 'A' || st.sit.level === 'B';
+  st.answered = false; st.stepWrong = false; st.stepHint = false; st.built = [];
+  document.getElementById('tp-bar').style.width = Math.round((st.stepIdx / total) * 100) + '%';
+  document.getElementById('tp-num').textContent = `${st.stepIdx + 1} / ${total}`;
+  document.getElementById('tp-npc').textContent = step.npc;
+  const npcEs = document.getElementById('tp-npc-es');
+  npcEs.textContent = showEs ? step.npcEs : '';
+  npcEs.style.display = showEs ? '' : 'none';
+  document.getElementById('tp-consigna').innerHTML = showEs
+    ? `Traduce y ordena: <span class="font-semibold text-gray-700">${step.answerEs}</span>`
+    : 'Ordna orden och svara på svenska 👇';
+  const words = [...step.answer, ...(step.distractors || [])];
+  for (let i = words.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [words[i], words[j]] = [words[j], words[i]]; }
+  st.bank = words.map((w, i) => ({ w, id: i }));
+  document.getElementById('tp-feedback').classList.add('hidden');
+  document.getElementById('tp-check').classList.remove('hidden');
+  document.getElementById('tp-continue').classList.add('hidden');
+  document.getElementById('tp-check').disabled = true;
+  renderTalaUI();
+}
+
+function renderTalaUI() {
+  const st = talaState; if (!st) return;
+  const ans = document.getElementById('tp-answer');
+  const bank = document.getElementById('tp-bank');
+  ans.innerHTML = st.built.length
+    ? st.built.map((bi, pos) => `<button onclick="talaRemove(${pos})" class="bg-swe-blue text-white px-3 py-2 rounded-xl text-sm font-semibold shadow-sm">${st.bank[bi].w}</button>`).join('')
+    : '<span class="text-gray-300 text-sm">Toca las palabras para armar tu respuesta…</span>';
+  bank.innerHTML = st.bank.map((it, i) => st.built.includes(i)
+    ? `<span class="px-3 py-2 rounded-xl text-sm bg-gray-100 text-transparent select-none">${it.w}</span>`
+    : `<button onclick="talaPick(${i})" class="px-3 py-2 rounded-xl text-sm font-semibold bg-white border-2 border-gray-200 text-gray-700 hover:border-swe-blue shadow-sm">${it.w}</button>`
+  ).join('');
+  document.getElementById('tp-check').disabled = st.built.length === 0 || st.answered;
+}
+
+function talaPick(i) { const st = talaState; if (!st || st.answered || st.built.includes(i)) return; st.built.push(i); renderTalaUI(); }
+function talaRemove(pos) { const st = talaState; if (!st || st.answered) return; st.built.splice(pos, 1); renderTalaUI(); }
+function talaUndo() { const st = talaState; if (!st || st.answered) return; st.built.pop(); renderTalaUI(); }
+function talaReset() { const st = talaState; if (!st || st.answered) return; st.built = []; renderTalaUI(); }
+
+function talaHint() {
+  const st = talaState; if (!st || st.answered) return;
+  const step = st.sit.steps[st.stepIdx];
+  if (!st.stepHint) { st.stepHint = true; st.hints++; }
+  const fb = document.getElementById('tp-feedback');
+  fb.className = 'rounded-2xl p-4 mb-3 text-sm bg-amber-50 border border-amber-200 text-amber-800';
+  fb.innerHTML = `💡 ${step.hint || 'Piensa en el orden Sujeto + Verbo.'}`;
+  fb.classList.remove('hidden');
+}
+
+function _talaMistake(step, sit) {
+  const correct = step.answer.join(' ');
+  const opts = [correct];
+  let tries = 0;
+  while (opts.length < 4 && tries < 40) {
+    tries++;
+    const sh = [...step.answer].sort(() => Math.random() - 0.5).join(' ');
+    if (!opts.includes(sh)) opts.push(sh);
+  }
+  const shuffled = opts.map((o, i) => ({ o, c: i === 0 })).sort(() => Math.random() - 0.5);
+  return {
+    text: `🗣️ Tala — ${sit.title}: di en sueco "${step.answerEs || correct}"`,
+    options: shuffled.map(x => x.o),
+    correct: shuffled.findIndex(x => x.c),
+    explanation: (step.explain || '') + `  ✅ ${correct}`
+  };
+}
+
+function talaCheck() {
+  const st = talaState; if (!st || st.answered || !st.built.length) return;
+  const step = st.sit.steps[st.stepIdx];
+  const showEs = st.sit.level === 'A' || st.sit.level === 'B';
+  const built = st.built.map(i => st.bank[i].w).join(' ');
+  const fb = document.getElementById('tp-feedback');
+  if (built === step.answer.join(' ')) {
+    st.answered = true;
+    if (!st.stepWrong && !st.stepHint) st.firstTry++;
+    fb.className = 'rounded-2xl p-4 mb-3 text-sm bg-green-50 border border-green-200 text-green-800';
+    fb.innerHTML = `✅ <strong>¡Correcto!</strong> ${step.answer.join(' ')}` + (showEs ? `<div class="text-green-600 text-xs mt-1">${step.answerEs}</div>` : '');
+    fb.classList.remove('hidden');
+    document.getElementById('tp-check').classList.add('hidden');
+    document.getElementById('tp-continue').classList.remove('hidden');
+    renderTalaUI();
+  } else {
+    if (!st.stepWrong) { st.stepWrong = true; st.errors++; try { addMistake(_talaMistake(step, st.sit)); } catch (e) {} }
+    fb.className = 'rounded-2xl p-4 mb-3 text-sm bg-red-50 border border-red-200 text-red-800';
+    fb.innerHTML = `❌ Casi. La forma correcta es:<div class="font-bold text-red-900 mt-1">${step.answer.join(' ')}</div><div class="text-red-600 text-xs mt-1">${step.explain || ''}</div><div class="text-gray-500 text-xs mt-1">Inténtalo de nuevo 👇</div>`;
+    fb.classList.remove('hidden');
+    st.built = [];
+    renderTalaUI();
+  }
+}
+
+function talaNext() {
+  const st = talaState; if (!st) return;
+  st.stepIdx++;
+  if (st.stepIdx >= st.sit.steps.length) { finishTala(); return; }
+  renderTalaStep();
+}
+
+async function finishTala() {
+  const st = talaState; if (!st) return;
+  const total = st.sit.steps.length;
+  const score = Math.round((st.firstTry / total) * 100);
+  const prev = talaProgressMap[st.sit.id] || {};
+  const best = Math.max(prev.best_score || 0, score);
+  await saveTalaProgress(st.sit.id, {
+    current_step: total,
+    completed: true,
+    correct_answers: st.firstTry,
+    error_count: (prev.error_count || 0) + st.errors,
+    attempts_count: (prev.attempts_count || 0) + 1,
+    hints_used: (prev.hints_used || 0) + st.hints,
+    best_score: best,
+    completed_at: new Date().toISOString()
+  });
+  showView('tala-result');
+  document.getElementById('tr-score').textContent = score + '%';
+  document.getElementById('tr-ok').textContent = st.firstTry;
+  document.getElementById('tr-err').textContent = st.errors;
+  document.getElementById('tr-hints').textContent = st.hints;
+  const msg = score >= 90 ? '¡Excelente! Hablaste como un local 🇸🇪'
+    : score >= 60 ? '¡Muy bien! Cada conversación te suelta más 💪'
+    : '¡Buen intento! Repite para afianzarlo 🌱';
+  document.getElementById('tr-msg').textContent = msg;
+}
+
+function talaRetry() { if (talaState) startTalaSituation(talaState.sit.id); }
+function talaExit() { showTala(); }
+
 function selectLevel(level) {
   if (!requireAccess()) return;
   const available = ['A','B','C','D'];
