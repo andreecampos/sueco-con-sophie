@@ -277,6 +277,94 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════
+     VIEW: TALA — lista de situaciones (conversaciones interactivas)
+════════════════════════════════════════════════════════════ -->
+<div id="view-tala" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="bg-swe-blue text-white" style="border-bottom:4px solid #FECC02;">
+    <div class="max-w-2xl mx-auto px-4 py-4 flex items-center gap-3">
+      <button onclick="goMenu()" class="text-white text-2xl leading-none" aria-label="Volver">‹</button>
+      <div><div class="font-black text-lg">🗣️ Tala — Conversaciones</div><div class="text-xs text-blue-100">Arma frases en sueco tocando las palabras</div></div>
+    </div>
+  </div>
+  <div class="max-w-2xl mx-auto px-4 py-6">
+    <div id="tala-list" class="space-y-3"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     VIEW: TALA PLAY — ordenar palabras dentro de una conversación
+════════════════════════════════════════════════════════════ -->
+<div id="view-tala-play" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="max-w-2xl mx-auto px-4 py-4">
+    <div class="flex items-center gap-3 mb-3">
+      <button onclick="talaExit()" class="text-gray-400 text-xl leading-none" aria-label="Salir">✕</button>
+      <div class="flex-1 h-2.5 bg-gray-200 rounded-full overflow-hidden"><div id="tp-bar" class="h-full bg-swe-blue rounded-full" style="width:0%;transition:width .3s ease"></div></div>
+      <span id="tp-num" class="text-xs text-gray-500 font-semibold whitespace-nowrap">1 / 10</span>
+    </div>
+    <div class="flex items-center gap-2 mb-3">
+      <span id="tp-title" class="text-sm font-bold text-gray-700"></span>
+      <span id="tp-level" class="text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-semibold">A</span>
+    </div>
+
+    <!-- Lo que dice la otra persona -->
+    <div class="flex items-start gap-2 mb-4">
+      <span class="text-2xl flex-shrink-0">🧑‍💼</span>
+      <div class="bg-white rounded-2xl rounded-tl-none px-4 py-3 shadow-sm border border-gray-100">
+        <p id="tp-npc" class="text-gray-800 font-semibold text-sm leading-snug"></p>
+        <p id="tp-npc-es" class="text-gray-400 text-xs mt-1"></p>
+      </div>
+    </div>
+
+    <!-- Consigna -->
+    <p class="text-center text-xs text-gray-500 mb-2">Traduce y ordena: <span id="tp-target-es" class="font-semibold text-gray-700"></span></p>
+
+    <!-- Zona de respuesta armada -->
+    <div id="tp-answer" class="min-h-[56px] bg-white rounded-2xl border-2 border-dashed border-gray-200 p-3 mb-3 flex flex-wrap gap-2 items-center"></div>
+
+    <!-- Banco de palabras -->
+    <div id="tp-bank" class="flex flex-wrap gap-2 mb-4 justify-center"></div>
+
+    <!-- Controles -->
+    <div class="flex gap-2 mb-3">
+      <button id="tp-undo" onclick="talaUndo()" class="flex-1 py-2 rounded-xl text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors">⌫ Borrar última</button>
+      <button id="tp-reset" onclick="talaReset()" class="flex-1 py-2 rounded-xl text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors">↺ Reiniciar</button>
+      <button id="tp-hint" onclick="talaHint()" class="py-2 px-3 rounded-xl text-sm font-semibold bg-amber-50 text-amber-600 hover:bg-amber-100 transition-colors">💡</button>
+    </div>
+
+    <!-- Feedback -->
+    <div id="tp-feedback" class="hidden rounded-2xl p-4 mb-3 text-sm"></div>
+
+    <!-- Acción principal -->
+    <button id="tp-check" onclick="talaCheck()" class="w-full bg-swe-blue text-white py-3 rounded-2xl font-bold hover:bg-swe-dark transition-colors disabled:opacity-40" disabled>Comprobar</button>
+    <button id="tp-continue" onclick="talaNext()" class="hidden w-full bg-green-600 text-white py-3 rounded-2xl font-bold hover:bg-green-700 transition-colors">Continuar →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     VIEW: TALA RESULT — pantalla de resultados
+════════════════════════════════════════════════════════════ -->
+<div id="view-tala-result" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="max-w-2xl mx-auto px-4 py-10 text-center">
+    <div class="text-6xl mb-3">🎉</div>
+    <div id="tr-msg" class="font-black text-gray-800 text-xl mb-4 px-2">¡Conversación completada!</div>
+    <div class="bg-white rounded-2xl p-6 shadow border border-gray-100 mb-5">
+      <div class="text-5xl font-black text-swe-blue mb-1" id="tr-score">0%</div>
+      <div class="text-xs text-gray-400 mb-4">tu puntaje en esta conversación</div>
+      <div class="grid grid-cols-3 gap-2">
+        <div><div class="text-xl font-bold text-green-600" id="tr-ok">0</div><div class="text-[10px] text-gray-500">a la primera</div></div>
+        <div><div class="text-xl font-bold text-red-500" id="tr-err">0</div><div class="text-[10px] text-gray-500">errores</div></div>
+        <div><div class="text-xl font-bold text-amber-500" id="tr-hints">0</div><div class="text-[10px] text-gray-500">pistas</div></div>
+      </div>
+    </div>
+    <div class="space-y-2">
+      <button onclick="talaRetry()" class="w-full bg-swe-blue text-white py-3 rounded-2xl font-bold hover:bg-swe-dark transition-colors">🔄 Repetir conversación</button>
+      <button onclick="showGrammar()" class="w-full border-2 border-swe-blue text-swe-blue py-3 rounded-2xl font-bold hover:bg-blue-50 transition-colors">📝 Repasar mis errores</button>
+      <button onclick="showTala()" class="w-full text-gray-500 py-2 text-sm font-semibold">Volver a las conversaciones</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
      VIEW: LANDING /alumnos — página de venta
 ════════════════════════════════════════════════════════════ -->
 <div id="view-alumnos" class="view" style="background:#f4f7fb; min-height:100vh;">
@@ -912,11 +1000,11 @@
         </div>
       </button>
 
-      <button class="mode-btn glass rounded-2xl p-5 shadow border border-blue-100 flex items-center gap-4 text-left" onclick="selectMode('speak')">
+      <button class="mode-btn glass rounded-2xl p-5 shadow border border-blue-100 flex items-center gap-4 text-left" onclick="showTala()">
         <div class="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0">🗣️</div>
         <div class="flex-1">
           <div class="font-bold text-gray-800 text-lg">Tala</div>
-          <div class="text-gray-500 text-sm">Practica la expresión oral</div>
+          <div class="text-gray-500 text-sm">Conversaciones: arma frases tocando palabras</div>
         </div>
         <div class="text-gray-300">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
@@ -1651,6 +1739,7 @@
 <script src="data.js"></script>
 <script src="juanitaMessages.js"></script>
 <script src="juanitaQuestions.js"></script>
+<script src="talaSituations.js"></script>
 <script src="app.js"></script>
 
 <!-- ═══════════════════════════════════════════════════════════

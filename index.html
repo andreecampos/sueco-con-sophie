@@ -277,6 +277,94 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════
+     VIEW: TALA — lista de situaciones (conversaciones interactivas)
+════════════════════════════════════════════════════════════ -->
+<div id="view-tala" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="bg-swe-blue text-white" style="border-bottom:4px solid #FECC02;">
+    <div class="max-w-2xl mx-auto px-4 py-4 flex items-center gap-3">
+      <button onclick="goMenu()" class="text-white text-2xl leading-none" aria-label="Volver">‹</button>
+      <div><div class="font-black text-lg">🗣️ Tala — Conversaciones</div><div class="text-xs text-blue-100">Arma frases en sueco tocando las palabras</div></div>
+    </div>
+  </div>
+  <div class="max-w-2xl mx-auto px-4 py-6">
+    <div id="tala-list" class="space-y-3"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     VIEW: TALA PLAY — ordenar palabras dentro de una conversación
+════════════════════════════════════════════════════════════ -->
+<div id="view-tala-play" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="max-w-2xl mx-auto px-4 py-4">
+    <div class="flex items-center gap-3 mb-3">
+      <button onclick="talaExit()" class="text-gray-400 text-xl leading-none" aria-label="Salir">✕</button>
+      <div class="flex-1 h-2.5 bg-gray-200 rounded-full overflow-hidden"><div id="tp-bar" class="h-full bg-swe-blue rounded-full" style="width:0%;transition:width .3s ease"></div></div>
+      <span id="tp-num" class="text-xs text-gray-500 font-semibold whitespace-nowrap">1 / 10</span>
+    </div>
+    <div class="flex items-center gap-2 mb-3">
+      <span id="tp-title" class="text-sm font-bold text-gray-700"></span>
+      <span id="tp-level" class="text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-semibold">A</span>
+    </div>
+
+    <!-- Lo que dice la otra persona -->
+    <div class="flex items-start gap-2 mb-4">
+      <span class="text-2xl flex-shrink-0">🧑‍💼</span>
+      <div class="bg-white rounded-2xl rounded-tl-none px-4 py-3 shadow-sm border border-gray-100">
+        <p id="tp-npc" class="text-gray-800 font-semibold text-sm leading-snug"></p>
+        <p id="tp-npc-es" class="text-gray-400 text-xs mt-1"></p>
+      </div>
+    </div>
+
+    <!-- Consigna -->
+    <p class="text-center text-xs text-gray-500 mb-2">Traduce y ordena: <span id="tp-target-es" class="font-semibold text-gray-700"></span></p>
+
+    <!-- Zona de respuesta armada -->
+    <div id="tp-answer" class="min-h-[56px] bg-white rounded-2xl border-2 border-dashed border-gray-200 p-3 mb-3 flex flex-wrap gap-2 items-center"></div>
+
+    <!-- Banco de palabras -->
+    <div id="tp-bank" class="flex flex-wrap gap-2 mb-4 justify-center"></div>
+
+    <!-- Controles -->
+    <div class="flex gap-2 mb-3">
+      <button id="tp-undo" onclick="talaUndo()" class="flex-1 py-2 rounded-xl text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors">⌫ Borrar última</button>
+      <button id="tp-reset" onclick="talaReset()" class="flex-1 py-2 rounded-xl text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors">↺ Reiniciar</button>
+      <button id="tp-hint" onclick="talaHint()" class="py-2 px-3 rounded-xl text-sm font-semibold bg-amber-50 text-amber-600 hover:bg-amber-100 transition-colors">💡</button>
+    </div>
+
+    <!-- Feedback -->
+    <div id="tp-feedback" class="hidden rounded-2xl p-4 mb-3 text-sm"></div>
+
+    <!-- Acción principal -->
+    <button id="tp-check" onclick="talaCheck()" class="w-full bg-swe-blue text-white py-3 rounded-2xl font-bold hover:bg-swe-dark transition-colors disabled:opacity-40" disabled>Comprobar</button>
+    <button id="tp-continue" onclick="talaNext()" class="hidden w-full bg-green-600 text-white py-3 rounded-2xl font-bold hover:bg-green-700 transition-colors">Continuar →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     VIEW: TALA RESULT — pantalla de resultados
+════════════════════════════════════════════════════════════ -->
+<div id="view-tala-result" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="max-w-2xl mx-auto px-4 py-10 text-center">
+    <div class="text-6xl mb-3">🎉</div>
+    <div id="tr-msg" class="font-black text-gray-800 text-xl mb-4 px-2">¡Conversación completada!</div>
+    <div class="bg-white rounded-2xl p-6 shadow border border-gray-100 mb-5">
+      <div class="text-5xl font-black text-swe-blue mb-1" id="tr-score">0%</div>
+      <div class="text-xs text-gray-400 mb-4">tu puntaje en esta conversación</div>
+      <div class="grid grid-cols-3 gap-2">
+        <div><div class="text-xl font-bold text-green-600" id="tr-ok">0</div><div class="text-[10px] text-gray-500">a la primera</div></div>
+        <div><div class="text-xl font-bold text-red-500" id="tr-err">0</div><div class="text-[10px] text-gray-500">errores</div></div>
+        <div><div class="text-xl font-bold text-amber-500" id="tr-hints">0</div><div class="text-[10px] text-gray-500">pistas</div></div>
+      </div>
+    </div>
+    <div class="space-y-2">
+      <button onclick="talaRetry()" class="w-full bg-swe-blue text-white py-3 rounded-2xl font-bold hover:bg-swe-dark transition-colors">🔄 Repetir conversación</button>
+      <button onclick="showGrammar()" class="w-full border-2 border-swe-blue text-swe-blue py-3 rounded-2xl font-bold hover:bg-blue-50 transition-colors">📝 Repasar mis errores</button>
+      <button onclick="showTala()" class="w-full text-gray-500 py-2 text-sm font-semibold">Volver a las conversaciones</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
      VIEW: LANDING /alumnos — página de venta
 ════════════════════════════════════════════════════════════ -->
 <div id="view-alumnos" class="view" style="background:#f4f7fb; min-height:100vh;">
@@ -912,11 +1000,11 @@
         </div>
       </button>
 
-      <button class="mode-btn glass rounded-2xl p-5 shadow border border-blue-100 flex items-center gap-4 text-left" onclick="selectMode('speak')">
+      <button class="mode-btn glass rounded-2xl p-5 shadow border border-blue-100 flex items-center gap-4 text-left" onclick="showTala()">
         <div class="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0">🗣️</div>
         <div class="flex-1">
           <div class="font-bold text-gray-800 text-lg">Tala</div>
-          <div class="text-gray-500 text-sm">Practica la expresión oral</div>
+          <div class="text-gray-500 text-sm">Conversaciones: arma frases tocando palabras</div>
         </div>
         <div class="text-gray-300">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
@@ -5579,6 +5667,150 @@ const JUANITA_QUESTIONS = [
 
 </script>
 <script>
+/* ═══════════════════════════════════════════════════════════════════
+   TALA — Conversaciones interactivas (ordenar palabras, estilo Duolingo)
+   El contenido vive aquí (en código) → 0 espacio en la base de datos.
+   El progreso se guarda en la tabla `tala_progress` (1 fila por alumno+situación).
+
+   Estructura de cada situación:
+     id        · identificador único (usado en la BD)
+     title     · nombre visible
+     icon      · emoji
+     level     · dificultad SFI: 'A' | 'B' | 'C' | 'D'
+     context   · dónde ocurre (español en A/B)
+     intro     · situación inicial para el alumno
+     locked    · true = "Próximamente" (aún no construida)
+     steps[]   · intercambios de la conversación (8–15):
+        npc       · lo que dice la otra persona (sueco)
+        npcEs     · traducción al español (se muestra en A/B)
+        answer[]  · palabras EN ORDEN correcto que el alumno debe armar
+        distractors[] · palabras extra que confunden (no van en la respuesta)
+        answerEs  · traducción de la respuesta correcta
+        hint      · pista opcional (resta puntos, no bloquea)
+        explain   · explicación breve en español cuando se equivoca
+   ═══════════════════════════════════════════════════════════════════ */
+
+const TALA_SITUATIONS = [
+
+  /* ───────────── PILOTO COMPLETO: EN EL SUPERMERCADO (SFI A) ───────────── */
+  {
+    id: 'supermercado',
+    title: 'En el supermercado',
+    icon: '🛒',
+    level: 'A',
+    context: 'Estás comprando comida y hablas con el empleado (butiksbiträde).',
+    intro: 'Entras a ICA. Necesitas leche, pan y manzanas. Salúdale al empleado y arma tus frases en sueco tocando las palabras en el orden correcto.',
+    locked: false,
+    steps: [
+      {
+        npc: 'Hej och välkommen! Vad söker du?',
+        npcEs: '¡Hola y bienvenido! ¿Qué buscas?',
+        answer: ['Hej', 'jag', 'söker', 'mjölk'],
+        distractors: ['bok', 'är'],
+        answerEs: 'Hola, busco leche.',
+        hint: 'Empieza saludando con "Hej".',
+        explain: 'En sueco el orden normal es Sujeto + Verbo: "jag söker" = "yo busco".'
+      },
+      {
+        npc: 'Mjölken står där borta i kylen. Något mer?',
+        npcEs: 'La leche está allá en el refrigerador. ¿Algo más?',
+        answer: ['Ja', 'jag', 'behöver', 'bröd'],
+        distractors: ['nej', 'har'],
+        answerEs: 'Sí, necesito pan.',
+        hint: '"behöver" significa "necesito".',
+        explain: '"behöva" = necesitar. Con "jag" el verbo es "behöver".'
+      },
+      {
+        npc: 'Vi har färskt bröd här. Vill du ha något annat?',
+        npcEs: 'Tenemos pan fresco aquí. ¿Quieres algo más?',
+        answer: ['Har', 'ni', 'äpplen', '?'],
+        distractors: ['jag', 'du'],
+        answerEs: '¿Tienen manzanas?',
+        hint: 'Para preguntar "¿tienen?" el verbo va primero: "Har ni...?"',
+        explain: 'En preguntas sí/no el verbo va PRIMERO: "Har ni äpplen?" (¿Tienen manzanas?).'
+      },
+      {
+        npc: 'Ja, äpplena ligger vid frukten.',
+        npcEs: 'Sí, las manzanas están junto a la fruta.',
+        answer: ['Hur', 'mycket', 'kostar', 'äpplena', '?'],
+        distractors: ['är', 'du'],
+        answerEs: '¿Cuánto cuestan las manzanas?',
+        hint: '"Hur mycket kostar...?" = "¿Cuánto cuesta...?"',
+        explain: '"Hur mycket kostar det?" es la forma fija para preguntar precios.'
+      },
+      {
+        npc: 'Äpplena kostar 25 kronor kilot.',
+        npcEs: 'Las manzanas cuestan 25 coronas el kilo.',
+        answer: ['Jag', 'tar', 'ett', 'kilo'],
+        distractors: ['två', 'är'],
+        answerEs: 'Me llevo un kilo.',
+        hint: '"Jag tar..." = "Me llevo...".',
+        explain: '"ett kilo" porque "kilo" es un ett-ord (neutro).'
+      },
+      {
+        npc: 'Perfekt. Något mer idag?',
+        npcEs: 'Perfecto. ¿Algo más hoy?',
+        answer: ['Nej', 'tack', 'det', 'är', 'allt'],
+        distractors: ['ja', 'mer'],
+        answerEs: 'No gracias, es todo.',
+        hint: '"Det är allt" = "Es todo".',
+        explain: '"Det är allt" cierra el pedido con cortesía: "eso es todo".'
+      },
+      {
+        npc: 'Då blir det 89 kronor.',
+        npcEs: 'Entonces son 89 coronas.',
+        answer: ['Kan', 'jag', 'betala', 'med', 'kort', '?'],
+        distractors: ['kontant', 'du'],
+        answerEs: '¿Puedo pagar con tarjeta?',
+        hint: 'Pregunta empezando con el verbo "Kan": "Kan jag...?"',
+        explain: '"Kan jag betala med kort?" — verbo primero por ser pregunta; "med kort" = con tarjeta.'
+      },
+      {
+        npc: 'Javisst, du kan betala med kort.',
+        npcEs: 'Claro, puedes pagar con tarjeta.',
+        answer: ['Här', 'är', 'mitt', 'kort'],
+        distractors: ['din', 'är'],
+        answerEs: 'Aquí está mi tarjeta.',
+        hint: '"Här är..." = "Aquí está...".',
+        explain: '"mitt kort" porque "kort" es ett-ord: mi → "mitt" (no "min").'
+      },
+      {
+        npc: 'Tack! Vill du ha kvitto?',
+        npcEs: '¡Gracias! ¿Quieres el recibo?',
+        answer: ['Ja', 'tack', 'gärna'],
+        distractors: ['nej', 'inte'],
+        answerEs: 'Sí, con gusto.',
+        hint: '"gärna" = "con gusto / me encantaría".',
+        explain: '"Ja tack, gärna" es una forma muy natural y cortés de aceptar.'
+      },
+      {
+        npc: 'Varsågod. Ha en bra dag!',
+        npcEs: '¡Aquí tienes. Que tengas buen día!',
+        answer: ['Tack', 'detsamma', '!'],
+        distractors: ['hej', 'nej'],
+        answerEs: '¡Gracias, igualmente!',
+        hint: '"detsamma" = "igualmente".',
+        explain: '"Tack, detsamma!" se usa para devolver un buen deseo: "gracias, igualmente".'
+      }
+    ]
+  },
+
+  /* ───────────── SITUACIONES SIGUIENTES (se construyen tras aprobar el piloto) ───────────── */
+  { id: 'lakartid',    title: 'Pedir cita médica',     icon: '🏥', level: 'A', context: 'En el centro de salud (vårdcentralen).', intro: '', locked: true, steps: [] },
+  { id: 'restaurang',  title: 'En el restaurante',     icon: '🍽️', level: 'A', context: 'Pedir comida y pagar.',                 intro: '', locked: true, steps: [] },
+  { id: 'jobbintervju',title: 'Entrevista de trabajo', icon: '💼', level: 'B', context: 'Te presentas ante quien te contrata.',  intro: '', locked: true, steps: [] },
+  { id: 'apotek',      title: 'En la farmacia',        icon: '💊', level: 'B', context: 'Pides un medicamento.',                 intro: '', locked: true, steps: [] },
+  { id: 'transport',   title: 'Transporte público',    icon: '🚌', level: 'B', context: 'Comprar billete y preguntar rutas.',    intro: '', locked: true, steps: [] },
+  { id: 'lagenhet',    title: 'Buscar apartamento',    icon: '🏠', level: 'C', context: 'Hablas con el arrendador.',            intro: '', locked: true, steps: [] },
+  { id: 'bank',        title: 'En el banco',           icon: '🏦', level: 'C', context: 'Abrir cuenta y trámites.',              intro: '', locked: true, steps: [] },
+  { id: 'foraldramote',title: 'Reunión escolar',       icon: '🎒', level: 'D', context: 'Hablas con la maestra de tu hijo/a.',   intro: '', locked: true, steps: [] },
+  { id: 'myndighet',   title: 'Trámite en una agencia',icon: '🗂️', level: 'D', context: 'Migrationsverket / Skatteverket.',       intro: '', locked: true, steps: [] }
+];
+
+if (typeof window !== 'undefined') window.TALA_SITUATIONS = TALA_SITUATIONS;
+
+</script>
+<script>
 // ═══════════════════════════════════════════════════════════
 //  SUECO CON SOFI — Lógica de la aplicación
 // ═══════════════════════════════════════════════════════════
@@ -6453,6 +6685,217 @@ function juanitaWelcomeMsg() {
   if (d <= 7) return pickJuanitaMsg('medium_absence');
   return pickJuanitaMsg('long_absence');
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   TALA — Conversaciones interactivas (ordenar palabras tocando)
+   Progreso en Supabase (tabla tala_progress): 1 fila por alumno+situación.
+   ═══════════════════════════════════════════════════════════════════ */
+let talaState = null;
+let talaProgressMap = {};
+
+async function loadTalaProgress() {
+  talaProgressMap = {};
+  const s = window._sbSession; if (!s?.id) return;
+  try {
+    const { data } = await sb.from('tala_progress').select('*').eq('user_id', s.id);
+    (data || []).forEach(r => { talaProgressMap[r.situation_id] = r; });
+  } catch (e) {}
+}
+async function saveTalaProgress(situationId, fields) {
+  talaProgressMap[situationId] = { ...(talaProgressMap[situationId] || {}), situation_id: situationId, ...fields };
+  const s = window._sbSession; if (!s?.id) return;
+  const row = { user_id: s.id, situation_id: situationId, updated_at: new Date().toISOString(), ...fields };
+  try { await sb.from('tala_progress').upsert(row, { onConflict: 'user_id,situation_id' }); } catch (e) {}
+}
+
+async function showTala() {
+  if (!requireAccess()) return;
+  stopSpeech();
+  showView('tala');
+  await loadTalaProgress();
+  renderTalaList();
+}
+
+function renderTalaList() {
+  const list = document.getElementById('tala-list');
+  if (!list) return;
+  const sits = window.TALA_SITUATIONS || [];
+  const LV = { A: 'SFI A', B: 'SFI B', C: 'SFI C', D: 'SFI D' };
+  let prevBuiltDone = true; // la primera situación jugable siempre está abierta
+  list.innerHTML = sits.map(sit => {
+    const prog = talaProgressMap[sit.id] || {};
+    const done = !!prog.completed;
+    if (sit.locked) {
+      return `<div class="flex items-center gap-3 bg-white/60 rounded-2xl p-4 border border-gray-100 opacity-70">
+        <span class="text-2xl grayscale">${sit.icon}</span>
+        <div class="flex-1"><div class="font-bold text-gray-500">${sit.title}</div>
+          <div class="text-xs text-gray-400">${LV[sit.level] || ''} · Próximamente 🔜</div></div></div>`;
+    }
+    const openNow = prevBuiltDone; // se desbloquea al completar la anterior construida
+    const badge = done
+      ? `<span class="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">✓ ${prog.best_score || 0}%</span>`
+      : (openNow ? '' : '<span class="text-[10px] text-gray-400">🔒</span>');
+    const clickable = openNow;
+    prevBuiltDone = done; // la siguiente construida depende de que ésta esté completa
+    return `<button ${clickable ? `onclick="startTalaSituation('${sit.id}')"` : 'disabled'}
+      class="w-full flex items-center gap-3 rounded-2xl p-4 shadow-sm border-2 text-left transition-colors ${clickable ? 'bg-white border-blue-200 hover:border-blue-400' : 'bg-gray-50 border-gray-100 opacity-60'}">
+      <span class="text-2xl flex-shrink-0">${sit.icon}</span>
+      <div class="flex-1">
+        <div class="font-bold text-gray-800">${sit.title}</div>
+        <div class="text-xs text-gray-500">${LV[sit.level] || ''} · ${sit.context}</div>
+      </div>
+      <div class="flex items-center gap-2">${badge}${clickable ? '<span class="text-gray-300">›</span>' : ''}</div>
+    </button>`;
+  }).join('');
+}
+
+function startTalaSituation(id) {
+  const sit = (window.TALA_SITUATIONS || []).find(s => s.id === id);
+  if (!sit || sit.locked || !sit.steps.length) return;
+  talaState = { sit, stepIdx: 0, bank: [], built: [], answered: false, stepWrong: false, stepHint: false, firstTry: 0, errors: 0, hints: 0 };
+  showView('tala-play');
+  document.getElementById('tp-title').textContent = `${sit.icon} ${sit.title}`;
+  document.getElementById('tp-level').textContent = sit.level;
+  renderTalaStep();
+}
+
+function renderTalaStep() {
+  const st = talaState; if (!st) return;
+  const step = st.sit.steps[st.stepIdx];
+  const total = st.sit.steps.length;
+  st.answered = false; st.stepWrong = false; st.stepHint = false; st.built = [];
+  // Barra de progreso
+  document.getElementById('tp-bar').style.width = Math.round((st.stepIdx / total) * 100) + '%';
+  document.getElementById('tp-num').textContent = `${st.stepIdx + 1} / ${total}`;
+  // Diálogo de la otra persona
+  document.getElementById('tp-npc').textContent = step.npc;
+  const npcEs = document.getElementById('tp-npc-es');
+  const showEs = st.sit.level === 'A' || st.sit.level === 'B';
+  npcEs.textContent = showEs ? step.npcEs : '';
+  npcEs.style.display = showEs ? '' : 'none';
+  document.getElementById('tp-target-es').textContent = step.answerEs;
+  // Banco de palabras (respuesta + distractores, mezclado)
+  const words = [...step.answer, ...(step.distractors || [])];
+  for (let i = words.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [words[i], words[j]] = [words[j], words[i]]; }
+  st.bank = words.map((w, i) => ({ w, id: i }));
+  // Reset UI
+  document.getElementById('tp-feedback').classList.add('hidden');
+  document.getElementById('tp-check').classList.remove('hidden');
+  document.getElementById('tp-continue').classList.add('hidden');
+  document.getElementById('tp-check').disabled = true;
+  renderTalaUI();
+}
+
+function renderTalaUI() {
+  const st = talaState; if (!st) return;
+  const ans = document.getElementById('tp-answer');
+  const bank = document.getElementById('tp-bank');
+  // Respuesta armada (tocar un chip lo devuelve al banco)
+  ans.innerHTML = st.built.length
+    ? st.built.map((bi, pos) => `<button onclick="talaRemove(${pos})" class="bg-swe-blue text-white px-3 py-2 rounded-xl text-sm font-semibold shadow-sm">${st.bank[bi].w}</button>`).join('')
+    : '<span class="text-gray-300 text-sm">Toca las palabras para armar tu respuesta…</span>';
+  // Banco: oculta las ya usadas
+  bank.innerHTML = st.bank.map((it, i) => st.built.includes(i)
+    ? `<span class="px-3 py-2 rounded-xl text-sm bg-gray-100 text-transparent select-none">${it.w}</span>`
+    : `<button onclick="talaPick(${i})" class="px-3 py-2 rounded-xl text-sm font-semibold bg-white border-2 border-gray-200 text-gray-700 hover:border-swe-blue shadow-sm">${it.w}</button>`
+  ).join('');
+  document.getElementById('tp-check').disabled = st.built.length === 0 || st.answered;
+}
+
+function talaPick(i) { const st = talaState; if (!st || st.answered || st.built.includes(i)) return; st.built.push(i); renderTalaUI(); }
+function talaRemove(pos) { const st = talaState; if (!st || st.answered) return; st.built.splice(pos, 1); renderTalaUI(); }
+function talaUndo() { const st = talaState; if (!st || st.answered) return; st.built.pop(); renderTalaUI(); }
+function talaReset() { const st = talaState; if (!st || st.answered) return; st.built = []; renderTalaUI(); }
+
+function talaHint() {
+  const st = talaState; if (!st || st.answered) return;
+  const step = st.sit.steps[st.stepIdx];
+  if (!st.stepHint) { st.stepHint = true; st.hints++; }
+  const fb = document.getElementById('tp-feedback');
+  fb.className = 'rounded-2xl p-4 mb-3 text-sm bg-amber-50 border border-amber-200 text-amber-800';
+  fb.innerHTML = `💡 ${step.hint || 'Piensa en el orden Sujeto + Verbo.'}`;
+  fb.classList.remove('hidden');
+}
+
+function _talaMistake(step, sit) {
+  const correct = step.answer.join(' ');
+  const opts = [correct];
+  let tries = 0;
+  while (opts.length < 4 && tries < 40) {
+    tries++;
+    const sh = [...step.answer].sort(() => Math.random() - 0.5).join(' ');
+    if (!opts.includes(sh)) opts.push(sh);
+  }
+  const shuffled = opts.map((o, i) => ({ o, c: i === 0 })).sort(() => Math.random() - 0.5);
+  return {
+    text: `🗣️ Tala — ${sit.title}: di en sueco "${step.answerEs}"`,
+    options: shuffled.map(x => x.o),
+    correct: shuffled.findIndex(x => x.c),
+    explanation: (step.explain || '') + `  ✅ ${correct}`
+  };
+}
+
+function talaCheck() {
+  const st = talaState; if (!st || st.answered || !st.built.length) return;
+  const step = st.sit.steps[st.stepIdx];
+  const built = st.built.map(i => st.bank[i].w).join(' ');
+  const fb = document.getElementById('tp-feedback');
+  if (built === step.answer.join(' ')) {
+    st.answered = true;
+    if (!st.stepWrong && !st.stepHint) st.firstTry++;
+    fb.className = 'rounded-2xl p-4 mb-3 text-sm bg-green-50 border border-green-200 text-green-800';
+    fb.innerHTML = `✅ <strong>¡Correcto!</strong> ${step.answer.join(' ')}` + (st.sit.level === 'A' || st.sit.level === 'B' ? `<div class="text-green-600 text-xs mt-1">${step.answerEs}</div>` : '');
+    fb.classList.remove('hidden');
+    document.getElementById('tp-check').classList.add('hidden');
+    document.getElementById('tp-continue').classList.remove('hidden');
+    renderTalaUI();
+  } else {
+    if (!st.stepWrong) { st.stepWrong = true; st.errors++; try { addMistake(_talaMistake(step, st.sit)); } catch (e) {} }
+    fb.className = 'rounded-2xl p-4 mb-3 text-sm bg-red-50 border border-red-200 text-red-800';
+    fb.innerHTML = `❌ Casi. La forma correcta es:<div class="font-bold text-red-900 mt-1">${step.answer.join(' ')}</div><div class="text-red-600 text-xs mt-1">${step.explain || ''}</div><div class="text-gray-500 text-xs mt-1">Inténtalo de nuevo 👇</div>`;
+    fb.classList.remove('hidden');
+    st.built = [];
+    renderTalaUI();
+  }
+}
+
+function talaNext() {
+  const st = talaState; if (!st) return;
+  st.stepIdx++;
+  if (st.stepIdx >= st.sit.steps.length) { finishTala(); return; }
+  renderTalaStep();
+}
+
+async function finishTala() {
+  const st = talaState; if (!st) return;
+  const total = st.sit.steps.length;
+  const score = Math.round((st.firstTry / total) * 100);
+  const prev = talaProgressMap[st.sit.id] || {};
+  const best = Math.max(prev.best_score || 0, score);
+  await saveTalaProgress(st.sit.id, {
+    current_step: total,
+    completed: true,
+    correct_answers: st.firstTry,
+    error_count: (prev.error_count || 0) + st.errors,
+    attempts_count: (prev.attempts_count || 0) + 1,
+    hints_used: (prev.hints_used || 0) + st.hints,
+    best_score: best,
+    completed_at: new Date().toISOString()
+  });
+  showView('tala-result');
+  document.getElementById('tp-bar') && (document.getElementById('tp-bar').style.width = '100%');
+  document.getElementById('tr-score').textContent = score + '%';
+  document.getElementById('tr-ok').textContent = st.firstTry;
+  document.getElementById('tr-err').textContent = st.errors;
+  document.getElementById('tr-hints').textContent = st.hints;
+  const msg = score >= 90 ? '¡Excelente! Hablaste como un local 🇸🇪'
+    : score >= 60 ? '¡Muy bien! Cada conversación te suelta más 💪'
+    : '¡Buen intento! Repite para afianzarlo 🌱';
+  document.getElementById('tr-msg').textContent = msg;
+}
+
+function talaRetry() { if (talaState) startTalaSituation(talaState.sit.id); }
+function talaExit() { showTala(); }
 
 async function showJuanita() {
   if (!requireAccess()) return;
