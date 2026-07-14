@@ -110,10 +110,11 @@ function moduleItems(moduleKey) {
         return topics.filter(t => t && t.active !== false).map(t => ({ id: String(t.id || t.key || t.title), level: t.level || null }));
       }
       case 'listening': {
+        // Hörförståelse vive en HORST_DATA.levels (los audios se irán agregando).
         const out = [];
-        if (typeof DB !== 'undefined') SFI_LEVELS.forEach(lv => {
-          const arr = (DB[lv] && DB[lv].listen) ? DB[lv].listen : [];
-          arr.forEach((it, i) => out.push({ id: lv + ':' + (it.id || i), level: lv }));
+        if (typeof HORST_DATA !== 'undefined' && HORST_DATA.levels) SFI_LEVELS.forEach(lv => {
+          const arr = HORST_DATA.levels[lv] || [];
+          arr.forEach((ep, i) => out.push({ id: lv + ':' + (ep.id || i), level: lv }));
         });
         return out;
       }
@@ -167,6 +168,19 @@ function itemStatus(moduleKey, contentId) {
 // onlyAvailable=true → el denominador considera solo niveles desbloqueados para el alumno.
 function moduleProgress(moduleKey, opts) {
   opts = opts || {};
+  // Gramática: progreso fraccional por tema (% dominado), sube gradual.
+  if (moduleKey === 'grammar' && typeof grammarTopicPct === 'function') {
+    const topics = moduleItems('grammar').filter(it => (!opts.onlyAvailable || !it.level || levelAvailable(it.level)));
+    const byLevel = {}; SFI_LEVELS.forEach(lv => byLevel[lv] = { done: 0, total: 0, pct: 0 });
+    let doneFrac = 0;
+    topics.forEach(it => {
+      const f = grammarTopicPct(it.id) / 100;
+      doneFrac += f;
+      if (it.level && byLevel[it.level]) { byLevel[it.level].total++; byLevel[it.level].done += f; }
+    });
+    SFI_LEVELS.forEach(lv => { byLevel[lv].pct = byLevel[lv].total ? pctClamp(byLevel[lv].done, byLevel[lv].total) : 0; });
+    return { done: doneFrac, total: topics.length, pct: pctClamp(doneFrac, topics.length), byLevel };
+  }
   const items = moduleItems(moduleKey).filter(it => {
     if (opts.onlyAvailable && it.level) return levelAvailable(it.level);
     return true;
