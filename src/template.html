@@ -703,18 +703,20 @@
     <div class="mt-6 glass rounded-2xl p-5 shadow border border-blue-100">
       <div class="grid grid-cols-3 gap-4 text-center">
         <div>
-          <div class="text-2xl font-black text-swe-blue" id="stat-sessions">0</div>
-          <div class="text-xs text-gray-500 mt-0.5">Sesiones</div>
+          <div class="text-2xl font-black text-swe-blue" id="stat-overall">0 %</div>
+          <div class="text-xs text-gray-500 mt-0.5">Progreso general</div>
         </div>
         <div class="border-x border-gray-200">
-          <div class="text-2xl font-black text-swe-blue" id="stat-correct">0</div>
-          <div class="text-xs text-gray-500 mt-0.5">Aciertos</div>
+          <div class="text-2xl font-black text-swe-blue" id="stat-activities">0</div>
+          <div class="text-xs text-gray-500 mt-0.5">Actividades completadas</div>
         </div>
         <div>
-          <div class="text-2xl font-black text-swe-blue" id="stat-streak">0🔥</div>
-          <div class="text-xs text-gray-500 mt-0.5">Días seguidos</div>
+          <div class="text-2xl font-black text-swe-blue" id="stat-situations">0</div>
+          <div class="text-xs text-gray-500 mt-0.5">Situaciones dominadas</div>
         </div>
       </div>
+      <!-- Elementos antiguos ocultos (compatibilidad con updateStats): sesiones/aciertos/racha -->
+      <div class="hidden"><span id="stat-sessions"></span><span id="stat-correct"></span><span id="stat-streak"></span></div>
     </div>
 
     <!-- ── EQUIPO ─────────────────────────────────────── -->
@@ -732,6 +734,7 @@
           <div class="flex-1">
             <div class="font-bold text-gray-800">Teoría — Aprende paso a paso</div>
             <div class="text-xs text-gray-500">Lecciones cortas y fáciles: lees y luego practicas</div>
+            <div class="mt-2 flex items-center gap-2"><div class="flex-1 max-w-[160px]" id="bar-theory"></div><span class="text-xs font-black text-sky-600" id="pct-theory">0 %</span></div>
           </div>
           <span class="text-xl text-sky-500">→</span>
         </div>
@@ -740,7 +743,7 @@
         <div class="flex items-center gap-4">
           <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background:linear-gradient(135deg,#FECC02,#F59E0B);">🎯</div>
           <div class="flex-1">
-            <div class="font-black text-gray-800 text-base">Practica Gramática</div>
+            <div class="flex items-center justify-between"><div class="font-black text-gray-800 text-base">Practica Gramática</div><span class="text-xs font-black text-amber-600" id="pct-grammar">0 %</span></div>
             <div class="text-xs text-gray-500 mt-0.5">Busca o elige un tema y practica sin límite</div>
             <div class="flex flex-wrap gap-1 mt-2">
               <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">Verbos</span>
@@ -757,7 +760,7 @@
         <div class="flex items-center gap-4">
           <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background:linear-gradient(135deg,#006AA7,#004F7C);">🎧</div>
           <div class="flex-1">
-            <div class="font-bold text-gray-800 text-base">Hörförståelse</div>
+            <div class="flex items-center justify-between"><div class="font-bold text-gray-800 text-base">Hörförståelse</div><span class="text-xs font-black text-swe-blue" id="pct-listening">0 %</span></div>
             <div class="text-sm text-gray-500 mt-0.5">Escucha a Sophie y responde preguntas</div>
             <div class="flex gap-2 mt-2">
               <span class="text-xs bg-swe-blue/10 text-swe-blue px-2 py-0.5 rounded-full font-semibold">Principiante</span>
@@ -1626,6 +1629,7 @@
 
 <script src="data.js"></script>
 <script src="talaSituations.js"></script>
+<script src="progress.js"></script>
 <script src="app.js"></script>
 
 <!-- ═══════════════════════════════════════════════════════════

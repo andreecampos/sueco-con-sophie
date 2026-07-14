@@ -1516,6 +1516,7 @@ async function loginStudent() {
   }
   showView('home');
   renderHomeDashboard();
+  initUnifiedProgress();
   showToast(_isAdmin ? '¡Bienvenida! Tienes acceso de administrador 👋' : (blocked ? `Hej ${student.name}. Tu suscripción está inactiva.` : `¡Välkommen, ${student.name}! 🇸🇪`), 'success');
   if (isAdminUser() && _wantAdmin) { _wantAdmin = false; goAdmin(); }
 }
@@ -1604,6 +1605,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (adminBtn) adminBtn.style.display = isAdminUser() ? '' : 'none';
       showView('home');
       renderHomeDashboard();
+      initUnifiedProgress();
       if (_wantAdmin && isAdminUser()) { _wantAdmin = false; goAdmin(); }
       return;
     }
@@ -4388,9 +4390,35 @@ function renderPaymentBanner() {
   }
 }
 
+// Carga el progreso unificado (una consulta) + Tala, y pinta el dashboard.
+async function initUnifiedProgress() {
+  try { if (typeof loadTalaProgress === 'function') await loadTalaProgress(); } catch (e) {}
+  try { if (typeof loadUnifiedProgress === 'function') await loadUnifiedProgress(); } catch (e) {}
+  renderDashboardProgress();
+}
+
+// Pinta porcentajes del dashboard desde el sistema unificado (usa la caché ya cargada).
+function renderDashboardProgress() {
+  if (typeof overallProgress !== 'function') return;
+  const setTxt = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  try {
+    const ov = overallProgress();
+    setTxt('stat-overall', fmtPct(ov.pct));
+    setTxt('stat-activities', ov.done);
+    setTxt('stat-situations', moduleProgress('tala').done);
+    const th = moduleProgress('theory'), gr = moduleProgress('grammar'), li = moduleProgress('listening');
+    setTxt('pct-theory', fmtPct(th.pct));
+    setTxt('pct-grammar', fmtPct(gr.pct));
+    setTxt('pct-listening', fmtPct(li.pct));
+    const bt = document.getElementById('bar-theory');
+    if (bt && typeof progressBar === 'function') bt.innerHTML = progressBar(th.pct);
+  } catch (e) {}
+}
+
 function renderHomeDashboard() {
   renderPaymentBanner();
   renderProfileWidget();
+  renderDashboardProgress();
   const ring = document.getElementById('dash-ring-fg');
   if (!ring) return;
   const { avance, last } = computeAvance();
