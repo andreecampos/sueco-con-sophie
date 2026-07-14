@@ -65,6 +65,51 @@ const TALA_SITUATIONS = [
     ]
   },
 
+  {
+    id: 'amigo', title: 'Encontrarse con un amigo', icon: '👋', level: 'A',
+    context: 'Te cruzas con un amigo por la calle y charlan.',
+    intro: 'Ves a un amigo por la calle. Salúdalo y ponte al día.',
+    steps: [
+      { npc: 'Hej! Vad kul att se dig! Hur mår du?', npcEs: '¡Hola! ¡Qué bueno verte! ¿Cómo estás?', answer: ['Hej','jag','mår','bra','tack'], distractors: ['dåligt','nej'], answerEs: 'Hola, estoy bien, gracias.', hint: '"mår bra" = estar bien.', explain: '"Hur mår du?" → "Jag mår bra".' },
+      { npc: 'Vad har du gjort idag?', npcEs: '¿Qué has hecho hoy?', answer: ['Jag','har','jobbat','hela','dagen'], distractors: ['sovit','natten'], answerEs: 'He trabajado todo el día.', hint: '"har jobbat" = he trabajado.', explain: 'Perfecto: har + participio.' },
+      { npc: 'Vad tråkigt! Ska vi ta en kaffe?', npcEs: '¡Qué pena! ¿Tomamos un café?', answer: ['Ja','gärna','bra','idé'], distractors: ['nej','dålig'], answerEs: 'Sí, con gusto, buena idea.', hint: '"gärna" = con gusto.', explain: '"Bra idé" = buena idea.' },
+      { npc: 'Var vill du gå?', npcEs: '¿A dónde quieres ir?', answer: ['Vi','kan','gå','till','ett','kafé'], distractors: ['hem','från'], answerEs: 'Podemos ir a una cafetería.', hint: '"gå till" = ir a.', explain: '"ett kafé" (ett-ord).' },
+      { npc: 'Perfekt! Har du tid nu?', npcEs: '¡Perfecto! ¿Tienes tiempo ahora?', answer: ['Ja','jag','har','tid','en','timme'], distractors: ['ingen','dag'], answerEs: 'Sí, tengo una hora.', hint: '"ha tid" = tener tiempo.', explain: '"en timme" = una hora.' },
+      { npc: 'Vad bra! Hur är det med familjen?', npcEs: '¡Qué bien! ¿Cómo está la familia?', answer: ['Alla','mår','bra','tack'], distractors: ['ingen','dåligt'], answerEs: 'Todos están bien, gracias.', hint: '"alla" = todos.', explain: '"Alla mår bra" = todos están bien.' },
+      { npc: 'Vi ses snart igen, hoppas jag!', npcEs: '¡Nos vemos pronto, espero!', answer: ['Ja','det','hoppas','jag','med'], distractors: ['nej','inte'], answerEs: 'Sí, yo también lo espero.', hint: '"hoppas" = esperar.', explain: '"jag med" = yo también.' },
+      { npc: 'Då går vi! Kom!', npcEs: '¡Vamos entonces! ¡Ven!', answer: ['Ja','nu','går','vi'], distractors: ['sen','inte'], answerEs: 'Sí, vamos ahora.', hint: '"nu" = ahora.', explain: '"Nu går vi" = vamos ahora.' }
+    ]
+  },
+  {
+    id: 'fika', title: 'Pedir una fika', icon: '☕', level: 'A',
+    context: 'En una cafetería: pides café y algo dulce (fika).',
+    intro: 'Entras a un café sueco a hacer tu fika. Pide café y un bollo.',
+    steps: [
+      { npc: 'Hej och välkommen! Vad vill du ha?', npcEs: '¡Hola y bienvenido! ¿Qué quieres?', answer: ['Hej','jag','vill','ha','en','kaffe'], distractors: ['te','nej'], answerEs: 'Hola, quiero un café.', hint: '"vill ha" = quiero.', explain: '"Jag vill ha en kaffe".' },
+      { npc: 'Vill du ha något att äta också?', npcEs: '¿Quieres algo de comer también?', answer: ['Ja','en','kanelbulle','tack'], distractors: ['nej','kaka'], answerEs: 'Sí, un bollo de canela, gracias.', hint: '"kanelbulle" = bollo de canela.', explain: 'El clásico de la fika sueca.' },
+      { npc: 'Bra val! Vill du ha den varm?', npcEs: '¡Buena elección! ¿La quieres caliente?', answer: ['Ja','gärna','tack'], distractors: ['nej','kall'], answerEs: 'Sí, con gusto, gracias.', hint: '"varm" = caliente.', explain: '"gärna" acepta con cortesía.' },
+      { npc: 'Något mer?', npcEs: '¿Algo más?', answer: ['Nej','tack','det','räcker'], distractors: ['ja','mer'], answerEs: 'No gracias, es suficiente.', hint: '"det räcker" = es suficiente.', explain: '"räcka" = bastar/alcanzar.' },
+      { npc: 'Vill du äta här eller ta med?', npcEs: '¿Para aquí o para llevar?', answer: ['Jag','vill','äta','här'], distractors: ['med','hem'], answerEs: 'Quiero comer aquí.', hint: '"här" = aquí.', explain: '"ta med" = para llevar.' },
+      { npc: 'Det blir 55 kronor.', npcEs: 'Son 55 coronas.', answer: ['Kan','jag','betala','med','kort'], distractors: ['kontant','nej'], answerEs: '¿Puedo pagar con tarjeta?', hint: 'Pregunta: verbo primero.', explain: '"Kan jag betala med kort?"' },
+      { npc: 'Javisst. Varsågod!', npcEs: 'Claro. ¡Aquí tienes!', answer: ['Tack','så','mycket'], distractors: ['nej','igen'], answerEs: 'Muchas gracias.', hint: 'cortesía.', explain: '"Tack så mycket".' },
+      { npc: 'Smaklig fika! Sitt var du vill.', npcEs: '¡Buena fika! Siéntate donde quieras.', answer: ['Tack','ha','en','fin','dag'], distractors: ['natt','nej'], answerEs: 'Gracias, buen día.', hint: 'despedida.', explain: '"en fin dag" = un buen día.' }
+    ]
+  },
+  {
+    id: 'direccion', title: 'Preguntar una dirección', icon: '🗺️', level: 'A',
+    context: 'Estás perdido y preguntas a alguien en la calle.',
+    intro: 'No encuentras la estación. Pregúntale a una persona en la calle.',
+    steps: [
+      { npc: 'Hej, kan jag hjälpa dig?', npcEs: 'Hola, ¿puedo ayudarte?', answer: ['Ursäkta','var','ligger','stationen'], distractors: ['när','vem'], answerEs: 'Disculpe, ¿dónde está la estación?', hint: '"Var ligger...?" = ¿dónde está...?', explain: '"ligga" se usa para ubicar lugares.' },
+      { npc: 'Stationen ligger rakt fram.', npcEs: 'La estación está todo recto.', answer: ['Är','det','långt','härifrån'], distractors: ['nära','när'], answerEs: '¿Está lejos de aquí?', hint: '"långt" = lejos.', explain: '"härifrån" = desde aquí.' },
+      { npc: 'Nej, bara fem minuter.', npcEs: 'No, solo cinco minutos.', answer: ['Ska','jag','gå','till','höger'], distractors: ['vänster','nej'], answerEs: '¿Debo ir a la derecha?', hint: '"till höger" = a la derecha.', explain: '"höger" derecha; "vänster" izquierda.' },
+      { npc: 'Nej, gå rakt fram och sen vänster.', npcEs: 'No, sigue recto y luego a la izquierda.', answer: ['Okej','tack','så','mycket'], distractors: ['nej','inte'], answerEs: 'Ok, muchas gracias.', hint: '"rakt fram" = todo recto.', explain: '"sen" = luego/después.' },
+      { npc: 'Det finns en skylt där.', npcEs: 'Hay un letrero allí.', answer: ['Var','ligger','busshållplatsen'], distractors: ['när','vem'], answerEs: '¿Dónde está la parada de bus?', hint: '"busshållplats" = parada de bus.', explain: '"Var ligger...?" otra vez.' },
+      { npc: 'Den ligger bredvid stationen.', npcEs: 'Está al lado de la estación.', answer: ['Tack','för','hjälpen'], distractors: ['nej','din'], answerEs: 'Gracias por la ayuda.', hint: '"Tack för hjälpen".', explain: '"bredvid" = al lado de.' },
+      { npc: 'Ingen orsak! Lycka till.', npcEs: '¡De nada! Buena suerte.', answer: ['Tack','ha','en','bra','dag'], distractors: ['natt','nej'], answerEs: 'Gracias, buen día.', hint: 'despedida.', explain: '"Lycka till" = buena suerte.' }
+    ]
+  },
+
   /* ═══════════════ NIVEL SFI B ═══════════════ */
   {
     id: 'jobbintervju', title: 'Entrevista de trabajo', icon: '💼', level: 'B',
