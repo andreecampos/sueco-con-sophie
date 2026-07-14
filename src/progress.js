@@ -55,13 +55,45 @@ function fmtPct(p) {
 
 // Devuelve 'A'|'B'|'C'|'D'. Preferimos el resultado de la prueba (nivel_resultados,
 // cacheado en scs_nivel_last). Si no hay, 'A'.
+let _assignedDB = null; // nivel más alto guardado en Supabase (nivel_resultados)
+function setAssignedLevelDB(lv) {
+  if (lv && SFI_LEVELS.indexOf(String(lv).toUpperCase()[0]) >= 0) _assignedDB = String(lv).toUpperCase()[0];
+}
 function assignedLevel() {
+  let lv = 'A';
   try {
     const last = (typeof getNivelLast === 'function') ? getNivelLast() : null;
     const nv = last && last.nivel ? String(last.nivel).toUpperCase().replace('SFI', '').trim() : null;
-    if (nv && SFI_LEVELS.includes(nv[0])) return nv[0];
+    if (nv && SFI_LEVELS.includes(nv[0])) lv = nv[0];
   } catch (e) {}
-  return 'A';
+  // Supabase manda si es más alto (robusto entre dispositivos).
+  if (_assignedDB && SFI_LEVELS.indexOf(_assignedDB) > SFI_LEVELS.indexOf(lv)) lv = _assignedDB;
+  return lv;
+}
+
+// Progreso combinado de un nivel (todos los módulos): cuánto avanzó el alumno en ese nivel.
+function levelProgress(lv) {
+  let done = 0, total = 0;
+  PROGRESS_MODULES.forEach(m => {
+    const bl = moduleProgress(m.key).byLevel[lv];
+    if (bl) { done += bl.done; total += bl.total; }
+  });
+  return { done, total, pct: pctClamp(done, total), available: levelAvailable(lv) };
+}
+
+// Conteo ENTERO de actividades completadas (para mostrar al usuario, nunca decimales).
+function completedCount() {
+  let n = 0;
+  ['theory', 'listening', 'tala', 'grammar'].forEach(m => {
+    moduleItems(m).forEach(it => { if (isCompleted(m, it.id)) n++; });
+  });
+  return n;
+}
+// Total de actividades activas disponibles para el alumno (denominador entero).
+function totalActivities() {
+  let t = 0;
+  PROGRESS_MODULES.forEach(m => { t += moduleItems(m.key).filter(it => !it.level || levelAvailable(it.level)).length; });
+  return t;
 }
 
 // Índice del nivel más alto DISPONIBLE = max(asignado, primer nivel incompleto en la progresión).
@@ -300,7 +332,8 @@ function lockedContentMessage(reason) {
 if (typeof window !== 'undefined') {
   Object.assign(window, {
     SFI_LEVELS, LEVEL_COLORS, PROGRESS_MODULES,
-    pctClamp, fmtPct, assignedLevel, levelAvailable, levelFullyComplete, highestUnlockedIndex,
+    pctClamp, fmtPct, assignedLevel, setAssignedLevelDB, levelAvailable, levelFullyComplete, highestUnlockedIndex,
+    levelProgress, completedCount, totalActivities,
     moduleItems, isCompleted, itemStatus, moduleProgress, overallProgress,
     loadUnifiedProgress, progressMark, markCompleted, backfillLocalProgress,
     progressBar, progressPercentage, contentStatusIcon, completionBadge, lockedContentMessage
