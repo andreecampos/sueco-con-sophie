@@ -2338,31 +2338,39 @@ function _accCurrent() {
   return { name: s.name || '', avatar: s.avatar || null };
 }
 function openAccountModal() {
-  const cur = _accCurrent();
-  _accPhotoBlob = null;
-  // Foto actual
-  const pv = document.getElementById('acc-photo-preview');
-  if (pv) {
-    if (cur.avatar) pv.innerHTML = `<img src="${cur.avatar}" class="w-16 h-16 object-cover" referrerpolicy="no-referrer" alt="">`;
-    else { const a = (typeof reviewAvatar === 'function') ? reviewAvatar(cur.name || 'A') : { initial: '🙂', color: '#94a3b8' }; pv.innerHTML = `<div class="w-16 h-16 flex items-center justify-center text-white text-xl font-bold" style="background:${a.color}">${a.initial}</div>`; }
-  }
-  const ps = document.getElementById('acc-photo-save'); if (ps) ps.disabled = true;
-  _accMsg('acc-photo-msg', '');
-  // Nombre
-  const ni = document.getElementById('acc-name-input'); if (ni) ni.value = cur.name || '';
-  _accMsg('acc-name-msg', '');
-  // Contraseña
-  const p1 = document.getElementById('acc-pass1'); const p2 = document.getElementById('acc-pass2');
-  if (p1) p1.value = ''; if (p2) p2.value = '';
-  _accMsg('acc-pass-msg', '');
   const m = document.getElementById('account-modal');
   if (m) { m.classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
+  accShow('menu');
 }
 function closeAccountModal() {
   const m = document.getElementById('account-modal');
   if (m) m.classList.add('hidden');
   document.body.style.overflow = '';
   _accPhotoBlob = null;
+}
+// Navegación menú ↔ paneles (una sección a la vez, estilo panel de ajustes moderno).
+function accShow(view) {
+  const panels = { menu: 'acc-menu', photo: 'acc-panel-photo', name: 'acc-panel-name', pass: 'acc-panel-pass' };
+  Object.values(panels).forEach(id => { const e = document.getElementById(id); if (e) e.classList.add('hidden'); });
+  const target = document.getElementById(panels[view] || 'acc-menu'); if (target) target.classList.remove('hidden');
+  const titles = { menu: '⚙️ Mi cuenta', photo: '👤 Foto de perfil', name: '✏️ Cambiar nombre', pass: '🔒 Cambiar contraseña' };
+  const t = document.getElementById('acc-title'); if (t) t.textContent = titles[view] || titles.menu;
+  const back = document.getElementById('acc-back'); if (back) back.classList.toggle('hidden', view === 'menu');
+  // Poblar al entrar (datos frescos, sin mensajes previos)
+  if (view === 'photo') accInitPhoto();
+  if (view === 'name') { const ni = document.getElementById('acc-name-input'); if (ni) ni.value = _accCurrent().name || ''; _accMsg('acc-name-msg', ''); }
+  if (view === 'pass') accResetPass();
+}
+function accInitPhoto() {
+  _accPhotoBlob = null;
+  const cur = _accCurrent();
+  const pv = document.getElementById('acc-photo-preview');
+  if (pv) {
+    if (cur.avatar) pv.innerHTML = `<img src="${cur.avatar}" class="w-20 h-20 object-cover" referrerpolicy="no-referrer" alt="">`;
+    else { const a = (typeof reviewAvatar === 'function') ? reviewAvatar(cur.name || 'A') : { initial: '🙂', color: '#94a3b8' }; pv.innerHTML = `<div class="w-20 h-20 flex items-center justify-center text-white text-2xl font-bold" style="background:${a.color}">${a.initial}</div>`; }
+  }
+  const ps = document.getElementById('acc-photo-save'); if (ps) ps.disabled = true;
+  _accMsg('acc-photo-msg', '');
 }
 
 // ── Foto ──
@@ -2403,11 +2411,11 @@ async function accSavePhoto() {
     if (window._sbSession) window._sbSession.avatar = url;
     _accPhotoBlob = null;
     renderProfileWidget();
-    _accBusy('acc-photo-save', false, 'Guardar foto');
-    document.getElementById('acc-photo-save').disabled = true;
-    _accMsg('acc-photo-msg', '✅ Foto actualizada.', 'ok');
+    _accBusy('acc-photo-save', false, 'Guardar');
+    showToast('Los cambios se guardaron correctamente.', 'success');
+    accShow('menu');
   } catch (e) {
-    _accBusy('acc-photo-save', false, 'Guardar foto');
+    _accBusy('acc-photo-save', false, 'Guardar');
     _accMsg('acc-photo-msg', 'No se pudo subir: ' + (e.message || 'error'), 'error');
   }
 }
@@ -2424,10 +2432,11 @@ async function accSaveName() {
     if (error) throw error;
     if (window._sbSession) window._sbSession.name = name;
     renderProfileWidget();
-    _accBusy('acc-name-save', false, 'Guardar cambios');
-    _accMsg('acc-name-msg', '✅ Nombre actualizado.', 'ok');
+    _accBusy('acc-name-save', false, 'Guardar');
+    showToast('Los cambios se guardaron correctamente.', 'success');
+    accShow('menu');
   } catch (e) {
-    _accBusy('acc-name-save', false, 'Guardar cambios');
+    _accBusy('acc-name-save', false, 'Guardar');
     _accMsg('acc-name-msg', 'No se pudo guardar: ' + (e.message || ''), 'error');
   }
 }
@@ -2448,14 +2457,24 @@ async function accSavePassword() {
   if (a !== b) { _accMsg('acc-pass-msg', 'Las dos contraseñas no coinciden.', 'error'); return; }
   _accBusy('acc-pass-save', true);
   try {
+    // Asegura una sesión válida ANTES de cambiar la contraseña (evita el error 400
+    // por token expirado, que fue lo que salió la vez pasada).
+    let sess = null;
+    try { const g = await sb.auth.getSession(); sess = g.data && g.data.session; } catch (e) {}
+    if (!sess) { try { const r = await sb.auth.refreshSession(); sess = r.data && r.data.session; } catch (e) {} }
+    if (!sess) throw new Error('Tu sesión expiró. Cierra sesión e inicia de nuevo para cambiar la contraseña.');
     const { error } = await sb.auth.updateUser({ password: a });
     if (error) throw error;
     accResetPass();
-    _accBusy('acc-pass-save', false, 'Guardar contraseña');
-    _accMsg('acc-pass-msg', '✅ Contraseña actualizada.', 'ok');
+    _accBusy('acc-pass-save', false, 'Guardar');
+    showToast('Los cambios se guardaron correctamente.', 'success');
+    accShow('menu');
   } catch (e) {
-    _accBusy('acc-pass-save', false, 'Guardar contraseña');
-    _accMsg('acc-pass-msg', 'No se pudo: ' + (e.message || ''), 'error');
+    _accBusy('acc-pass-save', false, 'Guardar');
+    let msg = (e && e.message) ? e.message : 'No se pudo actualizar';
+    if (/different|should be|same/i.test(msg)) msg = 'La nueva contraseña debe ser distinta de la actual.';
+    else if (/session|expired|missing|jwt/i.test(msg)) msg = 'Tu sesión expiró. Cierra sesión e inicia de nuevo.';
+    _accMsg('acc-pass-msg', msg, 'error');
   }
 }
 
