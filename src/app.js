@@ -1253,7 +1253,7 @@ async function loginStudent() {
 
   window._sbSession = {
     email: data.user.email, id: data.user.id,
-    name: (student && student.name) || (_isAdmin ? 'Admin' : (email || '')),
+    name: data.user.user_metadata?.name || data.user.user_metadata?.full_name || (student && student.name) || (_isAdmin ? 'Admin' : (email || '')),
     active: student ? student.active : true,
     status: student ? student.status : 'active',
   };
@@ -1353,7 +1353,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const { data: student } = await sb
       .from('students').select('active, status').eq('id', session.user.id).single();
     if (student || _adm) {
-      window._sbSession = { email: session.user.email, id: session.user.id, active: student ? student.active : true, status: student ? student.status : 'active' };
+      window._sbSession = { email: session.user.email, id: session.user.id, name: session.user.user_metadata?.name || session.user.user_metadata?.full_name || (student ? student.name : (session.user.email || '')), active: student ? student.active : true, status: student ? student.status : 'active' };
       const adminBtn = document.getElementById('admin-btn-home');
       if (adminBtn) adminBtn.style.display = isAdminUser() ? '' : 'none';
       showView('home');
@@ -1536,6 +1536,24 @@ async function renderProfileWidget() {
     if (avatar) { btnEl.textContent = '📷 Cambiar foto'; btnEl.className = 'text-xs text-swe-blue font-semibold'; }
     else { btnEl.textContent = '📷 ¡Sube tu foto de perfil!'; btnEl.className = 'text-xs text-amber-600 font-bold'; }
   }
+}
+
+// El alumno cambia su nombre visible (solo en la plataforma). Se guarda en su propia
+// cuenta (metadata), no toca el registro del admin ni el correo de pago.
+async function editProfileName() {
+  let current = window._sbSession?.name || '';
+  try { const { data: { session } } = await sb.auth.getSession(); if (session) current = session.user.user_metadata?.name || session.user.user_metadata?.full_name || current; } catch (e) {}
+  const val = prompt('Escribe tu nombre y apellido (así aparecerá en la plataforma):', current || '');
+  if (val === null) return;
+  const name = val.trim();
+  if (!name) { showToast('Escribe tu nombre', 'info'); return; }
+  showToast('Guardando...', 'info');
+  try {
+    await sb.auth.updateUser({ data: { name, full_name: name } });
+    if (window._sbSession) window._sbSession.name = name;
+    renderProfileWidget();
+    showToast('✅ Nombre actualizado', 'success');
+  } catch (e) { showToast('No se pudo guardar: ' + (e.message || ''), 'error'); }
 }
 
 // Comprime la imagen a máx 400px y JPEG → la foto guardada pesa ~50–100 KB.
