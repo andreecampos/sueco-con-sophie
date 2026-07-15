@@ -101,7 +101,41 @@ function showView(id) {
   const v = document.getElementById('view-' + id);
   if (v) v.classList.add('active');
   window.scrollTo(0, 0);
+  try { _updateBottomNav(id); } catch (e) {}
 }
+
+// La barra inferior se ve en las secciones principales; se oculta durante actividades
+// que requieren concentración (lecciones, quizzes, prueba de nivel, Tala, etc.).
+const NAV_VIEWS = { home: 'home', aprender: 'aprender', miviaje: 'miviaje', progreso: 'progreso' };
+function _updateBottomNav(id) {
+  const nav = document.getElementById('bottom-nav');
+  if (!nav) return;
+  const show = Object.prototype.hasOwnProperty.call(NAV_VIEWS, id);
+  nav.classList.toggle('hidden', !show);
+  if (show) {
+    document.querySelectorAll('#bottom-nav .nav-btn').forEach(b => {
+      const on = b.getAttribute('data-nav') === id;
+      b.classList.toggle('text-swe-blue', on);
+      b.classList.toggle('text-gray-400', !on);
+    });
+  }
+}
+// Navegación entre secciones principales.
+function navGo(section) {
+  if (section === 'home') { goHome(); return; }
+  if (section === 'aprender') { if (!requireAccess()) return; stopSpeech(); showView('aprender'); renderDashboardProgress(); return; }
+  if (section === 'miviaje') { if (!requireAccess()) return; stopSpeech(); showView('miviaje'); return; }
+  if (section === 'progreso') { if (!requireAccess()) return; stopSpeech(); showView('progreso'); renderHomeDashboard(); renderDashboardProgress(); return; }
+}
+
+// Modal genérico "próximamente".
+function openComingSoon(icon, title, text, btn) {
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  set('coming-icon', icon || '🔜'); set('coming-title', title || 'Próximamente'); set('coming-text', text || 'Muy pronto disponible.');
+  const b = document.getElementById('coming-btn'); if (b) b.textContent = btn || 'Entendido';
+  const m = document.getElementById('coming-modal'); if (m) m.classList.remove('hidden');
+}
+function closeComingSoon() { const m = document.getElementById('coming-modal'); if (m) m.classList.add('hidden'); }
 
 function goHome() {
   const session = getSession();
@@ -4646,6 +4680,7 @@ async function initUnifiedProgress() {
   try { if (typeof loadUnifiedProgress === 'function') await loadUnifiedProgress(); } catch (e) {}
   try { await loadAssignedLevelFromDB(); } catch (e) {}
   renderDashboardProgress();
+  try { renderInicio(); } catch (e) {}
 }
 
 // Lee el nivel más reciente de la prueba desde Supabase (robusto entre dispositivos).
@@ -4694,10 +4729,160 @@ function renderLevelCards() {
   });
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   MOTOR DE INICIO — racha · objetivo de hoy · continúa aquí · acceso rápido
+   Lógica centralizada y extensible (añadir módulos = añadir al pool/prioridad).
+   ═══════════════════════════════════════════════════════════════════ */
+
+function getStudyStreak() {
+  try {
+    const t = new Date().toISOString().slice(0, 10);
+    let s = null; try { s = JSON.parse(localStorage.getItem('sc_streak') || 'null'); } catch (e) {}
+    if (!s || !s.last) s = { count: 1, last: t };
+    else if (s.last !== t) {
+      const y = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
+      s = { count: s.last === y ? (s.count || 1) + 1 : 1, last: t };
+    }
+    localStorage.setItem('sc_streak', JSON.stringify(s));
+    return s.count || 1;
+  } catch (e) { return 1; }
+}
+
+function _moduleDoneCount(m) {
+  if (m === 'mistakes') return (typeof getMistakes === 'function') ? getMistakes().length : 0;
+  if (typeof moduleProgress !== 'function') return 0;
+  const p = moduleProgress(m);
+  return m === 'grammar' ? Math.round(p.done) : p.done;
+}
+function _dailyState() {
+  const t = new Date().toISOString().slice(0, 10);
+  let d = null; try { d = JSON.parse(localStorage.getItem('sc_daily') || 'null'); } catch (e) {}
+  if (!d || d.date !== t) {
+    d = { date: t, snap: { theory: _moduleDoneCount('theory'), grammar: _moduleDoneCount('grammar'), listening: _moduleDoneCount('listening'), tala: _moduleDoneCount('tala'), mistakes: _moduleDoneCount('mistakes') }, celebrated: false };
+    try { localStorage.setItem('sc_daily', JSON.stringify(d)); } catch (e) {}
+  }
+  return d;
+}
+function _saveDaily(d) { try { localStorage.setItem('sc_daily', JSON.stringify(d)); } catch (e) {} }
+
+// Hasta 3 objetivos, adaptados al progreso y a lo desbloqueado.
+function getDailyGoals() {
+  const d = _dailyState();
+  if (typeof hasLevelTest === 'function' && !hasLevelTest())
+    return { goals: [{ id: 'niveltest', label: 'Hacer la prueba de nivel', done: false, action: 'showNivelTest' }], done: 0, total: 1, celebrateReady: false };
+  const pool = [
+    { id: 'theory', label: 'Completar una teoría', module: 'theory', avail: moduleProgress('theory').pct < 100, action: 'continuaAction' },
+    { id: 'grammar', label: 'Resolver un ejercicio de gramática', module: 'grammar', avail: true, action: 'showGrammar' },
+    { id: 'listening', label: 'Escuchar y responder un audio', module: 'listening', avail: moduleProgress('listening').total > 0 && moduleProgress('listening').pct < 100, action: 'showHorst' },
+    { id: 'tala', label: 'Completar una situación de Tala', module: 'tala', avail: moduleProgress('tala').total > 0, action: 'continuaAction' },
+    { id: 'mistakes', label: 'Repasar palabras equivocadas', module: 'mistakes', avail: _moduleDoneCount('mistakes') > 0, action: 'showGrammar' }
+  ];
+  const chosen = pool.filter(g => g.avail).slice(0, 3);
+  let done = 0;
+  chosen.forEach(g => {
+    const cur = _moduleDoneCount(g.module);
+    g.done = g.module === 'mistakes' ? (cur < (d.snap.mistakes || 0)) : (cur > (d.snap[g.module] || 0));
+    if (g.done) done++;
+  });
+  return { goals: chosen, done, total: chosen.length, celebrateReady: chosen.length > 0 && done >= chosen.length && !d.celebrated };
+}
+function _goalGo(action) {
+  if (action === 'showNivelTest') return showNivelTest();
+  if (action === 'showGrammar') return showGrammar();
+  if (action === 'showHorst') return showHorst();
+  if (action === 'continuaAction') return continuaAction();
+}
+function renderObjetivo() {
+  const list = document.getElementById('objetivo-list');
+  const prog = document.getElementById('objetivo-progress');
+  if (!list) return;
+  const r = getDailyGoals();
+  list.innerHTML = r.goals.map(g => `
+    <div class="flex items-center gap-2 ${g.done ? '' : 'cursor-pointer'}" ${g.done ? '' : `onclick="_goalGo('${g.action}')"`}>
+      <span class="w-5 h-5 rounded-full flex items-center justify-center text-white text-[11px] flex-shrink-0 ${g.done ? 'bg-green-500' : 'bg-gray-200'}">${g.done ? '✓' : ''}</span>
+      <span class="text-sm ${g.done ? 'text-gray-400 line-through' : 'text-gray-700 font-medium'}">${g.label}</span>
+    </div>`).join('');
+  if (prog) prog.textContent = `Progreso: ${r.done} / ${r.total}`;
+  if (r.celebrateReady) { const d = _dailyState(); d.celebrated = true; _saveDaily(d); showToast('🎉 ¡Objetivo diario completado! Mañana tendrás nuevos desafíos.', 'success'); }
+}
+
+// Continúa aquí — recomienda la SIGUIENTE actividad por prioridad (nunca al azar).
+function getContinueActivity() {
+  if (typeof hasLevelTest === 'function' && !hasLevelTest())
+    return { icon: '🎯', title: 'Prueba de nivel', label: 'Descubre tu nivel de sueco', action: () => showNivelTest(), btn: 'Empezar' };
+  const avail = lv => (typeof levelAvailable !== 'function') || !lv || levelAvailable(lv);
+  const units = ((typeof THEORY_DATA !== 'undefined' && THEORY_DATA.units) ? THEORY_DATA.units : []).filter(u => avail(u.level));
+  const tp = (typeof getTheoryProgress === 'function') ? getTheoryProgress() : {};
+  const idx = u => units.indexOf(u) + 1;
+  let u = units.find(x => tp[x.id] && tp[x.id].read && !tp[x.id].done);
+  if (u) return { icon: '📖', title: 'Teoría', label: `Lección ${idx(u)} · ${u.title}`, action: () => openTheoryUnit(u.id), btn: 'Continuar' };
+  const talaIP = ((typeof TALA_SITUATIONS !== 'undefined') ? TALA_SITUATIONS : []).find(s => talaProgressMap[s.id] && talaProgressMap[s.id].current_step > 0 && !talaProgressMap[s.id].completed && avail(s.level));
+  if (talaIP) return { icon: '🗣️', title: 'Tala', label: talaIP.title, action: () => startTalaSituation(talaIP.id), btn: 'Continuar' };
+  u = units.find(x => !(tp[x.id] && tp[x.id].done));
+  if (u) return { icon: '📖', title: 'Teoría', label: `Lección ${idx(u)} · ${u.title}`, action: () => openTheoryUnit(u.id), btn: 'Empezar' };
+  if (moduleProgress('grammar').pct < 100) {
+    const topic = (GRAMMAR_DATA.topics || []).find(t => grammarTopicPct(t.id) < 100 && avail(t.level));
+    if (topic) return { icon: '🎯', title: 'Gramática', label: topic.title, action: () => startGrammarTopic(topic.id), btn: 'Practicar' };
+  }
+  const li = (typeof moduleItems === 'function') ? moduleItems('listening').find(it => avail(it.level) && !isCompleted('listening', it.id)) : null;
+  if (li) return { icon: '🎧', title: 'Hörförståelse', label: 'Escucha el siguiente audio', action: () => showHorst(), btn: 'Escuchar' };
+  const ta = ((typeof TALA_SITUATIONS !== 'undefined') ? TALA_SITUATIONS : []).find(s => avail(s.level) && !isCompleted('tala', s.id) && talaSituationUnlocked(s));
+  if (ta) return { icon: '🗣️', title: 'Tala', label: ta.title, action: () => startTalaSituation(ta.id), btn: 'Practicar' };
+  return { done: true };
+}
+let _continueAction = null;
+function continuaAction() { if (typeof _continueAction === 'function') _continueAction(); }
+function renderContinua() {
+  const body = document.getElementById('continua-body');
+  if (!body) return;
+  const c = getContinueActivity();
+  if (c.done) {
+    _continueAction = () => showGrammar();
+    body.innerHTML = `<div class="text-center"><div class="text-3xl mb-1">🎉</div><div class="font-bold text-gray-800 text-sm">¡Excelente trabajo!</div><div class="text-xs text-gray-500 mt-1 mb-3">Completaste todo lo disponible. Repasa mientras tanto.</div><button onclick="showGrammar()" class="w-full bg-swe-blue text-white py-2.5 rounded-xl font-bold text-sm hover:bg-swe-dark">Repasar errores</button></div>`;
+    return;
+  }
+  _continueAction = c.action;
+  body.innerHTML = `
+    <div class="flex items-center gap-3 mb-3">
+      <span class="w-11 h-11 rounded-2xl bg-blue-50 flex items-center justify-center text-2xl flex-shrink-0">${c.icon}</span>
+      <div class="min-w-0"><div class="font-bold text-gray-800 text-sm">${c.title}</div><div class="text-xs text-gray-500 truncate">${c.label}</div></div>
+    </div>
+    <button onclick="continuaAction()" class="w-full bg-swe-blue text-white py-2.5 rounded-xl font-bold text-sm hover:bg-swe-dark transition-colors">${c.btn || 'Continuar'}</button>`;
+}
+
+// Acceso rápido — tarjeta reutilizable (preparadas para activar acción en el futuro).
+function _accesoCard(o) {
+  const badge = o.badge ? `<div class="mt-2 text-xs font-bold ${o.badgeCls} px-3 py-1 rounded-full inline-block">${o.badge}</div>` : '';
+  const btn = o.btn ? `<div class="mt-2 text-xs font-bold ${o.btnCls} px-3 py-1.5 rounded-full inline-block">${o.btn}</div>` : '';
+  return `<button onclick="${o.onclick}" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 text-center card-hover flex flex-col items-center" style="min-height:158px">
+    <div class="w-16 h-16 rounded-full flex items-center justify-center text-3xl mb-2" style="background:${o.bg}">${o.icon}</div>
+    <div class="font-black text-gray-800 text-sm leading-tight">${o.title}</div>
+    <div class="text-xs text-gray-500 mt-0.5 leading-snug flex-1">${o.text || ''}</div>
+    ${badge}${btn}
+  </button>`;
+}
+function renderAccesoRapido() {
+  const el = document.getElementById('acceso-rapido');
+  if (!el) return;
+  el.innerHTML = [
+    _accesoCard({ icon: '👵', bg: '#fce7f3', title: 'Practicando con Juanita', text: 'Conversaciones guiadas con IA.', badge: 'snart tillgänglig', badgeCls: 'text-pink-600 bg-pink-50', onclick: "openComingSoon('👵','Practicando con Juanita','Muy pronto practicarás conversaciones guiadas con Juanita.','Entendido')" }),
+    _accesoCard({ icon: '🇸🇪', bg: '#dcfce7', title: '¿Qué tan sueco eres?', text: 'Pon a prueba tus conocimientos.', badge: 'snart tillgänglig', badgeCls: 'text-emerald-600 bg-emerald-50', onclick: "openComingSoon('🇸🇪','¿Qué tan sueco eres?','Muy pronto podrás poner a prueba tus conocimientos.','Entendido')" }),
+    _accesoCard({ icon: '🗺️', bg: '#dbeafe', title: 'Mi viaje por Suecia', text: 'Explora el mapa de Suecia mientras aprendes.', btn: 'Explorar', btnCls: 'text-swe-blue bg-blue-50', onclick: "openComingSoon('🗺️','Mi viaje por Suecia','Muy pronto comenzarás tu viaje por Suecia desbloqueando ciudades mientras completas actividades.','Entendido')" }),
+    _accesoCard({ icon: '🏆', bg: '#ede9fe', title: 'Logros', text: 'Tus premios y medallas.', btn: 'Ver mis premios', btnCls: 'text-purple-600 bg-purple-50', onclick: "openComingSoon('🏆','Logros','Muy pronto podrás desbloquear insignias, medallas y premios conforme avances en la plataforma.','Entendido')" })
+  ].join('');
+}
+function renderInicio() {
+  const sc = document.getElementById('streak-count'); if (sc) sc.textContent = getStudyStreak();
+  renderObjetivo();
+  renderContinua();
+  renderAccesoRapido();
+}
+
 function renderHomeDashboard() {
   renderPaymentBanner();
   renderProfileWidget();
   renderDashboardProgress();
+  renderInicio();
   const ring = document.getElementById('dash-ring-fg');
   if (!ring) return;
   const { avance, last } = computeAvance();
