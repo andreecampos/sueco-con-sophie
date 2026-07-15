@@ -125,7 +125,7 @@ function navGo(section) {
   if (section === 'home') { goHome(); return; }
   if (section === 'aprender') { if (!requireAccess()) return; stopSpeech(); showView('aprender'); renderDashboardProgress(); return; }
   if (section === 'miviaje') { if (!requireAccess()) return; stopSpeech(); showView('miviaje'); return; }
-  if (section === 'progreso') { if (!requireAccess()) return; stopSpeech(); showView('progreso'); renderHomeDashboard(); renderDashboardProgress(); return; }
+  if (section === 'progreso') { if (!requireAccess()) return; stopSpeech(); showView('progreso'); return; }
 }
 
 // Modal genérico "próximamente".
