@@ -71,6 +71,12 @@ function assignedLevel() {
   return lv;
 }
 
+// ¿El alumno ya hizo la prueba de nivel? (localStorage o Supabase)
+function hasLevelTest() {
+  try { if (typeof getNivelLast === 'function' && getNivelLast()) return true; } catch (e) {}
+  return !!_assignedDB;
+}
+
 // Progreso combinado de un nivel (todos los módulos): cuánto avanzó el alumno en ese nivel.
 function levelProgress(lv) {
   let done = 0, total = 0;
@@ -333,7 +339,7 @@ if (typeof window !== 'undefined') {
   Object.assign(window, {
     SFI_LEVELS, LEVEL_COLORS, PROGRESS_MODULES,
     pctClamp, fmtPct, assignedLevel, setAssignedLevelDB, levelAvailable, levelFullyComplete, highestUnlockedIndex,
-    levelProgress, completedCount, totalActivities,
+    levelProgress, completedCount, totalActivities, hasLevelTest,
     moduleItems, isCompleted, itemStatus, moduleProgress, overallProgress,
     loadUnifiedProgress, progressMark, markCompleted, backfillLocalProgress,
     progressBar, progressPercentage, contentStatusIcon, completionBadge, lockedContentMessage
