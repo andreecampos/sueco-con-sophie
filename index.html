@@ -202,12 +202,12 @@
 ════════════════════════════════════════════════════════════ -->
 <div id="view-tala" class="view" style="background:#f4f7fb; min-height:100vh;">
   <div class="bg-swe-blue text-white" style="border-bottom:4px solid #FECC02;">
-    <div class="max-w-2xl mx-auto px-4 py-4 flex items-center gap-3">
+    <div class="max-w-2xl lg:max-w-5xl mx-auto px-4 py-4 flex items-center gap-3">
       <button onclick="goMenu()" class="text-white text-2xl leading-none" aria-label="Volver">‹</button>
       <div><div class="font-black text-lg">🗣️ Tala — Conversaciones</div><div id="tala-sub" class="text-xs text-blue-100">Arma frases en sueco tocando las palabras</div></div>
     </div>
   </div>
-  <div class="max-w-2xl mx-auto px-4 py-6">
+  <div class="max-w-2xl lg:max-w-5xl mx-auto px-4 py-6">
     <div id="tala-list" class="space-y-6"></div>
   </div>
 </div>
@@ -216,7 +216,7 @@
      VIEW: TALA PLAY — ordenar palabras dentro de una conversación
 ════════════════════════════════════════════════════════════ -->
 <div id="view-tala-play" class="view" style="background:#f4f7fb; min-height:100vh;">
-  <div class="max-w-2xl mx-auto px-4 py-4">
+  <div class="max-w-2xl lg:max-w-5xl mx-auto px-4 py-4">
     <div class="flex items-center gap-3 mb-3">
       <button onclick="talaExit()" class="text-gray-400 text-xl leading-none" aria-label="Salir">✕</button>
       <div class="flex-1 h-2.5 bg-gray-200 rounded-full overflow-hidden"><div id="tp-bar" class="h-full bg-swe-blue rounded-full" style="width:0%;transition:width .3s ease"></div></div>
@@ -257,7 +257,7 @@
      VIEW: TALA RESULT — resultados de la conversación
 ════════════════════════════════════════════════════════════ -->
 <div id="view-tala-result" class="view" style="background:#f4f7fb; min-height:100vh;">
-  <div class="max-w-2xl mx-auto px-4 py-10 text-center">
+  <div class="max-w-2xl lg:max-w-5xl mx-auto px-4 py-10 text-center">
     <div class="text-6xl mb-3">🎉</div>
     <div id="tr-msg" class="font-black text-gray-800 text-xl mb-4 px-2">¡Conversación completada!</div>
     <div class="bg-white rounded-2xl p-6 shadow border border-gray-100 mb-5">
@@ -385,7 +385,7 @@
 ════════════════════════════════════════════════════════════ -->
 <div id="view-resenas" class="view" style="background:#f0f4f8; min-height:100vh;">
   <div style="background:linear-gradient(160deg,#006AA7 0%,#004F7C 100%); padding:26px 20px 42px; color:#fff;">
-    <div class="max-w-2xl mx-auto">
+    <div class="max-w-2xl lg:max-w-5xl mx-auto">
       <div class="flex items-center gap-2 mb-3">
         <span style="font-size:1.4rem">🇸🇪</span>
         <span class="font-black text-base">Sueco con Sophie</span>
@@ -586,12 +586,12 @@
   </div>
 
   <!-- ── ENCABEZADO ─────────────────────────────── -->
-  <div class="max-w-2xl mx-auto px-4 mt-4">
+  <div class="max-w-2xl lg:max-w-5xl mx-auto px-4 mt-4">
     <div class="flex items-center gap-3">
-      <div id="profile-avatar" onclick="openAccountModal()" class="cursor-pointer flex-shrink-0" title="Mi cuenta"></div>
+      <div id="profile-avatar" class="flex-shrink-0"></div>
       <div class="min-w-0 flex-1">
         <div class="font-black text-gray-800 text-xl leading-tight">Hej, <span id="profile-name">Andree</span>! 👋</div>
-        <div class="text-sm text-gray-500">Sigue aprendiendo cada día.</div>
+        <button onclick="openAccountModal()" class="mt-0.5 inline-flex items-center gap-1 text-sm font-bold text-swe-blue hover:underline">👤 Min konto</button>
       </div>
       <div class="flex items-center gap-1.5 bg-white rounded-2xl px-3 py-1.5 shadow-sm border border-orange-100 flex-shrink-0">
         <span class="text-lg">🔥</span>
@@ -601,7 +601,7 @@
   </div>
 
   <!-- ── PANEL DEL ALUMNO (alce) ─────────────────── -->
-  <div id="home-alce" class="max-w-2xl mx-auto px-4 mt-5">
+  <div id="home-alce" class="max-w-2xl lg:max-w-5xl mx-auto px-4 mt-5">
     <div class="glass rounded-2xl shadow-lg border border-blue-100 p-4">
       <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 items-center">
         <div class="flex flex-col items-center order-1">
@@ -634,7 +634,7 @@
   </div>
 
   <!-- ── OBJETIVO DE HOY + CONTINÚA AQUÍ ─────────── -->
-  <div class="max-w-2xl mx-auto px-4 mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+  <div class="max-w-2xl lg:max-w-5xl mx-auto px-4 mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
       <div class="font-black text-gray-800 mb-3">Objetivo de hoy 🎯</div>
       <div id="objetivo-list" class="space-y-2.5"></div>
@@ -647,15 +647,15 @@
   </div>
 
   <!-- ── ACCESO RÁPIDO ───────────────────────────── -->
-  <div class="max-w-2xl mx-auto px-4 mt-6">
+  <div class="max-w-2xl lg:max-w-5xl mx-auto px-4 mt-6">
     <div class="font-black text-gray-800 text-lg mb-3">Acceso rápido</div>
-    <div id="acceso-rapido" class="grid grid-cols-2 gap-4"></div>
+    <div id="acceso-rapido" class="grid grid-cols-2 lg:grid-cols-4 gap-4"></div>
   </div>
 
   <!-- ── TARJETAS DE NIVEL ───────────────────────── -->
-  <div class="max-w-2xl mx-auto px-4 mt-6">
+  <div class="max-w-2xl lg:max-w-5xl mx-auto px-4 mt-6">
     <div class="font-black text-gray-800 text-lg mb-3">Tu nivel</div>
-    <div class="grid grid-cols-2 gap-4">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="card-hover glass rounded-2xl p-5 shadow-lg border border-blue-100 text-center" onclick="selectLevel('A')">
         <div class="level-a w-12 h-12 rounded-2xl flex items-center justify-center text-white text-xl font-black mx-auto mb-2 shadow-lg">A</div>
         <h3 class="font-bold text-gray-800">Principiante</h3><p class="text-gray-500 text-xs">SFI A</p><div id="levelcard-A" class="mt-3"></div>
@@ -761,7 +761,7 @@
      VIEW: EXAMEN FINAL (por nivel) — con temporizador
 ════════════════════════════════════════════════════════════ -->
 <div id="view-exam" class="view" style="background:#f4f7fb; min-height:100vh;">
-  <div class="max-w-2xl mx-auto px-4 py-5">
+  <div class="max-w-2xl lg:max-w-5xl mx-auto px-4 py-5">
     <div class="flex items-center gap-3 mb-3">
       <button onclick="examExit()" class="text-red-600 bg-red-50 hover:bg-red-100 font-bold text-sm px-3 py-2 rounded-full transition-colors flex-shrink-0">✕ Salir</button>
       <div class="flex-1 h-2.5 bg-gray-200 rounded-full overflow-hidden"><div id="ex-bar" class="h-full bg-amber-500 rounded-full" style="width:0%;transition:width .3s ease"></div></div>
@@ -780,7 +780,7 @@
 </div>
 
 <div id="view-exam-result" class="view" style="background:#f4f7fb; min-height:100vh;">
-  <div class="max-w-2xl mx-auto px-4 py-10 text-center">
+  <div class="max-w-2xl lg:max-w-5xl mx-auto px-4 py-10 text-center">
     <div id="er-emoji" class="text-6xl mb-3">🎉</div>
     <div id="er-title" class="font-black text-gray-800 text-2xl mb-2">¡Felicidades!</div>
     <div id="er-sub" class="text-gray-500 mb-5 px-4"></div>
@@ -810,12 +810,12 @@
 ════════════════════════════════════════════════════════════ -->
 <div id="view-vocab" class="view" style="background:#f4f7fb; min-height:100vh;">
   <div class="bg-swe-blue text-white" style="border-bottom:4px solid #FECC02;">
-    <div class="max-w-2xl mx-auto px-4 py-4 flex items-center gap-3">
+    <div class="max-w-2xl lg:max-w-5xl mx-auto px-4 py-4 flex items-center gap-3">
       <button onclick="goMenu()" class="text-white text-2xl leading-none" aria-label="Volver">‹</button>
       <div><div id="vocab-title" class="font-black text-lg">📚 Vokabulär — SFI A</div><div class="text-xs text-blue-100">Aprende palabras y verbos de tu nivel.</div></div>
     </div>
   </div>
-  <div class="max-w-2xl mx-auto px-4 py-6">
+  <div class="max-w-2xl lg:max-w-5xl mx-auto px-4 py-6">
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-4">
       <div class="flex items-center justify-between mb-2">
         <div class="font-bold text-gray-700">Progreso del vocabulario</div>
@@ -856,7 +856,7 @@
      VIEW: VOKABULÄR — sesión de ejercicios (sin barra inferior)
 ════════════════════════════════════════════════════════════ -->
 <div id="view-vocab-quiz" class="view" style="background:#f4f7fb; min-height:100vh;">
-  <div class="max-w-2xl mx-auto px-4 py-5">
+  <div class="max-w-2xl lg:max-w-5xl mx-auto px-4 py-5">
     <div class="flex items-center gap-3 mb-3">
       <button onclick="vocabExit()" class="text-red-600 bg-red-50 hover:bg-red-100 font-bold text-sm leading-none flex items-center gap-1 px-3 py-2 rounded-full transition-colors flex-shrink-0" aria-label="Salir">✕ Salir</button>
       <div class="flex-1 h-2.5 bg-gray-200 rounded-full overflow-hidden"><div id="vq-bar" class="h-full bg-swe-blue rounded-full" style="width:0%;transition:width .3s ease"></div></div>
@@ -880,7 +880,7 @@
      VIEW: VOKABULÄR — resultado de sesión
 ════════════════════════════════════════════════════════════ -->
 <div id="view-vocab-result" class="view" style="background:#f4f7fb; min-height:100vh;">
-  <div class="max-w-2xl mx-auto px-4 py-10 text-center">
+  <div class="max-w-2xl lg:max-w-5xl mx-auto px-4 py-10 text-center">
     <div class="text-6xl mb-3">🎉</div>
     <div class="font-black text-gray-800 text-2xl mb-4">¡Sesión completada!</div>
     <div class="bg-white rounded-2xl p-6 shadow border border-gray-100 mb-5">
@@ -903,7 +903,7 @@
      VIEW: APRENDER — módulos de aprendizaje
 ════════════════════════════════════════════════════════════ -->
 <div id="view-aprender" class="view" style="background:#f4f7fb; min-height:100vh;">
-  <div class="max-w-2xl mx-auto px-4 py-6">
+  <div class="max-w-2xl lg:max-w-5xl mx-auto px-4 py-6">
     <div class="font-black text-gray-800 text-2xl mb-1">Aprender</div>
     <div class="text-sm text-gray-500 mb-5">Aquí aprendes y practicas sueco.</div>
     <div class="space-y-3">
@@ -941,7 +941,7 @@
      VIEW: PROGRESO — resumen + niveles
 ════════════════════════════════════════════════════════════ -->
 <div id="view-progreso" class="view" style="background:#f4f7fb; min-height:100vh;">
-  <div class="max-w-2xl mx-auto px-4 py-12 text-center">
+  <div class="max-w-2xl lg:max-w-5xl mx-auto px-4 py-12 text-center">
     <div class="text-6xl mb-3">🏅</div>
     <div class="font-black text-gray-800 text-2xl mb-2">Tu progreso</div>
     <p class="text-gray-500 leading-relaxed px-4">Muy pronto verás aquí tus <strong>medallas</strong> por cada nivel que completes (A, B, C, D) y todo lo que vas ganando y aprendiendo.</p>
@@ -954,7 +954,7 @@
      VIEW: MI VIAJE — próximamente
 ════════════════════════════════════════════════════════════ -->
 <div id="view-miviaje" class="view" style="background:#f4f7fb; min-height:100vh;">
-  <div class="max-w-2xl mx-auto px-4 py-12 text-center">
+  <div class="max-w-2xl lg:max-w-5xl mx-auto px-4 py-12 text-center">
     <div class="text-6xl mb-3">🗺️</div>
     <div class="font-black text-gray-800 text-2xl mb-2">Mi viaje por Suecia</div>
     <p class="text-gray-500 leading-relaxed px-4">Muy pronto comenzarás tu viaje por Suecia desbloqueando ciudades mientras completas actividades.</p>
@@ -985,7 +985,7 @@
     </div>
   </div>
 
-  <div id="level-menu-body" class="max-w-2xl mx-auto px-4 -mt-5 pb-28"></div>
+  <div id="level-menu-body" class="max-w-2xl lg:max-w-5xl mx-auto px-4 -mt-5 pb-28"></div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -1836,7 +1836,7 @@
           </div>
         </div>
       </div>
-      <button id="acc-sub-renew" onclick="manageSubscription()" class="hidden w-full py-2.5 rounded-xl text-sm font-bold text-white bg-swe-blue hover:bg-swe-dark mb-2">🔄 Förnya prenumeration</button>
+      <button id="acc-sub-renew" onclick="reactivarSuscripcion()" class="hidden w-full py-2.5 rounded-xl text-sm font-bold text-white bg-swe-blue hover:bg-swe-dark mb-2">🔄 Förnya prenumeration</button>
       <button id="acc-sub-manage" onclick="manageSubscription()" class="w-full py-2.5 rounded-xl text-sm font-bold text-white bg-swe-blue hover:bg-swe-dark mb-2">💳 Hantera prenumeration (byt kort)</button>
       <button id="acc-sub-cancel" onclick="openJuanitaGoodbye()" class="w-full py-2.5 rounded-xl text-sm font-semibold text-red-600 bg-red-50 hover:bg-red-100 mb-2">Avsluta prenumeration</button>
       <button onclick="accShow('menu')" class="w-full py-2 rounded-xl text-sm font-semibold text-gray-500">Tillbaka</button>
@@ -1859,7 +1859,7 @@
 <!-- MODAL: despedida Juanita (al cancelar suscripción) -->
 <div id="juanita-goodbye" class="hidden fixed inset-0 z-[75] flex items-center justify-center p-4" style="background:rgba(15,23,42,0.55); backdrop-filter:blur(2px);" onclick="if(event.target===this)closeJuanitaGoodbye()">
   <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl p-6 text-center" style="animation:fadeIn .2s ease;">
-    <img src="/juanita/juanita-feliz.webp" class="w-28 h-28 object-contain mx-auto mb-3" alt="Juanita" onerror="this.onerror=null;this.src='/juanita/juanita-chancleta.webp'">
+    <img src="https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/juanita-tu-puedes.png" class="w-32 h-32 object-contain mx-auto mb-3" alt="Juanita" onerror="this.onerror=null;this.src='/juanita/juanita-feliz.webp'">
     <div class="font-black text-gray-800 text-lg mb-2">Gracias por estar aquí 💛</div>
     <div class="text-sm text-gray-600 mb-5 leading-relaxed">Eres siempre bienvenido/a. <strong>Hej då!</strong> 👋</div>
     <button onclick="closeJuanitaGoodbye()" class="w-full bg-red-600 text-white py-3 rounded-2xl font-bold hover:bg-red-700 transition-colors mb-2">💛 Mejor me quedo</button>
@@ -1871,7 +1871,7 @@
      BARRA DE NAVEGACIÓN INFERIOR
 ════════════════════════════════════════════════════════════ -->
 <div id="bottom-nav" class="hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95" style="backdrop-filter:blur(8px); border-top:1px solid #eef2f7; box-shadow:0 -2px 14px rgba(0,0,0,0.05);">
-  <div class="max-w-2xl mx-auto grid grid-cols-5">
+  <div class="max-w-2xl lg:max-w-5xl mx-auto grid grid-cols-5">
     <button data-nav="home" onclick="navGo('home')" class="nav-btn flex flex-col items-center gap-0.5 py-2.5 text-gray-400 transition-colors"><span class="text-xl leading-none">🏠</span><span class="text-[10px] font-semibold">Inicio</span></button>
     <button data-nav="aprender" onclick="navGo('aprender')" class="nav-btn flex flex-col items-center gap-0.5 py-2.5 text-gray-400 transition-colors"><span class="text-xl leading-none">📖</span><span class="text-[10px] font-semibold">Aprender</span></button>
     <button data-nav="miviaje" onclick="navGo('miviaje')" class="nav-btn flex flex-col items-center gap-0.5 py-2.5 text-gray-400 transition-colors"><span class="text-xl leading-none">🗺️</span><span class="text-[10px] font-semibold">Mi viaje</span></button>
@@ -1887,6 +1887,15 @@
     <div id="coming-title" class="font-black text-gray-800 text-lg mb-2"></div>
     <div id="coming-text" class="text-sm text-gray-500 mb-5 leading-relaxed"></div>
     <button id="coming-btn" onclick="closeComingSoon()" class="w-full bg-swe-blue text-white py-3 rounded-2xl font-bold hover:bg-swe-dark transition-colors">Entendido</button>
+  </div>
+</div>
+
+<!-- MINI-MODAL: confirmaciones centradas (encima de cualquier modal) -->
+<div id="mini-modal" class="hidden fixed inset-0 z-[95] flex items-center justify-center p-4" style="background:rgba(15,23,42,0.5); backdrop-filter:blur(2px);" onclick="if(event.target===this)closeMini()">
+  <div class="bg-white w-full max-w-xs rounded-3xl shadow-2xl p-6 text-center" style="animation:fadeIn .18s ease;">
+    <div id="mini-icon" class="text-5xl mb-2">✅</div>
+    <div id="mini-text" class="text-gray-800 font-semibold mb-5 leading-relaxed"></div>
+    <button onclick="closeMini()" class="w-full bg-swe-blue text-white py-3 rounded-2xl font-bold hover:bg-swe-dark transition-colors">Stäng</button>
   </div>
 </div>
 
@@ -9246,7 +9255,7 @@ function accLoadNotis() {
 function accSaveNotis() {
   const r = document.getElementById('noti-reminders'), c = document.getElementById('noti-content');
   try { localStorage.setItem('sc_notis', JSON.stringify({ reminders: !!(r && r.checked), content: !!(c && c.checked) })); } catch (e) {}
-  showToast('Sparat ✅', 'success');
+  showMini('Sparat!', '✅');
 }
 function accInitSupport() {
   const cur = _accCurrent();
@@ -9266,7 +9275,7 @@ async function accSendSupport() {
   try {
     const r = await adminOps('send_support', { name, email, message, tipo: 'Soporte (Mi cuenta)' });
     if (btn) { btn.disabled = false; btn.textContent = 'Enviar mensaje'; }
-    if (r && r.ok) { showToast('Mensaje enviado. Te responderemos a tu correo. 💛', 'success'); accShow('menu'); }
+    if (r && r.ok) { accShow('menu'); showMini('Meddelande skickat! Vi svarar via e-post. 💛', '📨'); }
     else { if (st) { st.className = 'text-xs mb-2 text-red-600'; st.textContent = 'No se pudo enviar. Intenta por WhatsApp.'; } }
   } catch (e) {
     if (btn) { btn.disabled = false; btn.textContent = 'Enviar mensaje'; }
@@ -9293,6 +9302,14 @@ async function accLoadSubscription() {
     if (cancel) cancel.classList.toggle('hidden', cancelled);
   } catch (e) { if (priceEl) priceEl.textContent = 'Plan mensual'; }
 }
+// Mini-modal centrado para confirmaciones (encima de cualquier modal).
+function showMini(text, icon) {
+  const i = document.getElementById('mini-icon'); if (i) i.textContent = icon || '✅';
+  const t = document.getElementById('mini-text'); if (t) t.textContent = text || '';
+  const m = document.getElementById('mini-modal'); if (m) m.classList.remove('hidden');
+}
+function closeMini() { const m = document.getElementById('mini-modal'); if (m) m.classList.add('hidden'); }
+
 function openJuanitaGoodbye() { const m = document.getElementById('juanita-goodbye'); if (m) m.classList.remove('hidden'); }
 function closeJuanitaGoodbye() { const m = document.getElementById('juanita-goodbye'); if (m) m.classList.add('hidden'); }
 function proceedCancelSubscription() { closeJuanitaGoodbye(); manageSubscription(); }
@@ -9347,7 +9364,7 @@ async function accSavePhoto() {
     _accPhotoBlob = null;
     renderProfileWidget();
     _accBusy('acc-photo-save', false, 'Guardar');
-    showToast('Sparat ✅', 'success');
+    showMini('Sparat!', '✅');
     accShow('menu');
   } catch (e) {
     _accBusy('acc-photo-save', false, 'Guardar');
@@ -9368,7 +9385,7 @@ async function accSaveName() {
     if (window._sbSession) window._sbSession.name = name;
     renderProfileWidget();
     _accBusy('acc-name-save', false, 'Guardar');
-    showToast('Sparat ✅', 'success');
+    showMini('Sparat!', '✅');
     accShow('menu');
   } catch (e) {
     _accBusy('acc-name-save', false, 'Guardar');
@@ -9402,7 +9419,7 @@ async function accSavePassword() {
     if (error) throw error;
     accResetPass();
     _accBusy('acc-pass-save', false, 'Guardar');
-    showToast('Sparat ✅', 'success');
+    showMini('Sparat!', '✅');
     accShow('menu');
   } catch (e) {
     _accBusy('acc-pass-save', false, 'Guardar');
@@ -11612,7 +11629,7 @@ async function showPaymentAlert() {
   try { sessionStorage.setItem('sc_pa_shown', '1'); } catch (e) {}
 }
 function closePaymentAlert() { const m = document.getElementById('payment-alert'); if (m) m.classList.add('hidden'); }
-function renewFromAlert() { closePaymentAlert(); manageSubscription(); }
+function renewFromAlert() { closePaymentAlert(); reactivarSuscripcion(); }
 
 // Lee el nivel más reciente de la prueba desde Supabase (robusto entre dispositivos).
 async function loadAssignedLevelFromDB() {

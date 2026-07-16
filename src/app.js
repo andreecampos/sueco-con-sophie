@@ -2836,7 +2836,7 @@ function accLoadNotis() {
 function accSaveNotis() {
   const r = document.getElementById('noti-reminders'), c = document.getElementById('noti-content');
   try { localStorage.setItem('sc_notis', JSON.stringify({ reminders: !!(r && r.checked), content: !!(c && c.checked) })); } catch (e) {}
-  showToast('Sparat ✅', 'success');
+  showMini('Sparat!', '✅');
 }
 function accInitSupport() {
   const cur = _accCurrent();
@@ -2856,7 +2856,7 @@ async function accSendSupport() {
   try {
     const r = await adminOps('send_support', { name, email, message, tipo: 'Soporte (Mi cuenta)' });
     if (btn) { btn.disabled = false; btn.textContent = 'Enviar mensaje'; }
-    if (r && r.ok) { showToast('Mensaje enviado. Te responderemos a tu correo. 💛', 'success'); accShow('menu'); }
+    if (r && r.ok) { accShow('menu'); showMini('Meddelande skickat! Vi svarar via e-post. 💛', '📨'); }
     else { if (st) { st.className = 'text-xs mb-2 text-red-600'; st.textContent = 'No se pudo enviar. Intenta por WhatsApp.'; } }
   } catch (e) {
     if (btn) { btn.disabled = false; btn.textContent = 'Enviar mensaje'; }
@@ -2883,6 +2883,14 @@ async function accLoadSubscription() {
     if (cancel) cancel.classList.toggle('hidden', cancelled);
   } catch (e) { if (priceEl) priceEl.textContent = 'Plan mensual'; }
 }
+// Mini-modal centrado para confirmaciones (encima de cualquier modal).
+function showMini(text, icon) {
+  const i = document.getElementById('mini-icon'); if (i) i.textContent = icon || '✅';
+  const t = document.getElementById('mini-text'); if (t) t.textContent = text || '';
+  const m = document.getElementById('mini-modal'); if (m) m.classList.remove('hidden');
+}
+function closeMini() { const m = document.getElementById('mini-modal'); if (m) m.classList.add('hidden'); }
+
 function openJuanitaGoodbye() { const m = document.getElementById('juanita-goodbye'); if (m) m.classList.remove('hidden'); }
 function closeJuanitaGoodbye() { const m = document.getElementById('juanita-goodbye'); if (m) m.classList.add('hidden'); }
 function proceedCancelSubscription() { closeJuanitaGoodbye(); manageSubscription(); }
@@ -2937,7 +2945,7 @@ async function accSavePhoto() {
     _accPhotoBlob = null;
     renderProfileWidget();
     _accBusy('acc-photo-save', false, 'Guardar');
-    showToast('Sparat ✅', 'success');
+    showMini('Sparat!', '✅');
     accShow('menu');
   } catch (e) {
     _accBusy('acc-photo-save', false, 'Guardar');
@@ -2958,7 +2966,7 @@ async function accSaveName() {
     if (window._sbSession) window._sbSession.name = name;
     renderProfileWidget();
     _accBusy('acc-name-save', false, 'Guardar');
-    showToast('Sparat ✅', 'success');
+    showMini('Sparat!', '✅');
     accShow('menu');
   } catch (e) {
     _accBusy('acc-name-save', false, 'Guardar');
@@ -2992,7 +3000,7 @@ async function accSavePassword() {
     if (error) throw error;
     accResetPass();
     _accBusy('acc-pass-save', false, 'Guardar');
-    showToast('Sparat ✅', 'success');
+    showMini('Sparat!', '✅');
     accShow('menu');
   } catch (e) {
     _accBusy('acc-pass-save', false, 'Guardar');
@@ -5202,7 +5210,7 @@ async function showPaymentAlert() {
   try { sessionStorage.setItem('sc_pa_shown', '1'); } catch (e) {}
 }
 function closePaymentAlert() { const m = document.getElementById('payment-alert'); if (m) m.classList.add('hidden'); }
-function renewFromAlert() { closePaymentAlert(); manageSubscription(); }
+function renewFromAlert() { closePaymentAlert(); reactivarSuscripcion(); }
 
 // Lee el nivel más reciente de la prueba desde Supabase (robusto entre dispositivos).
 async function loadAssignedLevelFromDB() {
