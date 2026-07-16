@@ -768,7 +768,7 @@
 <div id="view-vocab-quiz" class="view" style="background:#f4f7fb; min-height:100vh;">
   <div class="max-w-2xl mx-auto px-4 py-5">
     <div class="flex items-center gap-3 mb-3">
-      <button onclick="vocabExit()" class="text-gray-500 font-bold text-base leading-none flex items-center gap-1" aria-label="Salir">✕ Salir</button>
+      <button onclick="vocabExit()" class="text-red-600 bg-red-50 hover:bg-red-100 font-bold text-sm leading-none flex items-center gap-1 px-3 py-2 rounded-full transition-colors flex-shrink-0" aria-label="Salir">✕ Salir</button>
       <div class="flex-1 h-2.5 bg-gray-200 rounded-full overflow-hidden"><div id="vq-bar" class="h-full bg-swe-blue rounded-full" style="width:0%;transition:width .3s ease"></div></div>
       <span id="vq-num" class="text-sm text-gray-500 font-bold whitespace-nowrap">1 / 10</span>
     </div>
@@ -832,7 +832,7 @@
         <div class="flex-1 min-w-0"><div class="font-bold text-gray-800">Hörförståelse</div><div class="text-xs text-gray-500">Escucha a Sophie y responde</div><div class="mt-1.5 flex items-center gap-2"><div class="flex-1 max-w-[160px]" id="bar-listening"></div><span class="text-xs font-black text-swe-blue" id="pct-listening">0 %</span></div></div>
         <span class="text-gray-300 text-lg flex-shrink-0">›</span>
       </button>
-      <button onclick="openComingSoon('👵','Practicando con Juanita','Muy pronto practicarás conversaciones guiadas con Juanita, tu mamá latina favorita.','Entendido')" class="w-full flex items-center gap-4 bg-white rounded-2xl p-4 shadow-sm border-2 border-pink-100 hover:border-pink-300 transition-all text-left">
+      <button onclick="openComingSoon('/juanita/juanita-chancleta.webp','Practicando con Juanita','Muy pronto practicarás conversaciones guiadas con Juanita, tu mamá latina favorita.','Entendido')" class="w-full flex items-center gap-4 bg-white rounded-2xl p-4 shadow-sm border-2 border-pink-100 hover:border-pink-300 transition-all text-left">
         <span class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 bg-pink-50">👵</span>
         <div class="flex-1 min-w-0"><div class="font-bold text-gray-800">Practicando con Juanita</div><div class="text-xs text-gray-500">Conversaciones guiadas con IA</div></div>
         <span class="text-[10px] font-bold text-pink-600 bg-pink-50 px-2 py-1 rounded-full flex-shrink-0">snart tillgänglig</span>
@@ -5668,9 +5668,199 @@ const VOCAB = [
   { id: 'a-v-17', lvl: 'A', cat: 'verb', sv: 'köpa', es: 'comprar', inf: 'att köpa', pres: 'köper', pret: 'köpte', sup: 'köpt', ex: 'Jag köper mjölk.', exEs: 'Compro leche.' },
   { id: 'a-v-18', lvl: 'A', cat: 'verb', sv: 'sova', es: 'dormir', inf: 'att sova', pres: 'sover', pret: 'sov', sup: 'sovit', ex: 'Barnet sover.', exEs: 'El niño duerme.' },
   { id: 'a-v-19', lvl: 'A', cat: 'verb', sv: 'titta', es: 'mirar', inf: 'att titta', pres: 'tittar', pret: 'tittade', sup: 'tittat', ex: 'Vi tittar på TV.', exEs: 'Vemos la tele.' },
-  { id: 'a-v-20', lvl: 'A', cat: 'verb', sv: 'lyssna', es: 'escuchar', inf: 'att lyssna', pres: 'lyssnar', pret: 'lyssnade', sup: 'lyssnat', ex: 'Jag lyssnar på musik.', exEs: 'Escucho música.' }
+  { id: 'a-v-20', lvl: 'A', cat: 'verb', sv: 'lyssna', es: 'escuchar', inf: 'att lyssna', pres: 'lyssnar', pret: 'lyssnade', sup: 'lyssnat', ex: 'Jag lyssnar på musik.', exEs: 'Escucho música.' },
 
-  /* B/C/D: se agregan enseguida — solo añadir objetos con lvl 'B'/'C'/'D'. */
+  /* ════════ SFI B · PALABRAS (40) ════════ */
+  { id: 'b-w-01', lvl: 'B', cat: 'word', sv: 'jobb', es: 'trabajo, empleo', g: 'ett', def: 'jobbet', pl: 'jobb', ex: 'Jag har ett nytt jobb.', exEs: 'Tengo un trabajo nuevo.' },
+  { id: 'b-w-02', lvl: 'B', cat: 'word', sv: 'arbete', es: 'trabajo', g: 'ett', def: 'arbetet', pl: 'arbeten', ex: 'Jag trivs med mitt arbete.', exEs: 'Estoy a gusto con mi trabajo.' },
+  { id: 'b-w-03', lvl: 'B', cat: 'word', sv: 'chef', es: 'jefe', g: 'en', def: 'chefen', pl: 'chefer', ex: 'Min chef är snäll.', exEs: 'Mi jefe es amable.' },
+  { id: 'b-w-04', lvl: 'B', cat: 'word', sv: 'kollega', es: 'colega', g: 'en', def: 'kollegan', pl: 'kollegor', ex: 'Min kollega heter Anna.', exEs: 'Mi colega se llama Anna.' },
+  { id: 'b-w-05', lvl: 'B', cat: 'word', sv: 'lön', es: 'salario', g: 'en', def: 'lönen', pl: 'löner', ex: 'Jag får lön varje månad.', exEs: 'Recibo salario cada mes.' },
+  { id: 'b-w-06', lvl: 'B', cat: 'word', sv: 'möte', es: 'reunión', g: 'ett', def: 'mötet', pl: 'möten', ex: 'Vi har ett möte klockan tio.', exEs: 'Tenemos una reunión a las diez.' },
+  { id: 'b-w-07', lvl: 'B', cat: 'word', sv: 'skola', es: 'escuela', g: 'en', def: 'skolan', pl: 'skolor', ex: 'Barnen går i skolan.', exEs: 'Los niños van a la escuela.' },
+  { id: 'b-w-08', lvl: 'B', cat: 'word', sv: 'lärare', es: 'profesor/a', g: 'en', def: 'läraren', pl: 'lärare', ex: 'Vår lärare är bra.', exEs: 'Nuestro profesor es bueno.' },
+  { id: 'b-w-09', lvl: 'B', cat: 'word', sv: 'elev', es: 'alumno/a', g: 'en', def: 'eleven', pl: 'elever', ex: 'Jag är elev på SFI.', exEs: 'Soy alumno en SFI.' },
+  { id: 'b-w-10', lvl: 'B', cat: 'word', sv: 'läxa', es: 'tarea', g: 'en', def: 'läxan', pl: 'läxor', ex: 'Jag gör min läxa.', exEs: 'Hago mi tarea.' },
+  { id: 'b-w-11', lvl: 'B', cat: 'word', sv: 'prov', es: 'examen, prueba', g: 'ett', def: 'provet', pl: 'prov', ex: 'Vi har ett prov imorgon.', exEs: 'Tenemos un examen mañana.' },
+  { id: 'b-w-12', lvl: 'B', cat: 'word', sv: 'affär', es: 'tienda', g: 'en', def: 'affären', pl: 'affärer', ex: 'Affären öppnar klockan nio.', exEs: 'La tienda abre a las nueve.' },
+  { id: 'b-w-13', lvl: 'B', cat: 'word', sv: 'pris', es: 'precio', g: 'ett', def: 'priset', pl: 'priser', ex: 'Vad är priset på boken?', exEs: '¿Cuál es el precio del libro?' },
+  { id: 'b-w-14', lvl: 'B', cat: 'word', sv: 'pengar', es: 'dinero', ex: 'Jag har inga pengar.', exEs: 'No tengo dinero.', note: '"pengar" solo existe en plural.' },
+  { id: 'b-w-15', lvl: 'B', cat: 'word', sv: 'kvitto', es: 'recibo', g: 'ett', def: 'kvittot', pl: 'kvitton', ex: 'Vill du ha kvitto?', exEs: '¿Quieres recibo?' },
+  { id: 'b-w-16', lvl: 'B', cat: 'word', sv: 'kassa', es: 'caja', g: 'en', def: 'kassan', pl: 'kassor', ex: 'Betala i kassan.', exEs: 'Paga en la caja.' },
+  { id: 'b-w-17', lvl: 'B', cat: 'word', sv: 'rabatt', es: 'descuento', g: 'en', def: 'rabatten', pl: 'rabatter', ex: 'Det är rabatt idag.', exEs: 'Hoy hay descuento.' },
+  { id: 'b-w-18', lvl: 'B', cat: 'word', sv: 'hyra', es: 'alquiler', g: 'en', def: 'hyran', ex: 'Hyran är hög.', exEs: 'El alquiler es alto.' },
+  { id: 'b-w-19', lvl: 'B', cat: 'word', sv: 'granne', es: 'vecino/a', g: 'en', def: 'grannen', pl: 'grannar', ex: 'Min granne är trevlig.', exEs: 'Mi vecino es agradable.' },
+  { id: 'b-w-20', lvl: 'B', cat: 'word', sv: 'kontrakt', es: 'contrato', g: 'ett', def: 'kontraktet', pl: 'kontrakt', ex: 'Jag skrev på kontraktet.', exEs: 'Firmé el contrato.' },
+  { id: 'b-w-21', lvl: 'B', cat: 'word', sv: 'vårdcentral', es: 'centro de salud', g: 'en', def: 'vårdcentralen', pl: 'vårdcentraler', ex: 'Jag går till vårdcentralen.', exEs: 'Voy al centro de salud.' },
+  { id: 'b-w-22', lvl: 'B', cat: 'word', sv: 'läkare', es: 'médico/a', g: 'en', def: 'läkaren', pl: 'läkare', ex: 'Läkaren är upptagen.', exEs: 'El médico está ocupado.' },
+  { id: 'b-w-23', lvl: 'B', cat: 'word', sv: 'sjuksköterska', es: 'enfermero/a', g: 'en', def: 'sjuksköterskan', pl: 'sjuksköterskor', ex: 'Sjuksköterskan hjälper mig.', exEs: 'La enfermera me ayuda.' },
+  { id: 'b-w-24', lvl: 'B', cat: 'word', sv: 'medicin', es: 'medicina', g: 'en', def: 'medicinen', pl: 'mediciner', ex: 'Jag tar min medicin varje dag.', exEs: 'Tomo mi medicina cada día.' },
+  { id: 'b-w-25', lvl: 'B', cat: 'word', sv: 'tid', es: 'hora, cita', g: 'en', def: 'tiden', pl: 'tider', ex: 'Jag har en tid klockan tre.', exEs: 'Tengo una cita a las tres.' },
+  { id: 'b-w-26', lvl: 'B', cat: 'word', sv: 'feber', es: 'fiebre', g: 'en', def: 'febern', ex: 'Jag har feber idag.', exEs: 'Tengo fiebre hoy.' },
+  { id: 'b-w-27', lvl: 'B', cat: 'word', sv: 'biljett', es: 'billete', g: 'en', def: 'biljetten', pl: 'biljetter', ex: 'Köp en biljett.', exEs: 'Compra un billete.' },
+  { id: 'b-w-28', lvl: 'B', cat: 'word', sv: 'station', es: 'estación', g: 'en', def: 'stationen', pl: 'stationer', ex: 'Var är stationen?', exEs: '¿Dónde está la estación?' },
+  { id: 'b-w-29', lvl: 'B', cat: 'word', sv: 'hållplats', es: 'parada', g: 'en', def: 'hållplatsen', pl: 'hållplatser', ex: 'Hållplatsen ligger nära.', exEs: 'La parada está cerca.' },
+  { id: 'b-w-30', lvl: 'B', cat: 'word', sv: 'resa', es: 'viaje', g: 'en', def: 'resan', pl: 'resor', ex: 'Resan tar en timme.', exEs: 'El viaje dura una hora.' },
+  { id: 'b-w-31', lvl: 'B', cat: 'word', sv: 'karta', es: 'mapa', g: 'en', def: 'kartan', pl: 'kartor', ex: 'Titta på kartan.', exEs: 'Mira el mapa.' },
+  { id: 'b-w-32', lvl: 'B', cat: 'word', sv: 'blankett', es: 'formulario', g: 'en', def: 'blanketten', pl: 'blanketter', ex: 'Fyll i blanketten.', exEs: 'Rellena el formulario.' },
+  { id: 'b-w-33', lvl: 'B', cat: 'word', sv: 'personnummer', es: 'número personal', g: 'ett', def: 'personnumret', pl: 'personnummer', ex: 'Vad är ditt personnummer?', exEs: '¿Cuál es tu número personal?' },
+  { id: 'b-w-34', lvl: 'B', cat: 'word', sv: 'legitimation', es: 'identificación', g: 'en', def: 'legitimationen', pl: 'legitimationer', ex: 'Visa din legitimation.', exEs: 'Muestra tu identificación.' },
+  { id: 'b-w-35', lvl: 'B', cat: 'word', sv: 'ansökan', es: 'solicitud', g: 'en', def: 'ansökan', pl: 'ansökningar', ex: 'Jag skickade en ansökan.', exEs: 'Envié una solicitud.' },
+  { id: 'b-w-36', lvl: 'B', cat: 'word', sv: 'bank', es: 'banco', g: 'en', def: 'banken', pl: 'banker', ex: 'Jag går till banken.', exEs: 'Voy al banco.' },
+  { id: 'b-w-37', lvl: 'B', cat: 'word', sv: 'brev', es: 'carta', g: 'ett', def: 'brevet', pl: 'brev', ex: 'Jag fick ett brev idag.', exEs: 'Recibí una carta hoy.' },
+  { id: 'b-w-38', lvl: 'B', cat: 'word', sv: 'adress', es: 'dirección', g: 'en', def: 'adressen', pl: 'adresser', ex: 'Vad är din adress?', exEs: '¿Cuál es tu dirección?' },
+  { id: 'b-w-39', lvl: 'B', cat: 'word', sv: 'el', es: 'electricidad', g: 'en', def: 'elen', ex: 'Elen är dyr i vinter.', exEs: 'La electricidad es cara en invierno.' },
+  { id: 'b-w-40', lvl: 'B', cat: 'word', sv: 'kö', es: 'cola, fila', g: 'en', def: 'kön', pl: 'köer', ex: 'Det är en lång kö.', exEs: 'Hay una cola larga.' },
+
+  /* ════════ SFI B · VERBOS (20) ════════ */
+  { id: 'b-v-01', lvl: 'B', cat: 'verb', sv: 'betala', es: 'pagar', inf: 'att betala', pres: 'betalar', pret: 'betalade', sup: 'betalat', ex: 'Jag betalar med kort.', exEs: 'Pago con tarjeta.' },
+  { id: 'b-v-02', lvl: 'B', cat: 'verb', sv: 'handla', es: 'hacer compras', inf: 'att handla', pres: 'handlar', pret: 'handlade', sup: 'handlat', ex: 'Jag handlar mat på fredag.', exEs: 'Hago la compra el viernes.' },
+  { id: 'b-v-03', lvl: 'B', cat: 'verb', sv: 'boka', es: 'reservar', inf: 'att boka', pres: 'bokar', pret: 'bokade', sup: 'bokat', ex: 'Jag bokar en tid.', exEs: 'Reservo una cita.' },
+  { id: 'b-v-04', lvl: 'B', cat: 'verb', sv: 'träffa', es: 'encontrarse con', inf: 'att träffa', pres: 'träffar', pret: 'träffade', sup: 'träffat', ex: 'Jag träffar min vän.', exEs: 'Me encuentro con mi amigo.' },
+  { id: 'b-v-05', lvl: 'B', cat: 'verb', sv: 'börja', es: 'empezar', inf: 'att börja', pres: 'börjar', pret: 'började', sup: 'börjat', ex: 'Kursen börjar imorgon.', exEs: 'El curso empieza mañana.' },
+  { id: 'b-v-06', lvl: 'B', cat: 'verb', sv: 'sluta', es: 'terminar, dejar', inf: 'att sluta', pres: 'slutar', pret: 'slutade', sup: 'slutat', ex: 'Jag slutar jobbet klockan fem.', exEs: 'Termino el trabajo a las cinco.' },
+  { id: 'b-v-07', lvl: 'B', cat: 'verb', sv: 'hjälpa', es: 'ayudar', inf: 'att hjälpa', pres: 'hjälper', pret: 'hjälpte', sup: 'hjälpt', ex: 'Kan du hjälpa mig?', exEs: '¿Puedes ayudarme?' },
+  { id: 'b-v-08', lvl: 'B', cat: 'verb', sv: 'förstå', es: 'entender', inf: 'att förstå', pres: 'förstår', pret: 'förstod', sup: 'förstått', ex: 'Jag förstår inte.', exEs: 'No entiendo.' },
+  { id: 'b-v-09', lvl: 'B', cat: 'verb', sv: 'fråga', es: 'preguntar', inf: 'att fråga', pres: 'frågar', pret: 'frågade', sup: 'frågat', ex: 'Jag frågar läraren.', exEs: 'Le pregunto al profesor.' },
+  { id: 'b-v-10', lvl: 'B', cat: 'verb', sv: 'svara', es: 'responder', inf: 'att svara', pres: 'svarar', pret: 'svarade', sup: 'svarat', ex: 'Hon svarar på frågan.', exEs: 'Ella responde la pregunta.' },
+  { id: 'b-v-11', lvl: 'B', cat: 'verb', sv: 'jobba', es: 'trabajar', inf: 'att jobba', pres: 'jobbar', pret: 'jobbade', sup: 'jobbat', ex: 'Jag jobbar på ett sjukhus.', exEs: 'Trabajo en un hospital.' },
+  { id: 'b-v-12', lvl: 'B', cat: 'verb', sv: 'resa', es: 'viajar', inf: 'att resa', pres: 'reser', pret: 'reste', sup: 'rest', ex: 'Jag reser till Göteborg.', exEs: 'Viajo a Gotemburgo.' },
+  { id: 'b-v-13', lvl: 'B', cat: 'verb', sv: 'vänta', es: 'esperar', inf: 'att vänta', pres: 'väntar', pret: 'väntade', sup: 'väntat', ex: 'Jag väntar på bussen.', exEs: 'Espero el autobús.' },
+  { id: 'b-v-14', lvl: 'B', cat: 'verb', sv: 'behöva', es: 'necesitar', inf: 'att behöva', pres: 'behöver', pret: 'behövde', sup: 'behövt', ex: 'Jag behöver hjälp.', exEs: 'Necesito ayuda.' },
+  { id: 'b-v-15', lvl: 'B', cat: 'verb', sv: 'tänka', es: 'pensar', inf: 'att tänka', pres: 'tänker', pret: 'tänkte', sup: 'tänkt', ex: 'Jag tänker på min familj.', exEs: 'Pienso en mi familia.' },
+  { id: 'b-v-16', lvl: 'B', cat: 'verb', sv: 'flytta', es: 'mudarse', inf: 'att flytta', pres: 'flyttar', pret: 'flyttade', sup: 'flyttat', ex: 'Vi flyttar till en ny lägenhet.', exEs: 'Nos mudamos a un apartamento nuevo.' },
+  { id: 'b-v-17', lvl: 'B', cat: 'verb', sv: 'städa', es: 'limpiar', inf: 'att städa', pres: 'städar', pret: 'städade', sup: 'städat', ex: 'Jag städar köket.', exEs: 'Limpio la cocina.' },
+  { id: 'b-v-18', lvl: 'B', cat: 'verb', sv: 'laga', es: 'cocinar, arreglar', inf: 'att laga', pres: 'lagar', pret: 'lagade', sup: 'lagat', ex: 'Jag lagar mat till familjen.', exEs: 'Cocino para la familia.' },
+  { id: 'b-v-19', lvl: 'B', cat: 'verb', sv: 'stänga', es: 'cerrar', inf: 'att stänga', pres: 'stänger', pret: 'stängde', sup: 'stängt', ex: 'Affären stänger klockan sex.', exEs: 'La tienda cierra a las seis.' },
+  { id: 'b-v-20', lvl: 'B', cat: 'verb', sv: 'öppna', es: 'abrir', inf: 'att öppna', pres: 'öppnar', pret: 'öppnade', sup: 'öppnat', ex: 'Jag öppnar fönstret.', exEs: 'Abro la ventana.' },
+
+  /* ════════ SFI C · PALABRAS (40) ════════ */
+  { id: 'c-w-01', lvl: 'C', cat: 'word', sv: 'anställning', es: 'empleo (fijo)', g: 'en', def: 'anställningen', pl: 'anställningar', ex: 'Han fick en fast anställning.', exEs: 'Consiguió un empleo fijo.' },
+  { id: 'c-w-02', lvl: 'C', cat: 'word', sv: 'arbetsgivare', es: 'empleador', g: 'en', def: 'arbetsgivaren', pl: 'arbetsgivare', ex: 'Arbetsgivaren söker personal.', exEs: 'El empleador busca personal.' },
+  { id: 'c-w-03', lvl: 'C', cat: 'word', sv: 'referens', es: 'referencia', g: 'en', def: 'referensen', pl: 'referenser', ex: 'Kan du ge mig en referens?', exEs: '¿Puedes darme una referencia?' },
+  { id: 'c-w-04', lvl: 'C', cat: 'word', sv: 'intervju', es: 'entrevista', g: 'en', def: 'intervjun', pl: 'intervjuer', ex: 'Jag har en intervju imorgon.', exEs: 'Tengo una entrevista mañana.' },
+  { id: 'c-w-05', lvl: 'C', cat: 'word', sv: 'erfarenhet', es: 'experiencia', g: 'en', def: 'erfarenheten', pl: 'erfarenheter', ex: 'Han har lång erfarenhet.', exEs: 'Tiene mucha experiencia.' },
+  { id: 'c-w-06', lvl: 'C', cat: 'word', sv: 'tjänst', es: 'puesto, servicio', g: 'en', def: 'tjänsten', pl: 'tjänster', ex: 'Tjänsten är ledig nu.', exEs: 'El puesto está libre ahora.' },
+  { id: 'c-w-07', lvl: 'C', cat: 'word', sv: 'rapport', es: 'informe', g: 'en', def: 'rapporten', pl: 'rapporter', ex: 'Jag skriver en rapport.', exEs: 'Escribo un informe.' },
+  { id: 'c-w-08', lvl: 'C', cat: 'word', sv: 'ansvar', es: 'responsabilidad', g: 'ett', def: 'ansvaret', ex: 'Jag tar ansvar för projektet.', exEs: 'Asumo la responsabilidad del proyecto.' },
+  { id: 'c-w-09', lvl: 'C', cat: 'word', sv: 'avtal', es: 'acuerdo', g: 'ett', def: 'avtalet', pl: 'avtal', ex: 'Vi skrev ett avtal.', exEs: 'Firmamos un acuerdo.' },
+  { id: 'c-w-10', lvl: 'C', cat: 'word', sv: 'förslag', es: 'propuesta', g: 'ett', def: 'förslaget', pl: 'förslag', ex: 'Jag har ett förslag.', exEs: 'Tengo una propuesta.' },
+  { id: 'c-w-11', lvl: 'C', cat: 'word', sv: 'åsikt', es: 'opinión', g: 'en', def: 'åsikten', pl: 'åsikter', ex: 'Alla har rätt till sin åsikt.', exEs: 'Todos tienen derecho a su opinión.' },
+  { id: 'c-w-12', lvl: 'C', cat: 'word', sv: 'fördel', es: 'ventaja', g: 'en', def: 'fördelen', pl: 'fördelar', ex: 'Det finns många fördelar.', exEs: 'Hay muchas ventajas.' },
+  { id: 'c-w-13', lvl: 'C', cat: 'word', sv: 'nackdel', es: 'desventaja', g: 'en', def: 'nackdelen', pl: 'nackdelar', ex: 'En nackdel är priset.', exEs: 'Una desventaja es el precio.' },
+  { id: 'c-w-14', lvl: 'C', cat: 'word', sv: 'lösning', es: 'solución', g: 'en', def: 'lösningen', pl: 'lösningar', ex: 'Vi hittade en lösning.', exEs: 'Encontramos una solución.' },
+  { id: 'c-w-15', lvl: 'C', cat: 'word', sv: 'problem', es: 'problema', g: 'ett', def: 'problemet', pl: 'problem', ex: 'Det är ett stort problem.', exEs: 'Es un gran problema.' },
+  { id: 'c-w-16', lvl: 'C', cat: 'word', sv: 'nyhet', es: 'noticia', g: 'en', def: 'nyheten', pl: 'nyheter', ex: 'Jag läste en nyhet idag.', exEs: 'Leí una noticia hoy.' },
+  { id: 'c-w-17', lvl: 'C', cat: 'word', sv: 'samhälle', es: 'sociedad', g: 'ett', def: 'samhället', pl: 'samhällen', ex: 'Vi lever i ett mångkulturellt samhälle.', exEs: 'Vivimos en una sociedad multicultural.' },
+  { id: 'c-w-18', lvl: 'C', cat: 'word', sv: 'regering', es: 'gobierno', g: 'en', def: 'regeringen', pl: 'regeringar', ex: 'Regeringen tog ett beslut.', exEs: 'El gobierno tomó una decisión.' },
+  { id: 'c-w-19', lvl: 'C', cat: 'word', sv: 'lag', es: 'ley', g: 'en', def: 'lagen', pl: 'lagar', ex: 'Alla måste följa lagen.', exEs: 'Todos deben cumplir la ley.' },
+  { id: 'c-w-20', lvl: 'C', cat: 'word', sv: 'rättighet', es: 'derecho', g: 'en', def: 'rättigheten', pl: 'rättigheter', ex: 'Det är en mänsklig rättighet.', exEs: 'Es un derecho humano.' },
+  { id: 'c-w-21', lvl: 'C', cat: 'word', sv: 'miljö', es: 'medio ambiente', g: 'en', def: 'miljön', pl: 'miljöer', ex: 'Vi måste skydda miljön.', exEs: 'Debemos proteger el medio ambiente.' },
+  { id: 'c-w-22', lvl: 'C', cat: 'word', sv: 'hälsa', es: 'salud', g: 'en', def: 'hälsan', ex: 'Hälsan är viktig.', exEs: 'La salud es importante.' },
+  { id: 'c-w-23', lvl: 'C', cat: 'word', sv: 'sjukdom', es: 'enfermedad', g: 'en', def: 'sjukdomen', pl: 'sjukdomar', ex: 'Han har en allvarlig sjukdom.', exEs: 'Tiene una enfermedad grave.' },
+  { id: 'c-w-24', lvl: 'C', cat: 'word', sv: 'behandling', es: 'tratamiento', g: 'en', def: 'behandlingen', pl: 'behandlingar', ex: 'Behandlingen tar tid.', exEs: 'El tratamiento lleva tiempo.' },
+  { id: 'c-w-25', lvl: 'C', cat: 'word', sv: 'remiss', es: 'derivación (médica)', g: 'en', def: 'remissen', pl: 'remisser', ex: 'Läkaren skrev en remiss.', exEs: 'El médico escribió una derivación.' },
+  { id: 'c-w-26', lvl: 'C', cat: 'word', sv: 'inkomst', es: 'ingreso', g: 'en', def: 'inkomsten', pl: 'inkomster', ex: 'Min inkomst räcker inte.', exEs: 'Mi ingreso no alcanza.' },
+  { id: 'c-w-27', lvl: 'C', cat: 'word', sv: 'skatt', es: 'impuesto', g: 'en', def: 'skatten', pl: 'skatter', ex: 'Vi betalar skatt varje år.', exEs: 'Pagamos impuestos cada año.' },
+  { id: 'c-w-28', lvl: 'C', cat: 'word', sv: 'faktura', es: 'factura', g: 'en', def: 'fakturan', pl: 'fakturor', ex: 'Jag fick en faktura.', exEs: 'Recibí una factura.' },
+  { id: 'c-w-29', lvl: 'C', cat: 'word', sv: 'konto', es: 'cuenta', g: 'ett', def: 'kontot', pl: 'konton', ex: 'Jag öppnade ett konto.', exEs: 'Abrí una cuenta.' },
+  { id: 'c-w-30', lvl: 'C', cat: 'word', sv: 'budget', es: 'presupuesto', g: 'en', def: 'budgeten', pl: 'budgetar', ex: 'Vi följer vår budget.', exEs: 'Seguimos nuestro presupuesto.' },
+  { id: 'c-w-31', lvl: 'C', cat: 'word', sv: 'beslut', es: 'decisión', g: 'ett', def: 'beslutet', pl: 'beslut', ex: 'Jag tog ett svårt beslut.', exEs: 'Tomé una decisión difícil.' },
+  { id: 'c-w-32', lvl: 'C', cat: 'word', sv: 'möjlighet', es: 'posibilidad', g: 'en', def: 'möjligheten', pl: 'möjligheter', ex: 'Det finns en möjlighet.', exEs: 'Hay una posibilidad.' },
+  { id: 'c-w-33', lvl: 'C', cat: 'word', sv: 'krav', es: 'requisito', g: 'ett', def: 'kravet', pl: 'krav', ex: 'Kraven för jobbet är höga.', exEs: 'Los requisitos del trabajo son altos.' },
+  { id: 'c-w-34', lvl: 'C', cat: 'word', sv: 'utbildning', es: 'formación', g: 'en', def: 'utbildningen', pl: 'utbildningar', ex: 'Hon har en bra utbildning.', exEs: 'Ella tiene una buena formación.' },
+  { id: 'c-w-35', lvl: 'C', cat: 'word', sv: 'framtid', es: 'futuro', g: 'en', def: 'framtiden', ex: 'Jag tänker på framtiden.', exEs: 'Pienso en el futuro.' },
+  { id: 'c-w-36', lvl: 'C', cat: 'word', sv: 'förändring', es: 'cambio', g: 'en', def: 'förändringen', pl: 'förändringar', ex: 'Det blev en stor förändring.', exEs: 'Hubo un gran cambio.' },
+  { id: 'c-w-37', lvl: 'C', cat: 'word', sv: 'samarbete', es: 'colaboración', g: 'ett', def: 'samarbetet', pl: 'samarbeten', ex: 'Vårt samarbete fungerar bra.', exEs: 'Nuestra colaboración funciona bien.' },
+  { id: 'c-w-38', lvl: 'C', cat: 'word', sv: 'ekonomi', es: 'economía', g: 'en', def: 'ekonomin', pl: 'ekonomier', ex: 'Min ekonomi är stabil.', exEs: 'Mi economía es estable.' },
+  { id: 'c-w-39', lvl: 'C', cat: 'word', sv: 'arbetslöshet', es: 'desempleo', g: 'en', def: 'arbetslösheten', ex: 'Arbetslösheten har ökat.', exEs: 'El desempleo ha aumentado.' },
+  { id: 'c-w-40', lvl: 'C', cat: 'word', sv: 'utveckling', es: 'desarrollo', g: 'en', def: 'utvecklingen', pl: 'utvecklingar', ex: 'Den ekonomiska utvecklingen är positiv.', exEs: 'El desarrollo económico es positivo.' },
+
+  /* ════════ SFI C · VERBOS (20) ════════ */
+  { id: 'c-v-01', lvl: 'C', cat: 'verb', sv: 'ansöka', es: 'solicitar', inf: 'att ansöka', pres: 'ansöker', pret: 'ansökte', sup: 'ansökt', ex: 'Jag ansöker om jobbet.', exEs: 'Solicito el trabajo.' },
+  { id: 'c-v-02', lvl: 'C', cat: 'verb', sv: 'anställa', es: 'contratar', inf: 'att anställa', pres: 'anställer', pret: 'anställde', sup: 'anställt', ex: 'Företaget anställer nya personer.', exEs: 'La empresa contrata gente nueva.' },
+  { id: 'c-v-03', lvl: 'C', cat: 'verb', sv: 'diskutera', es: 'discutir', inf: 'att diskutera', pres: 'diskuterar', pret: 'diskuterade', sup: 'diskuterat', ex: 'Vi diskuterar problemet.', exEs: 'Discutimos el problema.' },
+  { id: 'c-v-04', lvl: 'C', cat: 'verb', sv: 'bestämma', es: 'decidir', inf: 'att bestämma', pres: 'bestämmer', pret: 'bestämde', sup: 'bestämt', ex: 'Jag bestämmer själv.', exEs: 'Decido yo mismo.' },
+  { id: 'c-v-05', lvl: 'C', cat: 'verb', sv: 'föreslå', es: 'proponer', inf: 'att föreslå', pres: 'föreslår', pret: 'föreslog', sup: 'föreslagit', ex: 'Jag föreslår en lösning.', exEs: 'Propongo una solución.' },
+  { id: 'c-v-06', lvl: 'C', cat: 'verb', sv: 'påverka', es: 'influir en', inf: 'att påverka', pres: 'påverkar', pret: 'påverkade', sup: 'påverkat', ex: 'Det påverkar mitt liv.', exEs: 'Eso influye en mi vida.' },
+  { id: 'c-v-07', lvl: 'C', cat: 'verb', sv: 'utveckla', es: 'desarrollar', inf: 'att utveckla', pres: 'utvecklar', pret: 'utvecklade', sup: 'utvecklat', ex: 'Vi utvecklar en ny app.', exEs: 'Desarrollamos una app nueva.' },
+  { id: 'c-v-08', lvl: 'C', cat: 'verb', sv: 'förbättra', es: 'mejorar', inf: 'att förbättra', pres: 'förbättrar', pret: 'förbättrade', sup: 'förbättrat', ex: 'Jag vill förbättra min svenska.', exEs: 'Quiero mejorar mi sueco.' },
+  { id: 'c-v-09', lvl: 'C', cat: 'verb', sv: 'undvika', es: 'evitar', inf: 'att undvika', pres: 'undviker', pret: 'undvek', sup: 'undvikit', ex: 'Jag undviker socker.', exEs: 'Evito el azúcar.' },
+  { id: 'c-v-10', lvl: 'C', cat: 'verb', sv: 'ändra', es: 'cambiar', inf: 'att ändra', pres: 'ändrar', pret: 'ändrade', sup: 'ändrat', ex: 'Jag ändrar mitt schema.', exEs: 'Cambio mi horario.' },
+  { id: 'c-v-11', lvl: 'C', cat: 'verb', sv: 'jämföra', es: 'comparar', inf: 'att jämföra', pres: 'jämför', pret: 'jämförde', sup: 'jämfört', ex: 'Jag jämför priserna.', exEs: 'Comparo los precios.' },
+  { id: 'c-v-12', lvl: 'C', cat: 'verb', sv: 'spara', es: 'ahorrar, guardar', inf: 'att spara', pres: 'sparar', pret: 'sparade', sup: 'sparat', ex: 'Jag sparar pengar varje månad.', exEs: 'Ahorro dinero cada mes.' },
+  { id: 'c-v-13', lvl: 'C', cat: 'verb', sv: 'betyda', es: 'significar', inf: 'att betyda', pres: 'betyder', pret: 'betydde', sup: 'betytt', ex: 'Vad betyder ordet?', exEs: '¿Qué significa la palabra?' },
+  { id: 'c-v-14', lvl: 'C', cat: 'verb', sv: 'kräva', es: 'exigir', inf: 'att kräva', pres: 'kräver', pret: 'krävde', sup: 'krävt', ex: 'Jobbet kräver erfarenhet.', exEs: 'El trabajo exige experiencia.' },
+  { id: 'c-v-15', lvl: 'C', cat: 'verb', sv: 'lyckas', es: 'lograr, tener éxito', inf: 'att lyckas', pres: 'lyckas', pret: 'lyckades', sup: 'lyckats', ex: 'Jag lyckas med provet.', exEs: 'Logro aprobar el examen.', note: 'Verbo deponente (siempre con -s).' },
+  { id: 'c-v-16', lvl: 'C', cat: 'verb', sv: 'märka', es: 'notar', inf: 'att märka', pres: 'märker', pret: 'märkte', sup: 'märkt', ex: 'Jag märker en skillnad.', exEs: 'Noto una diferencia.' },
+  { id: 'c-v-17', lvl: 'C', cat: 'verb', sv: 'behandla', es: 'tratar', inf: 'att behandla', pres: 'behandlar', pret: 'behandlade', sup: 'behandlat', ex: 'Läkaren behandlar patienten.', exEs: 'El médico trata al paciente.' },
+  { id: 'c-v-18', lvl: 'C', cat: 'verb', sv: 'erbjuda', es: 'ofrecer', inf: 'att erbjuda', pres: 'erbjuder', pret: 'erbjöd', sup: 'erbjudit', ex: 'De erbjuder en gratis kurs.', exEs: 'Ofrecen un curso gratis.' },
+  { id: 'c-v-19', lvl: 'C', cat: 'verb', sv: 'öka', es: 'aumentar', inf: 'att öka', pres: 'ökar', pret: 'ökade', sup: 'ökat', ex: 'Priserna ökar varje år.', exEs: 'Los precios aumentan cada año.' },
+  { id: 'c-v-20', lvl: 'C', cat: 'verb', sv: 'minska', es: 'disminuir', inf: 'att minska', pres: 'minskar', pret: 'minskade', sup: 'minskat', ex: 'Arbetslösheten minskar nu.', exEs: 'El desempleo disminuye ahora.' },
+
+  /* ════════ SFI D · PALABRAS (40) ════════ */
+  { id: 'd-w-01', lvl: 'D', cat: 'word', sv: 'arbetsmarknad', es: 'mercado laboral', g: 'en', def: 'arbetsmarknaden', pl: 'arbetsmarknader', ex: 'Arbetsmarknaden är tuff just nu.', exEs: 'El mercado laboral está difícil ahora.' },
+  { id: 'd-w-02', lvl: 'D', cat: 'word', sv: 'kompetens', es: 'competencia, aptitud', g: 'en', def: 'kompetensen', pl: 'kompetenser', ex: 'Han har hög kompetens.', exEs: 'Tiene gran competencia.' },
+  { id: 'd-w-03', lvl: 'D', cat: 'word', sv: 'karriär', es: 'carrera (profesional)', g: 'en', def: 'karriären', pl: 'karriärer', ex: 'Hon satsar på sin karriär.', exEs: 'Ella apuesta por su carrera.' },
+  { id: 'd-w-04', lvl: 'D', cat: 'word', sv: 'fackförbund', es: 'sindicato', g: 'ett', def: 'fackförbundet', pl: 'fackförbund', ex: 'Jag är med i ett fackförbund.', exEs: 'Estoy en un sindicato.' },
+  { id: 'd-w-05', lvl: 'D', cat: 'word', sv: 'arbetsmiljö', es: 'ambiente laboral', g: 'en', def: 'arbetsmiljön', pl: 'arbetsmiljöer', ex: 'Arbetsmiljön är viktig för hälsan.', exEs: 'El ambiente laboral es importante para la salud.' },
+  { id: 'd-w-06', lvl: 'D', cat: 'word', sv: 'jämställdhet', es: 'igualdad de género', g: 'en', def: 'jämställdheten', ex: 'Sverige satsar på jämställdhet.', exEs: 'Suecia apuesta por la igualdad de género.' },
+  { id: 'd-w-07', lvl: 'D', cat: 'word', sv: 'integration', es: 'integración', g: 'en', def: 'integrationen', ex: 'Integration tar tid.', exEs: 'La integración lleva tiempo.' },
+  { id: 'd-w-08', lvl: 'D', cat: 'word', sv: 'mångfald', es: 'diversidad', g: 'en', def: 'mångfalden', ex: 'Mångfald berikar samhället.', exEs: 'La diversidad enriquece la sociedad.' },
+  { id: 'd-w-09', lvl: 'D', cat: 'word', sv: 'demokrati', es: 'democracia', g: 'en', def: 'demokratin', pl: 'demokratier', ex: 'Sverige är en demokrati.', exEs: 'Suecia es una democracia.' },
+  { id: 'd-w-10', lvl: 'D', cat: 'word', sv: 'myndighet', es: 'autoridad, agencia', g: 'en', def: 'myndigheten', pl: 'myndigheter', ex: 'Jag kontaktade myndigheten.', exEs: 'Contacté a la agencia.' },
+  { id: 'd-w-11', lvl: 'D', cat: 'word', sv: 'välfärd', es: 'bienestar social', g: 'en', def: 'välfärden', ex: 'Välfärden finansieras av skatter.', exEs: 'El bienestar se financia con impuestos.' },
+  { id: 'd-w-12', lvl: 'D', cat: 'word', sv: 'argument', es: 'argumento', g: 'ett', def: 'argumentet', pl: 'argument', ex: 'Han har starka argument.', exEs: 'Tiene argumentos sólidos.' },
+  { id: 'd-w-13', lvl: 'D', cat: 'word', sv: 'slutsats', es: 'conclusión', g: 'en', def: 'slutsatsen', pl: 'slutsatser', ex: 'Min slutsats är tydlig.', exEs: 'Mi conclusión es clara.' },
+  { id: 'd-w-14', lvl: 'D', cat: 'word', sv: 'synpunkt', es: 'punto de vista', g: 'en', def: 'synpunkten', pl: 'synpunkter', ex: 'Jag delar din synpunkt.', exEs: 'Comparto tu punto de vista.' },
+  { id: 'd-w-15', lvl: 'D', cat: 'word', sv: 'sammanhang', es: 'contexto', g: 'ett', def: 'sammanhanget', pl: 'sammanhang', ex: 'Ordet betyder olika i olika sammanhang.', exEs: 'La palabra significa cosas distintas según el contexto.' },
+  { id: 'd-w-16', lvl: 'D', cat: 'word', sv: 'påstående', es: 'afirmación', g: 'ett', def: 'påståendet', pl: 'påståenden', ex: 'Ditt påstående är felaktigt.', exEs: 'Tu afirmación es incorrecta.' },
+  { id: 'd-w-17', lvl: 'D', cat: 'word', sv: 'förvaltning', es: 'administración', g: 'en', def: 'förvaltningen', pl: 'förvaltningar', ex: 'Kommunens förvaltning är stor.', exEs: 'La administración del municipio es grande.' },
+  { id: 'd-w-18', lvl: 'D', cat: 'word', sv: 'ärende', es: 'asunto, trámite', g: 'ett', def: 'ärendet', pl: 'ärenden', ex: 'Mitt ärende är under handläggning.', exEs: 'Mi trámite está en curso.' },
+  { id: 'd-w-19', lvl: 'D', cat: 'word', sv: 'handläggning', es: 'tramitación', g: 'en', def: 'handläggningen', pl: 'handläggningar', ex: 'Handläggningen tar sex veckor.', exEs: 'La tramitación tarda seis semanas.' },
+  { id: 'd-w-20', lvl: 'D', cat: 'word', sv: 'överklagande', es: 'recurso, apelación', g: 'ett', def: 'överklagandet', pl: 'överklaganden', ex: 'Jag skickade ett överklagande.', exEs: 'Envié un recurso.' },
+  { id: 'd-w-21', lvl: 'D', cat: 'word', sv: 'intyg', es: 'certificado, constancia', g: 'ett', def: 'intyget', pl: 'intyg', ex: 'Jag behöver ett intyg från läkaren.', exEs: 'Necesito una constancia del médico.' },
+  { id: 'd-w-22', lvl: 'D', cat: 'word', sv: 'högskola', es: 'universidad', g: 'en', def: 'högskolan', pl: 'högskolor', ex: 'Hon studerar på högskolan.', exEs: 'Ella estudia en la universidad.' },
+  { id: 'd-w-23', lvl: 'D', cat: 'word', sv: 'betyg', es: 'nota, calificación', g: 'ett', def: 'betyget', pl: 'betyg', ex: 'Jag fick bra betyg.', exEs: 'Saqué buenas notas.' },
+  { id: 'd-w-24', lvl: 'D', cat: 'word', sv: 'forskning', es: 'investigación', g: 'en', def: 'forskningen', ex: 'Forskning är viktig för samhället.', exEs: 'La investigación es importante para la sociedad.' },
+  { id: 'd-w-25', lvl: 'D', cat: 'word', sv: 'utmaning', es: 'desafío', g: 'en', def: 'utmaningen', pl: 'utmaningar', ex: 'Det är en stor utmaning.', exEs: 'Es un gran desafío.' },
+  { id: 'd-w-26', lvl: 'D', cat: 'word', sv: 'förmåga', es: 'capacidad', g: 'en', def: 'förmågan', pl: 'förmågor', ex: 'Han har förmåga att lära snabbt.', exEs: 'Tiene capacidad de aprender rápido.' },
+  { id: 'd-w-27', lvl: 'D', cat: 'word', sv: 'sammanfattning', es: 'resumen', g: 'en', def: 'sammanfattningen', pl: 'sammanfattningar', ex: 'Jag skrev en sammanfattning.', exEs: 'Escribí un resumen.' },
+  { id: 'd-w-28', lvl: 'D', cat: 'word', sv: 'konsekvens', es: 'consecuencia', g: 'en', def: 'konsekvensen', pl: 'konsekvenser', ex: 'Det får allvarliga konsekvenser.', exEs: 'Tiene consecuencias graves.' },
+  { id: 'd-w-29', lvl: 'D', cat: 'word', sv: 'förutsättning', es: 'condición, premisa', g: 'en', def: 'förutsättningen', pl: 'förutsättningar', ex: 'Utbildning är en förutsättning för jobbet.', exEs: 'La formación es una condición para el trabajo.' },
+  { id: 'd-w-30', lvl: 'D', cat: 'word', sv: 'faktiskt', es: 'en realidad, de hecho', ex: 'Det är faktiskt sant.', exEs: 'De hecho es verdad.', note: 'Adverbio.' },
+  { id: 'd-w-31', lvl: 'D', cat: 'word', sv: 'dessutom', es: 'además', ex: 'Dessutom är det billigt.', exEs: 'Además es barato.', note: 'Adverbio conector.' },
+  { id: 'd-w-32', lvl: 'D', cat: 'word', sv: 'däremot', es: 'en cambio', ex: 'Jag gillar te, däremot inte kaffe.', exEs: 'Me gusta el té; el café, en cambio, no.', note: 'Adverbio de contraste.' },
+  { id: 'd-w-33', lvl: 'D', cat: 'word', sv: 'eftersom', es: 'porque, ya que', ex: 'Jag stannar hemma eftersom jag är sjuk.', exEs: 'Me quedo en casa porque estoy enfermo.', note: 'Conjunción subordinante.' },
+  { id: 'd-w-34', lvl: 'D', cat: 'word', sv: 'ungefär', es: 'aproximadamente', ex: 'Det tar ungefär en timme.', exEs: 'Tarda aproximadamente una hora.', note: 'Adverbio.' },
+  { id: 'd-w-35', lvl: 'D', cat: 'word', sv: 'särskilt', es: 'especialmente', ex: 'Jag gillar särskilt sommaren.', exEs: 'Me gusta especialmente el verano.', note: 'Adverbio.' },
+  { id: 'd-w-36', lvl: 'D', cat: 'word', sv: 'tillräckligt', es: 'suficiente(mente)', ex: 'Vi har tillräckligt med tid.', exEs: 'Tenemos suficiente tiempo.', note: 'Adverbio.' },
+  { id: 'd-w-37', lvl: 'D', cat: 'word', sv: 'trots', es: 'a pesar de', ex: 'Trots regnet gick vi ut.', exEs: 'A pesar de la lluvia salimos.', note: 'Preposición.' },
+  { id: 'd-w-38', lvl: 'D', cat: 'word', sv: 'lagom', es: 'en su justa medida', ex: 'Kaffet är lagom varmt.', exEs: 'El café está en su punto de calor.', note: 'Palabra sueca típica: ni poco ni demasiado.' },
+  { id: 'd-w-39', lvl: 'D', cat: 'word', sv: 'ansvar', es: 'responsabilidad', g: 'ett', def: 'ansvaret', ex: 'Alla har ett gemensamt ansvar.', exEs: 'Todos tienen una responsabilidad común.' },
+  { id: 'd-w-40', lvl: 'D', cat: 'word', sv: 'inflytande', es: 'influencia', g: 'ett', def: 'inflytandet', ex: 'Medborgarna har inflytande över besluten.', exEs: 'Los ciudadanos tienen influencia sobre las decisiones.' },
+
+  /* ════════ SFI D · VERBOS (20) ════════ */
+  { id: 'd-v-01', lvl: 'D', cat: 'verb', sv: 'genomföra', es: 'llevar a cabo', inf: 'att genomföra', pres: 'genomför', pret: 'genomförde', sup: 'genomfört', ex: 'Vi genomför projektet i år.', exEs: 'Llevamos a cabo el proyecto este año.' },
+  { id: 'd-v-02', lvl: 'D', cat: 'verb', sv: 'innebära', es: 'implicar', inf: 'att innebära', pres: 'innebär', pret: 'innebar', sup: 'inneburit', ex: 'Det innebär mycket arbete.', exEs: 'Eso implica mucho trabajo.' },
+  { id: 'd-v-03', lvl: 'D', cat: 'verb', sv: 'uppskatta', es: 'apreciar, estimar', inf: 'att uppskatta', pres: 'uppskattar', pret: 'uppskattade', sup: 'uppskattat', ex: 'Jag uppskattar din hjälp.', exEs: 'Aprecio tu ayuda.' },
+  { id: 'd-v-04', lvl: 'D', cat: 'verb', sv: 'avgöra', es: 'determinar, decidir', inf: 'att avgöra', pres: 'avgör', pret: 'avgjorde', sup: 'avgjort', ex: 'Detaljerna avgör resultatet.', exEs: 'Los detalles determinan el resultado.' },
+  { id: 'd-v-05', lvl: 'D', cat: 'verb', sv: 'anpassa', es: 'adaptar', inf: 'att anpassa', pres: 'anpassar', pret: 'anpassade', sup: 'anpassat', ex: 'Jag anpassar mig till situationen.', exEs: 'Me adapto a la situación.' },
+  { id: 'd-v-06', lvl: 'D', cat: 'verb', sv: 'hantera', es: 'manejar, gestionar', inf: 'att hantera', pres: 'hanterar', pret: 'hanterade', sup: 'hanterat', ex: 'Hon hanterar stress bra.', exEs: 'Ella maneja bien el estrés.' },
+  { id: 'd-v-07', lvl: 'D', cat: 'verb', sv: 'medföra', es: 'conllevar', inf: 'att medföra', pres: 'medför', pret: 'medförde', sup: 'medfört', ex: 'Beslutet medför vissa risker.', exEs: 'La decisión conlleva ciertos riesgos.' },
+  { id: 'd-v-08', lvl: 'D', cat: 'verb', sv: 'ifrågasätta', es: 'cuestionar', inf: 'att ifrågasätta', pres: 'ifrågasätter', pret: 'ifrågasatte', sup: 'ifrågasatt', ex: 'Jag ifrågasätter beslutet.', exEs: 'Cuestiono la decisión.' },
+  { id: 'd-v-09', lvl: 'D', cat: 'verb', sv: 'tillämpa', es: 'aplicar', inf: 'att tillämpa', pres: 'tillämpar', pret: 'tillämpade', sup: 'tillämpat', ex: 'Vi tillämpar nya regler.', exEs: 'Aplicamos nuevas reglas.' },
+  { id: 'd-v-10', lvl: 'D', cat: 'verb', sv: 'förutsätta', es: 'presuponer', inf: 'att förutsätta', pres: 'förutsätter', pret: 'förutsatte', sup: 'förutsatt', ex: 'Det förutsätter att alla hjälper till.', exEs: 'Eso presupone que todos ayuden.' },
+  { id: 'd-v-11', lvl: 'D', cat: 'verb', sv: 'ta reda på', es: 'averiguar', inf: 'att ta reda på', pres: 'tar reda på', pret: 'tog reda på', sup: 'tagit reda på', ex: 'Jag tar reda på svaret.', exEs: 'Averiguo la respuesta.', note: 'Verbo con partícula.' },
+  { id: 'd-v-12', lvl: 'D', cat: 'verb', sv: 'komma överens', es: 'ponerse de acuerdo', inf: 'att komma överens', pres: 'kommer överens', pret: 'kom överens', sup: 'kommit överens', ex: 'Vi kommer överens om priset.', exEs: 'Nos ponemos de acuerdo en el precio.', note: 'Verbo con partícula.' },
+  { id: 'd-v-13', lvl: 'D', cat: 'verb', sv: 'gå igenom', es: 'repasar, revisar', inf: 'att gå igenom', pres: 'går igenom', pret: 'gick igenom', sup: 'gått igenom', ex: 'Vi går igenom texten tillsammans.', exEs: 'Repasamos el texto juntos.', note: 'Verbo con partícula.' },
+  { id: 'd-v-14', lvl: 'D', cat: 'verb', sv: 'ställa in', es: 'cancelar', inf: 'att ställa in', pres: 'ställer in', pret: 'ställde in', sup: 'ställt in', ex: 'De ställer in mötet.', exEs: 'Cancelan la reunión.', note: 'Verbo con partícula.' },
+  { id: 'd-v-15', lvl: 'D', cat: 'verb', sv: 'ta upp', es: 'plantear', inf: 'att ta upp', pres: 'tar upp', pret: 'tog upp', sup: 'tagit upp', ex: 'Jag tar upp frågan på mötet.', exEs: 'Planteo el tema en la reunión.', note: 'Verbo con partícula.' },
+  { id: 'd-v-16', lvl: 'D', cat: 'verb', sv: 'hålla med', es: 'estar de acuerdo', inf: 'att hålla med', pres: 'håller med', pret: 'höll med', sup: 'hållit med', ex: 'Jag håller med dig.', exEs: 'Estoy de acuerdo contigo.', note: 'Verbo con partícula.' },
+  { id: 'd-v-17', lvl: 'D', cat: 'verb', sv: 'se till', es: 'asegurarse de', inf: 'att se till', pres: 'ser till', pret: 'såg till', sup: 'sett till', ex: 'Se till att dörren är låst.', exEs: 'Asegúrate de que la puerta esté cerrada.', note: 'Verbo con partícula.' },
+  { id: 'd-v-18', lvl: 'D', cat: 'verb', sv: 'lägga till', es: 'añadir', inf: 'att lägga till', pres: 'lägger till', pret: 'lade till', sup: 'lagt till', ex: 'Jag lägger till en kommentar.', exEs: 'Añado un comentario.', note: 'Verbo con partícula.' },
+  { id: 'd-v-19', lvl: 'D', cat: 'verb', sv: 'sätta igång', es: 'poner en marcha', inf: 'att sätta igång', pres: 'sätter igång', pret: 'satte igång', sup: 'satt igång', ex: 'Vi sätter igång projektet nu.', exEs: 'Ponemos en marcha el proyecto ahora.', note: 'Verbo con partícula.' },
+  { id: 'd-v-20', lvl: 'D', cat: 'verb', sv: 'känna till', es: 'conocer, saber de', inf: 'att känna till', pres: 'känner till', pret: 'kände till', sup: 'känt till', ex: 'Jag känner till reglerna.', exEs: 'Conozco las reglas.', note: 'Verbo con partícula.' }
 ];
 
 if (typeof window !== 'undefined') window.VOCAB = VOCAB;
@@ -6188,7 +6378,12 @@ function navGo(section) {
 // Modal genérico "próximamente".
 function openComingSoon(icon, title, text, btn) {
   const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
-  set('coming-icon', icon || '🔜'); set('coming-title', title || 'Próximamente'); set('coming-text', text || 'Muy pronto disponible.');
+  const iconEl = document.getElementById('coming-icon');
+  if (iconEl) {
+    if (icon && icon.indexOf('/') === 0) iconEl.innerHTML = `<img src="${icon}" class="w-20 h-20 rounded-full object-cover mx-auto" alt="" onerror="this.parentNode.textContent='👵'">`;
+    else iconEl.textContent = icon || '🔜';
+  }
+  set('coming-title', title || 'Próximamente'); set('coming-text', text || 'Muy pronto disponible.');
   const b = document.getElementById('coming-btn'); if (b) b.textContent = btn || 'Entendido';
   const m = document.getElementById('coming-modal'); if (m) m.classList.remove('hidden');
 }
@@ -6548,14 +6743,26 @@ function _vDistractors(pool, item, field, n) {
 }
 function buildVocabQuestion(item, pool) {
   const isVerb = item.cat === 'verb';
-  const type = isVerb ? _vPick(['es2sv', 'past', 'present']) : _vPick(['sv2es', 'es2sv']);
-  let text, answer, field;
-  if (type === 'sv2es') { text = `¿Qué significa "${item.sv}"?`; answer = item.es; field = 'es'; }
-  else if (type === 'es2sv') { text = `¿Cómo se dice "${item.es}" en sueco?`; answer = item.sv; field = 'sv'; }
-  else if (type === 'past') { text = `¿Cuál es el pasado (preteritum) de "${item.sv}"?`; answer = item.pret; field = 'pret'; }
-  else { // present → completar oración si se puede
-    if (item.ex && item.pres && item.ex.indexOf(item.pres) >= 0) { text = 'Completa la oración:\n' + item.ex.replace(item.pres, '_____'); answer = item.pres; field = 'pres'; }
-    else { text = `¿Cuál es el presente de "${item.sv}"?`; answer = item.pres; field = 'pres'; }
+  const swedish = item.lvl === 'C' || item.lvl === 'D';   // C/D: todo en sueco
+  let text, answer, field, type;
+  if (swedish) {
+    const clozeV = item.ex && item.pres && item.ex.indexOf(item.pres) >= 0;
+    const clozeW = item.ex && item.sv && item.ex.indexOf(item.sv) >= 0;
+    if (isVerb) type = _vPick(clozeV ? ['clozeV', 'past'] : ['past']);
+    else type = clozeW ? 'clozeW' : 'defSv';
+    if (type === 'clozeV') { text = 'Fyll i luckan:\n' + item.ex.replace(item.pres, '_____'); answer = item.pres; field = 'pres'; }
+    else if (type === 'past') { text = `Vad är preteritum (dåtid) av "${item.sv}"?`; answer = item.pret; field = 'pret'; }
+    else if (type === 'clozeW') { text = 'Fyll i luckan:\n' + item.ex.replace(item.sv, '_____'); answer = item.sv; field = 'sv'; }
+    else { text = `Vilket ord betyder "${item.es}"?`; answer = item.sv; field = 'sv'; }
+  } else {
+    type = isVerb ? _vPick(['es2sv', 'past', 'present']) : _vPick(['sv2es', 'es2sv']);
+    if (type === 'sv2es') { text = `¿Qué significa "${item.sv}"?`; answer = item.es; field = 'es'; }
+    else if (type === 'es2sv') { text = `¿Cómo se dice "${item.es}" en sueco?`; answer = item.sv; field = 'sv'; }
+    else if (type === 'past') { text = `¿Cuál es el pasado (preteritum) de "${item.sv}"?`; answer = item.pret; field = 'pret'; }
+    else {
+      if (item.ex && item.pres && item.ex.indexOf(item.pres) >= 0) { text = 'Completa la oración:\n' + item.ex.replace(item.pres, '_____'); answer = item.pres; field = 'pres'; }
+      else { text = `¿Cuál es el presente de "${item.sv}"?`; answer = item.pres; field = 'pres'; }
+    }
   }
   let options = [answer, ..._vDistractors(pool, item, field, 3)];
   while (options.length < 4) options.push('—');
@@ -11094,7 +11301,7 @@ function renderAccesoRapido() {
   const el = document.getElementById('acceso-rapido');
   if (!el) return;
   el.innerHTML = [
-    _accesoCard({ img: '/juanita/juanita-chancleta.webp', bg: '#fce7f3', title: 'Practicando con Juanita', text: 'Una mamá latina que te enseña sueco.', badge: 'snart tillgänglig', badgeCls: 'text-pink-600 bg-pink-50', onclick: "openComingSoon('👵','Practicando con Juanita','Muy pronto practicarás conversaciones guiadas con Juanita.','Entendido')" }),
+    _accesoCard({ img: '/juanita/juanita-chancleta.webp', bg: '#fce7f3', title: 'Practicando con Juanita', text: 'Una mamá latina que te enseña sueco.', badge: 'snart tillgänglig', badgeCls: 'text-pink-600 bg-pink-50', onclick: "openComingSoon('/juanita/juanita-chancleta.webp','Practicando con Juanita','Muy pronto practicarás conversaciones guiadas con Juanita.','Entendido')" }),
     _accesoCard({ icon: '🇸🇪', bg: '#dcfce7', title: '¿Qué tan sueco eres?', text: 'Pon a prueba tus conocimientos.', badge: 'snart tillgänglig', badgeCls: 'text-emerald-600 bg-emerald-50', onclick: "openComingSoon('🇸🇪','¿Qué tan sueco eres?','Muy pronto podrás poner a prueba tus conocimientos.','Entendido')" }),
     _accesoCard({ icon: '🗺️', bg: '#dbeafe', title: 'Mi viaje por Suecia', text: 'Explora el mapa de Suecia mientras aprendes.', btn: 'Explorar', btnCls: 'text-swe-blue bg-blue-50', onclick: "openComingSoon('🗺️','Mi viaje por Suecia','Muy pronto comenzarás tu viaje por Suecia desbloqueando ciudades mientras completas actividades.','Entendido')" }),
     _accesoCard({ icon: '🏆', bg: '#ede9fe', title: 'Logros', text: 'Tus premios y medallas.', btn: 'Ver mis premios', btnCls: 'text-purple-600 bg-purple-50', onclick: "openComingSoon('🏆','Logros','Muy pronto podrás desbloquear insignias, medallas y premios conforme avances en la plataforma.','Entendido')" })

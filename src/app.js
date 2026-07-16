@@ -131,7 +131,12 @@ function navGo(section) {
 // Modal genérico "próximamente".
 function openComingSoon(icon, title, text, btn) {
   const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
-  set('coming-icon', icon || '🔜'); set('coming-title', title || 'Próximamente'); set('coming-text', text || 'Muy pronto disponible.');
+  const iconEl = document.getElementById('coming-icon');
+  if (iconEl) {
+    if (icon && icon.indexOf('/') === 0) iconEl.innerHTML = `<img src="${icon}" class="w-20 h-20 rounded-full object-cover mx-auto" alt="" onerror="this.parentNode.textContent='👵'">`;
+    else iconEl.textContent = icon || '🔜';
+  }
+  set('coming-title', title || 'Próximamente'); set('coming-text', text || 'Muy pronto disponible.');
   const b = document.getElementById('coming-btn'); if (b) b.textContent = btn || 'Entendido';
   const m = document.getElementById('coming-modal'); if (m) m.classList.remove('hidden');
 }
@@ -491,14 +496,26 @@ function _vDistractors(pool, item, field, n) {
 }
 function buildVocabQuestion(item, pool) {
   const isVerb = item.cat === 'verb';
-  const type = isVerb ? _vPick(['es2sv', 'past', 'present']) : _vPick(['sv2es', 'es2sv']);
-  let text, answer, field;
-  if (type === 'sv2es') { text = `¿Qué significa "${item.sv}"?`; answer = item.es; field = 'es'; }
-  else if (type === 'es2sv') { text = `¿Cómo se dice "${item.es}" en sueco?`; answer = item.sv; field = 'sv'; }
-  else if (type === 'past') { text = `¿Cuál es el pasado (preteritum) de "${item.sv}"?`; answer = item.pret; field = 'pret'; }
-  else { // present → completar oración si se puede
-    if (item.ex && item.pres && item.ex.indexOf(item.pres) >= 0) { text = 'Completa la oración:\n' + item.ex.replace(item.pres, '_____'); answer = item.pres; field = 'pres'; }
-    else { text = `¿Cuál es el presente de "${item.sv}"?`; answer = item.pres; field = 'pres'; }
+  const swedish = item.lvl === 'C' || item.lvl === 'D';   // C/D: todo en sueco
+  let text, answer, field, type;
+  if (swedish) {
+    const clozeV = item.ex && item.pres && item.ex.indexOf(item.pres) >= 0;
+    const clozeW = item.ex && item.sv && item.ex.indexOf(item.sv) >= 0;
+    if (isVerb) type = _vPick(clozeV ? ['clozeV', 'past'] : ['past']);
+    else type = clozeW ? 'clozeW' : 'defSv';
+    if (type === 'clozeV') { text = 'Fyll i luckan:\n' + item.ex.replace(item.pres, '_____'); answer = item.pres; field = 'pres'; }
+    else if (type === 'past') { text = `Vad är preteritum (dåtid) av "${item.sv}"?`; answer = item.pret; field = 'pret'; }
+    else if (type === 'clozeW') { text = 'Fyll i luckan:\n' + item.ex.replace(item.sv, '_____'); answer = item.sv; field = 'sv'; }
+    else { text = `Vilket ord betyder "${item.es}"?`; answer = item.sv; field = 'sv'; }
+  } else {
+    type = isVerb ? _vPick(['es2sv', 'past', 'present']) : _vPick(['sv2es', 'es2sv']);
+    if (type === 'sv2es') { text = `¿Qué significa "${item.sv}"?`; answer = item.es; field = 'es'; }
+    else if (type === 'es2sv') { text = `¿Cómo se dice "${item.es}" en sueco?`; answer = item.sv; field = 'sv'; }
+    else if (type === 'past') { text = `¿Cuál es el pasado (preteritum) de "${item.sv}"?`; answer = item.pret; field = 'pret'; }
+    else {
+      if (item.ex && item.pres && item.ex.indexOf(item.pres) >= 0) { text = 'Completa la oración:\n' + item.ex.replace(item.pres, '_____'); answer = item.pres; field = 'pres'; }
+      else { text = `¿Cuál es el presente de "${item.sv}"?`; answer = item.pres; field = 'pres'; }
+    }
   }
   let options = [answer, ..._vDistractors(pool, item, field, 3)];
   while (options.length < 4) options.push('—');
@@ -5037,7 +5054,7 @@ function renderAccesoRapido() {
   const el = document.getElementById('acceso-rapido');
   if (!el) return;
   el.innerHTML = [
-    _accesoCard({ img: '/juanita/juanita-chancleta.webp', bg: '#fce7f3', title: 'Practicando con Juanita', text: 'Una mamá latina que te enseña sueco.', badge: 'snart tillgänglig', badgeCls: 'text-pink-600 bg-pink-50', onclick: "openComingSoon('👵','Practicando con Juanita','Muy pronto practicarás conversaciones guiadas con Juanita.','Entendido')" }),
+    _accesoCard({ img: '/juanita/juanita-chancleta.webp', bg: '#fce7f3', title: 'Practicando con Juanita', text: 'Una mamá latina que te enseña sueco.', badge: 'snart tillgänglig', badgeCls: 'text-pink-600 bg-pink-50', onclick: "openComingSoon('/juanita/juanita-chancleta.webp','Practicando con Juanita','Muy pronto practicarás conversaciones guiadas con Juanita.','Entendido')" }),
     _accesoCard({ icon: '🇸🇪', bg: '#dcfce7', title: '¿Qué tan sueco eres?', text: 'Pon a prueba tus conocimientos.', badge: 'snart tillgänglig', badgeCls: 'text-emerald-600 bg-emerald-50', onclick: "openComingSoon('🇸🇪','¿Qué tan sueco eres?','Muy pronto podrás poner a prueba tus conocimientos.','Entendido')" }),
     _accesoCard({ icon: '🗺️', bg: '#dbeafe', title: 'Mi viaje por Suecia', text: 'Explora el mapa de Suecia mientras aprendes.', btn: 'Explorar', btnCls: 'text-swe-blue bg-blue-50', onclick: "openComingSoon('🗺️','Mi viaje por Suecia','Muy pronto comenzarás tu viaje por Suecia desbloqueando ciudades mientras completas actividades.','Entendido')" }),
     _accesoCard({ icon: '🏆', bg: '#ede9fe', title: 'Logros', text: 'Tus premios y medallas.', btn: 'Ver mis premios', btnCls: 'text-purple-600 bg-purple-50', onclick: "openComingSoon('🏆','Logros','Muy pronto podrás desbloquear insignias, medallas y premios conforme avances en la plataforma.','Entendido')" })
