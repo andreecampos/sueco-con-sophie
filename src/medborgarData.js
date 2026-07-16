@@ -113,10 +113,66 @@ const MEDBORGAR = {
         { q: 'Vad gör polisen i Sverige?', qEs: '¿Qué hace la policía en Suecia?', options: ['Upprätthåller ordning och utreder brott', 'Dömer folk', 'Stiftar lagar', 'Styr landet'], correct: 0, exp: 'La policía mantiene el orden e investiga delitos.', phrase: 'Rätt! Polisen upprätthåller ordning och utreder brott.' }
       ]
     },
-    { id: 'm06', title: 'Medier', active: false },
-    { id: 'm07', title: 'Mänskliga rättigheter', active: false },
-    { id: 'm08', title: 'Arbete och ekonomi', active: false },
-    { id: 'm09', title: 'Välfärd', active: false },
+    {
+      id: 'm06', title: 'Medier', active: true,
+      aprende: 'En Suecia hay libertad de prensa (**tryckfrihet**) y libertad de expresión. Los medios (**medier**) —prensa, radio, TV e internet— informan y fiscalizan a quienes tienen el poder; por eso se les llama el "tercer poder". El servicio público (**public service**), como SVT y Sveriges Radio, se financia de forma pública y debe ser independiente e imparcial. La crítica de fuentes (**källkritik**) es clave: comprobar si una información es fiable antes de creerla o compartirla. Además, el principio de acceso público permite a cualquiera consultar documentos oficiales.',
+      palabras: [
+        { sv: 'medier', es: 'medios' }, { sv: 'tryckfrihet', es: 'libertad de prensa' }, { sv: 'källkritik', es: 'crítica de fuentes' },
+        { sv: 'public service', es: 'servicio público' }, { sv: 'nyheter', es: 'noticias' }, { sv: 'yttrandefrihet', es: 'libertad de expresión' }
+      ],
+      questions: [
+        { q: 'Vad är massmediernas viktiga roll i en demokrati?', qEs: '¿Cuál es el papel importante de los medios en una democracia?', options: ['Att granska makten och informera', 'Att sälja varor', 'Att styra landet', 'Att döma brott'], correct: 0, exp: 'Su papel clave es informar y fiscalizar (controlar) al poder.', phrase: 'Rätt! Medier granskar makten och informerar.', why: 'En una democracia, los medios libres informan y vigilan a quienes tienen el poder; por eso se les llama el "tercer poder".' },
+        { q: 'Vad betyder tryckfrihet?', qEs: '¿Qué significa libertad de prensa?', options: ['Rätten att publicera utan censur', 'Att allt är gratis', 'Att staten styr tidningarna', 'Förbud mot tidningar'], correct: 0, exp: 'Libertad de prensa: derecho a publicar sin censura.', phrase: 'Rätt! Tryckfrihet är rätten att publicera fritt.' },
+        { q: 'Vad är källkritik?', qEs: '¿Qué es la crítica de fuentes?', options: ['Att granska om information är pålitlig', 'Att kritisera alla', 'Att tro på allt', 'Att undvika nyheter'], correct: 0, exp: 'Crítica de fuentes: examinar si la información es fiable.', phrase: 'Rätt! Källkritik är att granska informationens tillförlitlighet.', why: 'Ante tanta información (y desinformación), es clave comprobar quién dice algo, cuándo y por qué antes de creerlo.' },
+        { q: 'Vad är exempel på public service i Sverige?', qEs: '¿Qué es un ejemplo de servicio público en Suecia?', options: ['SVT och Sveriges Radio', 'Netflix', 'Privata bloggar', 'Reklamföretag'], correct: 0, exp: 'SVT y Sveriges Radio son servicio público.', phrase: 'Rätt! SVT och SR är public service.' },
+        { q: 'En person läser en sensationell nyhet på nätet. Vad är klokt att göra?', qEs: 'Una persona lee una noticia sensacionalista en internet. ¿Qué es sensato hacer?', options: ['Kontrollera källan innan man tror på den', 'Dela den direkt', 'Tro på allt', 'Ignorera all information'], correct: 0, isCase: true, exp: 'Lo sensato es comprobar la fuente antes de creerla o compartirla.', phrase: 'Rätt! Man bör kontrollera källan först.', why: 'La crítica de fuentes (källkritik) evita difundir desinformación: verifica el origen y contrástalo con medios fiables.' }
+      ]
+    },
+    {
+      id: 'm07', title: 'Mänskliga rättigheter', active: true,
+      aprende: 'Los derechos humanos (**mänskliga rättigheter**) pertenecen a todas las personas, sin importar su origen, religión, sexo u opinión. Suecia los protege y ha firmado convenios internacionales de la ONU. Principios clave: el igual valor de todas las personas (**alla människors lika värde**), la libertad de religión (**religionsfrihet**), la libertad de expresión y la protección frente a la discriminación (**diskriminering**). Los niños tienen derechos especiales (la Convención del Niño, **barnkonventionen**). La igualdad entre mujeres y hombres (**jämställdhet**) es un valor central en la sociedad sueca.',
+      palabras: [
+        { sv: 'mänskliga rättigheter', es: 'derechos humanos' }, { sv: 'lika värde', es: 'igual valor' }, { sv: 'religionsfrihet', es: 'libertad de religión' },
+        { sv: 'diskriminering', es: 'discriminación' }, { sv: 'jämställdhet', es: 'igualdad de género' }, { sv: 'barnkonventionen', es: 'Convención del Niño' }
+      ],
+      questions: [
+        { q: 'Vem har mänskliga rättigheter?', qEs: '¿Quién tiene derechos humanos?', options: ['Alla människor', 'Bara svenskar', 'Bara vuxna', 'Bara medborgare'], correct: 0, exp: 'Todas las personas tienen derechos humanos.', phrase: 'Rätt! Alla människor har mänskliga rättigheter.', why: 'Los derechos humanos son universales: valen para todos por el hecho de ser personas.' },
+        { q: 'Vad betyder religionsfrihet?', qEs: '¿Qué significa libertad de religión?', options: ['Rätten att tro eller inte tro', 'Alla måste ha en religion', 'Bara en religion tillåts', 'Förbud mot religion'], correct: 0, exp: 'Libertad de religión: derecho a creer o no creer.', phrase: 'Rätt! Religionsfrihet betyder att man får tro eller inte tro.' },
+        { q: 'Vad är diskriminering?', qEs: '¿Qué es la discriminación?', options: ['Att behandla någon sämre på grund av t.ex. kön eller ursprung', 'Att alla är lika', 'Att hjälpa någon', 'Att betala skatt'], correct: 0, exp: 'Discriminación: tratar peor a alguien por su sexo, origen, etc.', phrase: 'Rätt! Diskriminering är att behandla någon orättvist.', why: 'En Suecia la discriminación por sexo, origen, religión, discapacidad u orientación está prohibida por ley.' },
+        { q: 'Vad menas med jämställdhet?', qEs: '¿Qué significa igualdad de género?', options: ['Lika rättigheter för kvinnor och män', 'Att män bestämmer', 'Att kvinnor bestämmer', 'Ingen jämlikhet'], correct: 0, exp: 'Igualdad de género: iguales derechos para mujeres y hombres.', phrase: 'Rätt! Jämställdhet är lika rättigheter för kvinnor och män.' },
+        { q: 'En arbetsgivare vägrar anställa en person på grund av dess religion. Vad gäller?', qEs: 'Un empleador se niega a contratar a alguien por su religión. ¿Qué rige?', options: ['Det är olaglig diskriminering', 'Det är tillåtet', 'Det bestämmer arbetsgivaren fritt', 'Man måste byta religion'], correct: 0, isCase: true, exp: 'Es discriminación ilegal negar un empleo por la religión.', phrase: 'Rätt! Det är olaglig diskriminering.', why: 'La ley de discriminación (diskrimineringslagen) prohíbe rechazar a alguien por motivos como religión, sexo u origen.' }
+      ]
+    },
+    {
+      id: 'm08', title: 'Arbete och ekonomi', active: true,
+      aprende: 'En Suecia la mayoría de los adultos trabaja (**arbeta**) y paga impuestos (**skatt**) sobre sus ingresos (**inkomst**); esos impuestos financian el bienestar. El mercado laboral (**arbetsmarknad**) tiene reglas: un contrato de trabajo (**anställningsavtal**), sindicatos (**fackförbund**) que defienden a los trabajadores, y derechos como vacaciones y lugares de trabajo seguros. Ante el desempleo (**arbetslöshet**) hay ayudas. La agencia pública de empleo (**Arbetsförmedlingen**) ayuda a encontrar trabajo y ofrece orientación y formación.',
+      palabras: [
+        { sv: 'arbete', es: 'trabajo' }, { sv: 'inkomst', es: 'ingreso' }, { sv: 'skatt', es: 'impuesto' },
+        { sv: 'fackförbund', es: 'sindicato' }, { sv: 'anställningsavtal', es: 'contrato de trabajo' }, { sv: 'arbetslöshet', es: 'desempleo' }
+      ],
+      questions: [
+        { q: 'Vad betalar man skatt på i Sverige?', qEs: '¿Sobre qué se paga impuesto en Suecia?', options: ['Sin inkomst', 'Ingenting', 'Bara på lyxvaror', 'Bara företag betalar'], correct: 0, exp: 'Se paga impuesto sobre los ingresos.', phrase: 'Rätt! Man betalar skatt på sin inkomst.', why: 'Los impuestos financian la sanidad, la escuela y el bienestar; casi todos los que trabajan contribuyen.' },
+        { q: 'Vad gör ett fackförbund?', qEs: '¿Qué hace un sindicato?', options: ['Företräder och skyddar arbetstagarna', 'Styr landet', 'Dömer brott', 'Säljer varor'], correct: 0, exp: 'Un sindicato representa y protege a los trabajadores.', phrase: 'Rätt! Ett fackförbund företräder arbetstagarna.', why: 'Los sindicatos negocian salarios y condiciones y defienden los derechos de los empleados.' },
+        { q: 'Vad behöver man oftast för att jobba i Sverige?', qEs: '¿Qué se necesita normalmente para trabajar en Suecia?', options: ['Ett anställningsavtal', 'Ingenting', 'Bara pengar', 'Ett körkort'], correct: 0, exp: 'Normalmente se necesita un contrato de trabajo.', phrase: 'Rätt! Man behöver ett anställningsavtal.' },
+        { q: 'Vad kallas det när man inte har ett jobb?', qEs: '¿Cómo se llama cuando no se tiene trabajo?', options: ['Arbetslöshet', 'Semester', 'Inkomst', 'Pension'], correct: 0, exp: 'Se llama desempleo (arbetslöshet).', phrase: 'Rätt! Att sakna jobb kallas arbetslöshet.' },
+        { q: 'En person söker jobb i Sverige. Vilken myndighet kan hjälpa till?', qEs: 'Una persona busca trabajo en Suecia. ¿Qué organismo puede ayudar?', options: ['Arbetsförmedlingen', 'Skatteverket', 'Polisen', 'Migrationsverket'], correct: 0, isCase: true, exp: 'El Servicio de Empleo (Arbetsförmedlingen) ayuda a buscar trabajo.', phrase: 'Rätt! Arbetsförmedlingen hjälper till att hitta jobb.', why: 'Arbetsförmedlingen es la agencia pública de empleo: orienta, ofrece formación y conecta con empleadores.' }
+      ]
+    },
+    {
+      id: 'm09', title: 'Välfärd', active: true,
+      aprende: 'El modelo de bienestar (**välfärd**) sueco da a todos acceso a la sanidad (**sjukvård**), la escuela (**skola**) y la seguridad social, financiado con impuestos. La atención sanitaria es en gran parte gratuita o de bajo coste. La escuela es gratuita y hay escolaridad obligatoria (**skolplikt**) para los niños. Existen ayudas por enfermedad, permiso parental (**föräldrapenning**), pensiones (**pension**) y apoyo a las familias. El objetivo es la seguridad (**trygghet**) y la igualdad de oportunidades para todas las personas.',
+      palabras: [
+        { sv: 'välfärd', es: 'bienestar' }, { sv: 'sjukvård', es: 'sanidad' }, { sv: 'skolplikt', es: 'escolaridad obligatoria' },
+        { sv: 'föräldrapenning', es: 'prestación parental' }, { sv: 'pension', es: 'pensión' }, { sv: 'trygghet', es: 'seguridad' }
+      ],
+      questions: [
+        { q: 'Hur finansieras välfärden i Sverige?', qEs: '¿Cómo se financia el bienestar en Suecia?', options: ['Med skatter', 'Med reklam', 'Med lån från kungen', 'Med privata företag'], correct: 0, exp: 'El bienestar se financia con impuestos.', phrase: 'Rätt! Välfärden finansieras med skatter.', why: 'Los impuestos que pagan quienes trabajan financian la sanidad, la escuela, las pensiones y las ayudas.' },
+        { q: 'Vad gäller för barn i Sverige när det gäller skola?', qEs: '¿Qué rige para los niños en Suecia respecto a la escuela?', options: ['Det finns skolplikt', 'Skolan är frivillig', 'Bara pojkar går i skolan', 'Skolan kostar mycket'], correct: 0, exp: 'Existe escolaridad obligatoria (skolplikt) y la escuela es gratuita.', phrase: 'Rätt! I Sverige finns skolplikt.', why: 'Todos los niños tienen el derecho y la obligación de ir a la escuela, que es gratuita.' },
+        { q: 'Vad är föräldrapenning?', qEs: '¿Qué es la prestación parental (föräldrapenning)?', options: ['Ersättning när man är hemma med sitt barn', 'Lön för att arbeta', 'En skatt', 'En pension'], correct: 0, exp: 'Prestación parental: dinero para estar en casa cuidando al hijo.', phrase: 'Rätt! Föräldrapenning ger ersättning när man är hemma med barnet.', why: 'Suecia tiene un permiso parental generoso, que ambos progenitores pueden compartir.' },
+        { q: 'Vad får man när man blir gammal och slutar arbeta?', qEs: '¿Qué se recibe al hacerse mayor y dejar de trabajar?', options: ['Pension', 'Studielån', 'Barnbidrag', 'Böter'], correct: 0, exp: 'Al jubilarse se recibe una pensión (pension).', phrase: 'Rätt! När man slutar arbeta får man pension.' },
+        { q: 'En person blir sjuk och kan inte arbeta en period. Vad kan hen få?', qEs: 'Una persona se enferma y no puede trabajar un tiempo. ¿Qué puede recibir?', options: ['Sjukpenning', 'Ingenting', 'Böter', 'Studielån'], correct: 0, isCase: true, exp: 'Puede recibir un subsidio por enfermedad (sjukpenning).', phrase: 'Rätt! Man kan få sjukpenning när man är sjuk.', why: 'El seguro social (Försäkringskassan) paga sjukpenning cuando una enfermedad impide trabajar.' }
+      ]
+    },
     { id: 'm10', title: 'Sveriges historia', active: false },
     { id: 'm11', title: 'Sverige i världen', active: false },
     { id: 'm12', title: 'Religion och mångfald', active: false },

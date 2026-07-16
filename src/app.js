@@ -966,6 +966,7 @@ function medbNext() { const st = medbState; st.i++; if (st.i >= st.qs.length) { 
 async function finishMedbLesson() {
   const st = medbState, total = st.correct + st.wrong, pct = total ? Math.round(st.correct / total * 100) : 0;
   if (!st.sim && st.module && st.module.id !== 'sim') { await saveMedbProgress(st.module.id, pct); }
+  else if (st.sim) { const seen = _medbSimSeen(); (st.qs || []).forEach(q => { if (seen.indexOf(q.q) < 0) seen.push(q.q); }); _medbSimSaveSeen(seen); }   // marca vistas para no repetir
   showView('medborgar-result');
   const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
   set('medr-title', st.sim ? '¡Simulacro completado!' : '¡Lección completada!');
@@ -981,10 +982,17 @@ async function saveMedbProgress(moduleId, pct) {
 }
 function medbPracticeErrors() { const st = medbState; if (!st || !st.wrongList.length) { showMedborgar(); return; } medbState = { ...st, qs: st.wrongList.slice(), i: 0, correct: 0, wrong: 0, wrongList: [], sim: st.sim }; showView('medborgar-lesson'); renderMedbQuestion(); }
 function medbExit() { showMedborgar(); }
+function _medbSimSeen() { try { return JSON.parse(localStorage.getItem('sc_medb_sim_seen') || '[]'); } catch (e) { return []; } }
+function _medbSimSaveSeen(a) { try { localStorage.setItem('sc_medb_sim_seen', JSON.stringify(a)); } catch (e) {} }
 function startMedbSimulacro() {
   const all = []; _medbActive().forEach(m => (m.questions || []).forEach(q => all.push(q)));
   if (all.length < 3) { showMini('Aún no hay suficientes preguntas para el simulacro.', '🔒'); return; }
-  const qs = _vShuffle(all).slice(0, Math.min(60, all.length));
+  // No repetir: prioriza preguntas que el alumno NO ha visto en simulacros previos.
+  let seen = _medbSimSeen();
+  let unseen = all.filter(q => seen.indexOf(q.q) < 0);
+  if (unseen.length === 0) { seen = []; _medbSimSaveSeen([]); unseen = all.slice(); }   // ya las vio todas → reinicia el ciclo
+  const seenQ = all.filter(q => seen.indexOf(q.q) >= 0);
+  const qs = _vShuffle(unseen).concat(_vShuffle(seenQ)).slice(0, Math.min(60, all.length));
   medbState = { module: { id: 'sim', title: 'Simulacro' }, qs, i: 0, correct: 0, wrong: 0, wrongList: [], sel: null, answered: false, sim: true };
   showView('medborgar-lesson');
   renderMedbQuestion();
