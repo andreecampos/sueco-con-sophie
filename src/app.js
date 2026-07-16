@@ -868,11 +868,12 @@ function renderMedborgarPct() {
   const pe = document.getElementById('pct-medborgar'); if (pe) pe.textContent = (typeof fmtPct === 'function' ? fmtPct(p.pct) : p.pct + ' %');
   const be = document.getElementById('bar-medborgar'); if (be && typeof _colorBar === 'function') be.innerHTML = _colorBar(p.pct, '#4f46e5', 8);
 }
+let _medbIntroSeen = false;   // ya se mostró en esta sesión (evita que reaparezca al salir)
 async function showMedborgar() {
   if (!requireAccess()) return;
   stopSpeech();
   let hide = false; try { hide = localStorage.getItem('sc_medb_intro') === '1'; } catch (e) {}
-  if (!hide) { const m = document.getElementById('medb-intro'); if (m) m.classList.remove('hidden'); }
+  if (!hide && !_medbIntroSeen) { _medbIntroSeen = true; const m = document.getElementById('medb-intro'); if (m) m.classList.remove('hidden'); }
   showView('medborgar');
   renderMedborgarHome();
   await loadMedborgarProgress();
