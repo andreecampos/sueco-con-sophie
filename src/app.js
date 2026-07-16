@@ -157,6 +157,12 @@ function goMenu() {
   renderLevelMenu();
 }
 
+// Barra de progreso con relleno de color a medida.
+function _colorBar(pct, color, h) {
+  const w = Math.max(0, Math.min(100, Number(pct) || 0));
+  return '<div class="w-full bg-gray-200 rounded-full overflow-hidden" style="height:' + (h || 8) + 'px"><div class="h-full rounded-full" style="width:' + w + '%;background:' + color + ';transition:width .4s ease"></div></div>';
+}
+
 // Pantalla de nivel rediseñada: cabecera + fila de categorías + tarjetas grandes + examen.
 function renderLevelMenu() {
   const el = document.getElementById('level-menu-body');
@@ -177,11 +183,11 @@ function renderLevelMenu() {
   const overall = pctClamp(d, t);
   const doneCats = cats.filter(c => c.p.total > 0 && c.p.done >= c.p.total).length;
   const examOpen = doneCats >= cats.length && cats.length > 0;
-  const chip = c => `<div class="flex flex-col items-center gap-1 flex-1"><span class="text-2xl">${c.icon}</span><span class="text-[11px] font-bold text-gray-600">${c.label}</span><span class="text-[11px] font-black" style="color:${c.c}">${fmtPct(c.p.pct)}</span></div>`;
+  const chip = c => `<div class="flex flex-col items-center gap-1 flex-1"><span class="text-2xl">${c.icon}</span><span class="text-[11px] font-bold text-gray-600">${c.label}</span><span class="text-[11px] font-black" style="color:${c.c}">${fmtPct(c.p.pct)}</span><div class="w-9">${_colorBar(c.p.pct, c.c, 4)}</div></div>`;
   const bigCard = c => `<button onclick="${c.onclick}" class="w-full flex items-center gap-4 rounded-2xl p-4 shadow-sm border hover:shadow-md transition-all text-left" style="background:${c.c}14; border-color:${c.c}33">
       <span class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background:${c.c}2e">${c.icon}</span>
       <div class="flex-1 min-w-0"><div class="font-black text-gray-800">${c.label}</div><div class="text-xs text-gray-500 mb-1.5">${c.desc}</div>
-        <div class="flex items-center gap-2"><div class="flex-1">${progressBar(c.p.pct)}</div><span class="text-xs font-black" style="color:${c.c}">${fmtPct(c.p.pct)}</span></div></div>
+        <div class="flex items-center gap-2"><div class="flex-1">${_colorBar(c.p.pct, c.c, 8)}</div><span class="text-xs font-black" style="color:${c.c}">${fmtPct(c.p.pct)}</span></div></div>
       <span class="text-gray-300 text-lg flex-shrink-0">›</span></button>`;
   const ex = (typeof examStatus === 'function') ? examStatus(lv) : { medal: false, passes: 0, required: 4, locked: false, isAdmin: false, nextAt: null, bestScore: 0 };
   const canAttempt = ex.isAdmin || (!ex.medal && !ex.locked);   // disponible (no depende de completar categorías)
@@ -795,7 +801,16 @@ async function finishExam(timedOut) {
       nextBtn.textContent = isLast ? '🏆 Seguir última prueba (35 min)' : ('🏆 Seguir Prueba número ' + nextNum + ' (35 min)');
     }
     if (isLast && lastNote) { lastNote.classList.remove('hidden'); set('er-last-lvl', st.level); }
-    if (motiv) motiv.classList.remove('hidden');
+    if (motiv) {
+      motiv.classList.remove('hidden');
+      // Reutiliza las fotos reales de Sophie y Andree de la sección "Nuestro equipo".
+      try {
+        const fA = document.getElementById('founder-andree'), fS = document.getElementById('founder-sophie');
+        const eA = document.getElementById('er-andree-img'), eS = document.getElementById('er-sophie-img');
+        if (fA && eA && fA.src) eA.src = fA.src;
+        if (fS && eS && fS.src) eS.src = fS.src;
+      } catch (e) {}
+    }
   } else {
     set('er-emoji', '💪'); set('er-title', 'Todavía no');
     set('er-sub', 'No alcanzaste el 80 % para este intento.' + (timedOut ? ' Se acabó el tiempo.' : ''));
