@@ -539,10 +539,7 @@
   <div class="bg-swe-blue text-white blue-header">
     <div class="flag-line"></div>
     <div class="max-w-4xl mx-auto px-4 py-5 sm:py-8 text-center relative">
-      <!-- Student logout button (left) -->
-      <button onclick="logoutStudent()" class="absolute top-0 left-4 text-blue-300 hover:text-white text-xs transition-colors px-3 py-1.5 rounded-lg hover:bg-white/10">
-        ← Salir
-      </button>
+      <!-- (El alumno cierra sesión desde Min konto → Logga ut) -->
       <!-- Admin button — hidden for students, shown only for admin -->
       <button id="admin-btn-home" onclick="goAdmin()" class="absolute top-0 right-4 text-blue-300 hover:text-white text-xs transition-colors px-3 py-1.5 rounded-lg hover:bg-white/10" style="display:none">
         ⚙️ Admin
@@ -591,7 +588,7 @@
       <div id="profile-avatar" class="flex-shrink-0"></div>
       <div class="min-w-0 flex-1">
         <div class="font-black text-gray-800 text-xl leading-tight">Hej, <span id="profile-name">Andree</span>! 👋</div>
-        <button onclick="openAccountModal()" class="mt-0.5 inline-flex items-center gap-1 text-sm font-bold text-swe-blue hover:underline">👤 Min konto</button>
+        <button onclick="openAccountModal()" class="mt-1 inline-flex items-center gap-1 text-sm font-bold text-swe-blue bg-white border-2 border-blue-100 hover:border-swe-blue hover:bg-blue-50 rounded-full px-3 py-1 shadow-sm transition-all">Min konto</button>
       </div>
       <div class="flex items-center gap-1.5 bg-white rounded-2xl px-3 py-1.5 shadow-sm border border-orange-100 flex-shrink-0">
         <span class="text-lg">🔥</span>
@@ -986,32 +983,32 @@
     <div class="font-black text-gray-800 text-2xl mb-1">Aprender</div>
     <div class="text-sm text-gray-500 mb-5">Aquí aprendes y practicas sueco.</div>
     <div class="space-y-3">
-      <button onclick="showTheory()" class="w-full flex items-center gap-4 bg-white rounded-2xl p-4 shadow-sm border-2 border-sky-100 hover:border-sky-300 transition-all text-left">
+      <button onclick="showTheory()" class="w-full flex items-center gap-4 bg-sky-50 rounded-2xl p-4 shadow-sm border-2 border-sky-100 hover:border-sky-300 transition-all text-left">
         <span class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background:linear-gradient(135deg,#0EA5E9,#38BDF8);color:#fff">📖</span>
         <div class="flex-1 min-w-0"><div class="font-bold text-gray-800">Teoría</div><div class="text-xs text-gray-500">Lecciones cortas: lees y practicas</div><div class="mt-1.5 flex items-center gap-2"><div class="flex-1 max-w-[160px]" id="bar-theory"></div><span class="text-xs font-black text-sky-600" id="pct-theory">0 %</span></div></div>
         <span class="text-gray-300 text-lg flex-shrink-0">›</span>
       </button>
-      <button onclick="showGrammar()" class="w-full flex items-center gap-4 bg-white rounded-2xl p-4 shadow-sm border-2 border-amber-100 hover:border-amber-300 transition-all text-left">
+      <button onclick="showGrammar()" class="w-full flex items-center gap-4 bg-amber-50 rounded-2xl p-4 shadow-sm border-2 border-amber-100 hover:border-amber-300 transition-all text-left">
         <span class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background:linear-gradient(135deg,#FECC02,#F59E0B);color:#fff">🎯</span>
         <div class="flex-1 min-w-0"><div class="font-bold text-gray-800">Practica Gramática</div><div class="text-xs text-gray-500">Elige un tema y practica sin límite</div><div class="mt-1.5 flex items-center gap-2"><div class="flex-1 max-w-[160px]" id="bar-grammar"></div><span class="text-xs font-black text-amber-600" id="pct-grammar">0 %</span></div></div>
         <span class="text-gray-300 text-lg flex-shrink-0">›</span>
       </button>
-      <button onclick="showHorst()" class="w-full flex items-center gap-4 bg-white rounded-2xl p-4 shadow-sm border-2 border-blue-100 hover:border-blue-300 transition-all text-left">
+      <button onclick="showHorst()" class="w-full flex items-center gap-4 bg-blue-50 rounded-2xl p-4 shadow-sm border-2 border-blue-100 hover:border-blue-300 transition-all text-left">
         <span class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background:linear-gradient(135deg,#006AA7,#004F7C);color:#fff">🎧</span>
         <div class="flex-1 min-w-0"><div class="font-bold text-gray-800">Hörförståelse</div><div class="text-xs text-gray-500">Escucha a Sophie y responde</div><div class="mt-1.5 flex items-center gap-2"><div class="flex-1 max-w-[160px]" id="bar-listening"></div><span class="text-xs font-black text-swe-blue" id="pct-listening">0 %</span></div></div>
         <span class="text-gray-300 text-lg flex-shrink-0">›</span>
       </button>
-      <button onclick="showMedborgar()" class="w-full flex items-center gap-4 bg-white rounded-2xl p-4 shadow-sm border-2 border-indigo-100 hover:border-indigo-300 transition-all text-left">
+      <button onclick="showMedborgar()" class="w-full flex items-center gap-4 bg-indigo-50 rounded-2xl p-4 shadow-sm border-2 border-indigo-100 hover:border-indigo-300 transition-all text-left">
         <span class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 bg-indigo-50">🇪🇺</span>
         <div class="flex-1 min-w-0"><div class="font-bold text-gray-800">🇸🇪 Medborgarskapsprovet</div><div class="text-xs text-gray-500">Prepárate para el examen de ciudadanía sueca</div><div class="mt-1.5 flex items-center gap-2"><div class="flex-1 max-w-[160px]" id="bar-medborgar"></div><span class="text-xs font-black text-indigo-600" id="pct-medborgar">0 %</span></div></div>
         <span class="text-gray-300 text-lg flex-shrink-0">›</span>
       </button>
-      <button onclick="openComingSoon('/juanita/juanita-chancleta.webp','Practicando con Juanita','Muy pronto practicarás conversaciones guiadas con Juanita, tu mamá latina favorita.','Entendido')" class="w-full flex items-center gap-4 bg-white rounded-2xl p-4 shadow-sm border-2 border-pink-100 hover:border-pink-300 transition-all text-left">
+      <button onclick="openComingSoon('/juanita/juanita-chancleta.webp','Practicando con Juanita','Muy pronto practicarás conversaciones guiadas con Juanita, tu mamá latina favorita.','Entendido')" class="w-full flex items-center gap-4 bg-pink-50 rounded-2xl p-4 shadow-sm border-2 border-pink-100 hover:border-pink-300 transition-all text-left">
         <span class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 bg-pink-50">👵</span>
         <div class="flex-1 min-w-0"><div class="font-bold text-gray-800">Practicando con Juanita</div><div class="text-xs text-gray-500">Conversaciones guiadas con IA</div></div>
         <span class="text-[10px] font-bold text-pink-600 bg-pink-50 px-2 py-1 rounded-full flex-shrink-0">snart tillgänglig</span>
       </button>
-      <button onclick="openComingSoon('🇸🇪','¿Qué tan sueco eres?','Muy pronto podrás poner a prueba tus conocimientos con un reto divertido.','Entendido')" class="w-full flex items-center gap-4 bg-white rounded-2xl p-4 shadow-sm border-2 border-emerald-100 hover:border-emerald-300 transition-all text-left">
+      <button onclick="openComingSoon('🇸🇪','¿Qué tan sueco eres?','Muy pronto podrás poner a prueba tus conocimientos con un reto divertido.','Entendido')" class="w-full flex items-center gap-4 bg-emerald-50 rounded-2xl p-4 shadow-sm border-2 border-emerald-100 hover:border-emerald-300 transition-all text-left">
         <span class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 bg-emerald-50">🇸🇪</span>
         <div class="flex-1 min-w-0"><div class="font-bold text-gray-800">¿Qué tan sueco eres?</div><div class="text-xs text-gray-500">Pon a prueba tus conocimientos</div></div>
         <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full flex-shrink-0">snart tillgänglig</span>

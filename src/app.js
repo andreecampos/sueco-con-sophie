@@ -2164,10 +2164,12 @@ async function loginStudent() {
 }
 
 async function logoutStudent() {
+  try { closeAccountModal(); } catch (e) {}
+  try { closeMini(); closeComingSoon(); document.body.style.overflow = ''; } catch (e) {}
   window._sbSession = null;
   await sb.auth.signOut();
   showView('login');
-  showToast('Sesión cerrada', 'info');
+  showToast('Utloggad', 'info');
 }
 
 async function manageSubscription() {

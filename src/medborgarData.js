@@ -173,10 +173,66 @@ const MEDBORGAR = {
         { q: 'En person blir sjuk och kan inte arbeta en period. Vad kan hen få?', qEs: 'Una persona se enferma y no puede trabajar un tiempo. ¿Qué puede recibir?', options: ['Sjukpenning', 'Ingenting', 'Böter', 'Studielån'], correct: 0, isCase: true, exp: 'Puede recibir un subsidio por enfermedad (sjukpenning).', phrase: 'Rätt! Man kan få sjukpenning när man är sjuk.', why: 'El seguro social (Försäkringskassan) paga sjukpenning cuando una enfermedad impide trabajar.' }
       ]
     },
-    { id: 'm10', title: 'Sveriges historia', active: false },
-    { id: 'm11', title: 'Sverige i världen', active: false },
-    { id: 'm12', title: 'Religion och mångfald', active: false },
-    { id: 'm13', title: 'Kultur och traditioner', active: false }
+    {
+      id: 'm10', title: 'Sveriges historia', active: true,
+      aprende: 'Suecia tiene una larga historia (**historia**). En la Edad Media ya era un reino. Durante varios siglos Finlandia (**Finland**) formó parte de Suecia, hasta 1809, cuando Suecia la perdió ante Rusia; por eso hoy hay suecoparlantes en Finlandia. En el siglo XIX muchos suecos emigraron (**utvandring**) a América huyendo de la pobreza. En el siglo XX el país se industrializó y construyó el Estado de bienestar (**välfärdsstat**), y se mantuvo neutral (**neutral**) en las dos guerras mundiales. Tras 1945 creció la inmigración (**invandring**) y Suecia se convirtió en una sociedad moderna y diversa. El sufragio universal llegó en 1921.',
+      palabras: [
+        { sv: 'historia', es: 'historia' }, { sv: 'Finland', es: 'Finlandia' }, { sv: 'neutral', es: 'neutral' },
+        { sv: 'utvandring', es: 'emigración' }, { sv: 'invandring', es: 'inmigración' }, { sv: 'välfärdsstat', es: 'Estado de bienestar' }
+      ],
+      questions: [
+        { q: 'Vilket land var en del av Sverige i flera hundra år?', qEs: '¿Qué país fue parte de Suecia durante varios siglos?', options: ['Finland', 'Norge', 'Danmark', 'Ryssland'], correct: 0, exp: 'Finlandia fue parte de Suecia durante varios siglos.', phrase: 'Rätt! Finland var en del av Sverige i flera hundra år.', why: 'Finlandia formó parte del reino de Suecia hasta 1809, cuando Suecia la perdió ante Rusia. Por eso comparten mucha historia y aún hay suecoparlantes en Finlandia.' },
+        { q: 'Vad gjorde Sverige under första och andra världskriget?', qEs: '¿Qué hizo Suecia durante la Primera y la Segunda Guerra Mundial?', options: ['Var neutralt', 'Anföll grannländer', 'Blev ockuperat', 'Gick med i kriget'], correct: 0, exp: 'Suecia se mantuvo neutral en las dos guerras mundiales.', phrase: 'Rätt! Sverige var neutralt under världskrigen.' },
+        { q: 'Vad hände i Sverige på 1900-talet?', qEs: '¿Qué pasó en Suecia en el siglo XX?', options: ['Landet industrialiserades och byggde välfärd', 'Blev en koloni', 'Förlorade sin kung', 'Slutade med demokrati'], correct: 0, exp: 'En el siglo XX Suecia se industrializó y construyó el Estado de bienestar.', phrase: 'Rätt! Sverige industrialiserades och byggde välfärdsstaten.' },
+        { q: 'Vad gjorde många svenskar på 1800-talet?', qEs: '¿Qué hicieron muchos suecos en el siglo XIX?', options: ['Utvandrade till Amerika', 'Invaderade Europa', 'Byggde pyramider', 'Flyttade till Asien'], correct: 0, exp: 'En el siglo XIX muchos suecos emigraron a América por la pobreza.', phrase: 'Rätt! Många svenskar utvandrade till Amerika.', why: 'Entre 1850 y 1930, cerca de un millón de suecos emigraron (utvandring), sobre todo a EE. UU., huyendo del hambre y la pobreza.' },
+        { q: 'En person undrar varför det finns svensktalande i Finland. Vad är förklaringen?', qEs: 'Una persona se pregunta por qué hay suecoparlantes en Finlandia. ¿Cuál es la explicación?', options: ['Finland var en del av Sverige förr', 'Finland är en svensk koloni idag', 'De lärde sig svenska nyligen', 'Det är en slump'], correct: 0, isCase: true, exp: 'Hay suecoparlantes en Finlandia porque Finlandia fue parte de Suecia.', phrase: 'Rätt! Finland tillhörde Sverige förr, därför finns svensktalande där.', why: 'Durante siglos Finlandia fue parte del reino sueco; por esa historia común, el sueco sigue siendo lengua oficial en Finlandia.' }
+      ]
+    },
+    {
+      id: 'm11', title: 'Sverige i världen', active: true,
+      aprende: 'Suecia forma parte de la comunidad internacional. Es miembro de la Unión Europea (**EU**) desde 1995 y de la ONU (**FN**). Trabaja por la paz, los derechos humanos y da ayuda al desarrollo (**bistånd**) a países más pobres. Mantuvo mucho tiempo la neutralidad, aunque recientemente se unió a la OTAN. El comercio (**handel**) con otros países es vital para su economía: exporta (**export**) coches, tecnología y productos forestales. Muchas empresas conocidas son suecas, como IKEA, Volvo y Spotify. La cooperación (**samarbete**) internacional es un valor importante.',
+      palabras: [
+        { sv: 'EU', es: 'Unión Europea' }, { sv: 'FN', es: 'ONU' }, { sv: 'handel', es: 'comercio' },
+        { sv: 'bistånd', es: 'ayuda al desarrollo' }, { sv: 'export', es: 'exportación' }, { sv: 'samarbete', es: 'cooperación' }
+      ],
+      questions: [
+        { q: 'Vilken organisation är Sverige medlem i sedan 1995?', qEs: '¿De qué organización es miembro Suecia desde 1995?', options: ['EU', 'NASA', 'OPEC', 'Afrikanska unionen'], correct: 0, exp: 'Suecia es miembro de la UE desde 1995.', phrase: 'Rätt! Sverige är medlem i EU sedan 1995.', why: 'Suecia entró en la Unión Europea en 1995 tras un referéndum, aunque mantiene su propia moneda.' },
+        { q: 'Vad står FN för?', qEs: '¿Qué significa FN?', options: ['Förenta Nationerna', 'Fria Näringslivet', 'Finska Nätverket', 'Företag och Näringsliv'], correct: 0, exp: 'FN es la ONU (Förenta Nationerna, Naciones Unidas).', phrase: 'Rätt! FN står för Förenta Nationerna.' },
+        { q: 'Vad är bistånd?', qEs: '¿Qué es la ayuda al desarrollo (bistånd)?', options: ['Hjälp till fattigare länder', 'En skatt', 'Ett företag', 'En lag'], correct: 0, exp: 'Bistånd es la ayuda al desarrollo que se da a países más pobres.', phrase: 'Rätt! Bistånd är hjälp till andra länder.', why: 'Suecia dona una parte de su riqueza como ayuda al desarrollo, para reducir la pobreza y apoyar los derechos humanos en el mundo.' },
+        { q: 'Varför är handel viktig för Sverige?', qEs: '¿Por qué es importante el comercio para Suecia?', options: ['Sverige exporterar varor och behöver andra länder', 'Sverige är självförsörjande', 'Sverige handlar inte', 'Bara för kungen'], correct: 0, exp: 'El comercio es clave: Suecia exporta y depende de otros países.', phrase: 'Rätt! Handel med andra länder är viktig för ekonomin.' },
+        { q: 'En person vill veta om Sverige använder euro. Vad gäller?', qEs: 'Una persona quiere saber si Suecia usa el euro. ¿Qué rige?', options: ['Nej, Sverige använder svenska kronor', 'Ja, euro', 'Ja, dollar', 'Sverige har ingen valuta'], correct: 0, isCase: true, exp: 'No; aunque está en la UE, Suecia usa la corona (krona), no el euro.', phrase: 'Rätt! Sverige använder kronor, inte euro.', why: 'Suecia es miembro de la UE pero decidió no adoptar el euro; mantiene su moneda nacional, la corona.' }
+      ]
+    },
+    {
+      id: 'm12', title: 'Religion och mångfald', active: true,
+      aprende: 'En Suecia hay libertad de religión (**religionsfrihet**): cada persona puede creer o no creer. Históricamente el país fue cristiano luterano (la Iglesia de Suecia, **Svenska kyrkan**), pero hoy es una sociedad laica (**sekulärt**) y diversa (**mångfald**). Conviven muchas religiones —cristianismo, islam, judaísmo, budismo— y personas sin religión. La Iglesia y el Estado están separados desde el año 2000. El respeto y la tolerancia (**tolerans**) hacia las distintas creencias (**tro**) y culturas son valores fundamentales de la sociedad sueca.',
+      palabras: [
+        { sv: 'religionsfrihet', es: 'libertad de religión' }, { sv: 'Svenska kyrkan', es: 'Iglesia de Suecia' }, { sv: 'sekulärt', es: 'laico' },
+        { sv: 'mångfald', es: 'diversidad' }, { sv: 'tolerans', es: 'tolerancia' }, { sv: 'tro', es: 'fe, creencia' }
+      ],
+      questions: [
+        { q: 'Vad innebär religionsfrihet i Sverige?', qEs: '¿Qué implica la libertad de religión en Suecia?', options: ['Man får tro eller inte tro', 'Alla måste vara kristna', 'Religion är förbjuden', 'Bara en religion tillåts'], correct: 0, exp: 'Libertad de religión: se puede creer o no creer.', phrase: 'Rätt! Religionsfrihet betyder att man får tro eller inte tro.', why: 'En Suecia cada persona elige libremente su religión o no tener ninguna; el Estado no impone creencias.' },
+        { q: 'Vilken kyrka var statskyrka i Sverige förr?', qEs: '¿Qué iglesia fue iglesia estatal en Suecia antiguamente?', options: ['Svenska kyrkan', 'Katolska kyrkan', 'Ortodoxa kyrkan', 'Ingen'], correct: 0, exp: 'La Iglesia de Suecia (luterana) fue la iglesia estatal.', phrase: 'Rätt! Svenska kyrkan var statskyrka förr.' },
+        { q: 'Hur är det svenska samhället idag när det gäller religion?', qEs: '¿Cómo es la sociedad sueca hoy respecto a la religión?', options: ['Sekulärt och mångkulturellt', 'Bara kristet', 'Utan religionsfrihet', 'Styrt av kyrkan'], correct: 0, exp: 'Hoy la sociedad es laica y multicultural.', phrase: 'Rätt! Sverige är sekulärt och mångkulturellt.', why: 'Aunque hay raíces cristianas, hoy conviven muchas religiones y muchas personas sin religión; Iglesia y Estado se separaron en el año 2000.' },
+        { q: 'Vad är viktigt i ett samhälle med mångfald?', qEs: '¿Qué es importante en una sociedad con diversidad?', options: ['Tolerans och respekt', 'Att alla är lika', 'Att förbjuda skillnader', 'Att bara en kultur finns'], correct: 0, exp: 'La tolerancia y el respeto son clave en una sociedad diversa.', phrase: 'Rätt! Tolerans och respekt är viktigt.' },
+        { q: 'En kollega firar en annan religiös högtid än du. Hur bör man agera i Sverige?', qEs: 'Un colega celebra una fiesta religiosa distinta a la tuya. ¿Cómo se debe actuar en Suecia?', options: ['Respektera hens tro', 'Kräva att hen slutar', 'Anmäla till polisen', 'Ignorera personen'], correct: 0, isCase: true, exp: 'Lo correcto es respetar su creencia; existe libertad de religión.', phrase: 'Rätt! Man respekterar andras tro.', why: 'La libertad de religión y el respeto a la diversidad son valores fundamentales; cada persona puede practicar su fe libremente.' }
+      ]
+    },
+    {
+      id: 'm13', title: 'Kultur och traditioner', active: true,
+      aprende: 'Suecia tiene tradiciones (**traditioner**) ligadas a las estaciones. El midsommar (**midsommar**), en junio, celebra los días luminosos del verano con baile alrededor del "majstång". Lucia (**Lucia**), en diciembre, trae luz con velas y canciones. La Navidad (**jul**) y la Pascua (**påsk**) son fiestas familiares importantes. La "fika" (**fika**) —pausa para el café con algo dulce— es una costumbre social diaria. Valores como el "lagom" (ni mucho ni poco) y la igualdad marcan la vida cotidiana. La naturaleza y la vida al aire libre (**friluftsliv**) se valoran mucho.',
+      palabras: [
+        { sv: 'traditioner', es: 'tradiciones' }, { sv: 'midsommar', es: 'solsticio de verano' }, { sv: 'Lucia', es: 'Santa Lucía' },
+        { sv: 'jul', es: 'Navidad' }, { sv: 'fika', es: 'pausa del café' }, { sv: 'friluftsliv', es: 'vida al aire libre' }
+      ],
+      questions: [
+        { q: 'Vad firar man på midsommar i Sverige?', qEs: '¿Qué se celebra en midsommar en Suecia?', options: ['Sommarens ljusa dagar', 'Vinterns kyla', 'Nyår', 'En kung'], correct: 0, exp: 'En midsommar se celebran los días luminosos del verano.', phrase: 'Rätt! På midsommar firar man sommaren.', why: 'El midsommar (solsticio de verano) es una de las fiestas más queridas: se baila alrededor del "majstång" y se disfruta de la naturaleza.' },
+        { q: 'Vad är Lucia?', qEs: '¿Qué es Lucia?', options: ['En ljusfest i december', 'En sommarfest', 'En sport', 'En maträtt'], correct: 0, exp: 'Lucia es una fiesta de la luz en diciembre.', phrase: 'Rätt! Lucia är en ljusfest i december.' },
+        { q: 'Vad betyder "fika"?', qEs: '¿Qué significa "fika"?', options: ['En kaffepaus med något gott', 'En sport', 'En religion', 'En lag'], correct: 0, exp: '"Fika" es la pausa social para tomar café con algo dulce.', phrase: 'Rätt! Fika är en kaffepaus.', why: 'La fika es una costumbre diaria muy sueca: parar para tomar café o té con un bollo y socializar.' },
+        { q: 'Vad värdesätter många svenskar i vardagen?', qEs: '¿Qué valoran muchos suecos en el día a día?', options: ['Natur och friluftsliv', 'Bara arbete', 'Att inte gå ut', 'Lyx'], correct: 0, exp: 'Muchos suecos valoran la naturaleza y la vida al aire libre.', phrase: 'Rätt! Natur och friluftsliv är viktigt.' },
+        { q: 'Du blir bjuden på fika av en granne. Vad innebär det oftast?', qEs: 'Un vecino te invita a "fika". ¿Qué significa normalmente?', options: ['Att umgås över kaffe och något gott', 'Ett affärsmöte', 'En religiös ceremoni', 'Ett förhör'], correct: 0, isCase: true, exp: 'Significa socializar tomando café con algo dulce.', phrase: 'Rätt! Fika betyder att umgås över kaffe.', why: 'Ser invitado a "fika" es un gesto amistoso y cotidiano para conversar y conocerse; es parte central de la cultura sueca.' }
+      ]
+    }
   ]
 };
 
