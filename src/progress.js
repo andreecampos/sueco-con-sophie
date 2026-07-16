@@ -160,6 +160,10 @@ function moduleItems(moduleKey) {
         const sits = (typeof TALA_SITUATIONS !== 'undefined') ? TALA_SITUATIONS : [];
         return sits.filter(s => s && s.active !== false).map(s => ({ id: String(s.id), level: s.level || null }));
       }
+      case 'vocabulary': {
+        const vs = (typeof VOCAB !== 'undefined') ? VOCAB : [];
+        return vs.filter(v => v && v.active !== false).map(v => ({ id: String(v.id), level: v.lvl || null, cat: v.cat }));
+      }
       default: return [];
     }
   } catch (e) { return []; }
@@ -170,7 +174,8 @@ const PROGRESS_MODULES = [
   { key: 'theory',    label: 'Teoría',              icon: '📖' },
   { key: 'grammar',   label: 'Practicar gramática', icon: '🎯' },
   { key: 'listening', label: 'Hörförståelse',       icon: '🎧' },
-  { key: 'tala',      label: 'Tala',                icon: '🗣️' }
+  { key: 'tala',      label: 'Tala',                icon: '🗣️' },
+  { key: 'vocabulary', label: 'Vokabulär',          icon: '📚' }
 ];
 
 /* ── Estado de un ítem (fuente unificada, sin duplicar) ────────────── */
@@ -179,17 +184,29 @@ const PROGRESS_MODULES = [
 // Clave: moduleType + '|' + contentId
 let UNIFIED_PROGRESS = {};
 let UNIFIED_LOADED = false;
+let vocabProgressMap = {}; // Vokabulär: 1 fila por elemento (vocabulary_progress)
 
 function _upKey(m, id) { return m + '|' + id; }
 
-// ¿Ítem completado? Tala se lee de talaProgressMap; el resto de UNIFIED_PROGRESS.
+// ¿Ítem completado? Tala → talaProgressMap; Vokabulär → vocabProgressMap (mastered); resto → UNIFIED_PROGRESS.
 function isCompleted(moduleKey, contentId) {
   if (moduleKey === 'tala') {
     try { return !!(talaProgressMap && talaProgressMap[contentId] && talaProgressMap[contentId].completed); }
     catch (e) { return false; }
   }
+  if (moduleKey === 'vocabulary') {
+    try { return !!(vocabProgressMap && vocabProgressMap[contentId] && vocabProgressMap[contentId].status === 'mastered'); }
+    catch (e) { return false; }
+  }
   const row = UNIFIED_PROGRESS[_upKey(moduleKey, contentId)];
   return !!(row && row.status === 'completed');
+}
+
+// Progreso de Vokabulär por nivel y (opcional) categoría 'word'|'verb'.
+function vocabProgress(level, cat) {
+  const items = moduleItems('vocabulary').filter(it => it.level === level && (!cat || it.cat === cat));
+  const done = items.filter(it => isCompleted('vocabulary', it.id)).length;
+  return { done, total: items.length, pct: pctClamp(done, items.length) };
 }
 function itemStatus(moduleKey, contentId) {
   if (isCompleted(moduleKey, contentId)) return 'completed';
@@ -258,6 +275,16 @@ async function loadUnifiedProgress() {
   } catch (e) {}
   UNIFIED_LOADED = true;
   try { await backfillLocalProgress(); } catch (e) {}
+}
+
+async function loadVocabProgress() {
+  vocabProgressMap = {};
+  const s = window._sbSession;
+  if (!s || !s.id || typeof sb === 'undefined') return;
+  try {
+    const { data } = await sb.from('vocabulary_progress').select('*').eq('user_id', s.id);
+    (data || []).forEach(r => { vocabProgressMap[r.vocabulary_id] = r; });
+  } catch (e) {}
 }
 
 // Marca un ítem. status por defecto 'completed'. Idempotente (upsert, no crea filas nuevas al repetir).
@@ -342,6 +369,7 @@ if (typeof window !== 'undefined') {
     levelProgress, completedCount, totalActivities, hasLevelTest,
     moduleItems, isCompleted, itemStatus, moduleProgress, overallProgress,
     loadUnifiedProgress, progressMark, markCompleted, backfillLocalProgress,
+    vocabProgress, loadVocabProgress,
     progressBar, progressPercentage, contentStatusIcon, completionBadge, lockedContentMessage
   });
 }

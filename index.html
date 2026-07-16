@@ -716,6 +716,100 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════
+     VIEW: VOKABULÄR — inicio del módulo (por nivel)
+════════════════════════════════════════════════════════════ -->
+<div id="view-vocab" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="bg-swe-blue text-white" style="border-bottom:4px solid #FECC02;">
+    <div class="max-w-2xl mx-auto px-4 py-4 flex items-center gap-3">
+      <button onclick="goMenu()" class="text-white text-2xl leading-none" aria-label="Volver">‹</button>
+      <div><div id="vocab-title" class="font-black text-lg">📚 Vokabulär — SFI A</div><div class="text-xs text-blue-100">Aprende palabras y verbos de tu nivel.</div></div>
+    </div>
+  </div>
+  <div class="max-w-2xl mx-auto px-4 py-6">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-4">
+      <div class="flex items-center justify-between mb-2">
+        <div class="font-bold text-gray-700">Progreso del vocabulario</div>
+        <div class="text-sm font-black text-teal-600" id="vocab-total-pct">0 %</div>
+      </div>
+      <div id="vocab-total-bar" class="mb-1"></div>
+      <div class="text-xs text-gray-500" id="vocab-total-count">0 de 0 completadas</div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-4 mb-4">
+      <button onclick="startVocabSession(_vocabLevel,'word')" class="bg-white rounded-2xl shadow-sm border-2 border-teal-100 hover:border-teal-300 transition-all p-4 text-left flex items-center gap-4">
+        <span class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0 bg-teal-50">📚</span>
+        <div class="flex-1 min-w-0">
+          <div class="font-black text-gray-800">Palabras</div>
+          <div class="text-xs text-gray-500 mb-1.5">Aprende vocabulario útil para la vida diaria.</div>
+          <div class="flex items-center gap-2"><div class="flex-1" id="vocab-bar-word"></div><span class="text-xs font-black text-teal-600" id="vocab-pct-word">0 %</span></div>
+          <div class="text-[11px] text-gray-400 mt-0.5" id="vocab-count-word">0 de 0</div>
+        </div>
+        <span class="text-teal-500 font-bold text-sm bg-teal-50 px-3 py-1.5 rounded-full flex-shrink-0">Practicar</span>
+      </button>
+      <button onclick="startVocabSession(_vocabLevel,'verb')" class="bg-white rounded-2xl shadow-sm border-2 border-indigo-100 hover:border-indigo-300 transition-all p-4 text-left flex items-center gap-4">
+        <span class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0 bg-indigo-50">🔤</span>
+        <div class="flex-1 min-w-0">
+          <div class="font-black text-gray-800">Verbos</div>
+          <div class="text-xs text-gray-500 mb-1.5">Aprende los verbos más usados en sueco.</div>
+          <div class="flex items-center gap-2"><div class="flex-1" id="vocab-bar-verb"></div><span class="text-xs font-black text-indigo-600" id="vocab-pct-verb">0 %</span></div>
+          <div class="text-[11px] text-gray-400 mt-0.5" id="vocab-count-verb">0 de 0</div>
+        </div>
+        <span class="text-indigo-500 font-bold text-sm bg-indigo-50 px-3 py-1.5 rounded-full flex-shrink-0">Practicar</span>
+      </button>
+    </div>
+    <button onclick="startVocabSession(_vocabLevel,'all')" class="w-full bg-swe-blue text-white py-3.5 rounded-2xl font-bold hover:bg-swe-dark transition-colors">🎲 Practicar todo</button>
+    <div style="height:40px"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     VIEW: VOKABULÄR — sesión de ejercicios (sin barra inferior)
+════════════════════════════════════════════════════════════ -->
+<div id="view-vocab-quiz" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="max-w-2xl mx-auto px-4 py-5">
+    <div class="flex items-center gap-3 mb-3">
+      <button onclick="vocabExit()" class="text-gray-500 font-bold text-base leading-none flex items-center gap-1" aria-label="Salir">✕ Salir</button>
+      <div class="flex-1 h-2.5 bg-gray-200 rounded-full overflow-hidden"><div id="vq-bar" class="h-full bg-swe-blue rounded-full" style="width:0%;transition:width .3s ease"></div></div>
+      <span id="vq-num" class="text-sm text-gray-500 font-bold whitespace-nowrap">1 / 10</span>
+    </div>
+    <div class="flex items-center gap-2 mb-4">
+      <span id="vq-level" class="text-xs bg-teal-100 text-teal-700 px-2 py-0.5 rounded-full font-bold">SFI A</span>
+      <span id="vq-cat" class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full font-semibold">Palabras</span>
+    </div>
+    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-4">
+      <p id="vq-question" style="font-size:19px; line-height:1.5;" class="font-bold text-gray-800 mb-4"></p>
+      <div id="vq-options" class="space-y-3"></div>
+    </div>
+    <div id="vq-feedback" class="hidden rounded-2xl p-4 mb-4" style="font-size:17px;"></div>
+    <button id="vq-check" onclick="vocabCheck()" class="w-full bg-swe-blue text-white rounded-2xl font-bold hover:bg-swe-dark transition-colors disabled:opacity-40" style="min-height:54px; font-size:18px;" disabled>Comprobar</button>
+    <button id="vq-next" onclick="vocabNext()" class="hidden w-full bg-green-600 text-white rounded-2xl font-bold hover:bg-green-700 transition-colors" style="min-height:54px; font-size:18px;">Siguiente →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     VIEW: VOKABULÄR — resultado de sesión
+════════════════════════════════════════════════════════════ -->
+<div id="view-vocab-result" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="max-w-2xl mx-auto px-4 py-10 text-center">
+    <div class="text-6xl mb-3">🎉</div>
+    <div class="font-black text-gray-800 text-2xl mb-4">¡Sesión completada!</div>
+    <div class="bg-white rounded-2xl p-6 shadow border border-gray-100 mb-5">
+      <div class="text-5xl font-black text-swe-blue mb-1" id="vr-pct">0 %</div>
+      <div class="text-xs text-gray-400 mb-4">tu puntaje en esta sesión</div>
+      <div class="grid grid-cols-3 gap-2">
+        <div><div class="text-xl font-bold text-green-600" id="vr-ok">0</div><div class="text-[10px] text-gray-500">correctas</div></div>
+        <div><div class="text-xl font-bold text-red-500" id="vr-bad">0</div><div class="text-[10px] text-gray-500">errores</div></div>
+        <div><div class="text-xl font-bold text-teal-500" id="vr-new">0</div><div class="text-[10px] text-gray-500">nuevas dominadas</div></div>
+      </div>
+    </div>
+    <div class="space-y-2">
+      <button onclick="vocabRetry()" class="w-full bg-swe-blue text-white py-3 rounded-2xl font-bold hover:bg-swe-dark transition-colors">🔄 Practicar otra vez</button>
+      <button onclick="showVocab(_vocabLevel)" class="w-full border-2 border-swe-blue text-swe-blue py-3 rounded-2xl font-bold hover:bg-blue-50 transition-colors">Volver a Vokabulär</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
      VIEW: APRENDER — módulos de aprendizaje
 ════════════════════════════════════════════════════════════ -->
 <div id="view-aprender" class="view" style="background:#f4f7fb; min-height:100vh;">
@@ -831,6 +925,17 @@
         <div class="flex-1">
           <div class="font-bold text-gray-800 text-lg">Tala</div>
           <div class="text-gray-500 text-sm">Conversaciones: arma frases tocando palabras</div>
+        </div>
+        <div class="text-gray-300">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </div>
+      </button>
+
+      <button class="mode-btn glass rounded-2xl p-5 shadow border border-teal-100 flex items-center gap-4 text-left" onclick="showVocab(state.level)">
+        <div class="w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0">📚</div>
+        <div class="flex-1">
+          <div class="font-bold text-gray-800 text-lg">Vokabulär</div>
+          <div class="text-gray-500 text-sm">Aprende palabras y verbos de tu nivel</div>
         </div>
         <div class="text-gray-300">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
@@ -5472,6 +5577,107 @@ if (typeof window !== 'undefined') window.TALA_SITUATIONS = TALA_SITUATIONS;
 </script>
 <script>
 /* ═══════════════════════════════════════════════════════════════════
+   VOKABULÄR — contenido (vive en código → 0 espacio en la BD)
+   El progreso se guarda en la tabla `vocabulary_progress` (1 fila por
+   alumno+elemento). El denominador del % se calcula del contenido ACTIVO
+   real: para añadir palabras, solo agrega objetos aquí (no toques lógica).
+
+   Campos:
+     id    · identificador único ESTABLE (no cambiarlo nunca)
+     lvl   · 'A' | 'B' | 'C' | 'D'
+     cat   · 'word' | 'verb'
+     sv    · palabra en sueco (base)
+     es    · traducción al español
+     ex    · oración de ejemplo en sueco
+     exEs  · traducción de la oración
+     note  · explicación breve (opcional)
+     active· false para desactivar sin borrar (por defecto activo)
+   Sustantivos (cuando aplica): g ('en'|'ett'), def (definida), pl (plural)
+   Verbos: inf, pres, pret (pasado), sup (supino)
+   ═══════════════════════════════════════════════════════════════════ */
+
+const VOCAB = [
+
+  /* ════════ SFI A · PALABRAS (40) ════════ */
+  // Saludos y frases
+  { id: 'a-w-01', lvl: 'A', cat: 'word', sv: 'hej', es: 'hola', ex: 'Hej, hur mår du?', exEs: 'Hola, ¿cómo estás?' },
+  { id: 'a-w-02', lvl: 'A', cat: 'word', sv: 'hej då', es: 'adiós', ex: 'Hej då, vi ses imorgon!', exEs: '¡Adiós, nos vemos mañana!' },
+  { id: 'a-w-03', lvl: 'A', cat: 'word', sv: 'tack', es: 'gracias', ex: 'Tack så mycket för hjälpen.', exEs: 'Muchas gracias por la ayuda.' },
+  { id: 'a-w-04', lvl: 'A', cat: 'word', sv: 'förlåt', es: 'perdón', ex: 'Förlåt, jag är sen.', exEs: 'Perdón, llego tarde.' },
+  { id: 'a-w-05', lvl: 'A', cat: 'word', sv: 'ja', es: 'sí', ex: 'Ja, det stämmer.', exEs: 'Sí, es correcto.' },
+  { id: 'a-w-06', lvl: 'A', cat: 'word', sv: 'nej', es: 'no', ex: 'Nej, tack.', exEs: 'No, gracias.' },
+  // Familia
+  { id: 'a-w-07', lvl: 'A', cat: 'word', sv: 'mamma', es: 'mamá', g: 'en', def: 'mamman', pl: 'mammor', ex: 'Min mamma heter Eva.', exEs: 'Mi mamá se llama Eva.' },
+  { id: 'a-w-08', lvl: 'A', cat: 'word', sv: 'pappa', es: 'papá', g: 'en', def: 'pappan', pl: 'pappor', ex: 'Min pappa arbetar mycket.', exEs: 'Mi papá trabaja mucho.' },
+  { id: 'a-w-09', lvl: 'A', cat: 'word', sv: 'syster', es: 'hermana', g: 'en', def: 'systern', pl: 'systrar', ex: 'Jag har en syster.', exEs: 'Tengo una hermana.' },
+  { id: 'a-w-10', lvl: 'A', cat: 'word', sv: 'bror', es: 'hermano', g: 'en', def: 'brodern', pl: 'bröder', ex: 'Min bror bor i Malmö.', exEs: 'Mi hermano vive en Malmö.' },
+  { id: 'a-w-11', lvl: 'A', cat: 'word', sv: 'barn', es: 'niño/a; hijo/a', g: 'ett', def: 'barnet', pl: 'barn', ex: 'De har två barn.', exEs: 'Tienen dos hijos.', note: 'El plural de "barn" no cambia.' },
+  { id: 'a-w-12', lvl: 'A', cat: 'word', sv: 'familj', es: 'familia', g: 'en', def: 'familjen', pl: 'familjer', ex: 'Min familj är stor.', exEs: 'Mi familia es grande.' },
+  // Casa
+  { id: 'a-w-13', lvl: 'A', cat: 'word', sv: 'hus', es: 'casa', g: 'ett', def: 'huset', pl: 'hus', ex: 'De bor i ett stort hus.', exEs: 'Viven en una casa grande.' },
+  { id: 'a-w-14', lvl: 'A', cat: 'word', sv: 'lägenhet', es: 'apartamento', g: 'en', def: 'lägenheten', pl: 'lägenheter', ex: 'Jag har en liten lägenhet.', exEs: 'Tengo un apartamento pequeño.' },
+  { id: 'a-w-15', lvl: 'A', cat: 'word', sv: 'kök', es: 'cocina', g: 'ett', def: 'köket', pl: 'kök', ex: 'Vi lagar mat i köket.', exEs: 'Cocinamos en la cocina.' },
+  { id: 'a-w-16', lvl: 'A', cat: 'word', sv: 'dörr', es: 'puerta', g: 'en', def: 'dörren', pl: 'dörrar', ex: 'Stäng dörren, tack.', exEs: 'Cierra la puerta, por favor.' },
+  { id: 'a-w-17', lvl: 'A', cat: 'word', sv: 'fönster', es: 'ventana', g: 'ett', def: 'fönstret', pl: 'fönster', ex: 'Öppna fönstret.', exEs: 'Abre la ventana.' },
+  { id: 'a-w-18', lvl: 'A', cat: 'word', sv: 'säng', es: 'cama', g: 'en', def: 'sängen', pl: 'sängar', ex: 'Barnet sover i sängen.', exEs: 'El niño duerme en la cama.' },
+  // Comida
+  { id: 'a-w-19', lvl: 'A', cat: 'word', sv: 'mat', es: 'comida', g: 'en', def: 'maten', ex: 'Maten är god.', exEs: 'La comida está rica.' },
+  { id: 'a-w-20', lvl: 'A', cat: 'word', sv: 'bröd', es: 'pan', g: 'ett', def: 'brödet', pl: 'bröd', ex: 'Jag köper bröd.', exEs: 'Compro pan.' },
+  { id: 'a-w-21', lvl: 'A', cat: 'word', sv: 'mjölk', es: 'leche', g: 'en', def: 'mjölken', ex: 'Mjölken står i kylen.', exEs: 'La leche está en el refrigerador.' },
+  { id: 'a-w-22', lvl: 'A', cat: 'word', sv: 'vatten', es: 'agua', g: 'ett', def: 'vattnet', ex: 'Kan jag få vatten?', exEs: '¿Me puede dar agua?' },
+  { id: 'a-w-23', lvl: 'A', cat: 'word', sv: 'äpple', es: 'manzana', g: 'ett', def: 'äpplet', pl: 'äpplen', ex: 'Jag äter ett äpple.', exEs: 'Como una manzana.' },
+  { id: 'a-w-24', lvl: 'A', cat: 'word', sv: 'kaffe', es: 'café', g: 'ett', def: 'kaffet', ex: 'Vill du ha kaffe?', exEs: '¿Quieres café?' },
+  // Números
+  { id: 'a-w-25', lvl: 'A', cat: 'word', sv: 'en / ett', es: 'uno', ex: 'Jag har en katt och ett hus.', exEs: 'Tengo un gato y una casa.', note: '"en" con en-ord, "ett" con ett-ord.' },
+  { id: 'a-w-26', lvl: 'A', cat: 'word', sv: 'två', es: 'dos', ex: 'Jag har två barn.', exEs: 'Tengo dos hijos.' },
+  { id: 'a-w-27', lvl: 'A', cat: 'word', sv: 'tre', es: 'tres', ex: 'Klockan är tre.', exEs: 'Son las tres.' },
+  { id: 'a-w-28', lvl: 'A', cat: 'word', sv: 'fyra', es: 'cuatro', ex: 'Vi är fyra personer.', exEs: 'Somos cuatro personas.' },
+  { id: 'a-w-29', lvl: 'A', cat: 'word', sv: 'fem', es: 'cinco', ex: 'Bussen kommer om fem minuter.', exEs: 'El autobús llega en cinco minutos.' },
+  // Días y horas
+  { id: 'a-w-30', lvl: 'A', cat: 'word', sv: 'dag', es: 'día', g: 'en', def: 'dagen', pl: 'dagar', ex: 'Ha en bra dag!', exEs: '¡Que tengas buen día!' },
+  { id: 'a-w-31', lvl: 'A', cat: 'word', sv: 'vecka', es: 'semana', g: 'en', def: 'veckan', pl: 'veckor', ex: 'Vi ses nästa vecka.', exEs: 'Nos vemos la próxima semana.' },
+  { id: 'a-w-32', lvl: 'A', cat: 'word', sv: 'idag', es: 'hoy', ex: 'Vad gör du idag?', exEs: '¿Qué haces hoy?' },
+  { id: 'a-w-33', lvl: 'A', cat: 'word', sv: 'imorgon', es: 'mañana (día)', ex: 'Imorgon ska jag jobba.', exEs: 'Mañana voy a trabajar.' },
+  { id: 'a-w-34', lvl: 'A', cat: 'word', sv: 'klocka', es: 'reloj; hora', g: 'en', def: 'klockan', pl: 'klockor', ex: 'Vad är klockan?', exEs: '¿Qué hora es?' },
+  // Transporte
+  { id: 'a-w-35', lvl: 'A', cat: 'word', sv: 'buss', es: 'autobús', g: 'en', def: 'bussen', pl: 'bussar', ex: 'Jag tar bussen till jobbet.', exEs: 'Tomo el autobús al trabajo.' },
+  { id: 'a-w-36', lvl: 'A', cat: 'word', sv: 'tåg', es: 'tren', g: 'ett', def: 'tåget', pl: 'tåg', ex: 'Tåget går klockan nio.', exEs: 'El tren sale a las nueve.' },
+  { id: 'a-w-37', lvl: 'A', cat: 'word', sv: 'bil', es: 'coche', g: 'en', def: 'bilen', pl: 'bilar', ex: 'Vi åker bil till Stockholm.', exEs: 'Vamos en coche a Estocolmo.' },
+  { id: 'a-w-38', lvl: 'A', cat: 'word', sv: 'cykel', es: 'bicicleta', g: 'en', def: 'cykeln', pl: 'cyklar', ex: 'Jag har en ny cykel.', exEs: 'Tengo una bicicleta nueva.' },
+  // Objetos cotidianos
+  { id: 'a-w-39', lvl: 'A', cat: 'word', sv: 'bok', es: 'libro', g: 'en', def: 'boken', pl: 'böcker', ex: 'Jag läser en bok.', exEs: 'Leo un libro.' },
+  { id: 'a-w-40', lvl: 'A', cat: 'word', sv: 'telefon', es: 'teléfono', g: 'en', def: 'telefonen', pl: 'telefoner', ex: 'Var är min telefon?', exEs: '¿Dónde está mi teléfono?' },
+
+  /* ════════ SFI A · VERBOS (20) ════════ */
+  { id: 'a-v-01', lvl: 'A', cat: 'verb', sv: 'vara', es: 'ser/estar', inf: 'att vara', pres: 'är', pret: 'var', sup: 'varit', ex: 'Jag är trött idag.', exEs: 'Estoy cansado hoy.' },
+  { id: 'a-v-02', lvl: 'A', cat: 'verb', sv: 'ha', es: 'tener', inf: 'att ha', pres: 'har', pret: 'hade', sup: 'haft', ex: 'Jag har en fråga.', exEs: 'Tengo una pregunta.' },
+  { id: 'a-v-03', lvl: 'A', cat: 'verb', sv: 'heta', es: 'llamarse', inf: 'att heta', pres: 'heter', pret: 'hette', sup: 'hetat', ex: 'Vad heter du?', exEs: '¿Cómo te llamas?' },
+  { id: 'a-v-04', lvl: 'A', cat: 'verb', sv: 'bo', es: 'vivir (residir)', inf: 'att bo', pres: 'bor', pret: 'bodde', sup: 'bott', ex: 'Jag bor i Sverige.', exEs: 'Vivo en Suecia.' },
+  { id: 'a-v-05', lvl: 'A', cat: 'verb', sv: 'prata', es: 'hablar', inf: 'att prata', pres: 'pratar', pret: 'pratade', sup: 'pratat', ex: 'Vi pratar svenska.', exEs: 'Hablamos sueco.' },
+  { id: 'a-v-06', lvl: 'A', cat: 'verb', sv: 'äta', es: 'comer', inf: 'att äta', pres: 'äter', pret: 'åt', sup: 'ätit', ex: 'Vi äter frukost.', exEs: 'Desayunamos.' },
+  { id: 'a-v-07', lvl: 'A', cat: 'verb', sv: 'dricka', es: 'beber', inf: 'att dricka', pres: 'dricker', pret: 'drack', sup: 'druckit', ex: 'Jag dricker kaffe.', exEs: 'Bebo café.' },
+  { id: 'a-v-08', lvl: 'A', cat: 'verb', sv: 'gå', es: 'ir; caminar', inf: 'att gå', pres: 'går', pret: 'gick', sup: 'gått', ex: 'Jag går till skolan.', exEs: 'Voy a la escuela.' },
+  { id: 'a-v-09', lvl: 'A', cat: 'verb', sv: 'komma', es: 'venir', inf: 'att komma', pres: 'kommer', pret: 'kom', sup: 'kommit', ex: 'Bussen kommer nu.', exEs: 'El autobús viene ahora.' },
+  { id: 'a-v-10', lvl: 'A', cat: 'verb', sv: 'göra', es: 'hacer', inf: 'att göra', pres: 'gör', pret: 'gjorde', sup: 'gjort', ex: 'Vad gör du?', exEs: '¿Qué haces?' },
+  { id: 'a-v-11', lvl: 'A', cat: 'verb', sv: 'se', es: 'ver', inf: 'att se', pres: 'ser', pret: 'såg', sup: 'sett', ex: 'Jag ser en katt.', exEs: 'Veo un gato.' },
+  { id: 'a-v-12', lvl: 'A', cat: 'verb', sv: 'vilja', es: 'querer', inf: 'att vilja', pres: 'vill', pret: 'ville', sup: 'velat', ex: 'Jag vill lära mig svenska.', exEs: 'Quiero aprender sueco.' },
+  { id: 'a-v-13', lvl: 'A', cat: 'verb', sv: 'kunna', es: 'poder; saber', inf: 'att kunna', pres: 'kan', pret: 'kunde', sup: 'kunnat', ex: 'Jag kan prata lite svenska.', exEs: 'Puedo hablar un poco de sueco.' },
+  { id: 'a-v-14', lvl: 'A', cat: 'verb', sv: 'arbeta', es: 'trabajar', inf: 'att arbeta', pres: 'arbetar', pret: 'arbetade', sup: 'arbetat', ex: 'Jag arbetar på ett kafé.', exEs: 'Trabajo en un café.' },
+  { id: 'a-v-15', lvl: 'A', cat: 'verb', sv: 'läsa', es: 'leer', inf: 'att läsa', pres: 'läser', pret: 'läste', sup: 'läst', ex: 'Jag läser tidningen.', exEs: 'Leo el periódico.' },
+  { id: 'a-v-16', lvl: 'A', cat: 'verb', sv: 'skriva', es: 'escribir', inf: 'att skriva', pres: 'skriver', pret: 'skrev', sup: 'skrivit', ex: 'Jag skriver ett brev.', exEs: 'Escribo una carta.' },
+  { id: 'a-v-17', lvl: 'A', cat: 'verb', sv: 'köpa', es: 'comprar', inf: 'att köpa', pres: 'köper', pret: 'köpte', sup: 'köpt', ex: 'Jag köper mjölk.', exEs: 'Compro leche.' },
+  { id: 'a-v-18', lvl: 'A', cat: 'verb', sv: 'sova', es: 'dormir', inf: 'att sova', pres: 'sover', pret: 'sov', sup: 'sovit', ex: 'Barnet sover.', exEs: 'El niño duerme.' },
+  { id: 'a-v-19', lvl: 'A', cat: 'verb', sv: 'titta', es: 'mirar', inf: 'att titta', pres: 'tittar', pret: 'tittade', sup: 'tittat', ex: 'Vi tittar på TV.', exEs: 'Vemos la tele.' },
+  { id: 'a-v-20', lvl: 'A', cat: 'verb', sv: 'lyssna', es: 'escuchar', inf: 'att lyssna', pres: 'lyssnar', pret: 'lyssnade', sup: 'lyssnat', ex: 'Jag lyssnar på musik.', exEs: 'Escucho música.' }
+
+  /* B/C/D: se agregan enseguida — solo añadir objetos con lvl 'B'/'C'/'D'. */
+];
+
+if (typeof window !== 'undefined') window.VOCAB = VOCAB;
+
+</script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════
    SISTEMA DE PROGRESO UNIFICADO  (Fase 2)
    Único, coherente y escalable para todos los módulos de la plataforma.
 
@@ -5633,6 +5839,10 @@ function moduleItems(moduleKey) {
         const sits = (typeof TALA_SITUATIONS !== 'undefined') ? TALA_SITUATIONS : [];
         return sits.filter(s => s && s.active !== false).map(s => ({ id: String(s.id), level: s.level || null }));
       }
+      case 'vocabulary': {
+        const vs = (typeof VOCAB !== 'undefined') ? VOCAB : [];
+        return vs.filter(v => v && v.active !== false).map(v => ({ id: String(v.id), level: v.lvl || null, cat: v.cat }));
+      }
       default: return [];
     }
   } catch (e) { return []; }
@@ -5643,7 +5853,8 @@ const PROGRESS_MODULES = [
   { key: 'theory',    label: 'Teoría',              icon: '📖' },
   { key: 'grammar',   label: 'Practicar gramática', icon: '🎯' },
   { key: 'listening', label: 'Hörförståelse',       icon: '🎧' },
-  { key: 'tala',      label: 'Tala',                icon: '🗣️' }
+  { key: 'tala',      label: 'Tala',                icon: '🗣️' },
+  { key: 'vocabulary', label: 'Vokabulär',          icon: '📚' }
 ];
 
 /* ── Estado de un ítem (fuente unificada, sin duplicar) ────────────── */
@@ -5652,17 +5863,29 @@ const PROGRESS_MODULES = [
 // Clave: moduleType + '|' + contentId
 let UNIFIED_PROGRESS = {};
 let UNIFIED_LOADED = false;
+let vocabProgressMap = {}; // Vokabulär: 1 fila por elemento (vocabulary_progress)
 
 function _upKey(m, id) { return m + '|' + id; }
 
-// ¿Ítem completado? Tala se lee de talaProgressMap; el resto de UNIFIED_PROGRESS.
+// ¿Ítem completado? Tala → talaProgressMap; Vokabulär → vocabProgressMap (mastered); resto → UNIFIED_PROGRESS.
 function isCompleted(moduleKey, contentId) {
   if (moduleKey === 'tala') {
     try { return !!(talaProgressMap && talaProgressMap[contentId] && talaProgressMap[contentId].completed); }
     catch (e) { return false; }
   }
+  if (moduleKey === 'vocabulary') {
+    try { return !!(vocabProgressMap && vocabProgressMap[contentId] && vocabProgressMap[contentId].status === 'mastered'); }
+    catch (e) { return false; }
+  }
   const row = UNIFIED_PROGRESS[_upKey(moduleKey, contentId)];
   return !!(row && row.status === 'completed');
+}
+
+// Progreso de Vokabulär por nivel y (opcional) categoría 'word'|'verb'.
+function vocabProgress(level, cat) {
+  const items = moduleItems('vocabulary').filter(it => it.level === level && (!cat || it.cat === cat));
+  const done = items.filter(it => isCompleted('vocabulary', it.id)).length;
+  return { done, total: items.length, pct: pctClamp(done, items.length) };
 }
 function itemStatus(moduleKey, contentId) {
   if (isCompleted(moduleKey, contentId)) return 'completed';
@@ -5731,6 +5954,16 @@ async function loadUnifiedProgress() {
   } catch (e) {}
   UNIFIED_LOADED = true;
   try { await backfillLocalProgress(); } catch (e) {}
+}
+
+async function loadVocabProgress() {
+  vocabProgressMap = {};
+  const s = window._sbSession;
+  if (!s || !s.id || typeof sb === 'undefined') return;
+  try {
+    const { data } = await sb.from('vocabulary_progress').select('*').eq('user_id', s.id);
+    (data || []).forEach(r => { vocabProgressMap[r.vocabulary_id] = r; });
+  } catch (e) {}
 }
 
 // Marca un ítem. status por defecto 'completed'. Idempotente (upsert, no crea filas nuevas al repetir).
@@ -5815,6 +6048,7 @@ if (typeof window !== 'undefined') {
     levelProgress, completedCount, totalActivities, hasLevelTest,
     moduleItems, isCompleted, itemStatus, moduleProgress, overallProgress,
     loadUnifiedProgress, progressMark, markCompleted, backfillLocalProgress,
+    vocabProgress, loadVocabProgress,
     progressBar, progressPercentage, contentStatusIcon, completionBadge, lockedContentMessage
   });
 }
@@ -6256,6 +6490,174 @@ async function finishTala() {
 
 function talaRetry() { if (talaState) startTalaSituation(talaState.sit.id); }
 function talaExit() { showTala(); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   VOKABULÄR — motor de ejercicios (palabras y verbos por nivel)
+   Progreso en Supabase (vocabulary_progress): 1 fila por alumno+elemento.
+   Dominado = 3 aciertos en sesiones distintas. El % se calcula solo.
+   ═══════════════════════════════════════════════════════════════════ */
+let _vocabLevel = 'A';
+let vocabState = null;
+function _vShuffle(a) { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function _vPick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function _vocabPool(level, cat) { return (window.VOCAB || []).filter(it => it.lvl === level && it.active !== false && (cat === 'all' || !cat || it.cat === cat)); }
+
+async function showVocab(level) {
+  if (!requireAccess()) return;
+  stopSpeech();
+  _vocabLevel = level || (state && state.level) || 'A';
+  showView('vocab');
+  renderVocabHome();
+  try { await loadVocabProgress(); } catch (e) {}
+  renderVocabHome();
+}
+function renderVocabHome() {
+  const lv = _vocabLevel;
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  const setBar = (id, pct) => { const e = document.getElementById(id); if (e && typeof progressBar === 'function') e.innerHTML = progressBar(pct, lv); };
+  set('vocab-title', `📚 Vokabulär — SFI ${lv}`);
+  const tot = vocabProgress(lv), w = vocabProgress(lv, 'word'), v = vocabProgress(lv, 'verb');
+  set('vocab-total-pct', fmtPct(tot.pct)); set('vocab-total-count', `${tot.done} de ${tot.total} completadas`); setBar('vocab-total-bar', tot.pct);
+  set('vocab-pct-word', fmtPct(w.pct)); set('vocab-count-word', `${w.done} de ${w.total}`); setBar('vocab-bar-word', w.pct);
+  set('vocab-pct-verb', fmtPct(v.pct)); set('vocab-count-verb', `${v.done} de ${v.total}`); setBar('vocab-bar-verb', v.pct);
+}
+
+function startVocabSession(level, cat) {
+  if (!requireAccess()) return;
+  level = level || _vocabLevel; _vocabLevel = level; cat = cat || 'all';
+  const pool = _vocabPool(level, cat);
+  if (!pool.length) { showToast('Aún no hay contenido para este nivel', 'info'); return; }
+  // Priorizar no dominados, luego repaso; todo aleatorio.
+  const notM = _vShuffle(pool.filter(it => !isCompleted('vocabulary', it.id)));
+  const mast = _vShuffle(pool.filter(it => isCompleted('vocabulary', it.id)));
+  const items = notM.concat(mast).slice(0, Math.min(10, pool.length));
+  vocabState = { level, cat, items, i: 0, correct: 0, wrong: 0, newMastered: 0, credited: {}, answered: false, sel: null, q: null };
+  showView('vocab-quiz');
+  document.getElementById('vq-level').textContent = 'SFI ' + level;
+  renderVocabQuestion();
+}
+
+function _vf(it, field) { return field === 'es' ? it.es : field === 'sv' ? it.sv : field === 'pret' ? it.pret : field === 'pres' ? it.pres : ''; }
+function _vDistractors(pool, item, field, n) {
+  const out = [], used = { [_vf(item, field)]: 1 };
+  for (const c of _vShuffle(pool.filter(x => x.id !== item.id))) {
+    const val = _vf(c, field);
+    if (val && !used[val]) { used[val] = 1; out.push(val); if (out.length >= n) break; }
+  }
+  return out;
+}
+function buildVocabQuestion(item, pool) {
+  const isVerb = item.cat === 'verb';
+  const type = isVerb ? _vPick(['es2sv', 'past', 'present']) : _vPick(['sv2es', 'es2sv']);
+  let text, answer, field;
+  if (type === 'sv2es') { text = `¿Qué significa "${item.sv}"?`; answer = item.es; field = 'es'; }
+  else if (type === 'es2sv') { text = `¿Cómo se dice "${item.es}" en sueco?`; answer = item.sv; field = 'sv'; }
+  else if (type === 'past') { text = `¿Cuál es el pasado (preteritum) de "${item.sv}"?`; answer = item.pret; field = 'pret'; }
+  else { // present → completar oración si se puede
+    if (item.ex && item.pres && item.ex.indexOf(item.pres) >= 0) { text = 'Completa la oración:\n' + item.ex.replace(item.pres, '_____'); answer = item.pres; field = 'pres'; }
+    else { text = `¿Cuál es el presente de "${item.sv}"?`; answer = item.pres; field = 'pres'; }
+  }
+  let options = [answer, ..._vDistractors(pool, item, field, 3)];
+  while (options.length < 4) options.push('—');
+  options = _vShuffle(options.slice(0, 4));
+  if (options.indexOf(answer) < 0) options[0] = answer;
+  return { text, options, correct: options.indexOf(answer), item, type };
+}
+
+function renderVocabQuestion() {
+  const st = vocabState; if (!st) return;
+  const item = st.items[st.i];
+  st.q = buildVocabQuestion(item, _vocabPool(st.level, st.cat));
+  st.answered = false; st.sel = null;
+  const total = st.items.length;
+  document.getElementById('vq-bar').style.width = Math.round(st.i / total * 100) + '%';
+  document.getElementById('vq-num').textContent = `${st.i + 1} / ${total}`;
+  document.getElementById('vq-cat').textContent = item.cat === 'verb' ? 'Verbos' : 'Palabras';
+  document.getElementById('vq-question').textContent = st.q.text;
+  document.getElementById('vq-options').innerHTML = st.q.options.map((o, i) =>
+    `<button id="vo-${i}" onclick="vocabPick(${i})" class="w-full text-left rounded-2xl border-2 border-gray-200 bg-white px-4 py-3 font-semibold text-gray-800 hover:border-swe-blue transition-colors" style="min-height:52px; font-size:18px;">${o}</button>`).join('');
+  document.getElementById('vq-feedback').classList.add('hidden');
+  const chk = document.getElementById('vq-check'); chk.classList.remove('hidden'); chk.disabled = true;
+  document.getElementById('vq-next').classList.add('hidden');
+}
+function vocabPick(i) {
+  const st = vocabState; if (!st || st.answered) return;
+  st.sel = i;
+  document.querySelectorAll('#vq-options button').forEach((b, idx) => { b.classList.toggle('border-swe-blue', idx === i); b.classList.toggle('bg-blue-50', idx === i); });
+  document.getElementById('vq-check').disabled = false;
+}
+function _vocabForms(item) {
+  if (item.cat === 'verb') return `<div class="text-sm text-gray-500 mt-1">${item.inf} · ${item.pres} · ${item.pret} · ${item.sup}</div>`;
+  if (item.g) return `<div class="text-sm text-gray-500 mt-1">${item.g} ${item.sv} · ${item.def}${item.pl ? ' · ' + item.pl : ''}</div>`;
+  return '';
+}
+function _vocabMistake(item, q) {
+  return { text: `📚 Vokabulär: ${q.text}`, options: q.options, correct: q.correct, explanation: `${item.sv} = ${item.es}. ${item.ex} — ${item.exEs}` };
+}
+function vocabCheck() {
+  const st = vocabState; if (!st || st.answered || st.sel == null) return;
+  st.answered = true;
+  const q = st.q, item = q.item, ok = st.sel === q.correct;
+  document.querySelectorAll('#vq-options button').forEach((b, idx) => {
+    b.disabled = true;
+    if (idx === q.correct) { b.classList.add('border-green-500', 'bg-green-50'); b.innerHTML = '✓ ' + b.innerHTML; }
+    else if (idx === st.sel) { b.classList.add('border-red-500', 'bg-red-50'); b.innerHTML = '✗ ' + b.innerHTML; }
+  });
+  const fb = document.getElementById('vq-feedback');
+  const forms = _vocabForms(item);
+  if (ok) {
+    st.correct++;
+    fb.className = 'rounded-2xl p-4 mb-4 bg-green-50 border border-green-200 text-green-800';
+    fb.innerHTML = `<strong>¡Correcto!</strong> ${item.sv} = ${item.es}<div class="mt-1">${item.ex} — <span class="text-green-600">${item.exEs}</span></div>${forms}`;
+  } else {
+    st.wrong++;
+    fb.className = 'rounded-2xl p-4 mb-4 bg-red-50 border border-red-200 text-red-800';
+    fb.innerHTML = `<strong>Respuesta incorrecta.</strong> La correcta es <strong>${q.options[q.correct]}</strong>.<div class="mt-1">${item.sv} = ${item.es}. ${item.ex} — ${item.exEs}</div>${forms}${item.note ? `<div class="text-sm mt-1">💡 ${item.note}</div>` : ''}`;
+    try { addMistake(_vocabMistake(item, q)); } catch (e) {}
+  }
+  _vocabRecord(item, ok);
+  fb.classList.remove('hidden');
+  document.getElementById('vq-check').classList.add('hidden');
+  const nx = document.getElementById('vq-next'); nx.classList.remove('hidden');
+  nx.textContent = (st.i >= st.items.length - 1) ? 'Ver resultado 🎉' : 'Siguiente →';
+}
+async function _vocabRecord(item, correct) {
+  const st = vocabState;
+  const prev = vocabProgressMap[item.id] || { correct_count: 0, incorrect_count: 0, successful_sessions: 0, status: 'learning' };
+  const row = { correct_count: prev.correct_count || 0, incorrect_count: prev.incorrect_count || 0, successful_sessions: prev.successful_sessions || 0, status: prev.status || 'learning' };
+  if (correct) {
+    row.correct_count++;
+    if (!st.credited[item.id]) { st.credited[item.id] = true; row.successful_sessions++; }   // máx +1 por sesión
+    const was = row.status === 'mastered';
+    if (row.successful_sessions >= 3) { row.status = 'mastered'; if (!was) st.newMastered++; }
+  } else {
+    row.incorrect_count++;
+    if (row.status === 'mastered') row.status = 'learning';   // dominada que falla → learning
+  }
+  row.updated_at = new Date().toISOString();
+  vocabProgressMap[item.id] = { ...prev, vocabulary_id: item.id, ...row };
+  const s = window._sbSession;
+  if (!s || !s.id || typeof sb === 'undefined') return;
+  try { await sb.from('vocabulary_progress').upsert({ user_id: s.id, vocabulary_id: item.id, ...row }, { onConflict: 'user_id,vocabulary_id' }); } catch (e) {}
+}
+function vocabNext() {
+  const st = vocabState; if (!st) return;
+  st.i++;
+  if (st.i >= st.items.length) { finishVocabSession(); return; }
+  renderVocabQuestion();
+}
+function finishVocabSession() {
+  const st = vocabState; if (!st) return;
+  const total = st.correct + st.wrong;
+  const pct = total ? Math.round(st.correct / total * 100) : 0;
+  showView('vocab-result');
+  document.getElementById('vr-pct').textContent = fmtPct(pct);
+  document.getElementById('vr-ok').textContent = st.correct;
+  document.getElementById('vr-bad').textContent = st.wrong;
+  document.getElementById('vr-new').textContent = st.newMastered;
+}
+function vocabExit() { showVocab(_vocabLevel); }
+function vocabRetry() { startVocabSession(_vocabLevel, vocabState ? vocabState.cat : 'all'); }
 
 function selectLevel(level) {
   if (!requireAccess()) return;
@@ -10501,6 +10903,7 @@ function renderPaymentBanner() {
 async function initUnifiedProgress() {
   try { if (typeof loadTalaProgress === 'function') await loadTalaProgress(); } catch (e) {}
   try { if (typeof loadUnifiedProgress === 'function') await loadUnifiedProgress(); } catch (e) {}
+  try { if (typeof loadVocabProgress === 'function') await loadVocabProgress(); } catch (e) {}
   try { await loadAssignedLevelFromDB(); } catch (e) {}
   renderDashboardProgress();
   try { renderInicio(); } catch (e) {}

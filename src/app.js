@@ -434,6 +434,174 @@ async function finishTala() {
 function talaRetry() { if (talaState) startTalaSituation(talaState.sit.id); }
 function talaExit() { showTala(); }
 
+/* ═══════════════════════════════════════════════════════════════════
+   VOKABULÄR — motor de ejercicios (palabras y verbos por nivel)
+   Progreso en Supabase (vocabulary_progress): 1 fila por alumno+elemento.
+   Dominado = 3 aciertos en sesiones distintas. El % se calcula solo.
+   ═══════════════════════════════════════════════════════════════════ */
+let _vocabLevel = 'A';
+let vocabState = null;
+function _vShuffle(a) { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function _vPick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function _vocabPool(level, cat) { return (window.VOCAB || []).filter(it => it.lvl === level && it.active !== false && (cat === 'all' || !cat || it.cat === cat)); }
+
+async function showVocab(level) {
+  if (!requireAccess()) return;
+  stopSpeech();
+  _vocabLevel = level || (state && state.level) || 'A';
+  showView('vocab');
+  renderVocabHome();
+  try { await loadVocabProgress(); } catch (e) {}
+  renderVocabHome();
+}
+function renderVocabHome() {
+  const lv = _vocabLevel;
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  const setBar = (id, pct) => { const e = document.getElementById(id); if (e && typeof progressBar === 'function') e.innerHTML = progressBar(pct, lv); };
+  set('vocab-title', `📚 Vokabulär — SFI ${lv}`);
+  const tot = vocabProgress(lv), w = vocabProgress(lv, 'word'), v = vocabProgress(lv, 'verb');
+  set('vocab-total-pct', fmtPct(tot.pct)); set('vocab-total-count', `${tot.done} de ${tot.total} completadas`); setBar('vocab-total-bar', tot.pct);
+  set('vocab-pct-word', fmtPct(w.pct)); set('vocab-count-word', `${w.done} de ${w.total}`); setBar('vocab-bar-word', w.pct);
+  set('vocab-pct-verb', fmtPct(v.pct)); set('vocab-count-verb', `${v.done} de ${v.total}`); setBar('vocab-bar-verb', v.pct);
+}
+
+function startVocabSession(level, cat) {
+  if (!requireAccess()) return;
+  level = level || _vocabLevel; _vocabLevel = level; cat = cat || 'all';
+  const pool = _vocabPool(level, cat);
+  if (!pool.length) { showToast('Aún no hay contenido para este nivel', 'info'); return; }
+  // Priorizar no dominados, luego repaso; todo aleatorio.
+  const notM = _vShuffle(pool.filter(it => !isCompleted('vocabulary', it.id)));
+  const mast = _vShuffle(pool.filter(it => isCompleted('vocabulary', it.id)));
+  const items = notM.concat(mast).slice(0, Math.min(10, pool.length));
+  vocabState = { level, cat, items, i: 0, correct: 0, wrong: 0, newMastered: 0, credited: {}, answered: false, sel: null, q: null };
+  showView('vocab-quiz');
+  document.getElementById('vq-level').textContent = 'SFI ' + level;
+  renderVocabQuestion();
+}
+
+function _vf(it, field) { return field === 'es' ? it.es : field === 'sv' ? it.sv : field === 'pret' ? it.pret : field === 'pres' ? it.pres : ''; }
+function _vDistractors(pool, item, field, n) {
+  const out = [], used = { [_vf(item, field)]: 1 };
+  for (const c of _vShuffle(pool.filter(x => x.id !== item.id))) {
+    const val = _vf(c, field);
+    if (val && !used[val]) { used[val] = 1; out.push(val); if (out.length >= n) break; }
+  }
+  return out;
+}
+function buildVocabQuestion(item, pool) {
+  const isVerb = item.cat === 'verb';
+  const type = isVerb ? _vPick(['es2sv', 'past', 'present']) : _vPick(['sv2es', 'es2sv']);
+  let text, answer, field;
+  if (type === 'sv2es') { text = `¿Qué significa "${item.sv}"?`; answer = item.es; field = 'es'; }
+  else if (type === 'es2sv') { text = `¿Cómo se dice "${item.es}" en sueco?`; answer = item.sv; field = 'sv'; }
+  else if (type === 'past') { text = `¿Cuál es el pasado (preteritum) de "${item.sv}"?`; answer = item.pret; field = 'pret'; }
+  else { // present → completar oración si se puede
+    if (item.ex && item.pres && item.ex.indexOf(item.pres) >= 0) { text = 'Completa la oración:\n' + item.ex.replace(item.pres, '_____'); answer = item.pres; field = 'pres'; }
+    else { text = `¿Cuál es el presente de "${item.sv}"?`; answer = item.pres; field = 'pres'; }
+  }
+  let options = [answer, ..._vDistractors(pool, item, field, 3)];
+  while (options.length < 4) options.push('—');
+  options = _vShuffle(options.slice(0, 4));
+  if (options.indexOf(answer) < 0) options[0] = answer;
+  return { text, options, correct: options.indexOf(answer), item, type };
+}
+
+function renderVocabQuestion() {
+  const st = vocabState; if (!st) return;
+  const item = st.items[st.i];
+  st.q = buildVocabQuestion(item, _vocabPool(st.level, st.cat));
+  st.answered = false; st.sel = null;
+  const total = st.items.length;
+  document.getElementById('vq-bar').style.width = Math.round(st.i / total * 100) + '%';
+  document.getElementById('vq-num').textContent = `${st.i + 1} / ${total}`;
+  document.getElementById('vq-cat').textContent = item.cat === 'verb' ? 'Verbos' : 'Palabras';
+  document.getElementById('vq-question').textContent = st.q.text;
+  document.getElementById('vq-options').innerHTML = st.q.options.map((o, i) =>
+    `<button id="vo-${i}" onclick="vocabPick(${i})" class="w-full text-left rounded-2xl border-2 border-gray-200 bg-white px-4 py-3 font-semibold text-gray-800 hover:border-swe-blue transition-colors" style="min-height:52px; font-size:18px;">${o}</button>`).join('');
+  document.getElementById('vq-feedback').classList.add('hidden');
+  const chk = document.getElementById('vq-check'); chk.classList.remove('hidden'); chk.disabled = true;
+  document.getElementById('vq-next').classList.add('hidden');
+}
+function vocabPick(i) {
+  const st = vocabState; if (!st || st.answered) return;
+  st.sel = i;
+  document.querySelectorAll('#vq-options button').forEach((b, idx) => { b.classList.toggle('border-swe-blue', idx === i); b.classList.toggle('bg-blue-50', idx === i); });
+  document.getElementById('vq-check').disabled = false;
+}
+function _vocabForms(item) {
+  if (item.cat === 'verb') return `<div class="text-sm text-gray-500 mt-1">${item.inf} · ${item.pres} · ${item.pret} · ${item.sup}</div>`;
+  if (item.g) return `<div class="text-sm text-gray-500 mt-1">${item.g} ${item.sv} · ${item.def}${item.pl ? ' · ' + item.pl : ''}</div>`;
+  return '';
+}
+function _vocabMistake(item, q) {
+  return { text: `📚 Vokabulär: ${q.text}`, options: q.options, correct: q.correct, explanation: `${item.sv} = ${item.es}. ${item.ex} — ${item.exEs}` };
+}
+function vocabCheck() {
+  const st = vocabState; if (!st || st.answered || st.sel == null) return;
+  st.answered = true;
+  const q = st.q, item = q.item, ok = st.sel === q.correct;
+  document.querySelectorAll('#vq-options button').forEach((b, idx) => {
+    b.disabled = true;
+    if (idx === q.correct) { b.classList.add('border-green-500', 'bg-green-50'); b.innerHTML = '✓ ' + b.innerHTML; }
+    else if (idx === st.sel) { b.classList.add('border-red-500', 'bg-red-50'); b.innerHTML = '✗ ' + b.innerHTML; }
+  });
+  const fb = document.getElementById('vq-feedback');
+  const forms = _vocabForms(item);
+  if (ok) {
+    st.correct++;
+    fb.className = 'rounded-2xl p-4 mb-4 bg-green-50 border border-green-200 text-green-800';
+    fb.innerHTML = `<strong>¡Correcto!</strong> ${item.sv} = ${item.es}<div class="mt-1">${item.ex} — <span class="text-green-600">${item.exEs}</span></div>${forms}`;
+  } else {
+    st.wrong++;
+    fb.className = 'rounded-2xl p-4 mb-4 bg-red-50 border border-red-200 text-red-800';
+    fb.innerHTML = `<strong>Respuesta incorrecta.</strong> La correcta es <strong>${q.options[q.correct]}</strong>.<div class="mt-1">${item.sv} = ${item.es}. ${item.ex} — ${item.exEs}</div>${forms}${item.note ? `<div class="text-sm mt-1">💡 ${item.note}</div>` : ''}`;
+    try { addMistake(_vocabMistake(item, q)); } catch (e) {}
+  }
+  _vocabRecord(item, ok);
+  fb.classList.remove('hidden');
+  document.getElementById('vq-check').classList.add('hidden');
+  const nx = document.getElementById('vq-next'); nx.classList.remove('hidden');
+  nx.textContent = (st.i >= st.items.length - 1) ? 'Ver resultado 🎉' : 'Siguiente →';
+}
+async function _vocabRecord(item, correct) {
+  const st = vocabState;
+  const prev = vocabProgressMap[item.id] || { correct_count: 0, incorrect_count: 0, successful_sessions: 0, status: 'learning' };
+  const row = { correct_count: prev.correct_count || 0, incorrect_count: prev.incorrect_count || 0, successful_sessions: prev.successful_sessions || 0, status: prev.status || 'learning' };
+  if (correct) {
+    row.correct_count++;
+    if (!st.credited[item.id]) { st.credited[item.id] = true; row.successful_sessions++; }   // máx +1 por sesión
+    const was = row.status === 'mastered';
+    if (row.successful_sessions >= 3) { row.status = 'mastered'; if (!was) st.newMastered++; }
+  } else {
+    row.incorrect_count++;
+    if (row.status === 'mastered') row.status = 'learning';   // dominada que falla → learning
+  }
+  row.updated_at = new Date().toISOString();
+  vocabProgressMap[item.id] = { ...prev, vocabulary_id: item.id, ...row };
+  const s = window._sbSession;
+  if (!s || !s.id || typeof sb === 'undefined') return;
+  try { await sb.from('vocabulary_progress').upsert({ user_id: s.id, vocabulary_id: item.id, ...row }, { onConflict: 'user_id,vocabulary_id' }); } catch (e) {}
+}
+function vocabNext() {
+  const st = vocabState; if (!st) return;
+  st.i++;
+  if (st.i >= st.items.length) { finishVocabSession(); return; }
+  renderVocabQuestion();
+}
+function finishVocabSession() {
+  const st = vocabState; if (!st) return;
+  const total = st.correct + st.wrong;
+  const pct = total ? Math.round(st.correct / total * 100) : 0;
+  showView('vocab-result');
+  document.getElementById('vr-pct').textContent = fmtPct(pct);
+  document.getElementById('vr-ok').textContent = st.correct;
+  document.getElementById('vr-bad').textContent = st.wrong;
+  document.getElementById('vr-new').textContent = st.newMastered;
+}
+function vocabExit() { showVocab(_vocabLevel); }
+function vocabRetry() { startVocabSession(_vocabLevel, vocabState ? vocabState.cat : 'all'); }
+
 function selectLevel(level) {
   if (!requireAccess()) return;
   const available = ['A','B','C','D'];
@@ -4678,6 +4846,7 @@ function renderPaymentBanner() {
 async function initUnifiedProgress() {
   try { if (typeof loadTalaProgress === 'function') await loadTalaProgress(); } catch (e) {}
   try { if (typeof loadUnifiedProgress === 'function') await loadUnifiedProgress(); } catch (e) {}
+  try { if (typeof loadVocabProgress === 'function') await loadVocabProgress(); } catch (e) {}
   try { await loadAssignedLevelFromDB(); } catch (e) {}
   renderDashboardProgress();
   try { renderInicio(); } catch (e) {}
