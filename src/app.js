@@ -183,8 +183,8 @@ function renderLevelMenu() {
       <div class="flex-1 min-w-0"><div class="font-black text-gray-800">${c.label}</div><div class="text-xs text-gray-500 mb-1.5">${c.desc}</div>
         <div class="flex items-center gap-2"><div class="flex-1">${progressBar(c.p.pct)}</div><span class="text-xs font-black" style="color:${c.c}">${fmtPct(c.p.pct)}</span></div></div>
       <span class="text-gray-300 text-lg flex-shrink-0">›</span></button>`;
-  const ex = (typeof examStatus === 'function') ? examStatus(lv) : { passed: false, locked: false, isAdmin: false, nextAt: null, bestScore: 0 };
-  const canAttempt = ex.isAdmin || (examOpen && !ex.locked);   // admin: siempre; alumno: 4 categorías + sin bloqueo
+  const ex = (typeof examStatus === 'function') ? examStatus(lv) : { medal: false, passes: 0, required: 4, locked: false, isAdmin: false, nextAt: null, bestScore: 0 };
+  const canAttempt = ex.isAdmin || (!ex.medal && !ex.locked);   // disponible (no depende de completar categorías)
   const examInfo = "openExamInfo('" + lv + "')";
   el.innerHTML = `
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-4 flex items-start gap-4">
@@ -205,17 +205,17 @@ function renderLevelMenu() {
       <div class="flex items-center gap-4">
         <span class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 bg-amber-100">🏆</span>
         <div class="flex-1 min-w-0"><div class="font-black text-gray-800">Examen Final SFI ${lv}</div><div class="text-xs text-gray-500">Demuestra tus conocimientos y consigue la Medalla SFI ${lv}. <button onclick="${examInfo}" class="text-swe-blue font-semibold underline">ℹ️ Información</button></div></div>
-        <span class="text-2xl">${ex.passed ? '🏅' : (canAttempt ? '🔓' : '🔒')}</span>
+        <span class="text-2xl">${ex.medal ? '🏅' : (canAttempt ? '🔓' : '🔒')}</span>
       </div>
-      ${ex.passed
-        ? `<div class="mt-3 text-center bg-green-50 text-green-700 font-bold rounded-xl px-3 py-2 text-sm">✅ Medalla SFI ${lv} conseguida (mejor: ${fmtPct(ex.bestScore)})</div>`
+      ${ex.medal
+        ? `<div class="mt-3 text-center bg-green-50 text-green-700 font-bold rounded-xl px-3 py-2 text-sm">🏅 Medalla SFI ${lv} conseguida (mejor: ${fmtPct(ex.bestScore)})</div>`
         : `<div class="mt-3 flex items-center justify-between bg-white/70 rounded-xl px-3 py-2">
-             <span class="text-xs text-amber-700 font-semibold">${canAttempt ? '¡Ya puedes presentar el examen!' : (ex.locked ? 'Bloqueado. Próximo intento: ' + _fmtDate(ex.nextAt) : 'Completa las 4 actividades para desbloquear.')}</span>
-             <span class="text-xs font-black text-amber-600 whitespace-nowrap">${doneCats} de ${cats.length}</span>
+             <span class="text-xs text-amber-700 font-semibold">${ex.locked ? 'Bloqueado. Próximo intento: ' + _fmtDate(ex.nextAt) : 'Aprueba ' + ex.required + ' exámenes para la medalla.'}</span>
+             <span class="text-xs font-black text-amber-600 whitespace-nowrap">${ex.passes} de ${ex.required} aprobados</span>
            </div>`}
-      <button onclick="${canAttempt ? "startExam('" + lv + "')" : examInfo}" class="w-full mt-3 py-2.5 rounded-xl font-bold text-sm ${canAttempt ? 'bg-amber-500 text-white hover:bg-amber-600' : 'bg-gray-200 text-gray-500'}">${ex.passed ? '🔄 Repetir examen' : (canAttempt ? '🏆 Presentar examen (35 min)' : 'ℹ️ Cómo funciona')}</button>
+      <button onclick="${ex.medal ? examInfo : (canAttempt ? "startExam('" + lv + "')" : examInfo)}" class="w-full mt-3 py-2.5 rounded-xl font-bold text-sm ${(canAttempt && !ex.medal) ? 'bg-amber-500 text-white hover:bg-amber-600' : 'bg-gray-200 text-gray-600'}">${ex.medal ? '🏅 Medalla conseguida' : (canAttempt ? (ex.passes > 0 ? '🏆 Siguiente examen (35 min)' : '🏆 Presentar examen (35 min)') : 'ℹ️ Cómo funciona')}</button>
     </div>
-    <div class="flex items-center gap-3 bg-blue-50 rounded-2xl p-4"><span class="text-2xl">⭐</span><div class="text-xs text-gray-600">Cuando completes todas las actividades, podrás presentar el examen y obtener tu <strong>Medalla SFI ${lv}</strong>.</div></div>`;
+    <div class="flex items-center gap-3 bg-blue-50 rounded-2xl p-4"><span class="text-2xl">⭐</span><div class="text-xs text-gray-600">Practica Läsa, Skriva, Tala y Vokabulär, y aprueba el <strong>Examen Final ${ex.required} veces</strong> para conseguir tu <strong>Medalla SFI ${lv}</strong>.</div></div>`;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -690,12 +690,14 @@ let examState = null;
 function _fmtDate(d) { try { return new Date(d).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' }); } catch (e) { return ''; } }
 
 function openExamInfo(lv) {
+  const req = (typeof EXAM_REQUIRED !== 'undefined' && EXAM_REQUIRED[lv]) ? EXAM_REQUIRED[lv] : 4;
   const lines = [
-    'Aprueba con al menos <strong>80 %</strong> para conseguir la <strong>Medalla SFI ' + lv + '</strong>.',
-    'Tienes <strong>35 minutos</strong> para completar el examen.',
-    'Si no apruebas, podrás volver a intentarlo <strong>dentro de 7 días</strong>.',
-    'Mientras esperas, sigue practicando Läsa, Skriva, Tala y Vokabulär para mejorar.',
-    'Cada intento usa <strong>preguntas diferentes</strong>, elegidas al azar.'
+    'Debes <strong>aprobar el examen ' + req + ' veces</strong> (cada vez con preguntas diferentes) para conseguir la <strong>Medalla SFI ' + lv + '</strong>.',
+    'Cada examen se aprueba con al menos <strong>80 %</strong>.',
+    'Tienes <strong>35 minutos</strong> por examen.',
+    'Si <strong>apruebas</strong>, puedes continuar de inmediato con el siguiente intento.',
+    'Si <strong>no apruebas</strong>, podrás volver a intentarlo dentro de <strong>7 días</strong>.',
+    'Cada intento usa <strong>preguntas al azar</strong>, así no te memorizas el examen.'
   ];
   const ic = document.getElementById('coming-icon'); if (ic) ic.textContent = '🏆';
   const t = document.getElementById('coming-title'); if (t) t.textContent = '¿Cómo funciona el Examen Final?';
@@ -764,35 +766,53 @@ async function finishExam(timedOut) {
   if (st.timer) clearInterval(st.timer);
   const total = st.qs.length;
   const pct = Math.round(st.correct / total * 100);
-  const passed = pct >= 80;
-  await saveExamResult(st.level, passed, pct);
+  const approved = pct >= 80;
+  await saveExamResult(st.level, approved, pct);
+  const ex = examStatus(st.level);
   const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
   showView('exam-result');
   set('er-pct', pct + ' %');
-  document.getElementById('er-pct').style.color = passed ? '#16a34a' : '#dc2626';
+  document.getElementById('er-pct').style.color = approved ? '#16a34a' : '#dc2626';
   set('er-detail', st.correct + ' de ' + total + ' correctas · necesitas 80 %');
   const medal = document.getElementById('er-medal'), retry = document.getElementById('er-retry-note');
-  if (passed) {
+  const nextBtn = document.getElementById('er-next-attempt');
+  medal.classList.add('hidden'); retry.classList.add('hidden'); if (nextBtn) nextBtn.classList.add('hidden');
+  if (approved && ex.medal) {
     set('er-emoji', '🎉'); set('er-title', '¡Felicidades!');
-    set('er-sub', 'Has conseguido la Medalla SFI ' + st.level + '. ¡Dominas este nivel!');
+    set('er-sub', '¡Aprobaste los ' + ex.required + ' exámenes y conseguiste la Medalla SFI ' + st.level + '! Dominas este nivel.');
     medal.classList.remove('hidden'); set('er-medal-txt', 'Medalla SFI ' + st.level);
-    retry.classList.add('hidden');
+  } else if (approved) {
+    set('er-emoji', '✅'); set('er-title', '¡Aprobado!');
+    set('er-sub', 'Aprobaste el intento ' + ex.passes + ' de ' + ex.required + '. Puedes continuar de inmediato con el siguiente.');
+    if (nextBtn) { nextBtn.classList.remove('hidden'); nextBtn.setAttribute('data-lvl', st.level); }
   } else {
     set('er-emoji', '💪'); set('er-title', 'Todavía no');
-    set('er-sub', 'No alcanzaste el 80 % necesario para la Medalla SFI ' + st.level + '.' + (timedOut ? ' Se acabó el tiempo.' : ''));
-    medal.classList.add('hidden');
-    const ex = examStatus(st.level);
+    set('er-sub', 'No alcanzaste el 80 % para este intento.' + (timedOut ? ' Se acabó el tiempo.' : ''));
     retry.classList.remove('hidden');
     retry.innerHTML = ex.isAdmin ? 'Como administrador puedes reintentar cuando quieras.' : 'Podrás volver a intentarlo en 7 días. Mientras tanto, practica Läsa, Skriva, Tala y Vokabulär para mejorar.';
   }
 }
-async function saveExamResult(level, passed, pct) {
+async function saveExamResult(level, approved, pct) {
+  const req = (typeof EXAM_REQUIRED !== 'undefined' && EXAM_REQUIRED[level]) ? EXAM_REQUIRED[level] : 4;
   const prev = examProgressMap[level] || {};
-  const row = { passed: passed || !!prev.passed, best_score: Math.max(prev.best_score || 0, pct), last_attempt_at: new Date().toISOString(), updated_at: new Date().toISOString() };
+  const isAdmin = (typeof isAdminUser === 'function') && isAdminUser();
+  let passes = prev.passes_count || 0;
+  let locked_until = prev.locked_until || null;
+  if (approved) { passes = Math.min(req, passes + 1); locked_until = null; }
+  else if (!isAdmin) { locked_until = new Date(Date.now() + 7 * 864e5).toISOString(); }
+  const row = {
+    passes_count: passes,
+    passed: passes >= req,
+    best_score: Math.max(prev.best_score || 0, pct),
+    locked_until,
+    last_attempt_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  };
   examProgressMap[level] = { ...prev, level, ...row };
   const s = window._sbSession; if (!s || !s.id || typeof sb === 'undefined') return;
   try { await sb.from('exam_progress').upsert({ user_id: s.id, level, ...row }, { onConflict: 'user_id,level' }); } catch (e) {}
 }
+function examNextAttempt(btn) { const lv = btn.getAttribute('data-lvl'); examState = null; startExam(lv); }
 function examExit() { if (examState && examState.timer) clearInterval(examState.timer); const lv = examState ? examState.level : (state && state.level); examState = null; if (lv) state.level = lv; goMenu(); }
 function examBackToLevel() { const lv = examState ? examState.level : (state && state.level); examState = null; if (lv) state.level = lv; goMenu(); }
 
@@ -2593,17 +2613,29 @@ async function sendResetEmail() {
   btn.disabled = true; btn.textContent = 'Enviando...';
   errEl.classList.add('hidden');
 
-  const { error } = await sb.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + window.location.pathname
-  });
+  // Enviamos el enlace por Resend (dominio verificado) a través de admin-ops.
+  // Es más fiable que el correo por defecto de Supabase.
+  let ok = false;
+  try {
+    const r = await adminOps('public_reset', { email });
+    ok = !!(r && r.ok);
+  } catch (e) { ok = false; }
+
+  // Respaldo: si por algo falla la función, intenta el método nativo de Supabase.
+  if (!ok) {
+    try {
+      const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: 'https://app.suecoconsophie.com' });
+      ok = !error;
+    } catch (e) { ok = false; }
+  }
 
   btn.disabled = false; btn.textContent = 'Enviar link →';
 
-  if (error) {
-    errEl.textContent = 'Error al enviar. Verifica el correo e intenta de nuevo.';
-    errEl.classList.remove('hidden');
+  if (ok) {
+    if (okEl) { okEl.textContent = 'Si el correo existe, te enviamos un enlace para crear tu nueva contraseña. Revisa tu bandeja (y spam).'; okEl.classList.remove('hidden'); }
   } else {
-    okEl.classList.remove('hidden');
+    errEl.textContent = 'No se pudo enviar. Verifica el correo e inténtalo de nuevo.';
+    errEl.classList.remove('hidden');
   }
 }
 
@@ -5167,11 +5199,16 @@ function renderObjetivo() {
   const prog = document.getElementById('objetivo-progress');
   if (!list) return;
   const r = getDailyGoals();
-  list.innerHTML = r.goals.map(g => `
-    <div class="flex items-center gap-2 ${g.done ? '' : 'cursor-pointer'}" ${g.done ? '' : `onclick="_goalGo('${g.action}')"`}>
-      <span class="w-5 h-5 rounded-full flex items-center justify-center text-white text-[11px] flex-shrink-0 ${g.done ? 'bg-green-500' : 'bg-gray-200'}">${g.done ? '✓' : ''}</span>
-      <span class="text-sm ${g.done ? 'text-gray-400 line-through' : 'text-gray-700 font-medium'}">${g.label}</span>
-    </div>`).join('');
+  list.innerHTML = r.goals.map(g => g.done
+    ? `<div class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-green-50 border-2 border-green-100">
+         <span class="w-6 h-6 rounded-full bg-green-500 text-white flex items-center justify-center text-sm flex-shrink-0">✓</span>
+         <span class="text-sm text-green-700 font-semibold line-through flex-1">${g.label}</span>
+       </div>`
+    : `<button onclick="_goalGo('${g.action}')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border-2 border-gray-200 hover:border-swe-blue hover:bg-blue-50/50 active:scale-[0.98] transition-all text-left group">
+         <span class="w-6 h-6 rounded-full border-2 border-gray-300 group-hover:border-swe-blue flex-shrink-0 transition-colors"></span>
+         <span class="text-sm text-gray-700 font-semibold flex-1">${g.label}</span>
+         <span class="text-xs font-black text-swe-blue whitespace-nowrap">Empezar →</span>
+       </button>`).join('');
   if (prog) prog.textContent = `Progreso: ${r.done} / ${r.total}`;
   if (r.celebrateReady) { const d = _dailyState(); d.celebrated = true; _saveDaily(d); showToast('🎉 ¡Objetivo diario completado! Mañana tendrás nuevos desafíos.', 'success'); }
 }

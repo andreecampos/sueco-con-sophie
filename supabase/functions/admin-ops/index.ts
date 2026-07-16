@@ -70,7 +70,7 @@ Deno.serve(async (req) => {
     // Seguridad: verificar que quien llama es admin POR SU LOGIN (su token de sesión),
     // no por una contraseña compartida. create_portal_session y send_support quedan libres
     // porque las usan los propios alumnos (portal de pago / enviar mensaje de soporte).
-    if (action !== 'create_portal_session' && action !== 'send_support') {
+    if (action !== 'create_portal_session' && action !== 'send_support' && action !== 'public_reset') {
       const ADMIN_EMAILS = (Deno.env.get('ADMIN_EMAILS') || 'sophie.sahlin@hotmail.com,orlandoandree1998@gmail.com')
         .split(',').map((e) => e.trim().toLowerCase())
       const jwt = (req.headers.get('Authorization') || '').replace('Bearer ', '').trim()
@@ -159,6 +159,27 @@ Deno.serve(async (req) => {
         const { id } = data
         const { error } = await sb.from('students').update({ device_keys: [] }).eq('id', id)
         if (error) throw error
+        return new Response(JSON.stringify({ ok: true }), { headers: corsHeaders })
+      }
+
+      // ── Olvidé mi contraseña (público): genera el enlace y lo envía por Resend ──
+      case 'public_reset': {
+        const email = String(data.email || '').trim().toLowerCase()
+        if (!email || !email.includes('@')) {
+          return new Response(JSON.stringify({ error: 'Correo no válido' }), { status: 400, headers: corsHeaders })
+        }
+        // Por seguridad respondemos ok siempre (no revelamos si el correo existe).
+        try {
+          const { data: linkData } = await sb.auth.admin.generateLink({
+            type: 'recovery',
+            email,
+            options: { redirectTo: 'https://app.suecoconsophie.com' }
+          })
+          const actionLink = linkData?.properties?.action_link
+          if (actionLink) await sendAccessEmail(email, actionLink)
+        } catch (e) {
+          console.log('public_reset (no crítico):', (e as any)?.message)
+        }
         return new Response(JSON.stringify({ ok: true }), { headers: corsHeaders })
       }
 

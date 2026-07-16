@@ -307,18 +307,22 @@ async function loadExamProgress() {
     (data || []).forEach(r => { examProgressMap[r.level] = r; });
   } catch (e) {}
 }
-// Estado del examen de un nivel: aprobado, bloqueado (7 días), próximo intento, mejor puntaje.
-// El administrador NO tiene la regla de los 7 días y puede intentar siempre.
+// Aprobados necesarios para la Medalla: SFI A y B = 4, SFI C y D = 2.
+const EXAM_REQUIRED = { A: 4, B: 4, C: 2, D: 2 };
+// Estado del examen de un nivel. Cada aprobado (≥80%) suma un intento hacia la medalla.
+// Si falla → bloqueo de 7 días (el administrador NO tiene ese límite y puede intentar siempre).
 function examStatus(level) {
   const row = examProgressMap[level] || null;
-  const passed = !!(row && row.passed);
+  const required = EXAM_REQUIRED[level] || 1;
+  const passes = (row && row.passes_count) || 0;
+  const medal = passes >= required;
   const isAdmin = (typeof isAdminUser === 'function') && isAdminUser();
   let locked = false, nextAt = null;
-  if (!isAdmin && !passed && row && row.last_attempt_at) {
-    const next = new Date(new Date(row.last_attempt_at).getTime() + 7 * 864e5);
+  if (!isAdmin && !medal && row && row.locked_until) {
+    const next = new Date(row.locked_until);
     if (next > new Date()) { locked = true; nextAt = next; }
   }
-  return { passed, locked, nextAt, bestScore: (row && row.best_score) || 0, isAdmin };
+  return { medal, passes, required, locked, nextAt, bestScore: (row && row.best_score) || 0, isAdmin };
 }
 
 // Marca un ítem. status por defecto 'completed'. Idempotente (upsert, no crea filas nuevas al repetir).
