@@ -117,6 +117,8 @@ function _updateBottomNav(id) {
     document.querySelectorAll('#bottom-nav .nav-btn').forEach(b => {
       const on = b.getAttribute('data-nav') === active;
       b.classList.toggle('text-swe-blue', on);
+      b.classList.toggle('font-bold', on);
+      b.classList.toggle('bg-blue-50', on);
       b.classList.toggle('text-gray-400', !on);
     });
   }
@@ -2419,8 +2421,8 @@ async function renderProfileWidget() {
   const avEl = document.getElementById('profile-avatar');
   if (nameEl) nameEl.textContent = name;
   if (avEl) {
-    if (avatar) avEl.innerHTML = `<img src="${avatar}" class="w-11 h-11 rounded-full object-cover border-2 border-white shadow" referrerpolicy="no-referrer" alt="">`;
-    else { const a = reviewAvatar(name); avEl.innerHTML = `<div class="w-11 h-11 rounded-full flex items-center justify-center text-white font-bold shadow" style="background:${a.color}">${a.initial}</div>`; }
+    if (avatar) avEl.innerHTML = `<img src="${avatar}" class="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md" referrerpolicy="no-referrer" alt="">`;
+    else { const a = reviewAvatar(name); avEl.innerHTML = `<div class="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-md" style="background:${a.color}">${a.initial}</div>`; }
   }
   // Aviso: si no tiene foto, invitarlo a subirla
   const btnEl = document.getElementById('profile-photo-btn');
