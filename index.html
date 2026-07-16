@@ -806,6 +806,85 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════
+     VIEW: MEDBORGARSKAPSPROVET — inicio (módulos)
+════════════════════════════════════════════════════════════ -->
+<div id="view-medborgar" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="bg-swe-blue text-white" style="border-bottom:4px solid #FECC02;">
+    <div class="max-w-2xl mx-auto px-4 py-4 flex items-center gap-3">
+      <button onclick="showAprender()" class="text-white text-2xl leading-none" aria-label="Volver">‹</button>
+      <div><div class="font-black text-lg">🇸🇪 Medborgarskapsprovet</div><div class="text-xs text-blue-100">Prepárate para el examen de ciudadanía sueca</div></div>
+    </div>
+  </div>
+  <div class="max-w-2xl mx-auto px-4 py-6">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-4">
+      <div class="flex items-center justify-between mb-2">
+        <div class="font-bold text-gray-700">Tu progreso</div>
+        <div class="text-sm font-black text-blue-600" id="medb-total-pct">0 %</div>
+      </div>
+      <div id="medb-total-bar" class="mb-1"></div>
+      <div class="text-xs text-gray-500" id="medb-total-count">0 de 0 módulos</div>
+    </div>
+    <div id="medb-list" class="space-y-3"></div>
+    <div id="medb-simulacro" class="mt-4"></div>
+    <div style="height:88px"></div>
+  </div>
+</div>
+
+<!-- VIEW: lección Medborgar (motor por fases) -->
+<div id="view-medborgar-lesson" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="max-w-2xl mx-auto px-4 py-5">
+    <div class="flex items-center gap-3 mb-3">
+      <button onclick="medbExit()" class="text-red-600 bg-red-50 hover:bg-red-100 font-bold text-sm px-3 py-2 rounded-full transition-colors flex-shrink-0">✕ Salir</button>
+      <div class="flex-1 h-2.5 bg-gray-200 rounded-full overflow-hidden"><div id="medb-bar" class="h-full bg-blue-600 rounded-full" style="width:0%;transition:width .3s ease"></div></div>
+      <span id="medb-num" class="text-sm text-gray-500 font-bold whitespace-nowrap"></span>
+    </div>
+    <div id="medb-body"></div>
+  </div>
+</div>
+
+<!-- VIEW: resultado Medborgar -->
+<div id="view-medborgar-result" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="max-w-2xl mx-auto px-4 py-10 text-center">
+    <div class="text-6xl mb-3">🎉</div>
+    <div class="font-black text-gray-800 text-2xl mb-4" id="medr-title">¡Lección completada!</div>
+    <div class="bg-white rounded-2xl p-6 shadow border border-gray-100 mb-5">
+      <div class="text-5xl font-black text-blue-600 mb-1" id="medr-pct">0 %</div>
+      <div class="grid grid-cols-2 gap-2 mt-3">
+        <div><div class="text-xl font-bold text-green-600" id="medr-ok">0</div><div class="text-[10px] text-gray-500">correctas</div></div>
+        <div><div class="text-xl font-bold text-red-500" id="medr-bad">0</div><div class="text-[10px] text-gray-500">errores</div></div>
+      </div>
+    </div>
+    <div class="space-y-2">
+      <button id="medr-fix" onclick="medbPracticeErrors()" class="hidden w-full border-2 border-swe-blue text-swe-blue py-3 rounded-2xl font-bold hover:bg-blue-50">🔁 Practicar errores</button>
+      <button onclick="showMedborgar()" class="w-full bg-swe-blue text-white py-3 rounded-2xl font-bold hover:bg-swe-dark">Volver a los módulos</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: intro Medborgarskapsprovet (primera vez) -->
+<div id="medb-intro" class="hidden fixed inset-0 z-[80] flex items-center justify-center p-4" style="background:rgba(15,23,42,0.6); backdrop-filter:blur(2px);">
+  <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl max-h-[88vh] overflow-y-auto p-6" style="animation:fadeIn .2s ease;">
+    <div class="text-center text-5xl mb-2">🇸🇪</div>
+    <div class="font-black text-gray-800 text-lg text-center mb-3">Preparación para Medborgarskapsprovet</div>
+    <div class="text-sm text-gray-600 leading-relaxed space-y-2">
+      <p>Esta sección ha sido creada por <strong>Sueco con Sophie</strong> para ayudarte a prepararte para el examen de ciudadanía sueca mediante teoría, ejercicios y simulacros.</p>
+      <p><strong>No es el examen oficial ni garantiza la aprobación.</strong> El contenido se basa en los temas oficiales publicados por las autoridades suecas, pero el examen puede cambiar con el tiempo.</p>
+      <p>Consulta siempre la información oficial en:</p>
+      <ul class="list-disc pl-5 text-gray-700">
+        <li><a href="https://www.migrationsverket.se" target="_blank" rel="noopener" class="text-swe-blue underline">Migrationsverket</a></li>
+        <li><a href="https://www.uhr.se" target="_blank" rel="noopener" class="text-swe-blue underline">Universitets- och högskolerådet (UHR)</a></li>
+      </ul>
+      <p>El objetivo es ayudarte a comprender el contenido y practicar el sueco necesario para afrontar el examen con más confianza.</p>
+      <p class="text-xs text-gray-400">La prueba real dura 90 minutos y tiene ~60 preguntas de opción múltiple (4 alternativas), en sueco.</p>
+    </div>
+    <label class="flex items-center gap-2 mt-4 text-sm text-gray-600 cursor-pointer">
+      <input type="checkbox" id="medb-intro-hide" class="w-5 h-5 accent-swe-blue"> No volver a mostrar este mensaje.
+    </label>
+    <button onclick="closeMedbIntro()" class="w-full mt-4 bg-swe-blue text-white py-3 rounded-2xl font-bold hover:bg-swe-dark transition-colors">Entendido, comenzar</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
      VIEW: VOKABULÄR — inicio del módulo (por nivel)
 ════════════════════════════════════════════════════════════ -->
 <div id="view-vocab" class="view" style="background:#f4f7fb; min-height:100vh;">
@@ -920,6 +999,11 @@
       <button onclick="showHorst()" class="w-full flex items-center gap-4 bg-white rounded-2xl p-4 shadow-sm border-2 border-blue-100 hover:border-blue-300 transition-all text-left">
         <span class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background:linear-gradient(135deg,#006AA7,#004F7C);color:#fff">🎧</span>
         <div class="flex-1 min-w-0"><div class="font-bold text-gray-800">Hörförståelse</div><div class="text-xs text-gray-500">Escucha a Sophie y responde</div><div class="mt-1.5 flex items-center gap-2"><div class="flex-1 max-w-[160px]" id="bar-listening"></div><span class="text-xs font-black text-swe-blue" id="pct-listening">0 %</span></div></div>
+        <span class="text-gray-300 text-lg flex-shrink-0">›</span>
+      </button>
+      <button onclick="showMedborgar()" class="w-full flex items-center gap-4 bg-white rounded-2xl p-4 shadow-sm border-2 border-indigo-100 hover:border-indigo-300 transition-all text-left">
+        <span class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 bg-indigo-50">🇪🇺</span>
+        <div class="flex-1 min-w-0"><div class="font-bold text-gray-800">🇸🇪 Medborgarskapsprovet</div><div class="text-xs text-gray-500">Prepárate para el examen de ciudadanía sueca</div><div class="mt-1.5 flex items-center gap-2"><div class="flex-1 max-w-[160px]" id="bar-medborgar"></div><span class="text-xs font-black text-indigo-600" id="pct-medborgar">0 %</span></div></div>
         <span class="text-gray-300 text-lg flex-shrink-0">›</span>
       </button>
       <button onclick="openComingSoon('/juanita/juanita-chancleta.webp','Practicando con Juanita','Muy pronto practicarás conversaciones guiadas con Juanita, tu mamá latina favorita.','Entendido')" class="w-full flex items-center gap-4 bg-white rounded-2xl p-4 shadow-sm border-2 border-pink-100 hover:border-pink-300 transition-all text-left">
@@ -6002,6 +6086,79 @@ if (typeof window !== 'undefined') window.VOCAB = VOCAB;
 </script>
 <script>
 /* ═══════════════════════════════════════════════════════════════════
+   MEDBORGARSKAPSPROVET — preparación para el examen de ciudadanía sueca
+   Sección INDEPENDIENTE: su propio progreso (tabla medborgarskap_progress),
+   no afecta el progreso general de Aprender.
+
+   Estructura de cada módulo:
+     id, title, active (false = "Próximamente"),
+     aprende  · texto explicativo en español (≤200 palabras); las palabras
+                clave en sueco se marcan con **asteriscos**.
+     palabras · [{ sv, es }]
+     questions· [{ q(sueco), options[](sueco), correct, exp(es), phrase(sueco),
+                   why(es), isCase(bool opcional) }]
+   Para añadir contenido: rellena aprende/palabras/questions y pon active:true.
+   ═══════════════════════════════════════════════════════════════════ */
+
+const MEDBORGAR = {
+  modules: [
+    {
+      id: 'm01', title: 'Sverige som land', active: true,
+      aprende: 'Suecia (**Sverige**) es un país nórdico del norte de Europa. Su capital (**huvudstad**) es **Stockholm** y su moneda es la corona sueca (**krona**). El idioma principal es el sueco (**svenska**). Suecia es una monarquía constitucional: el jefe de Estado (**statschef**) es el rey (**kung**), pero tiene una función simbólica y no gobierna. El poder político lo tienen el parlamento (**Riksdag**) y el gobierno (**regering**). El país se divide en municipios (**kommun**) y regiones. Los habitantes (**invånare**) pagan impuestos (**skatt**) que financian la sanidad, la escuela y el bienestar. La economía se apoya en recursos naturales (**naturresurser**) como el bosque (**skog**), el hierro (**järnmalm**) y la energía hidráulica (**vattenkraft**).',
+      palabras: [
+        { sv: 'Sverige', es: 'Suecia' },
+        { sv: 'huvudstad', es: 'capital' },
+        { sv: 'kung', es: 'rey' },
+        { sv: 'statschef', es: 'jefe de Estado' },
+        { sv: 'Riksdag', es: 'parlamento' },
+        { sv: 'regering', es: 'gobierno' },
+        { sv: 'kommun', es: 'municipio' },
+        { sv: 'skatt', es: 'impuesto' },
+        { sv: 'skog', es: 'bosque' },
+        { sv: 'järnmalm', es: 'mineral de hierro' }
+      ],
+      questions: [
+        { q: 'Vem är Sveriges statschef?', qEs: '¿Quién es el jefe de Estado de Suecia?', options: ['Kungen', 'Statsministern', 'Riksdagen', 'Presidenten'], correct: 0,
+          exp: 'El jefe de Estado de Suecia es el rey; tiene una función simbólica.', phrase: 'Rätt! Sveriges statschef är kungen.',
+          why: 'Suecia es una monarquía constitucional: el rey es el jefe de Estado pero no gobierna. Las decisiones políticas las toman el Riksdag (parlamento) y el gobierno.' },
+        { q: 'Vad heter Sveriges huvudstad?', qEs: '¿Cuál es la capital de Suecia?', options: ['Stockholm', 'Göteborg', 'Malmö', 'Uppsala'], correct: 0,
+          exp: 'La capital de Suecia es Estocolmo.', phrase: 'Rätt! Sveriges huvudstad är Stockholm.',
+          why: 'Estocolmo es la ciudad más grande y la capital, donde se encuentran el Riksdag y el gobierno.' },
+        { q: 'Vilken naturresurs är viktig för Sveriges ekonomi?', qEs: '¿Qué recurso natural es importante para la economía de Suecia?', options: ['Skog', 'Olja', 'Guld', 'Diamanter'], correct: 0,
+          exp: 'El bosque (madera) es un recurso natural clave para la economía sueca, junto con el hierro y la energía hidráulica.', phrase: 'Rätt! Skogen är en viktig naturresurs i Sverige.',
+          why: 'Suecia tiene enormes bosques; la industria de la madera y el papel es histórica. También son importantes el hierro (järnmalm) y la energía hidroeléctrica (vattenkraft). Suecia no es un país petrolero.' },
+        { q: 'Vilket är Sveriges officiella huvudspråk?', qEs: '¿Cuál es el idioma oficial principal de Suecia?', options: ['Svenska', 'Norska', 'Finska', 'Danska'], correct: 0,
+          exp: 'El idioma principal oficial de Suecia es el sueco.', phrase: 'Rätt! Sveriges huvudspråk är svenska.',
+          why: 'El sueco es el idioma principal. Además hay cinco lenguas minoritarias reconocidas (como el finés y el sami).' },
+        { q: 'Vad heter Sveriges valuta?', qEs: '¿Cómo se llama la moneda de Suecia?', options: ['Krona', 'Euro', 'Dollar', 'Pund'], correct: 0,
+          exp: 'La moneda de Suecia es la corona sueca (krona).', phrase: 'Rätt! Sveriges valuta är svenska kronor.',
+          why: 'Aunque Suecia es miembro de la Unión Europea, no usa el euro; mantiene su propia moneda, la corona (krona).' },
+        { q: 'En person vill veta vem som styr Sverige politiskt. Vad är rätt?', qEs: 'Una persona quiere saber quién gobierna Suecia políticamente. ¿Qué es correcto?', options: ['Riksdagen och regeringen', 'Kungen ensam', 'Domstolarna', 'Företagen'], correct: 0, isCase: true,
+          exp: 'El poder político lo tienen el Riksdag (parlamento) y el gobierno, no el rey.', phrase: 'Rätt! Riksdagen och regeringen styr Sverige politiskt.',
+          why: 'El rey es un jefe de Estado simbólico. Quienes aprueban las leyes y gobiernan el país son el Riksdag (elegido por el pueblo) y el gobierno (regering), que responde ante el Riksdag.' }
+      ]
+    },
+    /* ── Módulos siguientes: se llenan igual que el primero ── */
+    { id: 'm02', title: 'Demokrati', active: false },
+    { id: 'm03', title: 'Hur Sverige styrs', active: false },
+    { id: 'm04', title: 'Val och politik', active: false },
+    { id: 'm05', title: 'Lagar och rättssystemet', active: false },
+    { id: 'm06', title: 'Medier', active: false },
+    { id: 'm07', title: 'Mänskliga rättigheter', active: false },
+    { id: 'm08', title: 'Arbete och ekonomi', active: false },
+    { id: 'm09', title: 'Välfärd', active: false },
+    { id: 'm10', title: 'Sveriges historia', active: false },
+    { id: 'm11', title: 'Sverige i världen', active: false },
+    { id: 'm12', title: 'Religion och mångfald', active: false },
+    { id: 'm13', title: 'Kultur och traditioner', active: false }
+  ]
+};
+
+if (typeof window !== 'undefined') window.MEDBORGAR = MEDBORGAR;
+
+</script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════
    SISTEMA DE PROGRESO UNIFICADO  (Fase 2)
    Único, coherente y escalable para todos los módulos de la plataforma.
 
@@ -7262,6 +7419,151 @@ async function saveExamResult(level, approved, pct) {
 function examNextAttempt(btn) { const lv = btn.getAttribute('data-lvl'); examState = null; startExam(lv); }
 function examExit() { if (examState && examState.timer) clearInterval(examState.timer); const lv = examState ? examState.level : (state && state.level); examState = null; if (lv) state.level = lv; goMenu(); }
 function examBackToLevel() { const lv = examState ? examState.level : (state && state.level); examState = null; if (lv) state.level = lv; goMenu(); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   MEDBORGARSKAPSPROVET — sección independiente (tabla medborgarskap_progress).
+   No afecta el progreso general de Aprender.
+   ═══════════════════════════════════════════════════════════════════ */
+let medbProgressMap = {};
+let medbState = null;
+function _medbModules() { return (window.MEDBORGAR && window.MEDBORGAR.modules) || []; }
+function _medbActive() { return _medbModules().filter(m => m.active !== false && m.questions && m.questions.length); }
+function _medbBold(t) { return (t || '').replace(/\*\*(.+?)\*\*/g, '<strong class="text-indigo-700">$1</strong>'); }
+async function loadMedborgarProgress() {
+  medbProgressMap = {};
+  const s = window._sbSession; if (!s || !s.id || typeof sb === 'undefined') return;
+  try { const { data } = await sb.from('medborgarskap_progress').select('*').eq('user_id', s.id); (data || []).forEach(r => { medbProgressMap[r.module_id] = r; }); } catch (e) {}
+}
+function medbProgress() {
+  const mods = _medbModules(); const total = mods.length;
+  const done = mods.filter(m => medbProgressMap[m.id] && medbProgressMap[m.id].completed).length;
+  return { done, total, pct: total ? Math.min(100, Math.round(done / total * 100)) : 0 };
+}
+function renderMedborgarPct() {
+  const p = medbProgress();
+  const pe = document.getElementById('pct-medborgar'); if (pe) pe.textContent = (typeof fmtPct === 'function' ? fmtPct(p.pct) : p.pct + ' %');
+  const be = document.getElementById('bar-medborgar'); if (be && typeof _colorBar === 'function') be.innerHTML = _colorBar(p.pct, '#4f46e5', 8);
+}
+async function showMedborgar() {
+  if (!requireAccess()) return;
+  stopSpeech();
+  let hide = false; try { hide = localStorage.getItem('sc_medb_intro') === '1'; } catch (e) {}
+  if (!hide) { const m = document.getElementById('medb-intro'); if (m) m.classList.remove('hidden'); }
+  showView('medborgar');
+  renderMedborgarHome();
+  await loadMedborgarProgress();
+  renderMedborgarHome();
+}
+function closeMedbIntro() {
+  const cb = document.getElementById('medb-intro-hide');
+  if (cb && cb.checked) { try { localStorage.setItem('sc_medb_intro', '1'); } catch (e) {} }
+  const m = document.getElementById('medb-intro'); if (m) m.classList.add('hidden');
+}
+function showAprender() { if (!requireAccess()) return; stopSpeech(); showView('aprender'); renderDashboardProgress(); }
+function renderMedborgarHome() {
+  const p = medbProgress();
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  set('medb-total-pct', (typeof fmtPct === 'function' ? fmtPct(p.pct) : p.pct + ' %'));
+  set('medb-total-count', p.done + ' de ' + p.total + ' módulos');
+  const tb = document.getElementById('medb-total-bar'); if (tb && typeof _colorBar === 'function') tb.innerHTML = _colorBar(p.pct, '#2563eb', 8);
+  const list = document.getElementById('medb-list');
+  if (list) {
+    list.innerHTML = _medbModules().map((m, i) => {
+      const pr = medbProgressMap[m.id] || {}; const done = !!pr.completed;
+      const avail = m.active !== false && m.questions && m.questions.length;
+      const num = String(i + 1).padStart(2, '0');
+      if (!avail) return `<div class="flex items-center gap-3 bg-white/60 rounded-2xl p-4 border border-gray-100 opacity-70"><span class="w-9 h-9 rounded-xl bg-gray-100 text-gray-400 flex items-center justify-center font-black text-sm">${num}</span><div class="flex-1"><div class="font-bold text-gray-500">${m.title}</div><div class="text-xs text-gray-400">Próximamente 🔜</div></div></div>`;
+      return `<button onclick="startMedborgarModule('${m.id}')" class="w-full flex items-center gap-3 bg-white rounded-2xl p-4 shadow-sm border-2 ${done ? 'border-green-200' : 'border-indigo-100 hover:border-indigo-300'} transition-colors text-left">
+        <span class="w-9 h-9 rounded-xl ${done ? 'bg-green-500' : 'bg-indigo-500'} text-white flex items-center justify-center font-black text-sm">${done ? '✓' : num}</span>
+        <div class="flex-1 min-w-0"><div class="font-bold text-gray-800">${m.title}</div><div class="text-xs text-gray-500">${m.questions.length} preguntas</div></div>
+        ${done ? `<span class="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">✓ ${pr.score || 0}%</span>` : '<span class="text-gray-300">›</span>'}</button>`;
+    }).join('');
+  }
+  const sim = document.getElementById('medb-simulacro');
+  if (sim) {
+    const active = _medbActive();
+    const allDone = active.length > 0 && active.every(m => medbProgressMap[m.id] && medbProgressMap[m.id].completed);
+    sim.innerHTML = `<div class="rounded-2xl p-4 border-2 ${allDone ? 'border-amber-300 bg-amber-50' : 'border-gray-200 bg-gray-50'}">
+      <div class="flex items-center gap-3"><span class="text-2xl">📝</span><div class="flex-1"><div class="font-black text-gray-800">Simulacro Medborgarskapsprovet</div><div class="text-xs text-gray-500">Todo en sueco, con tiempo. ${allDone ? '¡Desbloqueado!' : 'Completa todos los módulos para desbloquear.'}</div></div>${allDone ? '🔓' : '🔒'}</div>
+      <button onclick="${allDone ? 'startMedbSimulacro()' : "showMini('Completa todos los módulos primero.','🔒')"}" class="w-full mt-3 py-2.5 rounded-xl font-bold text-sm ${allDone ? 'bg-amber-500 text-white hover:bg-amber-600' : 'bg-gray-200 text-gray-500'}">${allDone ? '📝 Empezar simulacro' : '🔒 Bloqueado'}</button></div>`;
+  }
+  renderMedborgarPct();
+}
+function startMedborgarModule(id) {
+  const m = _medbModules().find(x => x.id === id);
+  if (!m || !m.questions || !m.questions.length) return;
+  medbState = { module: m, qs: m.questions.slice(), i: 0, correct: 0, wrong: 0, wrongList: [], sel: null, answered: false, sim: false };
+  showView('medborgar-lesson');
+  renderMedbAprende();
+}
+function renderMedbAprende() {
+  const st = medbState, m = st.module;
+  document.getElementById('medb-num').textContent = 'Aprende';
+  document.getElementById('medb-bar').style.width = '5%';
+  document.getElementById('medb-body').innerHTML =
+    '<div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-4"><div class="font-black text-gray-800 text-lg mb-2">📖 ' + m.title + '</div><div class="text-gray-700 leading-relaxed" style="font-size:17px">' + _medbBold(m.aprende) + '</div></div>'
+    + '<div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-4"><div class="font-bold text-gray-700 mb-2">🔑 Palabras importantes</div><div class="space-y-1.5">' + (m.palabras || []).map(p => '<div class="flex items-center justify-between text-sm"><span class="font-bold text-indigo-700">' + p.sv + '</span><span class="text-gray-300">→</span><span class="text-gray-600">' + p.es + '</span></div>').join('') + '</div></div>'
+    + '<button onclick="medbStartQuiz()" class="w-full bg-swe-blue text-white rounded-2xl font-bold hover:bg-swe-dark" style="min-height:54px;font-size:18px">Comenzar preguntas →</button>';
+}
+function medbStartQuiz() { medbState.i = 0; renderMedbQuestion(); }
+function renderMedbQuestion() {
+  const st = medbState, q = st.qs[st.i]; st.sel = null; st.answered = false;
+  const total = st.qs.length;
+  document.getElementById('medb-bar').style.width = Math.round((st.i / total) * 100) + '%';
+  document.getElementById('medb-num').textContent = (st.i + 1) + ' / ' + total;
+  const opts = q.options.map((o, i) => '<button id="mo-' + i + '" onclick="medbPick(' + i + ')" class="w-full text-left rounded-2xl border-2 border-gray-200 bg-white px-4 py-3 font-semibold text-gray-800 hover:border-swe-blue" style="min-height:52px;font-size:18px">' + o + '</button>').join('');
+  document.getElementById('medb-body').innerHTML =
+    '<div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-3">' + (q.isCase ? '<div class="text-[11px] font-bold text-amber-600 mb-1">🗣️ CASO REAL</div>' : '')
+    + '<p class="font-bold text-gray-800 mb-2" style="font-size:19px;line-height:1.5">' + q.q + '</p>'
+    + '<div id="medb-qtr" class="hidden text-sm text-gray-500 mb-2 italic"></div>'
+    + '<button onclick="medbTranslate()" class="text-xs font-semibold text-swe-blue mb-3">🌐 Traducir pregunta</button>'
+    + '<div id="medb-opts" class="space-y-2.5">' + opts + '</div></div>'
+    + '<div id="medb-fb" class="hidden rounded-2xl p-4 mb-3" style="font-size:16px"></div>'
+    + '<button id="medb-check" onclick="medbCheck()" class="w-full bg-swe-blue text-white rounded-2xl font-bold hover:bg-swe-dark disabled:opacity-40" style="min-height:54px;font-size:18px" disabled>Comprobar</button>'
+    + '<button id="medb-next" onclick="medbNext()" class="hidden w-full bg-green-600 text-white rounded-2xl font-bold hover:bg-green-700" style="min-height:54px;font-size:18px">Siguiente →</button>';
+}
+function medbTranslate() { const q = medbState.qs[medbState.i], e = document.getElementById('medb-qtr'); if (e) { e.textContent = q.qEs || '(traducción no disponible)'; e.classList.remove('hidden'); } }
+function medbPick(i) { const st = medbState; if (st.answered) return; st.sel = i; document.querySelectorAll('#medb-opts button').forEach((b, idx) => { b.classList.toggle('border-swe-blue', idx === i); b.classList.toggle('bg-blue-50', idx === i); }); document.getElementById('medb-check').disabled = false; }
+function medbCheck() {
+  const st = medbState; if (st.answered || st.sel == null) return; st.answered = true;
+  const q = st.qs[st.i], ok = st.sel === q.correct;
+  document.querySelectorAll('#medb-opts button').forEach((b, idx) => { b.disabled = true; if (idx === q.correct) b.classList.add('border-green-500', 'bg-green-50'); else if (idx === st.sel) b.classList.add('border-red-500', 'bg-red-50'); });
+  const fb = document.getElementById('medb-fb');
+  if (ok) { st.correct++; fb.className = 'rounded-2xl p-4 mb-3 bg-green-50 border border-green-200 text-green-800'; fb.innerHTML = '<strong>✅ Correcto</strong><div class="mt-1">' + q.exp + '</div><div class="mt-1 font-semibold">' + q.phrase + '</div>'; }
+  else { st.wrong++; st.wrongList.push(q); fb.className = 'rounded-2xl p-4 mb-3 bg-red-50 border border-red-200 text-red-800'; fb.innerHTML = '<strong>❌ Incorrecto.</strong> Correcta: <strong>' + q.options[q.correct] + '</strong><div class="mt-1">' + q.exp + '</div><div class="mt-1 font-semibold">' + q.phrase + '</div>'; }
+  if (q.why) fb.innerHTML += '<button onclick="medbWhy(this)" class="mt-2 text-xs font-bold text-swe-blue underline">¿Por qué?</button><div class="medb-why hidden mt-1 text-gray-600">' + q.why + '</div>';
+  fb.classList.remove('hidden');
+  document.getElementById('medb-check').classList.add('hidden');
+  const nx = document.getElementById('medb-next'); nx.classList.remove('hidden'); nx.textContent = (st.i >= st.qs.length - 1) ? 'Ver resultado 🎉' : 'Siguiente →';
+}
+function medbWhy(btn) { const w = btn.parentNode.querySelector('.medb-why'); if (w) w.classList.toggle('hidden'); }
+function medbNext() { const st = medbState; st.i++; if (st.i >= st.qs.length) { finishMedbLesson(); return; } renderMedbQuestion(); }
+async function finishMedbLesson() {
+  const st = medbState, total = st.correct + st.wrong, pct = total ? Math.round(st.correct / total * 100) : 0;
+  if (!st.sim && st.module && st.module.id !== 'sim') { await saveMedbProgress(st.module.id, pct); }
+  showView('medborgar-result');
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  set('medr-title', st.sim ? '¡Simulacro completado!' : '¡Lección completada!');
+  set('medr-pct', pct + ' %'); set('medr-ok', st.correct); set('medr-bad', st.wrong);
+  const fix = document.getElementById('medr-fix'); if (fix) fix.classList.toggle('hidden', st.wrongList.length === 0);
+}
+async function saveMedbProgress(moduleId, pct) {
+  const prev = medbProgressMap[moduleId] || {};
+  const row = { completed: true, score: Math.max(prev.score || 0, pct), updated_at: new Date().toISOString() };
+  medbProgressMap[moduleId] = { ...prev, module_id: moduleId, ...row };
+  const s = window._sbSession; if (!s || !s.id || typeof sb === 'undefined') return;
+  try { await sb.from('medborgarskap_progress').upsert({ user_id: s.id, module_id: moduleId, ...row }, { onConflict: 'user_id,module_id' }); } catch (e) {}
+}
+function medbPracticeErrors() { const st = medbState; if (!st || !st.wrongList.length) { showMedborgar(); return; } medbState = { ...st, qs: st.wrongList.slice(), i: 0, correct: 0, wrong: 0, wrongList: [], sim: st.sim }; showView('medborgar-lesson'); renderMedbQuestion(); }
+function medbExit() { showMedborgar(); }
+function startMedbSimulacro() {
+  const all = []; _medbActive().forEach(m => (m.questions || []).forEach(q => all.push(q)));
+  if (all.length < 3) { showMini('Aún no hay suficientes preguntas para el simulacro.', '🔒'); return; }
+  const qs = _vShuffle(all).slice(0, Math.min(60, all.length));
+  medbState = { module: { id: 'sim', title: 'Simulacro' }, qs, i: 0, correct: 0, wrong: 0, wrongList: [], sel: null, answered: false, sim: true };
+  showView('medborgar-lesson');
+  renderMedbQuestion();
+}
 
 function selectLevel(level) {
   if (!requireAccess()) return;
@@ -11598,6 +11900,7 @@ async function initUnifiedProgress() {
   try { if (typeof loadUnifiedProgress === 'function') await loadUnifiedProgress(); } catch (e) {}
   try { if (typeof loadVocabProgress === 'function') await loadVocabProgress(); } catch (e) {}
   try { if (typeof loadExamProgress === 'function') await loadExamProgress(); } catch (e) {}
+  try { if (typeof loadMedborgarProgress === 'function') await loadMedborgarProgress(); } catch (e) {}
   try { await loadAssignedLevelFromDB(); } catch (e) {}
   renderDashboardProgress();
   try { renderInicio(); } catch (e) {}
@@ -11656,6 +11959,7 @@ function renderDashboardProgress() {
     setTxt('pct-grammar', fmtPct(gr.pct)); setBar('bar-grammar', gr.pct);
     setTxt('pct-listening', fmtPct(li.pct)); setBar('bar-listening', li.pct);
     renderLevelCards();
+    if (typeof renderMedborgarPct === 'function') renderMedborgarPct();
   } catch (e) {}
 }
 

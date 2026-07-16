@@ -806,6 +806,85 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════
+     VIEW: MEDBORGARSKAPSPROVET — inicio (módulos)
+════════════════════════════════════════════════════════════ -->
+<div id="view-medborgar" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="bg-swe-blue text-white" style="border-bottom:4px solid #FECC02;">
+    <div class="max-w-2xl mx-auto px-4 py-4 flex items-center gap-3">
+      <button onclick="showAprender()" class="text-white text-2xl leading-none" aria-label="Volver">‹</button>
+      <div><div class="font-black text-lg">🇸🇪 Medborgarskapsprovet</div><div class="text-xs text-blue-100">Prepárate para el examen de ciudadanía sueca</div></div>
+    </div>
+  </div>
+  <div class="max-w-2xl mx-auto px-4 py-6">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-4">
+      <div class="flex items-center justify-between mb-2">
+        <div class="font-bold text-gray-700">Tu progreso</div>
+        <div class="text-sm font-black text-blue-600" id="medb-total-pct">0 %</div>
+      </div>
+      <div id="medb-total-bar" class="mb-1"></div>
+      <div class="text-xs text-gray-500" id="medb-total-count">0 de 0 módulos</div>
+    </div>
+    <div id="medb-list" class="space-y-3"></div>
+    <div id="medb-simulacro" class="mt-4"></div>
+    <div style="height:88px"></div>
+  </div>
+</div>
+
+<!-- VIEW: lección Medborgar (motor por fases) -->
+<div id="view-medborgar-lesson" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="max-w-2xl mx-auto px-4 py-5">
+    <div class="flex items-center gap-3 mb-3">
+      <button onclick="medbExit()" class="text-red-600 bg-red-50 hover:bg-red-100 font-bold text-sm px-3 py-2 rounded-full transition-colors flex-shrink-0">✕ Salir</button>
+      <div class="flex-1 h-2.5 bg-gray-200 rounded-full overflow-hidden"><div id="medb-bar" class="h-full bg-blue-600 rounded-full" style="width:0%;transition:width .3s ease"></div></div>
+      <span id="medb-num" class="text-sm text-gray-500 font-bold whitespace-nowrap"></span>
+    </div>
+    <div id="medb-body"></div>
+  </div>
+</div>
+
+<!-- VIEW: resultado Medborgar -->
+<div id="view-medborgar-result" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="max-w-2xl mx-auto px-4 py-10 text-center">
+    <div class="text-6xl mb-3">🎉</div>
+    <div class="font-black text-gray-800 text-2xl mb-4" id="medr-title">¡Lección completada!</div>
+    <div class="bg-white rounded-2xl p-6 shadow border border-gray-100 mb-5">
+      <div class="text-5xl font-black text-blue-600 mb-1" id="medr-pct">0 %</div>
+      <div class="grid grid-cols-2 gap-2 mt-3">
+        <div><div class="text-xl font-bold text-green-600" id="medr-ok">0</div><div class="text-[10px] text-gray-500">correctas</div></div>
+        <div><div class="text-xl font-bold text-red-500" id="medr-bad">0</div><div class="text-[10px] text-gray-500">errores</div></div>
+      </div>
+    </div>
+    <div class="space-y-2">
+      <button id="medr-fix" onclick="medbPracticeErrors()" class="hidden w-full border-2 border-swe-blue text-swe-blue py-3 rounded-2xl font-bold hover:bg-blue-50">🔁 Practicar errores</button>
+      <button onclick="showMedborgar()" class="w-full bg-swe-blue text-white py-3 rounded-2xl font-bold hover:bg-swe-dark">Volver a los módulos</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: intro Medborgarskapsprovet (primera vez) -->
+<div id="medb-intro" class="hidden fixed inset-0 z-[80] flex items-center justify-center p-4" style="background:rgba(15,23,42,0.6); backdrop-filter:blur(2px);">
+  <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl max-h-[88vh] overflow-y-auto p-6" style="animation:fadeIn .2s ease;">
+    <div class="text-center text-5xl mb-2">🇸🇪</div>
+    <div class="font-black text-gray-800 text-lg text-center mb-3">Preparación para Medborgarskapsprovet</div>
+    <div class="text-sm text-gray-600 leading-relaxed space-y-2">
+      <p>Esta sección ha sido creada por <strong>Sueco con Sophie</strong> para ayudarte a prepararte para el examen de ciudadanía sueca mediante teoría, ejercicios y simulacros.</p>
+      <p><strong>No es el examen oficial ni garantiza la aprobación.</strong> El contenido se basa en los temas oficiales publicados por las autoridades suecas, pero el examen puede cambiar con el tiempo.</p>
+      <p>Consulta siempre la información oficial en:</p>
+      <ul class="list-disc pl-5 text-gray-700">
+        <li><a href="https://www.migrationsverket.se" target="_blank" rel="noopener" class="text-swe-blue underline">Migrationsverket</a></li>
+        <li><a href="https://www.uhr.se" target="_blank" rel="noopener" class="text-swe-blue underline">Universitets- och högskolerådet (UHR)</a></li>
+      </ul>
+      <p>El objetivo es ayudarte a comprender el contenido y practicar el sueco necesario para afrontar el examen con más confianza.</p>
+      <p class="text-xs text-gray-400">La prueba real dura 90 minutos y tiene ~60 preguntas de opción múltiple (4 alternativas), en sueco.</p>
+    </div>
+    <label class="flex items-center gap-2 mt-4 text-sm text-gray-600 cursor-pointer">
+      <input type="checkbox" id="medb-intro-hide" class="w-5 h-5 accent-swe-blue"> No volver a mostrar este mensaje.
+    </label>
+    <button onclick="closeMedbIntro()" class="w-full mt-4 bg-swe-blue text-white py-3 rounded-2xl font-bold hover:bg-swe-dark transition-colors">Entendido, comenzar</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
      VIEW: VOKABULÄR — inicio del módulo (por nivel)
 ════════════════════════════════════════════════════════════ -->
 <div id="view-vocab" class="view" style="background:#f4f7fb; min-height:100vh;">
@@ -920,6 +999,11 @@
       <button onclick="showHorst()" class="w-full flex items-center gap-4 bg-white rounded-2xl p-4 shadow-sm border-2 border-blue-100 hover:border-blue-300 transition-all text-left">
         <span class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background:linear-gradient(135deg,#006AA7,#004F7C);color:#fff">🎧</span>
         <div class="flex-1 min-w-0"><div class="font-bold text-gray-800">Hörförståelse</div><div class="text-xs text-gray-500">Escucha a Sophie y responde</div><div class="mt-1.5 flex items-center gap-2"><div class="flex-1 max-w-[160px]" id="bar-listening"></div><span class="text-xs font-black text-swe-blue" id="pct-listening">0 %</span></div></div>
+        <span class="text-gray-300 text-lg flex-shrink-0">›</span>
+      </button>
+      <button onclick="showMedborgar()" class="w-full flex items-center gap-4 bg-white rounded-2xl p-4 shadow-sm border-2 border-indigo-100 hover:border-indigo-300 transition-all text-left">
+        <span class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 bg-indigo-50">🇪🇺</span>
+        <div class="flex-1 min-w-0"><div class="font-bold text-gray-800">🇸🇪 Medborgarskapsprovet</div><div class="text-xs text-gray-500">Prepárate para el examen de ciudadanía sueca</div><div class="mt-1.5 flex items-center gap-2"><div class="flex-1 max-w-[160px]" id="bar-medborgar"></div><span class="text-xs font-black text-indigo-600" id="pct-medborgar">0 %</span></div></div>
         <span class="text-gray-300 text-lg flex-shrink-0">›</span>
       </button>
       <button onclick="openComingSoon('/juanita/juanita-chancleta.webp','Practicando con Juanita','Muy pronto practicarás conversaciones guiadas con Juanita, tu mamá latina favorita.','Entendido')" class="w-full flex items-center gap-4 bg-white rounded-2xl p-4 shadow-sm border-2 border-pink-100 hover:border-pink-300 transition-all text-left">
@@ -1902,6 +1986,7 @@
 <script src="data.js"></script>
 <script src="talaSituations.js"></script>
 <script src="vocabData.js"></script>
+<script src="medborgarData.js"></script>
 <script src="progress.js"></script>
 <script src="app.js"></script>
 

@@ -844,6 +844,151 @@ function examNextAttempt(btn) { const lv = btn.getAttribute('data-lvl'); examSta
 function examExit() { if (examState && examState.timer) clearInterval(examState.timer); const lv = examState ? examState.level : (state && state.level); examState = null; if (lv) state.level = lv; goMenu(); }
 function examBackToLevel() { const lv = examState ? examState.level : (state && state.level); examState = null; if (lv) state.level = lv; goMenu(); }
 
+/* ═══════════════════════════════════════════════════════════════════
+   MEDBORGARSKAPSPROVET — sección independiente (tabla medborgarskap_progress).
+   No afecta el progreso general de Aprender.
+   ═══════════════════════════════════════════════════════════════════ */
+let medbProgressMap = {};
+let medbState = null;
+function _medbModules() { return (window.MEDBORGAR && window.MEDBORGAR.modules) || []; }
+function _medbActive() { return _medbModules().filter(m => m.active !== false && m.questions && m.questions.length); }
+function _medbBold(t) { return (t || '').replace(/\*\*(.+?)\*\*/g, '<strong class="text-indigo-700">$1</strong>'); }
+async function loadMedborgarProgress() {
+  medbProgressMap = {};
+  const s = window._sbSession; if (!s || !s.id || typeof sb === 'undefined') return;
+  try { const { data } = await sb.from('medborgarskap_progress').select('*').eq('user_id', s.id); (data || []).forEach(r => { medbProgressMap[r.module_id] = r; }); } catch (e) {}
+}
+function medbProgress() {
+  const mods = _medbModules(); const total = mods.length;
+  const done = mods.filter(m => medbProgressMap[m.id] && medbProgressMap[m.id].completed).length;
+  return { done, total, pct: total ? Math.min(100, Math.round(done / total * 100)) : 0 };
+}
+function renderMedborgarPct() {
+  const p = medbProgress();
+  const pe = document.getElementById('pct-medborgar'); if (pe) pe.textContent = (typeof fmtPct === 'function' ? fmtPct(p.pct) : p.pct + ' %');
+  const be = document.getElementById('bar-medborgar'); if (be && typeof _colorBar === 'function') be.innerHTML = _colorBar(p.pct, '#4f46e5', 8);
+}
+async function showMedborgar() {
+  if (!requireAccess()) return;
+  stopSpeech();
+  let hide = false; try { hide = localStorage.getItem('sc_medb_intro') === '1'; } catch (e) {}
+  if (!hide) { const m = document.getElementById('medb-intro'); if (m) m.classList.remove('hidden'); }
+  showView('medborgar');
+  renderMedborgarHome();
+  await loadMedborgarProgress();
+  renderMedborgarHome();
+}
+function closeMedbIntro() {
+  const cb = document.getElementById('medb-intro-hide');
+  if (cb && cb.checked) { try { localStorage.setItem('sc_medb_intro', '1'); } catch (e) {} }
+  const m = document.getElementById('medb-intro'); if (m) m.classList.add('hidden');
+}
+function showAprender() { if (!requireAccess()) return; stopSpeech(); showView('aprender'); renderDashboardProgress(); }
+function renderMedborgarHome() {
+  const p = medbProgress();
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  set('medb-total-pct', (typeof fmtPct === 'function' ? fmtPct(p.pct) : p.pct + ' %'));
+  set('medb-total-count', p.done + ' de ' + p.total + ' módulos');
+  const tb = document.getElementById('medb-total-bar'); if (tb && typeof _colorBar === 'function') tb.innerHTML = _colorBar(p.pct, '#2563eb', 8);
+  const list = document.getElementById('medb-list');
+  if (list) {
+    list.innerHTML = _medbModules().map((m, i) => {
+      const pr = medbProgressMap[m.id] || {}; const done = !!pr.completed;
+      const avail = m.active !== false && m.questions && m.questions.length;
+      const num = String(i + 1).padStart(2, '0');
+      if (!avail) return `<div class="flex items-center gap-3 bg-white/60 rounded-2xl p-4 border border-gray-100 opacity-70"><span class="w-9 h-9 rounded-xl bg-gray-100 text-gray-400 flex items-center justify-center font-black text-sm">${num}</span><div class="flex-1"><div class="font-bold text-gray-500">${m.title}</div><div class="text-xs text-gray-400">Próximamente 🔜</div></div></div>`;
+      return `<button onclick="startMedborgarModule('${m.id}')" class="w-full flex items-center gap-3 bg-white rounded-2xl p-4 shadow-sm border-2 ${done ? 'border-green-200' : 'border-indigo-100 hover:border-indigo-300'} transition-colors text-left">
+        <span class="w-9 h-9 rounded-xl ${done ? 'bg-green-500' : 'bg-indigo-500'} text-white flex items-center justify-center font-black text-sm">${done ? '✓' : num}</span>
+        <div class="flex-1 min-w-0"><div class="font-bold text-gray-800">${m.title}</div><div class="text-xs text-gray-500">${m.questions.length} preguntas</div></div>
+        ${done ? `<span class="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">✓ ${pr.score || 0}%</span>` : '<span class="text-gray-300">›</span>'}</button>`;
+    }).join('');
+  }
+  const sim = document.getElementById('medb-simulacro');
+  if (sim) {
+    const active = _medbActive();
+    const allDone = active.length > 0 && active.every(m => medbProgressMap[m.id] && medbProgressMap[m.id].completed);
+    sim.innerHTML = `<div class="rounded-2xl p-4 border-2 ${allDone ? 'border-amber-300 bg-amber-50' : 'border-gray-200 bg-gray-50'}">
+      <div class="flex items-center gap-3"><span class="text-2xl">📝</span><div class="flex-1"><div class="font-black text-gray-800">Simulacro Medborgarskapsprovet</div><div class="text-xs text-gray-500">Todo en sueco, con tiempo. ${allDone ? '¡Desbloqueado!' : 'Completa todos los módulos para desbloquear.'}</div></div>${allDone ? '🔓' : '🔒'}</div>
+      <button onclick="${allDone ? 'startMedbSimulacro()' : "showMini('Completa todos los módulos primero.','🔒')"}" class="w-full mt-3 py-2.5 rounded-xl font-bold text-sm ${allDone ? 'bg-amber-500 text-white hover:bg-amber-600' : 'bg-gray-200 text-gray-500'}">${allDone ? '📝 Empezar simulacro' : '🔒 Bloqueado'}</button></div>`;
+  }
+  renderMedborgarPct();
+}
+function startMedborgarModule(id) {
+  const m = _medbModules().find(x => x.id === id);
+  if (!m || !m.questions || !m.questions.length) return;
+  medbState = { module: m, qs: m.questions.slice(), i: 0, correct: 0, wrong: 0, wrongList: [], sel: null, answered: false, sim: false };
+  showView('medborgar-lesson');
+  renderMedbAprende();
+}
+function renderMedbAprende() {
+  const st = medbState, m = st.module;
+  document.getElementById('medb-num').textContent = 'Aprende';
+  document.getElementById('medb-bar').style.width = '5%';
+  document.getElementById('medb-body').innerHTML =
+    '<div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-4"><div class="font-black text-gray-800 text-lg mb-2">📖 ' + m.title + '</div><div class="text-gray-700 leading-relaxed" style="font-size:17px">' + _medbBold(m.aprende) + '</div></div>'
+    + '<div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-4"><div class="font-bold text-gray-700 mb-2">🔑 Palabras importantes</div><div class="space-y-1.5">' + (m.palabras || []).map(p => '<div class="flex items-center justify-between text-sm"><span class="font-bold text-indigo-700">' + p.sv + '</span><span class="text-gray-300">→</span><span class="text-gray-600">' + p.es + '</span></div>').join('') + '</div></div>'
+    + '<button onclick="medbStartQuiz()" class="w-full bg-swe-blue text-white rounded-2xl font-bold hover:bg-swe-dark" style="min-height:54px;font-size:18px">Comenzar preguntas →</button>';
+}
+function medbStartQuiz() { medbState.i = 0; renderMedbQuestion(); }
+function renderMedbQuestion() {
+  const st = medbState, q = st.qs[st.i]; st.sel = null; st.answered = false;
+  const total = st.qs.length;
+  document.getElementById('medb-bar').style.width = Math.round((st.i / total) * 100) + '%';
+  document.getElementById('medb-num').textContent = (st.i + 1) + ' / ' + total;
+  const opts = q.options.map((o, i) => '<button id="mo-' + i + '" onclick="medbPick(' + i + ')" class="w-full text-left rounded-2xl border-2 border-gray-200 bg-white px-4 py-3 font-semibold text-gray-800 hover:border-swe-blue" style="min-height:52px;font-size:18px">' + o + '</button>').join('');
+  document.getElementById('medb-body').innerHTML =
+    '<div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-3">' + (q.isCase ? '<div class="text-[11px] font-bold text-amber-600 mb-1">🗣️ CASO REAL</div>' : '')
+    + '<p class="font-bold text-gray-800 mb-2" style="font-size:19px;line-height:1.5">' + q.q + '</p>'
+    + '<div id="medb-qtr" class="hidden text-sm text-gray-500 mb-2 italic"></div>'
+    + '<button onclick="medbTranslate()" class="text-xs font-semibold text-swe-blue mb-3">🌐 Traducir pregunta</button>'
+    + '<div id="medb-opts" class="space-y-2.5">' + opts + '</div></div>'
+    + '<div id="medb-fb" class="hidden rounded-2xl p-4 mb-3" style="font-size:16px"></div>'
+    + '<button id="medb-check" onclick="medbCheck()" class="w-full bg-swe-blue text-white rounded-2xl font-bold hover:bg-swe-dark disabled:opacity-40" style="min-height:54px;font-size:18px" disabled>Comprobar</button>'
+    + '<button id="medb-next" onclick="medbNext()" class="hidden w-full bg-green-600 text-white rounded-2xl font-bold hover:bg-green-700" style="min-height:54px;font-size:18px">Siguiente →</button>';
+}
+function medbTranslate() { const q = medbState.qs[medbState.i], e = document.getElementById('medb-qtr'); if (e) { e.textContent = q.qEs || '(traducción no disponible)'; e.classList.remove('hidden'); } }
+function medbPick(i) { const st = medbState; if (st.answered) return; st.sel = i; document.querySelectorAll('#medb-opts button').forEach((b, idx) => { b.classList.toggle('border-swe-blue', idx === i); b.classList.toggle('bg-blue-50', idx === i); }); document.getElementById('medb-check').disabled = false; }
+function medbCheck() {
+  const st = medbState; if (st.answered || st.sel == null) return; st.answered = true;
+  const q = st.qs[st.i], ok = st.sel === q.correct;
+  document.querySelectorAll('#medb-opts button').forEach((b, idx) => { b.disabled = true; if (idx === q.correct) b.classList.add('border-green-500', 'bg-green-50'); else if (idx === st.sel) b.classList.add('border-red-500', 'bg-red-50'); });
+  const fb = document.getElementById('medb-fb');
+  if (ok) { st.correct++; fb.className = 'rounded-2xl p-4 mb-3 bg-green-50 border border-green-200 text-green-800'; fb.innerHTML = '<strong>✅ Correcto</strong><div class="mt-1">' + q.exp + '</div><div class="mt-1 font-semibold">' + q.phrase + '</div>'; }
+  else { st.wrong++; st.wrongList.push(q); fb.className = 'rounded-2xl p-4 mb-3 bg-red-50 border border-red-200 text-red-800'; fb.innerHTML = '<strong>❌ Incorrecto.</strong> Correcta: <strong>' + q.options[q.correct] + '</strong><div class="mt-1">' + q.exp + '</div><div class="mt-1 font-semibold">' + q.phrase + '</div>'; }
+  if (q.why) fb.innerHTML += '<button onclick="medbWhy(this)" class="mt-2 text-xs font-bold text-swe-blue underline">¿Por qué?</button><div class="medb-why hidden mt-1 text-gray-600">' + q.why + '</div>';
+  fb.classList.remove('hidden');
+  document.getElementById('medb-check').classList.add('hidden');
+  const nx = document.getElementById('medb-next'); nx.classList.remove('hidden'); nx.textContent = (st.i >= st.qs.length - 1) ? 'Ver resultado 🎉' : 'Siguiente →';
+}
+function medbWhy(btn) { const w = btn.parentNode.querySelector('.medb-why'); if (w) w.classList.toggle('hidden'); }
+function medbNext() { const st = medbState; st.i++; if (st.i >= st.qs.length) { finishMedbLesson(); return; } renderMedbQuestion(); }
+async function finishMedbLesson() {
+  const st = medbState, total = st.correct + st.wrong, pct = total ? Math.round(st.correct / total * 100) : 0;
+  if (!st.sim && st.module && st.module.id !== 'sim') { await saveMedbProgress(st.module.id, pct); }
+  showView('medborgar-result');
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  set('medr-title', st.sim ? '¡Simulacro completado!' : '¡Lección completada!');
+  set('medr-pct', pct + ' %'); set('medr-ok', st.correct); set('medr-bad', st.wrong);
+  const fix = document.getElementById('medr-fix'); if (fix) fix.classList.toggle('hidden', st.wrongList.length === 0);
+}
+async function saveMedbProgress(moduleId, pct) {
+  const prev = medbProgressMap[moduleId] || {};
+  const row = { completed: true, score: Math.max(prev.score || 0, pct), updated_at: new Date().toISOString() };
+  medbProgressMap[moduleId] = { ...prev, module_id: moduleId, ...row };
+  const s = window._sbSession; if (!s || !s.id || typeof sb === 'undefined') return;
+  try { await sb.from('medborgarskap_progress').upsert({ user_id: s.id, module_id: moduleId, ...row }, { onConflict: 'user_id,module_id' }); } catch (e) {}
+}
+function medbPracticeErrors() { const st = medbState; if (!st || !st.wrongList.length) { showMedborgar(); return; } medbState = { ...st, qs: st.wrongList.slice(), i: 0, correct: 0, wrong: 0, wrongList: [], sim: st.sim }; showView('medborgar-lesson'); renderMedbQuestion(); }
+function medbExit() { showMedborgar(); }
+function startMedbSimulacro() {
+  const all = []; _medbActive().forEach(m => (m.questions || []).forEach(q => all.push(q)));
+  if (all.length < 3) { showMini('Aún no hay suficientes preguntas para el simulacro.', '🔒'); return; }
+  const qs = _vShuffle(all).slice(0, Math.min(60, all.length));
+  medbState = { module: { id: 'sim', title: 'Simulacro' }, qs, i: 0, correct: 0, wrong: 0, wrongList: [], sel: null, answered: false, sim: true };
+  showView('medborgar-lesson');
+  renderMedbQuestion();
+}
+
 function selectLevel(level) {
   if (!requireAccess()) return;
   const available = ['A','B','C','D'];
@@ -5179,6 +5324,7 @@ async function initUnifiedProgress() {
   try { if (typeof loadUnifiedProgress === 'function') await loadUnifiedProgress(); } catch (e) {}
   try { if (typeof loadVocabProgress === 'function') await loadVocabProgress(); } catch (e) {}
   try { if (typeof loadExamProgress === 'function') await loadExamProgress(); } catch (e) {}
+  try { if (typeof loadMedborgarProgress === 'function') await loadMedborgarProgress(); } catch (e) {}
   try { await loadAssignedLevelFromDB(); } catch (e) {}
   renderDashboardProgress();
   try { renderInicio(); } catch (e) {}
@@ -5237,6 +5383,7 @@ function renderDashboardProgress() {
     setTxt('pct-grammar', fmtPct(gr.pct)); setBar('bar-grammar', gr.pct);
     setTxt('pct-listening', fmtPct(li.pct)); setBar('bar-listening', li.pct);
     renderLevelCards();
+    if (typeof renderMedborgarPct === 'function') renderMedborgarPct();
   } catch (e) {}
 }
 
