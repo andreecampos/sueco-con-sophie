@@ -2812,10 +2812,10 @@ function closeAccountModal() {
 }
 // Navegación menú ↔ paneles (una sección a la vez, estilo panel de ajustes moderno).
 function accShow(view) {
-  const panels = { menu: 'acc-menu', photo: 'acc-panel-photo', name: 'acc-panel-name', pass: 'acc-panel-pass', support: 'acc-panel-support', sub: 'acc-panel-sub' };
+  const panels = { menu: 'acc-menu', photo: 'acc-panel-photo', name: 'acc-panel-name', pass: 'acc-panel-pass', notiser: 'acc-panel-notiser', support: 'acc-panel-support', sub: 'acc-panel-sub' };
   Object.values(panels).forEach(id => { const e = document.getElementById(id); if (e) e.classList.add('hidden'); });
   const target = document.getElementById(panels[view] || 'acc-menu'); if (target) target.classList.remove('hidden');
-  const titles = { menu: '⚙️ Mi cuenta', photo: '👤 Foto de perfil', name: '✏️ Cambiar nombre', pass: '🔒 Cambiar contraseña', support: '💬 Soporte técnico', sub: '💳 Mi suscripción' };
+  const titles = { menu: '⚙️ Mitt konto', photo: '👤 Profilbild', name: '✏️ Byt namn', pass: '🔒 Byt lösenord', notiser: '🔔 Notiser', support: '💬 Support', sub: '💳 Min prenumeration' };
   const t = document.getElementById('acc-title'); if (t) t.textContent = titles[view] || titles.menu;
   const back = document.getElementById('acc-back'); if (back) back.classList.toggle('hidden', view === 'menu');
   // Poblar al entrar (datos frescos, sin mensajes previos)
@@ -2824,6 +2824,19 @@ function accShow(view) {
   if (view === 'pass') accResetPass();
   if (view === 'support') accInitSupport();
   if (view === 'sub') accLoadSubscription();
+  if (view === 'notiser') accLoadNotis();
+}
+// Notiser (guardadas en localStorage por ahora; sin coste en la BD).
+function accLoadNotis() {
+  let n = {}; try { n = JSON.parse(localStorage.getItem('sc_notis') || '{}'); } catch (e) {}
+  const r = document.getElementById('noti-reminders'), c = document.getElementById('noti-content');
+  if (r) r.checked = n.reminders !== false;   // por defecto activadas
+  if (c) c.checked = n.content !== false;
+}
+function accSaveNotis() {
+  const r = document.getElementById('noti-reminders'), c = document.getElementById('noti-content');
+  try { localStorage.setItem('sc_notis', JSON.stringify({ reminders: !!(r && r.checked), content: !!(c && c.checked) })); } catch (e) {}
+  showToast('Sparat ✅', 'success');
 }
 function accInitSupport() {
   const cur = _accCurrent();
@@ -2852,16 +2865,16 @@ async function accSendSupport() {
 }
 async function accLoadSubscription() {
   const priceEl = document.getElementById('acc-sub-price'), statusEl = document.getElementById('acc-sub-status');
-  if (priceEl) priceEl.textContent = 'Cargando…';
+  if (priceEl) priceEl.textContent = 'Laddar…';
   try {
     const { data: { session } } = await sb.auth.getSession();
     if (!session) return;
     const { data: st } = await sb.from('students').select('price, status, cancels_at').eq('id', session.user.id).single();
-    if (priceEl) priceEl.textContent = st && st.price ? (st.price + ' kr / mes') : 'Plan mensual';
+    if (priceEl) priceEl.textContent = st && st.price ? (st.price + ' kr / mån') : 'Månadsplan';
     const cancelled = !!(st && st.cancels_at);
     if (statusEl) {
-      if (cancelled) { statusEl.className = 'text-xs mt-0.5 text-amber-600 font-semibold'; statusEl.textContent = '⏳ Se cancela al final del período pagado'; }
-      else if (st && (st.status === 'active' || st.active)) { statusEl.className = 'text-xs mt-0.5 text-green-600 font-semibold'; statusEl.textContent = '✅ Activa'; }
+      if (cancelled) { statusEl.className = 'text-xs mt-0.5 text-amber-600 font-semibold'; statusEl.textContent = '⏳ Avslutas i slutet av perioden'; }
+      else if (st && (st.status === 'active' || st.active)) { statusEl.className = 'text-xs mt-0.5 text-green-600 font-semibold'; statusEl.textContent = '✅ Aktiv'; }
       else { statusEl.className = 'text-xs mt-0.5 text-gray-400'; statusEl.textContent = ''; }
     }
     // Si ya canceló: mostrar "Renovar" (azul) y ocultar "Cancelar".
@@ -2924,7 +2937,7 @@ async function accSavePhoto() {
     _accPhotoBlob = null;
     renderProfileWidget();
     _accBusy('acc-photo-save', false, 'Guardar');
-    showToast('Los cambios se guardaron correctamente.', 'success');
+    showToast('Sparat ✅', 'success');
     accShow('menu');
   } catch (e) {
     _accBusy('acc-photo-save', false, 'Guardar');
@@ -2945,7 +2958,7 @@ async function accSaveName() {
     if (window._sbSession) window._sbSession.name = name;
     renderProfileWidget();
     _accBusy('acc-name-save', false, 'Guardar');
-    showToast('Los cambios se guardaron correctamente.', 'success');
+    showToast('Sparat ✅', 'success');
     accShow('menu');
   } catch (e) {
     _accBusy('acc-name-save', false, 'Guardar');
@@ -2959,7 +2972,7 @@ function accTogglePass() {
   const show = p1 && p1.type === 'password';
   if (p1) p1.type = show ? 'text' : 'password';
   if (p2) p2.type = show ? 'text' : 'password';
-  if (t) t.textContent = show ? '🙈 Ocultar' : '👁 Mostrar';
+  if (t) t.textContent = show ? '🙈 Dölj' : '👁 Visa';
 }
 function accResetPass() { const p1 = document.getElementById('acc-pass1'), p2 = document.getElementById('acc-pass2'); if (p1) p1.value = ''; if (p2) p2.value = ''; _accMsg('acc-pass-msg', ''); }
 async function accSavePassword() {
@@ -2979,7 +2992,7 @@ async function accSavePassword() {
     if (error) throw error;
     accResetPass();
     _accBusy('acc-pass-save', false, 'Guardar');
-    showToast('Los cambios se guardaron correctamente.', 'success');
+    showToast('Sparat ✅', 'success');
     accShow('menu');
   } catch (e) {
     _accBusy('acc-pass-save', false, 'Guardar');
@@ -5161,7 +5174,35 @@ async function initUnifiedProgress() {
   try { await loadAssignedLevelFromDB(); } catch (e) {}
   renderDashboardProgress();
   try { renderInicio(); } catch (e) {}
+  try { showPaymentAlert(); } catch (e) {}
 }
+
+// Modal de Juanita al entrar si hay pago fallido, cancelado o inactivo (una vez por sesión).
+async function showPaymentAlert() {
+  const st = (typeof _paymentState === 'function') ? _paymentState() : 'ok';
+  if (st === 'ok') return;
+  try { if (sessionStorage.getItem('sc_pa_shown')) return; } catch (e) {}
+  let until = '';
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) { const { data: s } = await sb.from('students').select('cancels_at').eq('id', session.user.id).single(); if (s && s.cancels_at) until = new Date(s.cancels_at).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }); }
+  } catch (e) {}
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.innerHTML = v; };
+  if (st === 'cancelling') {
+    set('pa-title', '¡Ya pronto me abandonas! 😢');
+    set('pa-text', 'Cancelaste tu suscripción.' + (until ? (' Tienes acceso a la plataforma hasta el <strong>' + until + '</strong>.') : '') + ' ¿Te animas a quedarte conmigo? 💛');
+  } else if (st === 'payment_issue') {
+    set('pa-title', '¡Ups! Tu pago no pasó ⚠️');
+    set('pa-text', 'Tu último pago no se procesó. Actualiza tu tarjeta para no perder el acceso a la plataforma.');
+  } else {
+    set('pa-title', 'Te extraño 😢');
+    set('pa-text', 'Tu suscripción está inactiva. Renueva para volver a entrar a la plataforma.');
+  }
+  const m = document.getElementById('payment-alert'); if (m) m.classList.remove('hidden');
+  try { sessionStorage.setItem('sc_pa_shown', '1'); } catch (e) {}
+}
+function closePaymentAlert() { const m = document.getElementById('payment-alert'); if (m) m.classList.add('hidden'); }
+function renewFromAlert() { closePaymentAlert(); manageSubscription(); }
 
 // Lee el nivel más reciente de la prueba desde Supabase (robusto entre dispositivos).
 async function loadAssignedLevelFromDB() {

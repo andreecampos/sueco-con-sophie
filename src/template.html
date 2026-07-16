@@ -1711,29 +1711,55 @@
     <div id="acc-menu" class="p-4 space-y-3">
       <button onclick="accShow('photo')" class="w-full flex items-center gap-3 p-4 rounded-2xl border-2 border-gray-100 hover:border-swe-blue hover:bg-blue-50/40 transition-all text-left">
         <span class="w-11 h-11 rounded-2xl bg-sky-50 flex items-center justify-center text-xl flex-shrink-0">👤</span>
-        <div class="flex-1 min-w-0"><div class="font-bold text-gray-800 text-sm">Cambiar foto de perfil</div><div class="text-xs text-gray-500">Actualiza tu foto de perfil</div></div>
+        <div class="flex-1 min-w-0"><div class="font-bold text-gray-800 text-sm">Byt profilbild</div><div class="text-xs text-gray-500">Uppdatera din profilbild</div></div>
         <span class="text-gray-300 text-lg flex-shrink-0">›</span>
       </button>
       <button onclick="accShow('name')" class="w-full flex items-center gap-3 p-4 rounded-2xl border-2 border-gray-100 hover:border-swe-blue hover:bg-blue-50/40 transition-all text-left">
         <span class="w-11 h-11 rounded-2xl bg-amber-50 flex items-center justify-center text-xl flex-shrink-0">✏️</span>
-        <div class="flex-1 min-w-0"><div class="font-bold text-gray-800 text-sm">Cambiar nombre</div><div class="text-xs text-gray-500">Modifica el nombre que aparece en la plataforma</div></div>
+        <div class="flex-1 min-w-0"><div class="font-bold text-gray-800 text-sm">Byt namn</div><div class="text-xs text-gray-500">Ändra namnet som visas i appen</div></div>
         <span class="text-gray-300 text-lg flex-shrink-0">›</span>
       </button>
       <button onclick="accShow('pass')" class="w-full flex items-center gap-3 p-4 rounded-2xl border-2 border-gray-100 hover:border-swe-blue hover:bg-blue-50/40 transition-all text-left">
         <span class="w-11 h-11 rounded-2xl bg-purple-50 flex items-center justify-center text-xl flex-shrink-0">🔒</span>
-        <div class="flex-1 min-w-0"><div class="font-bold text-gray-800 text-sm">Cambiar contraseña</div><div class="text-xs text-gray-500">Actualiza tu contraseña de acceso</div></div>
+        <div class="flex-1 min-w-0"><div class="font-bold text-gray-800 text-sm">Byt lösenord</div><div class="text-xs text-gray-500">Uppdatera ditt lösenord</div></div>
+        <span class="text-gray-300 text-lg flex-shrink-0">›</span>
+      </button>
+      <button onclick="accShow('notiser')" class="w-full flex items-center gap-3 p-4 rounded-2xl border-2 border-gray-100 hover:border-swe-blue hover:bg-blue-50/40 transition-all text-left">
+        <span class="w-11 h-11 rounded-2xl bg-yellow-50 flex items-center justify-center text-xl flex-shrink-0">🔔</span>
+        <div class="flex-1 min-w-0"><div class="font-bold text-gray-800 text-sm">Notiser</div><div class="text-xs text-gray-500">Studiepåminnelser och nytt innehåll</div></div>
         <span class="text-gray-300 text-lg flex-shrink-0">›</span>
       </button>
       <button onclick="accShow('support')" class="w-full flex items-center gap-3 p-4 rounded-2xl border-2 border-gray-100 hover:border-swe-blue hover:bg-blue-50/40 transition-all text-left">
         <span class="w-11 h-11 rounded-2xl bg-teal-50 flex items-center justify-center text-xl flex-shrink-0">💬</span>
-        <div class="flex-1 min-w-0"><div class="font-bold text-gray-800 text-sm">Soporte técnico</div><div class="text-xs text-gray-500">Escríbenos o contáctanos por WhatsApp</div></div>
+        <div class="flex-1 min-w-0"><div class="font-bold text-gray-800 text-sm">Support</div><div class="text-xs text-gray-500">Skriv till oss eller via WhatsApp</div></div>
         <span class="text-gray-300 text-lg flex-shrink-0">›</span>
       </button>
       <button onclick="accShow('sub')" class="w-full flex items-center gap-3 p-4 rounded-2xl border-2 border-gray-100 hover:border-swe-blue hover:bg-blue-50/40 transition-all text-left">
         <span class="w-11 h-11 rounded-2xl bg-emerald-50 flex items-center justify-center text-xl flex-shrink-0">💳</span>
-        <div class="flex-1 min-w-0"><div class="font-bold text-gray-800 text-sm">Mi suscripción</div><div class="text-xs text-gray-500">Gestiona o cancela tu suscripción</div></div>
+        <div class="flex-1 min-w-0"><div class="font-bold text-gray-800 text-sm">Min prenumeration</div><div class="text-xs text-gray-500">Hantera eller avsluta din prenumeration</div></div>
         <span class="text-gray-300 text-lg flex-shrink-0">›</span>
       </button>
+      <button onclick="logoutStudent()" class="w-full flex items-center gap-3 p-4 rounded-2xl border-2 border-red-100 hover:border-red-300 hover:bg-red-50/50 transition-all text-left">
+        <span class="w-11 h-11 rounded-2xl bg-red-50 flex items-center justify-center text-xl flex-shrink-0">🚪</span>
+        <div class="flex-1 min-w-0"><div class="font-bold text-red-600 text-sm">Logga ut</div><div class="text-xs text-gray-500">Avsluta din session</div></div>
+        <span class="text-gray-300 text-lg flex-shrink-0">›</span>
+      </button>
+    </div>
+
+    <!-- PANEL: notiser -->
+    <div id="acc-panel-notiser" class="hidden p-5" style="animation:fadeIn .2s ease;">
+      <div class="text-sm text-gray-500 mb-4">Välj vilka notiser du vill få.</div>
+      <label class="flex items-center gap-3 p-3 rounded-2xl border-2 border-gray-100 mb-3 cursor-pointer">
+        <span class="text-2xl flex-shrink-0">📚</span>
+        <div class="flex-1 min-w-0"><div class="font-bold text-gray-800 text-sm">Studiepåminnelser</div><div class="text-xs text-gray-500">Vi påminner dig om att plugga varje dag</div></div>
+        <input type="checkbox" id="noti-reminders" onchange="accSaveNotis()" class="w-6 h-6 accent-swe-blue flex-shrink-0">
+      </label>
+      <label class="flex items-center gap-3 p-3 rounded-2xl border-2 border-gray-100 mb-4 cursor-pointer">
+        <span class="text-2xl flex-shrink-0">✨</span>
+        <div class="flex-1 min-w-0"><div class="font-bold text-gray-800 text-sm">Nytt innehåll</div><div class="text-xs text-gray-500">Få veta när vi lägger till nya lektioner och ord</div></div>
+        <input type="checkbox" id="noti-content" onchange="accSaveNotis()" class="w-6 h-6 accent-swe-blue flex-shrink-0">
+      </label>
+      <button onclick="accShow('menu')" class="w-full py-2.5 rounded-xl text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200">Tillbaka</button>
     </div>
 
     <!-- PANEL: foto -->
@@ -1742,41 +1768,41 @@
         <div id="acc-photo-preview" class="w-20 h-20 rounded-full bg-gray-100 flex-shrink-0 overflow-hidden flex items-center justify-center text-gray-400"></div>
         <div class="flex-1">
           <input type="file" id="acc-photo-input" accept="image/*" class="hidden" onchange="accPhotoPick(this.files && this.files[0])">
-          <button onclick="document.getElementById('acc-photo-input').click()" class="text-sm font-bold text-swe-blue hover:underline">Elegir imagen…</button>
-          <div class="text-[11px] text-gray-400 mt-0.5">JPG o PNG · se optimiza sola antes de subir</div>
+          <button onclick="document.getElementById('acc-photo-input').click()" class="text-sm font-bold text-swe-blue hover:underline">Välj bild…</button>
+          <div class="text-[11px] text-gray-400 mt-0.5">JPG eller PNG · komprimeras automatiskt</div>
           <div id="acc-photo-msg" class="text-xs mt-1"></div>
         </div>
       </div>
       <div class="flex gap-2">
-        <button id="acc-photo-save" onclick="accSavePhoto()" disabled class="flex-1 py-2.5 rounded-xl text-sm font-bold text-white bg-swe-blue hover:bg-swe-dark disabled:opacity-40">Guardar</button>
-        <button onclick="accShow('menu')" class="py-2.5 px-4 rounded-xl text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200">Cancelar</button>
+        <button id="acc-photo-save" onclick="accSavePhoto()" disabled class="flex-1 py-2.5 rounded-xl text-sm font-bold text-white bg-swe-blue hover:bg-swe-dark disabled:opacity-40">Spara</button>
+        <button onclick="accShow('menu')" class="py-2.5 px-4 rounded-xl text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200">Avbryt</button>
       </div>
     </div>
 
     <!-- PANEL: nombre -->
     <div id="acc-panel-name" class="hidden p-5" style="animation:fadeIn .2s ease;">
-      <label class="text-xs font-semibold text-gray-500">Tu nombre</label>
-      <input id="acc-name-input" type="text" maxlength="60" class="w-full border-2 border-gray-200 rounded-xl px-3 py-2.5 text-sm mt-1 focus:border-swe-blue focus:outline-none" placeholder="Tu nombre">
+      <label class="text-xs font-semibold text-gray-500">Ditt namn</label>
+      <input id="acc-name-input" type="text" maxlength="60" class="w-full border-2 border-gray-200 rounded-xl px-3 py-2.5 text-sm mt-1 focus:border-swe-blue focus:outline-none" placeholder="Ditt namn">
       <div id="acc-name-msg" class="text-xs mt-2"></div>
       <div class="flex gap-2 mt-4">
-        <button id="acc-name-save" onclick="accSaveName()" class="flex-1 py-2.5 rounded-xl text-sm font-bold text-white bg-swe-blue hover:bg-swe-dark disabled:opacity-40">Guardar</button>
-        <button onclick="accShow('menu')" class="py-2.5 px-4 rounded-xl text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200">Cancelar</button>
+        <button id="acc-name-save" onclick="accSaveName()" class="flex-1 py-2.5 rounded-xl text-sm font-bold text-white bg-swe-blue hover:bg-swe-dark disabled:opacity-40">Spara</button>
+        <button onclick="accShow('menu')" class="py-2.5 px-4 rounded-xl text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200">Avbryt</button>
       </div>
     </div>
 
     <!-- PANEL: contraseña -->
     <div id="acc-panel-pass" class="hidden p-5" style="animation:fadeIn .2s ease;">
-      <label class="text-xs font-semibold text-gray-500">Nueva contraseña</label>
-      <input id="acc-pass1" type="password" class="w-full border-2 border-gray-200 rounded-xl px-3 py-2.5 text-sm mt-1 mb-2 focus:border-swe-blue focus:outline-none" placeholder="Mínimo 6 caracteres">
-      <label class="text-xs font-semibold text-gray-500">Repite la contraseña</label>
+      <label class="text-xs font-semibold text-gray-500">Nytt lösenord</label>
+      <input id="acc-pass1" type="password" class="w-full border-2 border-gray-200 rounded-xl px-3 py-2.5 text-sm mt-1 mb-2 focus:border-swe-blue focus:outline-none" placeholder="Minst 6 tecken">
+      <label class="text-xs font-semibold text-gray-500">Upprepa lösenordet</label>
       <div class="relative mt-1">
-        <input id="acc-pass2" type="password" class="w-full border-2 border-gray-200 rounded-xl px-3 py-2.5 pr-20 text-sm focus:border-swe-blue focus:outline-none" placeholder="Repite la contraseña">
-        <button type="button" onclick="accTogglePass()" class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 font-semibold" id="acc-pass-toggle">👁 Mostrar</button>
+        <input id="acc-pass2" type="password" class="w-full border-2 border-gray-200 rounded-xl px-3 py-2.5 pr-20 text-sm focus:border-swe-blue focus:outline-none" placeholder="Upprepa lösenordet">
+        <button type="button" onclick="accTogglePass()" class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 font-semibold" id="acc-pass-toggle">👁 Visa</button>
       </div>
       <div id="acc-pass-msg" class="text-xs mt-2"></div>
       <div class="flex gap-2 mt-4">
-        <button id="acc-pass-save" onclick="accSavePassword()" class="flex-1 py-2.5 rounded-xl text-sm font-bold text-white bg-swe-blue hover:bg-swe-dark disabled:opacity-40">Guardar</button>
-        <button onclick="accShow('menu')" class="py-2.5 px-4 rounded-xl text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200">Cancelar</button>
+        <button id="acc-pass-save" onclick="accSavePassword()" class="flex-1 py-2.5 rounded-xl text-sm font-bold text-white bg-swe-blue hover:bg-swe-dark disabled:opacity-40">Spara</button>
+        <button onclick="accShow('menu')" class="py-2.5 px-4 rounded-xl text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200">Avbryt</button>
       </div>
     </div>
 
@@ -1784,17 +1810,17 @@
     <div id="acc-panel-support" class="hidden p-5" style="animation:fadeIn .2s ease;">
       <a href="https://wa.me/46769184251" target="_blank" rel="noopener" class="flex items-center gap-3 p-3 rounded-2xl mb-4" style="background:#25D36615; border:2px solid #25D36640;">
         <span class="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0" style="background:#25D366"><svg viewBox="0 0 32 32" class="w-6 h-6" fill="#fff"><path d="M16 3C9 3 3.5 8.5 3.5 15.5c0 2.4.7 4.6 1.8 6.5L4 29l7.2-1.9c1.8 1 3.8 1.5 5.8 1.5 7 0 12.5-5.5 12.5-12.5S23 3 16 3zm0 22.7c-1.8 0-3.5-.5-5-1.4l-.4-.2-4.3 1.1 1.1-4.2-.3-.4c-1-1.6-1.5-3.4-1.5-5.4 0-5.7 4.7-10.3 10.4-10.3 5.7 0 10.3 4.6 10.3 10.3S21.7 25.7 16 25.7zm5.7-7.7c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-1.8-.9-3-1.6-4.2-3.6-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5-.1-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 2 .9 2.7.9 3.7.8.6-.1 1.8-.7 2.1-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.2-.6-.4z"/></svg></span>
-        <div class="flex-1"><div class="font-bold text-gray-800 text-sm">Escríbenos por WhatsApp</div><div class="text-xs text-gray-500">Respuesta rápida y directa</div></div>
+        <div class="flex-1"><div class="font-bold text-gray-800 text-sm">Skriv till oss på WhatsApp</div><div class="text-xs text-gray-500">Snabbt och direkt svar</div></div>
         <span class="text-gray-300">›</span>
       </a>
-      <div class="text-xs font-semibold text-gray-400 text-center mb-3">o envíanos un mensaje</div>
-      <input id="acc-sup-name" type="text" placeholder="Tu nombre" class="w-full border-2 border-gray-200 rounded-xl px-3 py-2 text-sm mb-2 focus:border-swe-blue focus:outline-none">
-      <input id="acc-sup-email" type="email" placeholder="Tu correo" class="w-full border-2 border-gray-200 rounded-xl px-3 py-2 text-sm mb-2 focus:border-swe-blue focus:outline-none">
-      <textarea id="acc-sup-msg" rows="3" placeholder="Cuéntanos qué necesitas…" class="w-full border-2 border-gray-200 rounded-xl px-3 py-2 text-sm mb-2 focus:border-swe-blue focus:outline-none resize-none"></textarea>
+      <div class="text-xs font-semibold text-gray-400 text-center mb-3">eller skicka ett meddelande</div>
+      <input id="acc-sup-name" type="text" placeholder="Ditt namn" class="w-full border-2 border-gray-200 rounded-xl px-3 py-2 text-sm mb-2 focus:border-swe-blue focus:outline-none">
+      <input id="acc-sup-email" type="email" placeholder="Din e-post" class="w-full border-2 border-gray-200 rounded-xl px-3 py-2 text-sm mb-2 focus:border-swe-blue focus:outline-none">
+      <textarea id="acc-sup-msg" rows="3" placeholder="Berätta vad du behöver…" class="w-full border-2 border-gray-200 rounded-xl px-3 py-2 text-sm mb-2 focus:border-swe-blue focus:outline-none resize-none"></textarea>
       <div id="acc-sup-status" class="text-xs mb-2"></div>
       <div class="flex gap-2">
-        <button id="acc-sup-send" onclick="accSendSupport()" class="flex-1 py-2.5 rounded-xl text-sm font-bold text-white bg-swe-blue hover:bg-swe-dark">Enviar mensaje</button>
-        <button onclick="accShow('menu')" class="py-2.5 px-4 rounded-xl text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200">Volver</button>
+        <button id="acc-sup-send" onclick="accSendSupport()" class="flex-1 py-2.5 rounded-xl text-sm font-bold text-white bg-swe-blue hover:bg-swe-dark">Skicka</button>
+        <button onclick="accShow('menu')" class="py-2.5 px-4 rounded-xl text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200">Tillbaka</button>
       </div>
     </div>
 
@@ -1805,17 +1831,28 @@
           <span class="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-2xl shadow-sm flex-shrink-0">📚</span>
           <div class="flex-1 min-w-0">
             <div class="font-black text-gray-800">Coaching Sueco con Sophie</div>
-            <div class="text-sm text-gray-500" id="acc-sub-price">Plan mensual</div>
+            <div class="text-sm text-gray-500" id="acc-sub-price">Månadsplan</div>
             <div class="text-xs mt-0.5" id="acc-sub-status"></div>
           </div>
         </div>
       </div>
-      <button id="acc-sub-renew" onclick="manageSubscription()" class="hidden w-full py-2.5 rounded-xl text-sm font-bold text-white bg-swe-blue hover:bg-swe-dark mb-2">🔄 Renovar suscripción</button>
-      <button id="acc-sub-manage" onclick="manageSubscription()" class="w-full py-2.5 rounded-xl text-sm font-bold text-white bg-swe-blue hover:bg-swe-dark mb-2">💳 Gestionar suscripción (cambiar tarjeta)</button>
-      <button id="acc-sub-cancel" onclick="openJuanitaGoodbye()" class="w-full py-2.5 rounded-xl text-sm font-semibold text-red-600 bg-red-50 hover:bg-red-100 mb-2">Cancelar suscripción</button>
-      <button onclick="accShow('menu')" class="w-full py-2 rounded-xl text-sm font-semibold text-gray-500">Volver</button>
+      <button id="acc-sub-renew" onclick="manageSubscription()" class="hidden w-full py-2.5 rounded-xl text-sm font-bold text-white bg-swe-blue hover:bg-swe-dark mb-2">🔄 Förnya prenumeration</button>
+      <button id="acc-sub-manage" onclick="manageSubscription()" class="w-full py-2.5 rounded-xl text-sm font-bold text-white bg-swe-blue hover:bg-swe-dark mb-2">💳 Hantera prenumeration (byt kort)</button>
+      <button id="acc-sub-cancel" onclick="openJuanitaGoodbye()" class="w-full py-2.5 rounded-xl text-sm font-semibold text-red-600 bg-red-50 hover:bg-red-100 mb-2">Avsluta prenumeration</button>
+      <button onclick="accShow('menu')" class="w-full py-2 rounded-xl text-sm font-semibold text-gray-500">Tillbaka</button>
     </div>
 
+  </div>
+</div>
+
+<!-- MODAL: aviso de pago (al entrar si hay pago fallido/cancelado) -->
+<div id="payment-alert" class="hidden fixed inset-0 z-[85] flex items-center justify-center p-4" style="background:rgba(15,23,42,0.6); backdrop-filter:blur(2px);">
+  <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl p-6 text-center relative" style="animation:fadeIn .2s ease;">
+    <button onclick="closePaymentAlert()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center font-bold hover:bg-red-700" aria-label="Cerrar">✕</button>
+    <img src="/juanita/juanita-seria.webp" class="w-28 h-28 object-contain mx-auto mb-3" alt="Juanita" onerror="this.onerror=null;this.src='/juanita/juanita-chancleta.webp'">
+    <div id="pa-title" class="font-black text-gray-800 text-lg mb-2">¡Ya pronto me abandonas! 😢</div>
+    <div id="pa-text" class="text-sm text-gray-600 mb-5 leading-relaxed"></div>
+    <button onclick="renewFromAlert()" class="w-full bg-swe-blue text-white py-3 rounded-2xl font-bold hover:bg-swe-dark transition-colors">🔄 Renovar suscripción</button>
   </div>
 </div>
 
@@ -1839,7 +1876,7 @@
     <button data-nav="aprender" onclick="navGo('aprender')" class="nav-btn flex flex-col items-center gap-0.5 py-2.5 text-gray-400 transition-colors"><span class="text-xl leading-none">📖</span><span class="text-[10px] font-semibold">Aprender</span></button>
     <button data-nav="miviaje" onclick="navGo('miviaje')" class="nav-btn flex flex-col items-center gap-0.5 py-2.5 text-gray-400 transition-colors"><span class="text-xl leading-none">🗺️</span><span class="text-[10px] font-semibold">Mi viaje</span></button>
     <button data-nav="progreso" onclick="navGo('progreso')" class="nav-btn flex flex-col items-center gap-0.5 py-2.5 text-gray-400 transition-colors"><span class="text-xl leading-none">📈</span><span class="text-[10px] font-semibold">Progreso</span></button>
-    <button data-nav="cuenta" onclick="openAccountModal()" class="nav-btn flex flex-col items-center gap-0.5 py-2.5 text-gray-400 transition-colors"><span class="text-xl leading-none">👤</span><span class="text-[10px] font-semibold">Mi cuenta</span></button>
+    <button data-nav="juanita" onclick="openComingSoon('/juanita/juanita-chancleta.webp','Practicando con Juanita','Muy pronto practicarás conversaciones guiadas con Juanita.','Entendido')" class="nav-btn flex flex-col items-center gap-0.5 py-1.5 text-gray-400 transition-colors"><img src="/juanita/juanita-chancleta.webp" class="w-7 h-7 object-contain" alt="Juanita" onerror="this.outerHTML='<span class=&quot;text-xl leading-none&quot;>👵</span>'"><span class="text-[10px] font-semibold">Juanita</span></button>
   </div>
 </div>
 
