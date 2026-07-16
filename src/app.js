@@ -2858,11 +2858,16 @@ async function accLoadSubscription() {
     if (!session) return;
     const { data: st } = await sb.from('students').select('price, status, cancels_at').eq('id', session.user.id).single();
     if (priceEl) priceEl.textContent = st && st.price ? (st.price + ' kr / mes') : 'Plan mensual';
+    const cancelled = !!(st && st.cancels_at);
     if (statusEl) {
-      if (st && st.cancels_at) { statusEl.className = 'text-xs mt-0.5 text-amber-600 font-semibold'; statusEl.textContent = '⏳ Se cancela al final del período'; }
+      if (cancelled) { statusEl.className = 'text-xs mt-0.5 text-amber-600 font-semibold'; statusEl.textContent = '⏳ Se cancela al final del período pagado'; }
       else if (st && (st.status === 'active' || st.active)) { statusEl.className = 'text-xs mt-0.5 text-green-600 font-semibold'; statusEl.textContent = '✅ Activa'; }
       else { statusEl.className = 'text-xs mt-0.5 text-gray-400'; statusEl.textContent = ''; }
     }
+    // Si ya canceló: mostrar "Renovar" (azul) y ocultar "Cancelar".
+    const renew = document.getElementById('acc-sub-renew'), cancel = document.getElementById('acc-sub-cancel');
+    if (renew) renew.classList.toggle('hidden', !cancelled);
+    if (cancel) cancel.classList.toggle('hidden', cancelled);
   } catch (e) { if (priceEl) priceEl.textContent = 'Plan mensual'; }
 }
 function openJuanitaGoodbye() { const m = document.getElementById('juanita-goodbye'); if (m) m.classList.remove('hidden'); }

@@ -1810,8 +1810,9 @@
           </div>
         </div>
       </div>
-      <button onclick="manageSubscription()" class="w-full py-2.5 rounded-xl text-sm font-bold text-white bg-swe-blue hover:bg-swe-dark mb-2">💳 Gestionar suscripción (cambiar tarjeta)</button>
-      <button onclick="openJuanitaGoodbye()" class="w-full py-2.5 rounded-xl text-sm font-semibold text-red-600 bg-red-50 hover:bg-red-100 mb-2">Cancelar suscripción</button>
+      <button id="acc-sub-renew" onclick="manageSubscription()" class="hidden w-full py-2.5 rounded-xl text-sm font-bold text-white bg-swe-blue hover:bg-swe-dark mb-2">🔄 Renovar suscripción</button>
+      <button id="acc-sub-manage" onclick="manageSubscription()" class="w-full py-2.5 rounded-xl text-sm font-bold text-white bg-swe-blue hover:bg-swe-dark mb-2">💳 Gestionar suscripción (cambiar tarjeta)</button>
+      <button id="acc-sub-cancel" onclick="openJuanitaGoodbye()" class="w-full py-2.5 rounded-xl text-sm font-semibold text-red-600 bg-red-50 hover:bg-red-100 mb-2">Cancelar suscripción</button>
       <button onclick="accShow('menu')" class="w-full py-2 rounded-xl text-sm font-semibold text-gray-500">Volver</button>
     </div>
 
@@ -1824,8 +1825,8 @@
     <img src="/juanita/juanita-feliz.webp" class="w-28 h-28 object-contain mx-auto mb-3" alt="Juanita" onerror="this.onerror=null;this.src='/juanita/juanita-chancleta.webp'">
     <div class="font-black text-gray-800 text-lg mb-2">Gracias por estar aquí 💛</div>
     <div class="text-sm text-gray-600 mb-5 leading-relaxed">Eres siempre bienvenido/a. <strong>Hej då!</strong> 👋</div>
-    <button onclick="proceedCancelSubscription()" class="w-full bg-red-600 text-white py-3 rounded-2xl font-bold hover:bg-red-700 transition-colors mb-2">Continuar con la cancelación</button>
-    <button onclick="closeJuanitaGoodbye()" class="w-full text-gray-500 py-2 text-sm font-semibold">Mejor me quedo 🙂</button>
+    <button onclick="closeJuanitaGoodbye()" class="w-full bg-red-600 text-white py-3 rounded-2xl font-bold hover:bg-red-700 transition-colors mb-2">💛 Mejor me quedo</button>
+    <button onclick="proceedCancelSubscription()" class="w-full bg-gray-200 text-gray-600 py-2.5 rounded-2xl font-semibold text-sm hover:bg-gray-300 transition-colors">Continuar con la cancelación</button>
   </div>
 </div>
 
