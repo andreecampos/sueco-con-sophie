@@ -183,7 +183,9 @@ function renderLevelMenu() {
   const overall = pctClamp(d, t);
   const doneCats = cats.filter(c => c.p.total > 0 && c.p.done >= c.p.total).length;
   const examOpen = doneCats >= cats.length && cats.length > 0;
-  const chip = c => `<div class="flex flex-col items-center gap-1 flex-1"><span class="text-2xl">${c.icon}</span><span class="text-[11px] font-bold text-gray-600">${c.label}</span><span class="text-[11px] font-black" style="color:${c.c}">${fmtPct(c.p.pct)}</span><div class="w-9">${_colorBar(c.p.pct, c.c, 4)}</div></div>`;
+  const catChip = (icon, label, color, valueHtml, isLast) => `<div class="flex flex-col items-center gap-1.5 flex-1 px-0.5 ${isLast ? '' : 'border-r border-gray-100'}">
+      <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-xl shadow-sm" style="background:linear-gradient(135deg, ${color}30, ${color}1a)">${icon}</div>
+      <span class="text-[11px] font-bold text-gray-600">${label}</span>${valueHtml}</div>`;
   const bigCard = c => `<button onclick="${c.onclick}" class="w-full flex items-center gap-4 rounded-2xl p-4 shadow-sm border hover:shadow-md transition-all text-left" style="background:${c.c}14; border-color:${c.c}33">
       <span class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background:${c.c}2e">${c.icon}</span>
       <div class="flex-1 min-w-0"><div class="font-black text-gray-800">${c.label}</div><div class="text-xs text-gray-500 mb-1.5">${c.desc}</div>
@@ -202,9 +204,9 @@ function renderLevelMenu() {
         <div class="flex items-center gap-2"><div class="flex-1">${progressBar(overall, lv)}</div><span class="text-sm font-black" style="color:${col}">${fmtPct(overall)}</span></div>
       </div>
     </div>
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-4 flex items-start justify-between gap-1">
-      ${cats.map(chip).join('')}
-      <div class="flex flex-col items-center gap-1 flex-1"><span class="text-2xl">🏆</span><span class="text-[11px] font-bold text-gray-600">Examen</span><span class="text-[11px] font-black ${ex.passed ? 'text-green-600' : 'text-gray-400'}">${ex.passed ? '🏅' : (canAttempt ? 'Abierto' : 'Pendiente')}</span></div>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-4 flex items-start justify-between">
+      ${cats.map(c => catChip(c.icon, c.label, c.c, `<span class="text-[11px] font-black" style="color:${c.c}">${fmtPct(c.p.pct)}</span>`, false)).join('')}
+      ${catChip('🏆', 'Examen', '#F59E0B', `<span class="text-[11px] font-black ${ex.medal ? 'text-green-600' : 'text-gray-400'}">${ex.medal ? '🏅' : (canAttempt ? 'Abierto' : 'Pendiente')}</span>`, true)}
     </div>
     <div class="space-y-3 mb-4">${cats.map(bigCard).join('')}</div>
     <div class="rounded-2xl p-4 mb-3 border-2" style="border-color:#FDE68A; background:#FFFBEB;">
@@ -2810,17 +2812,62 @@ function closeAccountModal() {
 }
 // Navegación menú ↔ paneles (una sección a la vez, estilo panel de ajustes moderno).
 function accShow(view) {
-  const panels = { menu: 'acc-menu', photo: 'acc-panel-photo', name: 'acc-panel-name', pass: 'acc-panel-pass' };
+  const panels = { menu: 'acc-menu', photo: 'acc-panel-photo', name: 'acc-panel-name', pass: 'acc-panel-pass', support: 'acc-panel-support', sub: 'acc-panel-sub' };
   Object.values(panels).forEach(id => { const e = document.getElementById(id); if (e) e.classList.add('hidden'); });
   const target = document.getElementById(panels[view] || 'acc-menu'); if (target) target.classList.remove('hidden');
-  const titles = { menu: '⚙️ Mi cuenta', photo: '👤 Foto de perfil', name: '✏️ Cambiar nombre', pass: '🔒 Cambiar contraseña' };
+  const titles = { menu: '⚙️ Mi cuenta', photo: '👤 Foto de perfil', name: '✏️ Cambiar nombre', pass: '🔒 Cambiar contraseña', support: '💬 Soporte técnico', sub: '💳 Mi suscripción' };
   const t = document.getElementById('acc-title'); if (t) t.textContent = titles[view] || titles.menu;
   const back = document.getElementById('acc-back'); if (back) back.classList.toggle('hidden', view === 'menu');
   // Poblar al entrar (datos frescos, sin mensajes previos)
   if (view === 'photo') accInitPhoto();
   if (view === 'name') { const ni = document.getElementById('acc-name-input'); if (ni) ni.value = _accCurrent().name || ''; _accMsg('acc-name-msg', ''); }
   if (view === 'pass') accResetPass();
+  if (view === 'support') accInitSupport();
+  if (view === 'sub') accLoadSubscription();
 }
+function accInitSupport() {
+  const cur = _accCurrent();
+  const s = window._sbSession || {};
+  const setV = (id, v) => { const e = document.getElementById(id); if (e) e.value = v; };
+  setV('acc-sup-name', cur.name || '');
+  setV('acc-sup-email', s.email || '');
+  setV('acc-sup-msg', '');
+  const st = document.getElementById('acc-sup-status'); if (st) st.textContent = '';
+}
+async function accSendSupport() {
+  const val = id => (document.getElementById(id)?.value || '').trim();
+  const name = val('acc-sup-name'), email = val('acc-sup-email'), message = val('acc-sup-msg');
+  const st = document.getElementById('acc-sup-status');
+  if (!email || !message) { if (st) { st.className = 'text-xs mb-2 text-red-600'; st.textContent = 'Escribe tu correo y tu mensaje.'; } return; }
+  const btn = document.getElementById('acc-sup-send'); if (btn) { btn.disabled = true; btn.textContent = '⏳ Enviando…'; }
+  try {
+    const r = await adminOps('send_support', { name, email, message, tipo: 'Soporte (Mi cuenta)' });
+    if (btn) { btn.disabled = false; btn.textContent = 'Enviar mensaje'; }
+    if (r && r.ok) { showToast('Mensaje enviado. Te responderemos a tu correo. 💛', 'success'); accShow('menu'); }
+    else { if (st) { st.className = 'text-xs mb-2 text-red-600'; st.textContent = 'No se pudo enviar. Intenta por WhatsApp.'; } }
+  } catch (e) {
+    if (btn) { btn.disabled = false; btn.textContent = 'Enviar mensaje'; }
+    if (st) { st.className = 'text-xs mb-2 text-red-600'; st.textContent = 'No se pudo enviar. Intenta por WhatsApp.'; }
+  }
+}
+async function accLoadSubscription() {
+  const priceEl = document.getElementById('acc-sub-price'), statusEl = document.getElementById('acc-sub-status');
+  if (priceEl) priceEl.textContent = 'Cargando…';
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) return;
+    const { data: st } = await sb.from('students').select('price, status, cancels_at').eq('id', session.user.id).single();
+    if (priceEl) priceEl.textContent = st && st.price ? (st.price + ' kr / mes') : 'Plan mensual';
+    if (statusEl) {
+      if (st && st.cancels_at) { statusEl.className = 'text-xs mt-0.5 text-amber-600 font-semibold'; statusEl.textContent = '⏳ Se cancela al final del período'; }
+      else if (st && (st.status === 'active' || st.active)) { statusEl.className = 'text-xs mt-0.5 text-green-600 font-semibold'; statusEl.textContent = '✅ Activa'; }
+      else { statusEl.className = 'text-xs mt-0.5 text-gray-400'; statusEl.textContent = ''; }
+    }
+  } catch (e) { if (priceEl) priceEl.textContent = 'Plan mensual'; }
+}
+function openJuanitaGoodbye() { const m = document.getElementById('juanita-goodbye'); if (m) m.classList.remove('hidden'); }
+function closeJuanitaGoodbye() { const m = document.getElementById('juanita-goodbye'); if (m) m.classList.add('hidden'); }
+function proceedCancelSubscription() { closeJuanitaGoodbye(); manageSubscription(); }
 function accInitPhoto() {
   _accPhotoBlob = null;
   const cur = _accCurrent();
