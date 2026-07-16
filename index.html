@@ -10677,8 +10677,11 @@ function renderContinua() {
 function _accesoCard(o) {
   const badge = o.badge ? `<div class="mt-2 text-xs font-bold ${o.badgeCls} px-3 py-1 rounded-full inline-block">${o.badge}</div>` : '';
   const btn = o.btn ? `<div class="mt-2 text-xs font-bold ${o.btnCls} px-3 py-1.5 rounded-full inline-block">${o.btn}</div>` : '';
+  const media = o.img
+    ? `<div class="w-16 h-16 rounded-full overflow-hidden mb-2 flex items-center justify-center" style="background:${o.bg}"><img src="${o.img}" alt="" class="w-full h-full object-cover" onerror="this.parentNode.innerHTML='👵';this.parentNode.style.fontSize='2rem'"></div>`
+    : `<div class="w-16 h-16 rounded-full flex items-center justify-center text-3xl mb-2" style="background:${o.bg}">${o.icon}</div>`;
   return `<button onclick="${o.onclick}" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 text-center card-hover flex flex-col items-center" style="min-height:158px">
-    <div class="w-16 h-16 rounded-full flex items-center justify-center text-3xl mb-2" style="background:${o.bg}">${o.icon}</div>
+    ${media}
     <div class="font-black text-gray-800 text-sm leading-tight">${o.title}</div>
     <div class="text-xs text-gray-500 mt-0.5 leading-snug flex-1">${o.text || ''}</div>
     ${badge}${btn}
@@ -10688,7 +10691,7 @@ function renderAccesoRapido() {
   const el = document.getElementById('acceso-rapido');
   if (!el) return;
   el.innerHTML = [
-    _accesoCard({ icon: '👵', bg: '#fce7f3', title: 'Practicando con Juanita', text: 'Conversaciones guiadas con IA.', badge: 'snart tillgänglig', badgeCls: 'text-pink-600 bg-pink-50', onclick: "openComingSoon('👵','Practicando con Juanita','Muy pronto practicarás conversaciones guiadas con Juanita.','Entendido')" }),
+    _accesoCard({ img: '/juanita/juanita-chancleta.webp', bg: '#fce7f3', title: 'Practicando con Juanita', text: 'Una mamá latina que te enseña sueco.', badge: 'snart tillgänglig', badgeCls: 'text-pink-600 bg-pink-50', onclick: "openComingSoon('👵','Practicando con Juanita','Muy pronto practicarás conversaciones guiadas con Juanita.','Entendido')" }),
     _accesoCard({ icon: '🇸🇪', bg: '#dcfce7', title: '¿Qué tan sueco eres?', text: 'Pon a prueba tus conocimientos.', badge: 'snart tillgänglig', badgeCls: 'text-emerald-600 bg-emerald-50', onclick: "openComingSoon('🇸🇪','¿Qué tan sueco eres?','Muy pronto podrás poner a prueba tus conocimientos.','Entendido')" }),
     _accesoCard({ icon: '🗺️', bg: '#dbeafe', title: 'Mi viaje por Suecia', text: 'Explora el mapa de Suecia mientras aprendes.', btn: 'Explorar', btnCls: 'text-swe-blue bg-blue-50', onclick: "openComingSoon('🗺️','Mi viaje por Suecia','Muy pronto comenzarás tu viaje por Suecia desbloqueando ciudades mientras completas actividades.','Entendido')" }),
     _accesoCard({ icon: '🏆', bg: '#ede9fe', title: 'Logros', text: 'Tus premios y medallas.', btn: 'Ver mis premios', btnCls: 'text-purple-600 bg-purple-50', onclick: "openComingSoon('🏆','Logros','Muy pronto podrás desbloquear insignias, medallas y premios conforme avances en la plataforma.','Entendido')" })
