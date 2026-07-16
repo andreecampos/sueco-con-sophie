@@ -776,15 +776,26 @@ async function finishExam(timedOut) {
   set('er-detail', st.correct + ' de ' + total + ' correctas · necesitas 80 %');
   const medal = document.getElementById('er-medal'), retry = document.getElementById('er-retry-note');
   const nextBtn = document.getElementById('er-next-attempt');
-  medal.classList.add('hidden'); retry.classList.add('hidden'); if (nextBtn) nextBtn.classList.add('hidden');
+  const lastNote = document.getElementById('er-last-note'), motiv = document.getElementById('er-motiv');
+  medal.classList.add('hidden'); retry.classList.add('hidden');
+  if (nextBtn) nextBtn.classList.add('hidden');
+  if (lastNote) lastNote.classList.add('hidden');
+  if (motiv) motiv.classList.add('hidden');
   if (approved && ex.medal) {
     set('er-emoji', '🎉'); set('er-title', '¡Felicidades!');
-    set('er-sub', '¡Aprobaste los ' + ex.required + ' exámenes y conseguiste la Medalla SFI ' + st.level + '! Dominas este nivel.');
+    set('er-sub', '¡Aprobaste las ' + ex.required + ' pruebas y conseguiste la Medalla SFI ' + st.level + '! Dominas este nivel.');
     medal.classList.remove('hidden'); set('er-medal-txt', 'Medalla SFI ' + st.level);
   } else if (approved) {
+    const nextNum = ex.passes + 1;               // siguiente prueba a rendir
+    const isLast = nextNum >= ex.required;
     set('er-emoji', '✅'); set('er-title', '¡Aprobado!');
-    set('er-sub', 'Aprobaste el intento ' + ex.passes + ' de ' + ex.required + '. Puedes continuar de inmediato con el siguiente.');
-    if (nextBtn) { nextBtn.classList.remove('hidden'); nextBtn.setAttribute('data-lvl', st.level); }
+    set('er-sub', 'Aprobaste la prueba ' + ex.passes + ' de ' + ex.required + '. Puedes seguir de inmediato con la siguiente.');
+    if (nextBtn) {
+      nextBtn.classList.remove('hidden'); nextBtn.setAttribute('data-lvl', st.level);
+      nextBtn.textContent = isLast ? '🏆 Seguir última prueba (35 min)' : ('🏆 Seguir Prueba número ' + nextNum + ' (35 min)');
+    }
+    if (isLast && lastNote) { lastNote.classList.remove('hidden'); set('er-last-lvl', st.level); }
+    if (motiv) motiv.classList.remove('hidden');
   } else {
     set('er-emoji', '💪'); set('er-title', 'Todavía no');
     set('er-sub', 'No alcanzaste el 80 % para este intento.' + (timedOut ? ' Se acabó el tiempo.' : ''));
