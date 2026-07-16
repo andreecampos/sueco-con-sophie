@@ -895,66 +895,7 @@
     </div>
   </div>
 
-  <div class="max-w-4xl mx-auto px-4 -mt-5 pb-12">
-    <div class="grid grid-cols-1 gap-3">
-
-      <button class="mode-btn glass rounded-2xl p-5 shadow border border-blue-100 flex items-center gap-4 text-left" onclick="selectMode('read')">
-        <div class="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0">📖</div>
-        <div class="flex-1">
-          <div class="font-bold text-gray-800 text-lg">Läsa</div>
-          <div class="text-gray-500 text-sm">Lee textos y contesta preguntas</div>
-        </div>
-        <div class="text-gray-300">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        </div>
-      </button>
-
-      <button class="mode-btn glass rounded-2xl p-5 shadow border border-blue-100 flex items-center gap-4 text-left" onclick="selectMode('write')">
-        <div class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0">✍️</div>
-        <div class="flex-1">
-          <div class="font-bold text-gray-800 text-lg">Skriva</div>
-          <div class="text-gray-500 text-sm">Escribe textos y correos</div>
-        </div>
-        <div class="text-gray-300">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        </div>
-      </button>
-
-      <button class="mode-btn glass rounded-2xl p-5 shadow border border-blue-100 flex items-center gap-4 text-left" onclick="showTala()">
-        <div class="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0">🗣️</div>
-        <div class="flex-1">
-          <div class="font-bold text-gray-800 text-lg">Tala</div>
-          <div class="text-gray-500 text-sm">Conversaciones: arma frases tocando palabras</div>
-        </div>
-        <div class="text-gray-300">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        </div>
-      </button>
-
-      <button class="mode-btn glass rounded-2xl p-5 shadow border border-teal-100 flex items-center gap-4 text-left" onclick="showVocab(state.level)">
-        <div class="w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0">📚</div>
-        <div class="flex-1">
-          <div class="font-bold text-gray-800 text-lg">Vokabulär</div>
-          <div class="text-gray-500 text-sm">Aprende palabras y verbos de tu nivel</div>
-        </div>
-        <div class="text-gray-300">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        </div>
-      </button>
-
-      <button class="mode-btn glass rounded-2xl p-5 shadow border-2 border-swe-yellow flex items-center gap-4 text-left" style="background: linear-gradient(135deg, #FFFBEB, #FEF9C3);" onclick="selectMode('test')">
-        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background: #FECC02;">🏆</div>
-        <div class="flex-1">
-          <div class="font-bold text-gray-800 text-lg">Försök provet</div>
-          <div class="text-gray-500 text-sm">Test completo — ¿Apruebas?</div>
-        </div>
-        <div class="text-amber-400">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        </div>
-      </button>
-
-    </div>
-  </div>
+  <div id="level-menu-body" class="max-w-2xl mx-auto px-4 -mt-5 pb-28"></div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════

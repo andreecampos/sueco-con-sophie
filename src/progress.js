@@ -202,6 +202,15 @@ function isCompleted(moduleKey, contentId) {
   return !!(row && row.status === 'completed');
 }
 
+// Progreso de Läsa (lectura) / Skriva (escritura) por nivel — se guardan en user_progress.
+function skillProgress(kind, level) {
+  const key = kind === 'reading' ? 'read' : 'write';
+  const arr = (typeof DB !== 'undefined' && DB[level] && DB[level][key]) ? DB[level][key] : [];
+  let done = 0;
+  arr.forEach((it, i) => { if (isCompleted(kind, level + ':' + key + ':' + i)) done++; });
+  return { done, total: arr.length, pct: pctClamp(done, arr.length) };
+}
+
 // Progreso de Vokabulär por nivel y (opcional) categoría 'word'|'verb'.
 function vocabProgress(level, cat) {
   const items = moduleItems('vocabulary').filter(it => it.level === level && (!cat || it.cat === cat));
@@ -369,7 +378,7 @@ if (typeof window !== 'undefined') {
     levelProgress, completedCount, totalActivities, hasLevelTest,
     moduleItems, isCompleted, itemStatus, moduleProgress, overallProgress,
     loadUnifiedProgress, progressMark, markCompleted, backfillLocalProgress,
-    vocabProgress, loadVocabProgress,
+    vocabProgress, loadVocabProgress, skillProgress,
     progressBar, progressPercentage, contentStatusIcon, completionBadge, lockedContentMessage
   });
 }

@@ -106,15 +106,16 @@ function showView(id) {
 
 // La barra inferior se ve en las secciones principales; se oculta durante actividades
 // que requieren concentración (lecciones, quizzes, prueba de nivel, Tala, etc.).
-const NAV_VIEWS = { home: 'home', aprender: 'aprender', miviaje: 'miviaje', progreso: 'progreso' };
+const NAV_VIEWS = { home: 'home', aprender: 'aprender', miviaje: 'miviaje', progreso: 'progreso', menu: 'aprender', vocab: 'aprender' };
 function _updateBottomNav(id) {
   const nav = document.getElementById('bottom-nav');
   if (!nav) return;
   const show = Object.prototype.hasOwnProperty.call(NAV_VIEWS, id);
   nav.classList.toggle('hidden', !show);
   if (show) {
+    const active = NAV_VIEWS[id];
     document.querySelectorAll('#bottom-nav .nav-btn').forEach(b => {
-      const on = b.getAttribute('data-nav') === id;
+      const on = b.getAttribute('data-nav') === active;
       b.classList.toggle('text-swe-blue', on);
       b.classList.toggle('text-gray-400', !on);
     });
@@ -153,6 +154,64 @@ function goHome() {
 function goMenu() {
   stopSpeech();
   showView('menu');
+  renderLevelMenu();
+}
+
+// Pantalla de nivel rediseñada: cabecera + fila de categorías + tarjetas grandes + examen.
+function renderLevelMenu() {
+  const el = document.getElementById('level-menu-body');
+  if (!el || typeof skillProgress !== 'function') return;
+  const lv = (state && state.level) || 'A';
+  const LBL = { A: 'Principiante', B: 'Básico', C: 'Intermedio', D: 'Avanzado' };
+  const SUB = { A: 'Nybörjare — Grundläggande svenska', B: 'Grundläggande — Vardagssvenska', C: 'Medelnivå — Samhälle och arbete', D: 'Avancerad — Arbetsliv och samhälle' };
+  const COL = { A: '#10B981', B: '#3B82F6', C: '#F59E0B', D: '#8B5CF6' };
+  const col = COL[lv] || '#10B981';
+  const ta = (moduleProgress('tala').byLevel[lv]) || { done: 0, total: 0, pct: 0 };
+  const cats = [
+    { label: 'Läsa', icon: '📖', desc: 'Comprende textos reales del día a día.', c: '#10B981', p: skillProgress('reading', lv), onclick: "selectMode('read')" },
+    { label: 'Skriva', icon: '✍️', desc: 'Aprende a escribir como en Suecia.', c: '#8B5CF6', p: skillProgress('writing', lv), onclick: "selectMode('write')" },
+    { label: 'Tala', icon: '🗣️', desc: 'Practica conversaciones reales.', c: '#F59E0B', p: ta, onclick: "showTala()" },
+    { label: 'Vokabulär', icon: '📚', desc: 'Aprende las palabras que realmente usarás.', c: '#3B82F6', p: vocabProgress(lv), onclick: "showVocab('" + lv + "')" }
+  ];
+  let d = 0, t = 0; cats.forEach(c => { d += c.p.done; t += c.p.total; });
+  const overall = pctClamp(d, t);
+  const doneCats = cats.filter(c => c.p.total > 0 && c.p.done >= c.p.total).length;
+  const examOpen = doneCats >= cats.length && cats.length > 0;
+  const chip = c => `<div class="flex flex-col items-center gap-1 flex-1"><span class="text-2xl">${c.icon}</span><span class="text-[11px] font-bold text-gray-600">${c.label}</span><span class="text-[11px] font-black" style="color:${c.c}">${fmtPct(c.p.pct)}</span></div>`;
+  const bigCard = c => `<button onclick="${c.onclick}" class="w-full flex items-center gap-4 bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-all text-left">
+      <span class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background:${c.c}22">${c.icon}</span>
+      <div class="flex-1 min-w-0"><div class="font-black text-gray-800">${c.label}</div><div class="text-xs text-gray-500 mb-1.5">${c.desc}</div>
+        <div class="flex items-center gap-2"><div class="flex-1">${progressBar(c.p.pct)}</div><span class="text-xs font-black" style="color:${c.c}">${fmtPct(c.p.pct)}</span></div></div>
+      <span class="text-gray-300 text-lg flex-shrink-0">›</span></button>`;
+  const examInfo = "openComingSoon('🏆','¿Cómo funciona el Examen Final?','• Aprueba con al menos 80 % para conseguir la Medalla SFI " + lv + ".  • Si no apruebas, podrás volver a intentarlo en 7 días.  • Mientras esperas, sigue practicando Läsa, Skriva, Tala y Vokabulär.  • Cada intento usa preguntas diferentes.  La Medalla SFI " + lv + " es un reconocimiento interno de Sueco con Sophie, no una certificación oficial.','Entendido')";
+  el.innerHTML = `
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-4 flex items-start gap-4">
+      <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-white text-3xl font-black flex-shrink-0 shadow" style="background:${col}">${lv}</div>
+      <div class="flex-1 min-w-0">
+        <div class="text-2xl font-black text-gray-800 leading-tight">${LBL[lv]}</div>
+        <div class="text-sm font-bold" style="color:${col}">🏅 Medalla SFI ${lv}</div>
+        <div class="text-xs text-gray-400 mb-2">${SUB[lv]}</div>
+        <div class="flex items-center gap-2"><div class="flex-1">${progressBar(overall, lv)}</div><span class="text-sm font-black" style="color:${col}">${fmtPct(overall)}</span></div>
+      </div>
+    </div>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-4 flex items-start justify-between gap-1">
+      ${cats.map(chip).join('')}
+      <div class="flex flex-col items-center gap-1 flex-1"><span class="text-2xl">🏆</span><span class="text-[11px] font-bold text-gray-600">Examen</span><span class="text-[11px] font-black text-gray-400">${examOpen ? 'Abierto' : 'Pendiente'}</span></div>
+    </div>
+    <div class="space-y-3 mb-4">${cats.map(bigCard).join('')}</div>
+    <div class="rounded-2xl p-4 mb-3 border-2 ${examOpen ? 'border-amber-300 bg-amber-50' : 'border-gray-200 bg-gray-50'}">
+      <div class="flex items-center gap-4">
+        <span class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 bg-amber-100">🏆</span>
+        <div class="flex-1 min-w-0"><div class="font-black text-gray-800">Examen Final SFI ${lv}</div><div class="text-xs text-gray-500">Demuestra tus conocimientos y consigue la Medalla SFI ${lv}. <button onclick="${examInfo}" class="text-swe-blue font-semibold underline">ℹ️ Información</button></div></div>
+        <span class="text-2xl">${examOpen ? '🔓' : '🔒'}</span>
+      </div>
+      <div class="mt-3 flex items-center justify-between bg-white/70 rounded-xl px-3 py-2">
+        <span class="text-xs text-amber-700 font-semibold">${examOpen ? '¡Ya puedes presentar el examen!' : 'Completa las 4 actividades para desbloquear el examen.'}</span>
+        <span class="text-xs font-black text-amber-600 whitespace-nowrap">${doneCats} de ${cats.length} completadas</span>
+      </div>
+      <button onclick="${examOpen ? "openComingSoon('🏆','Examen Final SFI " + lv + "','El examen estará disponible muy pronto. Te avisaremos.','Entendido')" : examInfo}" class="w-full mt-3 py-2.5 rounded-xl font-bold text-sm ${examOpen ? 'bg-amber-500 text-white hover:bg-amber-600' : 'bg-gray-200 text-gray-500'}">${examOpen ? 'Presentar examen' : 'ℹ️ Cómo funciona'}</button>
+    </div>
+    <div class="flex items-center gap-3 bg-blue-50 rounded-2xl p-4"><span class="text-2xl">⭐</span><div class="text-xs text-gray-600">Cuando completes todas las actividades, podrás presentar el examen y obtener tu <strong>Medalla SFI ${lv}</strong>.</div></div>`;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -629,6 +688,7 @@ function selectLevel(level) {
   state.level = level;
   updateMenuUI();
   showView('menu');
+  renderLevelMenu();
   state.stats.sessions++;
   saveStats();
   updateStats();
@@ -934,6 +994,7 @@ function openText(index) {
   const items = DB[state.level].read || [];
   const _t = items[index];
   state.currentText = _t ? { ..._t, questions: (_t.questions || []).map(shuffleOptions) } : _t;
+  state.readItemIndex = index;
   state.readQIndex = 0;
   state.readAnswers = [];
 
@@ -1010,6 +1071,8 @@ function showReadResult() {
   document.getElementById('read-result-emoji').textContent = pct >= 75 ? '🎉' : pct >= 50 ? '💪' : '📚';
   document.getElementById('read-result-score').textContent = `${correct} / ${total}`;
   document.getElementById('read-result-msg').textContent = pct >= 75 ? '¡Excelente lectura!' : '¡Sigue practicando!';
+  // Completó la actividad de lectura (terminó las preguntas).
+  try { if (typeof markCompleted === 'function' && state.readItemIndex != null) markCompleted('reading', state.level + ':read:' + state.readItemIndex, state.level, pct); } catch (e) {}
 }
 
 function nextText() {
@@ -1088,6 +1151,8 @@ function showExample() {
     `<div class="flex items-start gap-2 text-xs text-green-700"><span>✔</span>${c}</div>`
   ).join('');
   area.scrollIntoView({ behavior: 'smooth' });
+  // Completó la actividad de escritura (escribió y comparó con el ejemplo).
+  try { if (typeof markCompleted === 'function' && state.writeIndex != null) markCompleted('writing', state.level + ':write:' + state.writeIndex, state.level); } catch (e) {}
 }
 
 function clearWrite() {
