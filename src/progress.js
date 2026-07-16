@@ -296,6 +296,31 @@ async function loadVocabProgress() {
   } catch (e) {}
 }
 
+// ── Examen Final por nivel ──
+let examProgressMap = {};
+async function loadExamProgress() {
+  examProgressMap = {};
+  const s = window._sbSession;
+  if (!s || !s.id || typeof sb === 'undefined') return;
+  try {
+    const { data } = await sb.from('exam_progress').select('*').eq('user_id', s.id);
+    (data || []).forEach(r => { examProgressMap[r.level] = r; });
+  } catch (e) {}
+}
+// Estado del examen de un nivel: aprobado, bloqueado (7 días), próximo intento, mejor puntaje.
+// El administrador NO tiene la regla de los 7 días y puede intentar siempre.
+function examStatus(level) {
+  const row = examProgressMap[level] || null;
+  const passed = !!(row && row.passed);
+  const isAdmin = (typeof isAdminUser === 'function') && isAdminUser();
+  let locked = false, nextAt = null;
+  if (!isAdmin && !passed && row && row.last_attempt_at) {
+    const next = new Date(new Date(row.last_attempt_at).getTime() + 7 * 864e5);
+    if (next > new Date()) { locked = true; nextAt = next; }
+  }
+  return { passed, locked, nextAt, bestScore: (row && row.best_score) || 0, isAdmin };
+}
+
 // Marca un ítem. status por defecto 'completed'. Idempotente (upsert, no crea filas nuevas al repetir).
 async function progressMark(moduleKey, contentId, fields) {
   fields = fields || {};
@@ -378,7 +403,7 @@ if (typeof window !== 'undefined') {
     levelProgress, completedCount, totalActivities, hasLevelTest,
     moduleItems, isCompleted, itemStatus, moduleProgress, overallProgress,
     loadUnifiedProgress, progressMark, markCompleted, backfillLocalProgress,
-    vocabProgress, loadVocabProgress, skillProgress,
+    vocabProgress, loadVocabProgress, skillProgress, loadExamProgress, examStatus,
     progressBar, progressPercentage, contentStatusIcon, completionBadge, lockedContentMessage
   });
 }

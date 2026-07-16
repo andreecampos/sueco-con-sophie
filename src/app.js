@@ -178,12 +178,14 @@ function renderLevelMenu() {
   const doneCats = cats.filter(c => c.p.total > 0 && c.p.done >= c.p.total).length;
   const examOpen = doneCats >= cats.length && cats.length > 0;
   const chip = c => `<div class="flex flex-col items-center gap-1 flex-1"><span class="text-2xl">${c.icon}</span><span class="text-[11px] font-bold text-gray-600">${c.label}</span><span class="text-[11px] font-black" style="color:${c.c}">${fmtPct(c.p.pct)}</span></div>`;
-  const bigCard = c => `<button onclick="${c.onclick}" class="w-full flex items-center gap-4 bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-all text-left">
-      <span class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background:${c.c}22">${c.icon}</span>
+  const bigCard = c => `<button onclick="${c.onclick}" class="w-full flex items-center gap-4 rounded-2xl p-4 shadow-sm border hover:shadow-md transition-all text-left" style="background:${c.c}14; border-color:${c.c}33">
+      <span class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background:${c.c}2e">${c.icon}</span>
       <div class="flex-1 min-w-0"><div class="font-black text-gray-800">${c.label}</div><div class="text-xs text-gray-500 mb-1.5">${c.desc}</div>
         <div class="flex items-center gap-2"><div class="flex-1">${progressBar(c.p.pct)}</div><span class="text-xs font-black" style="color:${c.c}">${fmtPct(c.p.pct)}</span></div></div>
       <span class="text-gray-300 text-lg flex-shrink-0">›</span></button>`;
-  const examInfo = "openComingSoon('🏆','¿Cómo funciona el Examen Final?','• Aprueba con al menos 80 % para conseguir la Medalla SFI " + lv + ".  • Si no apruebas, podrás volver a intentarlo en 7 días.  • Mientras esperas, sigue practicando Läsa, Skriva, Tala y Vokabulär.  • Cada intento usa preguntas diferentes.  La Medalla SFI " + lv + " es un reconocimiento interno de Sueco con Sophie, no una certificación oficial.','Entendido')";
+  const ex = (typeof examStatus === 'function') ? examStatus(lv) : { passed: false, locked: false, isAdmin: false, nextAt: null, bestScore: 0 };
+  const canAttempt = ex.isAdmin || (examOpen && !ex.locked);   // admin: siempre; alumno: 4 categorías + sin bloqueo
+  const examInfo = "openExamInfo('" + lv + "')";
   el.innerHTML = `
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-4 flex items-start gap-4">
       <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-white text-3xl font-black flex-shrink-0 shadow" style="background:${col}">${lv}</div>
@@ -196,20 +198,22 @@ function renderLevelMenu() {
     </div>
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-4 flex items-start justify-between gap-1">
       ${cats.map(chip).join('')}
-      <div class="flex flex-col items-center gap-1 flex-1"><span class="text-2xl">🏆</span><span class="text-[11px] font-bold text-gray-600">Examen</span><span class="text-[11px] font-black text-gray-400">${examOpen ? 'Abierto' : 'Pendiente'}</span></div>
+      <div class="flex flex-col items-center gap-1 flex-1"><span class="text-2xl">🏆</span><span class="text-[11px] font-bold text-gray-600">Examen</span><span class="text-[11px] font-black ${ex.passed ? 'text-green-600' : 'text-gray-400'}">${ex.passed ? '🏅' : (canAttempt ? 'Abierto' : 'Pendiente')}</span></div>
     </div>
     <div class="space-y-3 mb-4">${cats.map(bigCard).join('')}</div>
-    <div class="rounded-2xl p-4 mb-3 border-2 ${examOpen ? 'border-amber-300 bg-amber-50' : 'border-gray-200 bg-gray-50'}">
+    <div class="rounded-2xl p-4 mb-3 border-2" style="border-color:#FDE68A; background:#FFFBEB;">
       <div class="flex items-center gap-4">
         <span class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 bg-amber-100">🏆</span>
         <div class="flex-1 min-w-0"><div class="font-black text-gray-800">Examen Final SFI ${lv}</div><div class="text-xs text-gray-500">Demuestra tus conocimientos y consigue la Medalla SFI ${lv}. <button onclick="${examInfo}" class="text-swe-blue font-semibold underline">ℹ️ Información</button></div></div>
-        <span class="text-2xl">${examOpen ? '🔓' : '🔒'}</span>
+        <span class="text-2xl">${ex.passed ? '🏅' : (canAttempt ? '🔓' : '🔒')}</span>
       </div>
-      <div class="mt-3 flex items-center justify-between bg-white/70 rounded-xl px-3 py-2">
-        <span class="text-xs text-amber-700 font-semibold">${examOpen ? '¡Ya puedes presentar el examen!' : 'Completa las 4 actividades para desbloquear el examen.'}</span>
-        <span class="text-xs font-black text-amber-600 whitespace-nowrap">${doneCats} de ${cats.length} completadas</span>
-      </div>
-      <button onclick="${examOpen ? "openComingSoon('🏆','Examen Final SFI " + lv + "','El examen estará disponible muy pronto. Te avisaremos.','Entendido')" : examInfo}" class="w-full mt-3 py-2.5 rounded-xl font-bold text-sm ${examOpen ? 'bg-amber-500 text-white hover:bg-amber-600' : 'bg-gray-200 text-gray-500'}">${examOpen ? 'Presentar examen' : 'ℹ️ Cómo funciona'}</button>
+      ${ex.passed
+        ? `<div class="mt-3 text-center bg-green-50 text-green-700 font-bold rounded-xl px-3 py-2 text-sm">✅ Medalla SFI ${lv} conseguida (mejor: ${fmtPct(ex.bestScore)})</div>`
+        : `<div class="mt-3 flex items-center justify-between bg-white/70 rounded-xl px-3 py-2">
+             <span class="text-xs text-amber-700 font-semibold">${canAttempt ? '¡Ya puedes presentar el examen!' : (ex.locked ? 'Bloqueado. Próximo intento: ' + _fmtDate(ex.nextAt) : 'Completa las 4 actividades para desbloquear.')}</span>
+             <span class="text-xs font-black text-amber-600 whitespace-nowrap">${doneCats} de ${cats.length}</span>
+           </div>`}
+      <button onclick="${canAttempt ? "startExam('" + lv + "')" : examInfo}" class="w-full mt-3 py-2.5 rounded-xl font-bold text-sm ${canAttempt ? 'bg-amber-500 text-white hover:bg-amber-600' : 'bg-gray-200 text-gray-500'}">${ex.passed ? '🔄 Repetir examen' : (canAttempt ? '🏆 Presentar examen (35 min)' : 'ℹ️ Cómo funciona')}</button>
     </div>
     <div class="flex items-center gap-3 bg-blue-50 rounded-2xl p-4"><span class="text-2xl">⭐</span><div class="text-xs text-gray-600">Cuando completes todas las actividades, podrás presentar el examen y obtener tu <strong>Medalla SFI ${lv}</strong>.</div></div>`;
 }
@@ -677,6 +681,120 @@ function finishVocabSession() {
 }
 function vocabExit() { showVocab(_vocabLevel); }
 function vocabRetry() { startVocabSession(_vocabLevel, vocabState ? vocabState.cat : 'all'); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   EXAMEN FINAL por nivel — 35 min, 80 % para la Medalla, preguntas al azar.
+   Reintento cada 7 días (el administrador no tiene ese límite).
+   ═══════════════════════════════════════════════════════════════════ */
+let examState = null;
+function _fmtDate(d) { try { return new Date(d).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' }); } catch (e) { return ''; } }
+
+function openExamInfo(lv) {
+  const lines = [
+    'Aprueba con al menos <strong>80 %</strong> para conseguir la <strong>Medalla SFI ' + lv + '</strong>.',
+    'Tienes <strong>35 minutos</strong> para completar el examen.',
+    'Si no apruebas, podrás volver a intentarlo <strong>dentro de 7 días</strong>.',
+    'Mientras esperas, sigue practicando Läsa, Skriva, Tala y Vokabulär para mejorar.',
+    'Cada intento usa <strong>preguntas diferentes</strong>, elegidas al azar.'
+  ];
+  const ic = document.getElementById('coming-icon'); if (ic) ic.textContent = '🏆';
+  const t = document.getElementById('coming-title'); if (t) t.textContent = '¿Cómo funciona el Examen Final?';
+  const tx = document.getElementById('coming-text');
+  if (tx) tx.innerHTML = '<ul style="text-align:left;list-style:none;padding:0;margin:0;">' + lines.map(l => '<li style="display:flex;gap:8px;margin-bottom:10px;"><span style="color:#006AA7;font-weight:900;">•</span><span>' + l + '</span></li>').join('') + '</ul><p style="margin-top:12px;font-size:12px;color:#9ca3af;line-height:1.5;">La Medalla SFI ' + lv + ' es un reconocimiento interno de Sueco con Sophie y no constituye una certificación oficial.</p>';
+  const b = document.getElementById('coming-btn'); if (b) b.textContent = 'Entendido';
+  const m = document.getElementById('coming-modal'); if (m) m.classList.remove('hidden');
+}
+
+function buildExamPool(level) {
+  const pool = [];
+  try { ((DB[level] && DB[level].test) || []).forEach(q => { if (q.options && q.correct != null) pool.push({ text: q.text, options: q.options.slice(), correct: q.correct }); }); } catch (e) {}
+  try { ((typeof GRAMMAR_DATA !== 'undefined' && GRAMMAR_DATA.topics) || []).filter(t => t.level === level).forEach(t => (t.questions || []).forEach(q => { if (q.options && q.correct != null) pool.push({ text: q.text, options: q.options.slice(), correct: q.correct }); })); } catch (e) {}
+  try { const vl = (window.VOCAB || []).filter(v => v.lvl === level); vl.forEach(v => { const q = buildVocabQuestion(v, vl); if (q && q.options) pool.push({ text: q.text.replace(/\n/g, ' '), options: q.options, correct: q.correct }); }); } catch (e) {}
+  return pool;
+}
+
+function startExam(level) {
+  if (!requireAccess()) return;
+  const st = examStatus(level);
+  if (st.locked) { showToast('Examen bloqueado. Próximo intento: ' + _fmtDate(st.nextAt), 'info'); return; }
+  let pool = buildExamPool(level);
+  if (pool.length < 5) { showToast('Aún no hay suficientes preguntas para este examen.', 'info'); return; }
+  pool = _vShuffle(pool).slice(0, Math.min(25, pool.length)).map(q => shuffleOptions({ ...q }));
+  examState = { level, qs: pool, i: 0, correct: 0, sel: null, endsAt: Date.now() + 35 * 60000, timer: null };
+  showView('exam');
+  document.getElementById('ex-level').textContent = level;
+  _examTick();
+  examState.timer = setInterval(_examTick, 1000);
+  renderExamQuestion();
+}
+function _examTick() {
+  const st = examState; if (!st) return;
+  const left = Math.max(0, Math.round((st.endsAt - Date.now()) / 1000));
+  const mm = String(Math.floor(left / 60)).padStart(2, '0'), ss = String(left % 60).padStart(2, '0');
+  const el = document.getElementById('ex-timer');
+  if (el) { el.textContent = mm + ':' + ss; el.classList.toggle('text-red-600', left <= 60); el.classList.toggle('text-amber-600', left > 60); }
+  if (left <= 0) finishExam(true);
+}
+function renderExamQuestion() {
+  const st = examState; if (!st) return;
+  const q = st.qs[st.i]; st.sel = null;
+  const total = st.qs.length;
+  document.getElementById('ex-bar').style.width = Math.round(st.i / total * 100) + '%';
+  document.getElementById('ex-num').textContent = (st.i + 1) + ' / ' + total;
+  document.getElementById('ex-question').textContent = q.text;
+  document.getElementById('ex-options').innerHTML = q.options.map((o, i) =>
+    `<button id="exo-${i}" onclick="examPick(${i})" class="w-full text-left rounded-2xl border-2 border-gray-200 bg-white px-4 py-3 font-semibold text-gray-800 hover:border-swe-blue transition-colors" style="min-height:52px;font-size:18px;">${o}</button>`).join('');
+  const nx = document.getElementById('ex-next'); nx.disabled = true; nx.textContent = (st.i >= total - 1) ? 'Finalizar examen' : 'Siguiente →';
+}
+function examPick(i) {
+  const st = examState; if (!st) return;
+  st.sel = i;
+  document.querySelectorAll('#ex-options button').forEach((b, idx) => { b.classList.toggle('border-swe-blue', idx === i); b.classList.toggle('bg-blue-50', idx === i); });
+  document.getElementById('ex-next').disabled = false;
+}
+function examNext() {
+  const st = examState; if (!st || st.sel == null) return;
+  if (st.sel === st.qs[st.i].correct) st.correct++;
+  st.i++;
+  if (st.i >= st.qs.length) { finishExam(false); return; }
+  renderExamQuestion();
+}
+async function finishExam(timedOut) {
+  const st = examState; if (!st) return;
+  if (st.timer) clearInterval(st.timer);
+  const total = st.qs.length;
+  const pct = Math.round(st.correct / total * 100);
+  const passed = pct >= 80;
+  await saveExamResult(st.level, passed, pct);
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  showView('exam-result');
+  set('er-pct', pct + ' %');
+  document.getElementById('er-pct').style.color = passed ? '#16a34a' : '#dc2626';
+  set('er-detail', st.correct + ' de ' + total + ' correctas · necesitas 80 %');
+  const medal = document.getElementById('er-medal'), retry = document.getElementById('er-retry-note');
+  if (passed) {
+    set('er-emoji', '🎉'); set('er-title', '¡Felicidades!');
+    set('er-sub', 'Has conseguido la Medalla SFI ' + st.level + '. ¡Dominas este nivel!');
+    medal.classList.remove('hidden'); set('er-medal-txt', 'Medalla SFI ' + st.level);
+    retry.classList.add('hidden');
+  } else {
+    set('er-emoji', '💪'); set('er-title', 'Todavía no');
+    set('er-sub', 'No alcanzaste el 80 % necesario para la Medalla SFI ' + st.level + '.' + (timedOut ? ' Se acabó el tiempo.' : ''));
+    medal.classList.add('hidden');
+    const ex = examStatus(st.level);
+    retry.classList.remove('hidden');
+    retry.innerHTML = ex.isAdmin ? 'Como administrador puedes reintentar cuando quieras.' : 'Podrás volver a intentarlo en 7 días. Mientras tanto, practica Läsa, Skriva, Tala y Vokabulär para mejorar.';
+  }
+}
+async function saveExamResult(level, passed, pct) {
+  const prev = examProgressMap[level] || {};
+  const row = { passed: passed || !!prev.passed, best_score: Math.max(prev.best_score || 0, pct), last_attempt_at: new Date().toISOString(), updated_at: new Date().toISOString() };
+  examProgressMap[level] = { ...prev, level, ...row };
+  const s = window._sbSession; if (!s || !s.id || typeof sb === 'undefined') return;
+  try { await sb.from('exam_progress').upsert({ user_id: s.id, level, ...row }, { onConflict: 'user_id,level' }); } catch (e) {}
+}
+function examExit() { if (examState && examState.timer) clearInterval(examState.timer); const lv = examState ? examState.level : (state && state.level); examState = null; if (lv) state.level = lv; goMenu(); }
+function examBackToLevel() { const lv = examState ? examState.level : (state && state.level); examState = null; if (lv) state.level = lv; goMenu(); }
 
 function selectLevel(level) {
   if (!requireAccess()) return;
@@ -4929,6 +5047,7 @@ async function initUnifiedProgress() {
   try { if (typeof loadTalaProgress === 'function') await loadTalaProgress(); } catch (e) {}
   try { if (typeof loadUnifiedProgress === 'function') await loadUnifiedProgress(); } catch (e) {}
   try { if (typeof loadVocabProgress === 'function') await loadVocabProgress(); } catch (e) {}
+  try { if (typeof loadExamProgress === 'function') await loadExamProgress(); } catch (e) {}
   try { await loadAssignedLevelFromDB(); } catch (e) {}
   renderDashboardProgress();
   try { renderInicio(); } catch (e) {}
@@ -5108,7 +5227,7 @@ function _accesoCard(o) {
   const media = o.img
     ? `<div class="w-16 h-16 rounded-full overflow-hidden mb-2 flex items-center justify-center" style="background:${o.bg}"><img src="${o.img}" alt="" class="w-full h-full object-cover" onerror="this.parentNode.innerHTML='👵';this.parentNode.style.fontSize='2rem'"></div>`
     : `<div class="w-16 h-16 rounded-full flex items-center justify-center text-3xl mb-2" style="background:${o.bg}">${o.icon}</div>`;
-  return `<button onclick="${o.onclick}" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 text-center card-hover flex flex-col items-center" style="min-height:158px">
+  return `<button onclick="${o.onclick}" class="rounded-2xl shadow-sm border p-4 text-center card-hover flex flex-col items-center" style="min-height:158px; background:${o.cardBg || '#fff'}; border-color:${o.cardBorder || '#f0f0f0'}">
     ${media}
     <div class="font-black text-gray-800 text-sm leading-tight">${o.title}</div>
     <div class="text-xs text-gray-500 mt-0.5 leading-snug flex-1">${o.text || ''}</div>
@@ -5119,10 +5238,10 @@ function renderAccesoRapido() {
   const el = document.getElementById('acceso-rapido');
   if (!el) return;
   el.innerHTML = [
-    _accesoCard({ img: '/juanita/juanita-chancleta.webp', bg: '#fce7f3', title: 'Practicando con Juanita', text: 'Una mamá latina que te enseña sueco.', badge: 'snart tillgänglig', badgeCls: 'text-pink-600 bg-pink-50', onclick: "openComingSoon('/juanita/juanita-chancleta.webp','Practicando con Juanita','Muy pronto practicarás conversaciones guiadas con Juanita.','Entendido')" }),
-    _accesoCard({ icon: '🇸🇪', bg: '#dcfce7', title: '¿Qué tan sueco eres?', text: 'Pon a prueba tus conocimientos.', badge: 'snart tillgänglig', badgeCls: 'text-emerald-600 bg-emerald-50', onclick: "openComingSoon('🇸🇪','¿Qué tan sueco eres?','Muy pronto podrás poner a prueba tus conocimientos.','Entendido')" }),
-    _accesoCard({ icon: '🗺️', bg: '#dbeafe', title: 'Mi viaje por Suecia', text: 'Explora el mapa de Suecia mientras aprendes.', btn: 'Explorar', btnCls: 'text-swe-blue bg-blue-50', onclick: "openComingSoon('🗺️','Mi viaje por Suecia','Muy pronto comenzarás tu viaje por Suecia desbloqueando ciudades mientras completas actividades.','Entendido')" }),
-    _accesoCard({ icon: '🏆', bg: '#ede9fe', title: 'Logros', text: 'Tus premios y medallas.', btn: 'Ver mis premios', btnCls: 'text-purple-600 bg-purple-50', onclick: "openComingSoon('🏆','Logros','Muy pronto podrás desbloquear insignias, medallas y premios conforme avances en la plataforma.','Entendido')" })
+    _accesoCard({ img: '/juanita/juanita-chancleta.webp', bg: '#ffd9dc', cardBg: '#fff1f2', cardBorder: '#fecdd3', title: 'Practicando con Juanita', text: 'Una mamá latina que te enseña sueco.', badge: 'snart tillgänglig', badgeCls: 'text-rose-600 bg-rose-100', onclick: "openComingSoon('/juanita/juanita-chancleta.webp','Practicando con Juanita','Muy pronto practicarás conversaciones guiadas con Juanita.','Entendido')" }),
+    _accesoCard({ icon: '🇸🇪', bg: '#c6f6d5', cardBg: '#f0fdf4', cardBorder: '#bbf7d0', title: '¿Qué tan sueco eres?', text: 'Pon a prueba tus conocimientos.', badge: 'snart tillgänglig', badgeCls: 'text-emerald-600 bg-emerald-100', onclick: "openComingSoon('🇸🇪','¿Qué tan sueco eres?','Muy pronto podrás poner a prueba tus conocimientos.','Entendido')" }),
+    _accesoCard({ icon: '🗺️', bg: '#bdeef2', cardBg: '#ecfeff', cardBorder: '#a5f3fc', title: 'Mi viaje por Suecia', text: 'Explora el mapa de Suecia mientras aprendes.', btn: 'Explorar', btnCls: 'text-cyan-700 bg-cyan-100', onclick: "openComingSoon('🗺️','Mi viaje por Suecia','Muy pronto comenzarás tu viaje por Suecia desbloqueando ciudades mientras completas actividades.','Entendido')" }),
+    _accesoCard({ icon: '🏆', bg: '#e0d7fb', cardBg: '#f5f3ff', cardBorder: '#ddd6fe', title: 'Logros', text: 'Tus premios y medallas.', btn: 'Ver mis premios', btnCls: 'text-violet-600 bg-violet-100', onclick: "openComingSoon('🏆','Logros','Muy pronto podrás desbloquear insignias, medallas y premios conforme avances en la plataforma.','Entendido')" })
   ].join('');
 }
 function renderInicio() {

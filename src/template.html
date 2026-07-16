@@ -716,6 +716,45 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════
+     VIEW: EXAMEN FINAL (por nivel) — con temporizador
+════════════════════════════════════════════════════════════ -->
+<div id="view-exam" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="max-w-2xl mx-auto px-4 py-5">
+    <div class="flex items-center gap-3 mb-3">
+      <button onclick="examExit()" class="text-red-600 bg-red-50 hover:bg-red-100 font-bold text-sm px-3 py-2 rounded-full transition-colors flex-shrink-0">✕ Salir</button>
+      <div class="flex-1 h-2.5 bg-gray-200 rounded-full overflow-hidden"><div id="ex-bar" class="h-full bg-amber-500 rounded-full" style="width:0%;transition:width .3s ease"></div></div>
+      <span id="ex-timer" class="text-sm font-black text-amber-600 whitespace-nowrap">35:00</span>
+    </div>
+    <div class="flex items-center gap-2 mb-4">
+      <span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-bold">🏆 Examen SFI <span id="ex-level">A</span></span>
+      <span id="ex-num" class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full font-semibold">1 / 25</span>
+    </div>
+    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-4">
+      <p id="ex-question" style="font-size:19px; line-height:1.5;" class="font-bold text-gray-800 mb-4"></p>
+      <div id="ex-options" class="space-y-3"></div>
+    </div>
+    <button id="ex-next" onclick="examNext()" class="w-full bg-swe-blue text-white rounded-2xl font-bold hover:bg-swe-dark transition-colors disabled:opacity-40" style="min-height:54px; font-size:18px;" disabled>Siguiente →</button>
+  </div>
+</div>
+
+<div id="view-exam-result" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="max-w-2xl mx-auto px-4 py-10 text-center">
+    <div id="er-emoji" class="text-6xl mb-3">🎉</div>
+    <div id="er-title" class="font-black text-gray-800 text-2xl mb-2">¡Felicidades!</div>
+    <div id="er-sub" class="text-gray-500 mb-5 px-4"></div>
+    <div class="bg-white rounded-2xl p-6 shadow border border-gray-100 mb-5">
+      <div class="text-5xl font-black mb-1" id="er-pct">0 %</div>
+      <div class="text-xs text-gray-400" id="er-detail">necesitas 80 % para la medalla</div>
+    </div>
+    <div id="er-medal" class="hidden mb-5"><div class="inline-flex items-center gap-2 bg-amber-50 text-amber-700 font-black px-5 py-3 rounded-2xl border-2 border-amber-200"><span class="text-2xl">🏅</span> <span id="er-medal-txt">Medalla SFI A</span></div></div>
+    <div id="er-retry-note" class="hidden text-sm text-gray-500 mb-5 px-4"></div>
+    <div class="space-y-2">
+      <button onclick="examBackToLevel()" class="w-full bg-swe-blue text-white py-3 rounded-2xl font-bold hover:bg-swe-dark transition-colors">Volver al nivel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
      VIEW: VOKABULÄR — inicio del módulo (por nivel)
 ════════════════════════════════════════════════════════════ -->
 <div id="view-vocab" class="view" style="background:#f4f7fb; min-height:100vh;">
