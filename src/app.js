@@ -870,6 +870,8 @@ function renderMedborgarPct() {
   const pe = document.getElementById('pct-medborgar'); if (pe) pe.textContent = (typeof fmtPct === 'function' ? fmtPct(p.pct) : p.pct + ' %');
   const be = document.getElementById('bar-medborgar'); if (be && typeof _colorBar === 'function') be.innerHTML = _colorBar(p.pct, '#4f46e5', 8);
 }
+const MEDB_PASS = 70;         // % mínimo para aprobar un módulo
+const MEDB_SIM_PASS = 75;     // % mínimo para aprobar el simulacro final (prueba real, exigente)
 let _medbIntroSeen = false;   // ya se mostró en esta sesión (evita que reaparezca al salir)
 async function showMedborgar() {
   if (!requireAccess()) return;
@@ -908,11 +910,11 @@ function renderMedborgarHome() {
   }
   const sim = document.getElementById('medb-simulacro');
   if (sim) {
-    const active = _medbActive();
-    const allDone = active.length > 0 && active.every(m => medbProgressMap[m.id] && medbProgressMap[m.id].completed);
-    sim.innerHTML = `<div class="rounded-2xl p-4 border-2 ${allDone ? 'border-amber-300 bg-amber-50' : 'border-gray-200 bg-gray-50'}">
-      <div class="flex items-center gap-3"><span class="text-2xl">📝</span><div class="flex-1"><div class="font-black text-gray-800">Simulacro Medborgarskapsprovet</div><div class="text-xs text-gray-500">Todo en sueco, con tiempo. ${allDone ? '¡Desbloqueado!' : 'Completa todos los módulos para desbloquear.'}</div></div>${allDone ? '🔓' : '🔒'}</div>
-      <button onclick="${allDone ? 'startMedbSimulacro()' : "showMini('Completa todos los módulos primero.','🔒')"}" class="w-full mt-3 py-2.5 rounded-xl font-bold text-sm ${allDone ? 'bg-amber-500 text-white hover:bg-amber-600' : 'bg-gray-200 text-gray-500'}">${allDone ? '📝 Empezar simulacro' : '🔒 Bloqueado'}</button></div>`;
+    const all = []; _medbActive().forEach(m => (m.questions || []).forEach(q => all.push(q)));
+    const nQ = Math.min(60, all.length);
+    sim.innerHTML = `<div class="rounded-2xl p-4 border-2 border-amber-300 bg-amber-50">
+      <div class="flex items-center gap-3"><span class="text-2xl">🏅</span><div class="flex-1"><div class="font-black text-gray-800">Prueba final — Medborgarskapsprovet</div><div class="text-xs text-gray-500">La prueba de verdad: ${nQ} preguntas en sueco de todos los temas. Necesitas ${MEDB_SIM_PASS}% para aprobar.</div></div>🔓</div>
+      <button onclick="startMedbSimulacro()" class="w-full mt-3 py-2.5 rounded-xl font-bold text-sm bg-amber-500 text-white hover:bg-amber-600">🏅 Empezar la prueba</button></div>`;
   }
   renderMedborgarPct();
 }
@@ -967,17 +969,27 @@ function medbWhy(btn) { const w = btn.parentNode.querySelector('.medb-why'); if 
 function medbNext() { const st = medbState; st.i++; if (st.i >= st.qs.length) { finishMedbLesson(); return; } renderMedbQuestion(); }
 async function finishMedbLesson() {
   const st = medbState, total = st.correct + st.wrong, pct = total ? Math.round(st.correct / total * 100) : 0;
-  if (!st.sim && st.module && st.module.id !== 'sim') { await saveMedbProgress(st.module.id, pct); }
+  const pass = st.sim ? MEDB_SIM_PASS : MEDB_PASS;
+  const passed = pct >= pass;
+  if (!st.sim && st.module && st.module.id !== 'sim') { await saveMedbProgress(st.module.id, pct, passed); }
   else if (st.sim) { const seen = _medbSimSeen(); (st.qs || []).forEach(q => { if (seen.indexOf(q.q) < 0) seen.push(q.q); }); _medbSimSaveSeen(seen); }   // marca vistas para no repetir
   showView('medborgar-result');
   const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
-  set('medr-title', st.sim ? '¡Simulacro completado!' : '¡Lección completada!');
+  set('medr-title', passed ? (st.sim ? '🎉 ¡Aprobaste el simulacro!' : '✅ ¡Módulo aprobado!') : (st.sim ? 'No aprobaste esta vez' : 'Aún no lo apruebas'));
   set('medr-pct', pct + ' %'); set('medr-ok', st.correct); set('medr-bad', st.wrong);
+  // Mensaje de aprobación/reprobación
+  const msg = document.getElementById('medr-msg');
+  if (msg) {
+    if (passed) { msg.className = 'text-center text-sm font-semibold text-green-700 mb-4'; msg.textContent = st.sim ? '¡Felicidades! Dominas los temas de Suecia. 🇸🇪' : 'Necesitabas ' + pass + '% para aprobar. ¡Bien hecho!'; }
+    else { msg.className = 'text-center text-sm font-semibold text-red-600 mb-4'; msg.textContent = 'Necesitas al menos ' + pass + '% para aprobar. Repasa y vuelve a intentarlo. 💪'; }
+    msg.classList.remove('hidden');
+  }
   const fix = document.getElementById('medr-fix'); if (fix) fix.classList.toggle('hidden', st.wrongList.length === 0);
 }
-async function saveMedbProgress(moduleId, pct) {
+async function saveMedbProgress(moduleId, pct, passed) {
   const prev = medbProgressMap[moduleId] || {};
-  const row = { completed: true, score: Math.max(prev.score || 0, pct), updated_at: new Date().toISOString() };
+  const nowCompleted = !!(prev.completed || passed);   // no se "des-aprueba" un módulo ya aprobado
+  const row = { completed: nowCompleted, score: Math.max(prev.score || 0, pct), updated_at: new Date().toISOString() };
   medbProgressMap[moduleId] = { ...prev, module_id: moduleId, ...row };
   const s = window._sbSession; if (!s || !s.id || typeof sb === 'undefined') return;
   try { await sb.from('medborgarskap_progress').upsert({ user_id: s.id, module_id: moduleId, ...row }, { onConflict: 'user_id,module_id' }); } catch (e) {}

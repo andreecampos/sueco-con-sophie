@@ -851,6 +851,7 @@
         <div><div class="text-xl font-bold text-red-500" id="medr-bad">0</div><div class="text-[10px] text-gray-500">errores</div></div>
       </div>
     </div>
+    <div id="medr-msg" class="hidden text-center text-sm font-semibold mb-4"></div>
     <div class="space-y-2">
       <button id="medr-fix" onclick="medbPracticeErrors()" class="hidden w-full border-2 border-swe-blue text-swe-blue py-3 rounded-2xl font-bold hover:bg-blue-50">🔁 Practicar errores</button>
       <button onclick="showMedborgar()" class="w-full bg-swe-blue text-white py-3 rounded-2xl font-bold hover:bg-swe-dark">Volver a los módulos</button>
@@ -1004,7 +1005,7 @@
         <span class="text-gray-300 text-lg flex-shrink-0">›</span>
       </button>
       <button onclick="openComingSoon('/juanita/juanita-chancleta.webp','Practicando con Juanita','Muy pronto practicarás conversaciones guiadas con Juanita, tu mamá latina favorita.','Entendido')" class="w-full flex items-center gap-4 bg-pink-50 rounded-2xl p-4 shadow-sm border-2 border-pink-100 hover:border-pink-300 transition-all text-left">
-        <span class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 bg-pink-50">👵</span>
+        <span class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 bg-pink-50 overflow-hidden"><img src="/juanita/juanita-chancleta.webp" class="w-11 h-11 object-contain" alt="Juanita" onerror="this.onerror=null;this.replaceWith(document.createTextNode('👵'))"></span>
         <div class="flex-1 min-w-0"><div class="font-bold text-gray-800">Practicando con Juanita</div><div class="text-xs text-gray-500">Conversaciones guiadas con IA</div></div>
         <span class="text-[10px] font-bold text-pink-600 bg-pink-50 px-2 py-1 rounded-full flex-shrink-0">snart tillgänglig</span>
       </button>
