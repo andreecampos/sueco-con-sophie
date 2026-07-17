@@ -2416,8 +2416,8 @@ let _returnToResenas = false;
 function goLoginFromResenas() { _returnToResenas = true; showView('login'); }
 
 // ── Planes de suscripción (landing) ──
-// ⬇️ Pega aquí el payment link de 3 MESES de Stripe cuando lo tengas:
-const ENROLL_LINK_3M = '';
+// Payment link de 3 MESES (total 1 071 kr) de Stripe:
+const ENROLL_LINK_3M = 'https://buy.stripe.com/aFa5kDgsy9wz7KYd3g4wM1i';
 const PLANS = {
   '3m': { perMonth: 357, total: 1071, totalLabel: '1 071 kr' },
   '1m': { perMonth: 399, total: 399, totalLabel: '399 kr/mes' }
@@ -2443,7 +2443,7 @@ async function startCheckout() {
 function openStartModal() { const b = document.getElementById('precios-box'); if (b) b.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
 function closeStartModal() {}
 
-// ── Landing /alumnos: precio mensual dinámico ──
+// ── Landing /alumnos: precio mensual dinámico + reseñas reales ──
 async function initAlumnosPage() {
   _selectedPlan = '3m';
   _renderPlanSelection();
@@ -2452,6 +2452,19 @@ async function initAlumnosPage() {
     const p = (cfg && cfg.priceNew) || 399;
     PLANS['1m'].perMonth = p; PLANS['1m'].total = p; PLANS['1m'].totalLabel = p + ' kr/mes';
     const lp = document.getElementById('landing-price-1m'); if (lp) lp.textContent = p;
+  } catch (e) {}
+  // Reseñas reales aprobadas (las que ya existen en la plataforma)
+  try {
+    const box = document.getElementById('landing-reviews');
+    if (box) {
+      const { data } = await sb.from('reviews').select('*').eq('status', 'approved').order('created_at', { ascending: false }).limit(2);
+      const revs = data || [];
+      if (!revs.length) { box.innerHTML = '<div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 text-center text-gray-400 text-sm">Pronto verás aquí las reseñas de nuestros alumnos. 🙌</div>'; }
+      else box.innerHTML = revs.map(rv => `<div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+        <div class="flex items-center gap-2 mb-2">${reviewAvatarHtml(rv, 'w-9 h-9 text-sm')}<div class="min-w-0"><div class="font-bold text-gray-800 text-sm truncate">${escHtml(rv.name)}</div><div class="text-xs">${starsHtml(rv.rating)}</div></div></div>
+        <p class="text-gray-600 text-sm leading-relaxed" style="display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;">${escHtml(rv.comment)}</p>
+      </div>`).join('');
+    }
   } catch (e) {}
 }
 
