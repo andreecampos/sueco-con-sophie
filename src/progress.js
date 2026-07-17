@@ -73,7 +73,7 @@ function assignedLevel() {
 
 // ¿El alumno ya hizo la prueba de nivel? (localStorage o Supabase)
 function hasLevelTest() {
-  try { if (typeof getNivelLast === 'function' && getNivelLast()) return true; } catch (e) {}
+  try { if (typeof getLastNivel === 'function' && getLastNivel()) return true; } catch (e) {}
   return !!_assignedDB;
 }
 

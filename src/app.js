@@ -2223,8 +2223,21 @@ async function loginStudent() {
 async function logoutStudent() {
   try { closeAccountModal(); } catch (e) {}
   try { closeMini(); closeComingSoon(); document.body.style.overflow = ''; } catch (e) {}
+  // Libera ESTE dispositivo del límite: al salir ya no cuenta (así no se "queda guardado").
+  try {
+    const s = window._sbSession;
+    if (s && s.id && typeof DEVICE_KEY !== 'undefined') {
+      const { data: st } = await sb.from('students').select('device_keys').eq('id', s.id).single();
+      if (st && Array.isArray(st.device_keys)) {
+        const nk = st.device_keys.filter(k => k !== DEVICE_KEY);
+        await sb.from('students').update({ device_keys: nk }).eq('id', s.id);
+      }
+    }
+  } catch (e) {}
   window._sbSession = null;
   await sb.auth.signOut();
+  // Limpia campos y muestra el login con correo/contraseña
+  try { const em = document.getElementById('login-email'); if (em) em.value = ''; const pw = document.getElementById('login-password'); if (pw) pw.value = ''; } catch (e) {}
   showView('login');
   showToast('Utloggad', 'info');
 }
@@ -4884,8 +4897,21 @@ let nivelState = {
 };
 
 // ── Abrir la pantalla de inicio de la prueba ─────────────────
+// ── Prueba de nivel: 1 vez cada 7 días ──────────────────────
+const NIVEL_COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000;
+function nivelLockUntil() {
+  const last = getLastNivel();
+  if (!last || !last.ts) return null;
+  const until = last.ts + NIVEL_COOLDOWN_MS;
+  return Date.now() < until ? until : null;
+}
+function _fmtNivelDate(ts) {
+  try { return new Date(ts).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' }); } catch (e) { return ''; }
+}
 function showNivelTest() {
   if (!requireAccess()) return;
+  const lock = nivelLockUntil();
+  if (lock) { showMini('La prueba de nivel se puede hacer una vez por semana. Podrás repetirla el ' + _fmtNivelDate(lock) + '.', '🔒'); return; }
   stopSpeech();
   stopNivelAudio();
   showView('nivel-intro');
@@ -5545,12 +5571,8 @@ function renderLevelCards() {
     if (!el) return;
     const lp = levelProgress(lv);
     const col = (typeof LEVEL_COLORS !== 'undefined' && LEVEL_COLORS[lv]) ? LEVEL_COLORS[lv] : { bar: 'bg-swe-blue', text: 'text-swe-blue', soft: 'bg-blue-50' };
-    if (!lp.available) {
-      el.innerHTML = `<div class="text-xs text-gray-400 font-semibold bg-gray-100 rounded-lg py-1">🔒 Bloqueado</div>`;
-      return;
-    }
     el.innerHTML = `
-      <div class="h-2 bg-gray-200 rounded-full overflow-hidden mb-1"><div class="h-full ${col.bar} rounded-full" style="width:${lp.pct}%;transition:width .4s ease"></div></div>
+      <div class="h-2 bg-gray-200 rounded-full overflow-hidden mb-1"><div class="h-full ${col.bar} rounded-full" style="width:${lp.pct || 0}%;transition:width .4s ease"></div></div>
       <div class="text-xs font-bold ${col.text}">${lp.total ? fmtPct(lp.pct) : 'Disponible'}</div>`;
   });
 }
@@ -5710,6 +5732,49 @@ function renderInicio() {
   renderObjetivo();
   renderContinua();
   renderAccesoRapido();
+  try { syncNotifs(); renderNotifBadge(); } catch (e) {}
+}
+
+/* ── NOTIFICACIONES (campana junto a Min konto) ─────────────── */
+function _getNotifs() { try { return JSON.parse(localStorage.getItem('sc_notifs') || '[]'); } catch (e) { return []; } }
+function _saveNotifs(a) { try { localStorage.setItem('sc_notifs', JSON.stringify(a)); } catch (e) {} }
+function _pushNotif(n) { const a = _getNotifs(); if (a.some(x => x.id === n.id)) return; a.unshift(n); _saveNotifs(a); }
+// Genera avisos automáticos (p. ej. prueba de nivel disponible tras 7 días)
+function syncNotifs() {
+  const last = (typeof getLastNivel === 'function') ? getLastNivel() : null;
+  if (last && last.ts) {
+    const until = last.ts + NIVEL_COOLDOWN_MS;
+    if (Date.now() >= until) {
+      _pushNotif({ id: 'niveltest_' + last.ts, title: '📊 Prueba de nivel disponible', body: 'Ya pasó una semana. Puedes volver a hacer la prueba de nivel para medir tu avance.', ts: until, read: false });
+    }
+  }
+}
+function notifUnread() { return _getNotifs().filter(n => !n.read).length; }
+function renderNotifBadge() {
+  const b = document.getElementById('notif-badge'); if (!b) return;
+  const n = notifUnread();
+  if (n > 0) { b.textContent = n > 9 ? '9+' : String(n); b.classList.remove('hidden'); }
+  else b.classList.add('hidden');
+}
+function _fmtNotifDate(ts) { try { return new Date(ts).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) { return ''; } }
+function openNotifs() {
+  syncNotifs();
+  const list = document.getElementById('notif-list');
+  const a = _getNotifs();
+  if (list) {
+    if (!a.length) list.innerHTML = '<div class="text-center text-gray-400 text-sm py-8">No tienes notificaciones. 🔔</div>';
+    else list.innerHTML = a.map(n => `<div class="rounded-2xl border ${n.read ? 'border-gray-100 bg-white' : 'border-blue-200 bg-blue-50'} p-3">
+      <div class="font-bold text-gray-800 text-sm">${n.title}</div>
+      <div class="text-xs text-gray-600 mt-0.5 leading-relaxed">${n.body}</div>
+      <div class="text-[10px] text-gray-400 mt-1">${_fmtNotifDate(n.ts)}</div>
+    </div>`).join('');
+  }
+  const m = document.getElementById('notif-modal'); if (m) m.classList.remove('hidden');
+}
+function closeNotifs() { const m = document.getElementById('notif-modal'); if (m) m.classList.add('hidden'); }
+function markNotifsRead() {
+  const a = _getNotifs(); a.forEach(n => n.read = true); _saveNotifs(a);
+  renderNotifBadge(); closeNotifs();
 }
 
 function renderHomeDashboard() {
@@ -5757,9 +5822,14 @@ function renderHomeDashboard() {
     skillsEl.innerHTML = rows + caption;
   }
 
-  // Botón de la prueba de nivel (azul)
+  // Botón de la prueba de nivel (azul) — bloqueado 7 días tras hacerla
   const testBtn = document.getElementById('dash-test-btn');
-  if (testBtn) testBtn.textContent = last ? '🔄 Repetir prueba de nivel' : '🎯 Hacer la prueba de nivel';
+  if (testBtn) {
+    const lock = (typeof nivelLockUntil === 'function') ? nivelLockUntil() : null;
+    if (!last) { testBtn.textContent = '🎯 Hacer la prueba de nivel'; testBtn.disabled = false; testBtn.classList.remove('opacity-60', 'cursor-not-allowed'); }
+    else if (lock) { testBtn.textContent = '🔒 Disponible el ' + _fmtNivelDate(lock); testBtn.disabled = true; testBtn.classList.add('opacity-60', 'cursor-not-allowed'); }
+    else { testBtn.textContent = '🔄 Repetir prueba de nivel'; testBtn.disabled = false; testBtn.classList.remove('opacity-60', 'cursor-not-allowed'); }
+  }
 
   // Chip "por corregir" (en qué mejorar ya mismo)
   const fixBtn = document.getElementById('dash-fix-btn');
