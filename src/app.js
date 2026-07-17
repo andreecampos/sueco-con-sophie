@@ -96,12 +96,14 @@ window.addEventListener('load', () => {
 window.addEventListener('beforeunload', () => stopSpeech());
 
 // ── Navigation ───────────────────────────────────────────────
+const VIEW_URLS = { home: '/', login: '/', alumnos: '/alumnos', resenas: '/resenas' };
 function showView(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   const v = document.getElementById('view-' + id);
   if (v) v.classList.add('active');
   window.scrollTo(0, 0);
   try { _updateBottomNav(id); } catch (e) {}
+  try { if (VIEW_URLS[id]) history.replaceState(null, '', VIEW_URLS[id]); } catch (e) {}
 }
 
 // La barra inferior se ve en las secciones principales; se oculta durante actividades
@@ -2453,19 +2455,56 @@ async function initAlumnosPage() {
     PLANS['1m'].perMonth = p; PLANS['1m'].total = p; PLANS['1m'].totalLabel = p + ' kr/mes';
     const lp = document.getElementById('landing-price-1m'); if (lp) lp.textContent = p;
   } catch (e) {}
-  // Reseñas reales aprobadas (las que ya existen en la plataforma)
+  // Reseñas reales aprobadas (carrusel: 2 a la vez, hasta 8)
+  await _loadLandingReviews();
+}
+
+// ── Carrusel de reseñas en la landing (2 por página, máx 8) ──
+let _landingReviews = [];
+let _landingRevPage = 0;
+async function _loadLandingReviews() {
   try {
-    const box = document.getElementById('landing-reviews');
-    if (box) {
-      const { data } = await sb.from('reviews').select('*').eq('status', 'approved').order('created_at', { ascending: false }).limit(2);
-      const revs = data || [];
-      if (!revs.length) { box.innerHTML = '<div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 text-center text-gray-400 text-sm">Pronto verás aquí las reseñas de nuestros alumnos. 🙌</div>'; }
-      else box.innerHTML = revs.map(rv => `<div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
-        <div class="flex items-center gap-2 mb-2">${reviewAvatarHtml(rv, 'w-9 h-9 text-sm')}<div class="min-w-0"><div class="font-bold text-gray-800 text-sm truncate">${escHtml(rv.name)}</div><div class="text-xs">${starsHtml(rv.rating)}</div></div></div>
-        <p class="text-gray-600 text-sm leading-relaxed" style="display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;">${escHtml(rv.comment)}</p>
-      </div>`).join('');
-    }
-  } catch (e) {}
+    const { data } = await sb.from('reviews').select('*').eq('status', 'approved').order('created_at', { ascending: false }).limit(8);
+    _landingReviews = data || [];
+  } catch (e) { _landingReviews = []; }
+  _landingRevPage = 0;
+  _renderLandingReviews();
+}
+function landingReviewsPage(dir) {
+  const per = 2; const pages = Math.max(1, Math.ceil(_landingReviews.length / per));
+  _landingRevPage = ((_landingRevPage + dir) % pages + pages) % pages;
+  _renderLandingReviews();
+}
+function _renderLandingReviews() {
+  const box = document.getElementById('landing-reviews'); if (!box) return;
+  const per = 2, total = _landingReviews.length;
+  const nav = document.getElementById('landing-reviews-nav');
+  if (!total) {
+    box.innerHTML = '<div class="sm:col-span-2 bg-white rounded-2xl p-4 shadow-sm border border-gray-100 text-center text-gray-400 text-sm">Pronto verás aquí las reseñas de nuestros alumnos. 🙌</div>';
+    if (nav) { nav.classList.add('hidden'); nav.classList.remove('flex'); }
+    return;
+  }
+  const pages = Math.max(1, Math.ceil(total / per));
+  if (_landingRevPage >= pages) _landingRevPage = 0;
+  const slice = _landingReviews.slice(_landingRevPage * per, _landingRevPage * per + per);
+  box.innerHTML = slice.map(rv => `<div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+    <div class="flex items-center gap-2 mb-1.5">${reviewAvatarHtml(rv, 'w-10 h-10 text-sm')}<div class="min-w-0"><div class="font-bold text-gray-800 text-sm truncate">${escHtml(rv.name)}${rv.verified ? ' <span class="text-emerald-600 text-[10px]">✔</span>' : ''}</div><div class="text-xs">${starsHtml(rv.rating)}</div></div></div>
+    <p class="text-gray-600 text-sm leading-relaxed" style="display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;">${escHtml(rv.comment)}</p>
+    <div class="text-[11px] text-gray-400 mt-1.5 font-medium">${fmtReviewDate(rv.created_at)}${reviewCountryLabel(rv)}</div>
+  </div>`).join('');
+  if (nav) {
+    if (pages > 1) { nav.classList.remove('hidden'); nav.classList.add('flex'); }
+    else { nav.classList.add('hidden'); nav.classList.remove('flex'); }
+  }
+  const dots = document.getElementById('landing-reviews-dots'); if (dots) dots.textContent = (_landingRevPage + 1) + ' / ' + pages;
+}
+
+// Ir a la página de reseñas desde la landing (recuerda volver a la landing)
+function goResenasFromLanding() { showView('resenas'); initResenasPage(); try { history.replaceState(null, '', '/resenas'); } catch (e) {} }
+// Botón "‹ Volver" de la página de reseñas: alumno → plataforma; público → landing
+function resenasBack() {
+  if (_resenaIsStudent) { goHome(); }
+  else { showView('alumnos'); initAlumnosPage(); try { history.replaceState(null, '', '/alumnos'); } catch (e) {} }
 }
 
 async function signInWithGoogle() {
