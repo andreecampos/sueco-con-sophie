@@ -2082,23 +2082,27 @@
      MODAL: Celebración a pantalla completa + descarga para redes
 ════════════════════════════════════════════════════════════ -->
 <div id="medal-celebrate-modal" class="hidden fixed inset-0 z-[90] flex items-center justify-center p-4" style="background:rgba(4,32,62,0.75); backdrop-filter:blur(3px);">
-  <div class="relative w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden" style="animation:fadeIn .2s ease;">
-    <div class="text-center px-6 pt-7 pb-6" style="background:linear-gradient(160deg,#0A66A8 0%,#004F7C 55%,#002D54 100%);">
-      <button onclick="closeMedalCelebrate()" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center" aria-label="Cerrar">✕</button>
+  <div class="relative w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden max-h-[94vh] overflow-y-auto" style="animation:fadeIn .2s ease;">
+    <div class="text-center px-6 pt-7 pb-5" style="background:linear-gradient(160deg,#0A66A8 0%,#004F7C 55%,#002D54 100%);">
+      <button onclick="closeMedalCelebrate()" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center z-10" aria-label="Cerrar">✕</button>
+      <div class="text-white/90 font-bold text-lg">¡Felicidades!</div>
       <div id="celebrate-title" class="text-white font-black text-2xl leading-tight mb-3"></div>
       <div class="relative">
         <div class="celebrate-rays"></div>
         <div id="celebrate-medal" class="relative"></div>
       </div>
+      <div id="celebrate-medal-name" class="text-white font-black text-lg mt-2"></div>
       <div class="celebrate-confetti" aria-hidden="true">
         <span></span><span></span><span></span><span></span><span></span><span></span>
         <span></span><span></span><span></span><span></span><span></span><span></span>
       </div>
     </div>
     <div class="bg-white px-6 pt-5 pb-6">
-      <div id="celebrate-label" class="text-center font-bold text-gray-800 bg-gray-50 rounded-xl py-2.5 px-3 mb-4"></div>
-      <label class="block text-xs font-bold text-gray-500 mb-1">Tu nombre (aparecerá en la imagen)</label>
-      <input id="celebrate-name" type="text" maxlength="32" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-center font-bold text-gray-800 mb-4 focus:border-swe-blue outline-none" placeholder="Escribe tu nombre">
+      <div class="text-center text-xs font-bold text-gray-400 tracking-wide uppercase mb-1">Otorgada a</div>
+      <input id="celebrate-name" type="text" maxlength="32" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-center font-black text-gray-800 text-lg mb-1 focus:border-swe-blue outline-none" placeholder="Escribe tu nombre">
+      <div class="text-center text-[11px] text-gray-400 mb-3">Puedes editar tu nombre antes de descargar</div>
+      <p id="celebrate-para" class="text-center text-sm text-gray-600 leading-relaxed mb-2"></p>
+      <div id="celebrate-date" class="text-center text-xs font-semibold text-gray-500 mb-4"></div>
       <button onclick="downloadMedalCard()" class="w-full bg-swe-blue text-white py-3 rounded-xl font-black text-sm hover:bg-swe-dark transition-colors mb-2">⬇️ Descargar para compartir</button>
       <button onclick="closeMedalCelebrate()" class="w-full bg-gray-100 text-gray-600 py-3 rounded-xl font-bold text-sm">Cerrar</button>
       <div class="text-center text-[11px] text-gray-400 mt-3">www.suecoconsophie.com</div>
