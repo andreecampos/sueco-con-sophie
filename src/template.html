@@ -1089,12 +1089,16 @@
      VIEW: PROGRESO — resumen + niveles
 ════════════════════════════════════════════════════════════ -->
 <div id="view-progreso" class="view" style="background:#f4f7fb; min-height:100vh;">
-  <div class="max-w-2xl lg:max-w-5xl mx-auto px-4 py-12 text-center">
-    <div class="text-6xl mb-3">🏅</div>
-    <div class="font-black text-gray-800 text-2xl mb-2">Tu progreso</div>
-    <p class="text-gray-500 leading-relaxed px-4">Muy pronto verás aquí tus <strong>medallas</strong> por cada nivel que completes (A, B, C, D) y todo lo que vas ganando y aprendiendo.</p>
-    <div class="mt-4 inline-block bg-blue-50 text-swe-blue font-bold px-4 py-2 rounded-full text-sm">snart tillgänglig 🔜</div>
-    <button onclick="goHome()" class="mt-6 block mx-auto text-swe-blue font-semibold text-sm underline">Ver mi avance en el Inicio</button>
+  <div class="bg-swe-blue text-white blue-header">
+    <div class="flag-line"></div>
+    <div class="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
+      <button onclick="goHome()" class="text-blue-300 hover:text-white transition-colors">← Inicio</button>
+      <div class="font-black text-lg flex-1 text-center">🏆 Mis logros</div>
+      <span class="w-12"></span>
+    </div>
+  </div>
+  <div class="max-w-2xl lg:max-w-3xl mx-auto px-4 py-6">
+    <div id="logros-content"></div>
   </div>
 </div>
 
@@ -2066,6 +2070,7 @@
 <script src="vocabData.js"></script>
 <script src="medborgarData.js"></script>
 <script src="progress.js"></script>
+<script src="achievements.js"></script>
 <script src="app.js"></script>
 
 <!-- ═══════════════════════════════════════════════════════════

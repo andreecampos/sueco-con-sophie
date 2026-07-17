@@ -130,7 +130,7 @@ function navGo(section) {
   if (section === 'home') { goHome(); return; }
   if (section === 'aprender') { if (!requireAccess()) return; stopSpeech(); showView('aprender'); renderDashboardProgress(); return; }
   if (section === 'miviaje') { if (!requireAccess()) return; stopSpeech(); showView('miviaje'); return; }
-  if (section === 'progreso') { if (!requireAccess()) return; stopSpeech(); showView('progreso'); return; }
+  if (section === 'progreso') { if (!requireAccess()) return; stopSpeech(); showView('progreso'); try { renderLogros(); } catch (e) {} return; }
 }
 
 // Modal genérico "próximamente".
@@ -5724,7 +5724,7 @@ function renderAccesoRapido() {
     _accesoCard({ img: '/juanita/juanita-chancleta.webp', bg: '#ffd9dc', cardBg: '#fff1f2', cardBorder: '#fecdd3', title: 'Practicando con Juanita', text: 'Una mamá latina que te enseña sueco.', badge: 'snart tillgänglig', badgeCls: 'text-rose-600 bg-rose-100', onclick: "openComingSoon('/juanita/juanita-chancleta.webp','Practicando con Juanita','Muy pronto practicarás conversaciones guiadas con Juanita.','Entendido')" }),
     _accesoCard({ icon: '🇸🇪', bg: '#c6f6d5', cardBg: '#f0fdf4', cardBorder: '#bbf7d0', title: '¿Qué tan sueco eres?', text: 'Pon a prueba tus conocimientos.', badge: 'snart tillgänglig', badgeCls: 'text-emerald-600 bg-emerald-100', onclick: "openComingSoon('🇸🇪','¿Qué tan sueco eres?','Muy pronto podrás poner a prueba tus conocimientos.','Entendido')" }),
     _accesoCard({ icon: '🗺️', bg: '#bdeef2', cardBg: '#ecfeff', cardBorder: '#a5f3fc', title: 'Mi viaje por Suecia', text: 'Explora el mapa de Suecia mientras aprendes.', btn: 'Explorar', btnCls: 'text-cyan-700 bg-cyan-100', onclick: "openComingSoon('🗺️','Mi viaje por Suecia','Muy pronto comenzarás tu viaje por Suecia desbloqueando ciudades mientras completas actividades.','Entendido')" }),
-    _accesoCard({ icon: '🏆', bg: '#e0d7fb', cardBg: '#f5f3ff', cardBorder: '#ddd6fe', title: 'Logros', text: 'Tus premios y medallas.', btn: 'Ver mis premios', btnCls: 'text-violet-600 bg-violet-100', onclick: "openComingSoon('🏆','Logros','Muy pronto podrás desbloquear insignias, medallas y premios conforme avances en la plataforma.','Entendido')" })
+    _accesoCard({ icon: '🏆', bg: '#e0d7fb', cardBg: '#f5f3ff', cardBorder: '#ddd6fe', title: 'Logros', text: 'Tus premios y medallas.', btn: 'Ver mis premios', btnCls: 'text-violet-600 bg-violet-100', onclick: "openLogros()" })
   ].join('');
 }
 function renderInicio() {
