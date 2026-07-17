@@ -2425,51 +2425,33 @@ const PLANS = {
 let _selectedPlan = '3m';
 function selectPlan(id) { if (PLANS[id]) _selectedPlan = id; _renderPlanSelection(); }
 function _renderPlanSelection() {
-  document.querySelectorAll('#start-modal .plan-card').forEach(c => {
+  document.querySelectorAll('.plan-card').forEach(c => {
     const on = c.getAttribute('data-plan') === _selectedPlan;
-    c.classList.toggle('border-swe-blue', on);
-    c.classList.toggle('bg-blue-50', on);
+    c.classList.toggle('border-yellow-400', on);
+    c.classList.toggle('ring-2', on);
+    c.classList.toggle('ring-yellow-200', on);
     c.classList.toggle('border-gray-200', !on);
-    c.classList.toggle('bg-white', !on);
-    const r = c.querySelector('.plan-radio');
-    if (r) {
-      r.classList.toggle('border-swe-blue', on);
-      r.classList.toggle('bg-swe-blue', on);
-      r.classList.toggle('border-gray-300', !on);
-      r.innerHTML = on ? '<span style="width:8px;height:8px;background:#fff;border-radius:50%;display:block"></span>' : '';
-    }
   });
-  const tot = document.getElementById('modal-total');
-  if (tot) tot.textContent = PLANS[_selectedPlan].totalLabel;
 }
-async function openStartModal(plan) {
-  if (plan && PLANS[plan]) _selectedPlan = plan;
-  // Precio mensual real desde la configuración
-  try {
-    const cfg = _stripeConfigCache || await getStripeConfig();
-    const p = (cfg && cfg.priceNew) || 399;
-    PLANS['1m'].perMonth = p; PLANS['1m'].total = p; PLANS['1m'].totalLabel = p + ' kr/mes';
-    const e = document.getElementById('modal-price-1m'); if (e) e.textContent = p;
-  } catch (e) {}
-  _renderPlanSelection();
-  const m = document.getElementById('start-modal'); if (m) m.classList.remove('hidden');
-}
-function closeStartModal() { const m = document.getElementById('start-modal'); if (m) m.classList.add('hidden'); }
 async function startCheckout() {
-  if (_selectedPlan === '1m') { closeStartModal(); openEnrollLink(); return; }
+  if (_selectedPlan === '1m') { openEnrollLink(); return; }
   // 3 meses
-  if (ENROLL_LINK_3M) { window.open(ENROLL_LINK_3M, '_blank'); closeStartModal(); }
+  if (ENROLL_LINK_3M) { window.open(ENROLL_LINK_3M, '_blank'); }
   else { showToast('El plan de 3 meses estará disponible en breve. Escríbenos por WhatsApp. 🙂', 'info'); }
 }
+// Compatibilidad: cualquier CTA antiguo lleva a la sección de precios
+function openStartModal() { const b = document.getElementById('precios-box'); if (b) b.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+function closeStartModal() {}
 
 // ── Landing /alumnos: precio mensual dinámico ──
 async function initAlumnosPage() {
+  _selectedPlan = '3m';
+  _renderPlanSelection();
   try {
     const cfg = _stripeConfigCache || await getStripeConfig();
     const p = (cfg && cfg.priceNew) || 399;
     PLANS['1m'].perMonth = p; PLANS['1m'].total = p; PLANS['1m'].totalLabel = p + ' kr/mes';
     const lp = document.getElementById('landing-price-1m'); if (lp) lp.textContent = p;
-    const mp = document.getElementById('modal-price-1m'); if (mp) mp.textContent = p;
   } catch (e) {}
 }
 
