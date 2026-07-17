@@ -873,20 +873,61 @@ function renderMedborgarPct() {
 const MEDB_PASS = 70;         // % mínimo para aprobar un módulo
 const MEDB_SIM_PASS = 75;     // % mínimo para aprobar el simulacro final (prueba real, exigente)
 let _medbIntroSeen = false;   // ya se mostró en esta sesión (evita que reaparezca al salir)
+let _medbOfficialSeen = false;// modal de preguntas oficiales ya mostrado esta sesión
+
+// Preguntas ya reveladas oficialmente por las autoridades suecas (respuesta fija conocida)
+const MEDB_OFFICIAL = [
+  { q: 'Vad är den offentliga sektorns främsta uppgift?', options: ['Att driva företag med vinst', 'Att ordna välfärdstjänster som vård och utbildning', 'Att formulera och stifta nya lagar', 'Att representera Sverige internationellt'], correct: 1, es: '¿Cuál es la tarea principal del sector público? → Organizar servicios de bienestar como sanidad y educación.' },
+  { q: 'Vilken titel har Sveriges statschef?', options: ['Talman', 'Kung', 'Landshövding', 'Statsminister'], correct: 1, es: '¿Qué título tiene el jefe de Estado de Suecia? → Rey (Kung). Suecia es una monarquía.' },
+  { q: 'Vilken svensk naturresurs har under lång tid haft stor betydelse för Sveriges ekonomi?', options: ['Naturgas', 'Olja', 'Skog', 'Uran'], correct: 2, es: '¿Qué recurso natural ha sido clave para la economía sueca? → El bosque (Skog).' },
+  { q: 'Vilket land var under nästan 700 år, fram till år 1809, en del av Sverige?', options: ['Norge', 'Finland', 'Danmark', 'Estland'], correct: 1, es: '¿Qué país fue parte de Suecia durante casi 700 años, hasta 1809? → Finlandia.' },
+  { q: 'En person skriver ett inlägg på sociala medier där hen kritiserar ett politiskt förslag. Vilket alternativ beskriver bäst hur yttrandefriheten fungerar?', options: ['Personen får bara uttrycka positiva åsikter om politiska förslag', 'Personen får uttrycka sin åsikt så länge det skrivna inte bryter mot lagen', 'Personen måste först be om tillstånd att skriva inlägget', 'Personen får inte namnge politikerna som lagt förslaget'], correct: 1, es: 'Libertad de expresión: se puede opinar mientras lo escrito no infrinja la ley.' }
+];
+function _renderMedbOfficial() {
+  const body = document.getElementById('medb-official-body');
+  if (!body) return;
+  body.innerHTML = MEDB_OFFICIAL.map((item, n) => {
+    const opts = item.options.map((o, i) => {
+      const ok = i === item.correct;
+      return '<div class="flex items-start gap-2 rounded-xl px-3 py-2 ' + (ok ? 'bg-green-50 border border-green-300' : 'bg-gray-50 border border-gray-100') + '">'
+        + '<span class="' + (ok ? 'text-green-600' : 'text-gray-300') + ' font-bold flex-shrink-0">' + (ok ? '✓' : '·') + '</span>'
+        + '<span class="' + (ok ? 'text-green-800 font-semibold' : 'text-gray-600') + '" style="font-size:15px">' + o + '</span></div>';
+    }).join('');
+    return '<div class="rounded-2xl border border-gray-100 p-3 shadow-sm">'
+      + '<div class="font-bold text-gray-800 mb-2" style="font-size:16px">' + (n + 1) + '. ' + item.q + '</div>'
+      + '<div class="space-y-1.5">' + opts + '</div>'
+      + '<div class="text-xs text-gray-500 mt-2 italic">' + item.es + '</div></div>';
+  }).join('');
+}
+function openMedbOfficial() { _medbOfficialSeen = true; _renderMedbOfficial(); const m = document.getElementById('medb-official'); if (m) m.classList.remove('hidden'); }
+function closeMedbOfficial() {
+  const cb = document.getElementById('medb-official-hide');
+  if (cb && cb.checked) { try { localStorage.setItem('sc_medb_official', '1'); } catch (e) {} }
+  const m = document.getElementById('medb-official'); if (m) m.classList.add('hidden');
+}
+function _maybeShowMedbOfficial() {
+  let hide = false; try { hide = localStorage.getItem('sc_medb_official') === '1'; } catch (e) {}
+  if (!hide && !_medbOfficialSeen) openMedbOfficial();
+}
 async function showMedborgar() {
   if (!requireAccess()) return;
   stopSpeech();
   let hide = false; try { hide = localStorage.getItem('sc_medb_intro') === '1'; } catch (e) {}
-  if (!hide && !_medbIntroSeen) { _medbIntroSeen = true; const m = document.getElementById('medb-intro'); if (m) m.classList.remove('hidden'); }
+  let introOpened = false;
+  if (!hide && !_medbIntroSeen) { _medbIntroSeen = true; introOpened = true; const m = document.getElementById('medb-intro'); if (m) m.classList.remove('hidden'); }
   showView('medborgar');
   renderMedborgarHome();
   await loadMedborgarProgress();
   renderMedborgarHome();
+  // Si el aviso no se mostró (ya oculto), enseña directamente las preguntas oficiales
+  if (!introOpened) _maybeShowMedbOfficial();
 }
 function closeMedbIntro() {
   const cb = document.getElementById('medb-intro-hide');
   if (cb && cb.checked) { try { localStorage.setItem('sc_medb_intro', '1'); } catch (e) {} }
   const m = document.getElementById('medb-intro'); if (m) m.classList.add('hidden');
+  // Tras cerrar el aviso, muestra las preguntas oficiales reveladas
+  _maybeShowMedbOfficial();
 }
 function showAprender() { if (!requireAccess()) return; stopSpeech(); showView('aprender'); renderDashboardProgress(); }
 function renderMedborgarHome() {
