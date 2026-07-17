@@ -283,16 +283,18 @@
 <div id="view-alumnos" class="view" style="background:#f4f7fb; min-height:100vh;">
 
   <!-- HEADER: banner con logo + banderas -->
-  <div class="max-w-2xl mx-auto px-3 pt-3">
+  <div class="max-w-5xl mx-auto px-3 pt-3">
     <img src="https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/logosophie.jpg" alt="Sueco con Sophie — Tu coach de sueco para latinos" style="width:100%; display:block; border-radius:14px;" onerror="this.style.display='none'">
   </div>
 
-  <!-- CUERPO (columna centrada) -->
-  <div class="max-w-2xl mx-auto px-4 mt-6 space-y-8">
+  <!-- CUERPO: 1 columna en móvil, 2 columnas en PC -->
+  <div class="max-w-5xl mx-auto px-4 mt-6 lg:grid lg:grid-cols-2 lg:gap-6 lg:items-start">
 
+    <!-- IZQUIERDA: qué incluye -->
+    <div class="mb-8 lg:mb-0">
     <!-- TODO LO QUE INCLUYE EL COACHING (centrado, colorido) -->
     <div>
-      <h2 class="font-black text-gray-800 mb-4 text-center flex items-center justify-center gap-2"><span class="text-yellow-400">⭐</span> TODO LO QUE INCLUYE EL COACHING</h2>
+      <h2 class="font-black text-gray-800 mb-4 text-center lg:text-left flex items-center justify-center lg:justify-start gap-2"><span class="text-yellow-400">⭐</span> TODO LO QUE INCLUYE EL COACHING</h2>
       <div class="space-y-2.5">
         <div class="rounded-2xl p-4 shadow-sm border bg-sky-50 border-sky-100 flex gap-3 items-center"><span class="w-11 h-11 rounded-xl flex items-center justify-center text-lg flex-shrink-0 bg-sky-100">🎥</span><div><div class="font-bold text-gray-800 text-sm">Clases en vivo por Zoom, todas las semanas</div><div class="text-xs text-gray-500">Pierde el miedo a hablar sueco y practica con acompañamiento real.</div></div></div>
         <div class="rounded-2xl p-4 shadow-sm border bg-violet-50 border-violet-100 flex gap-3 items-center"><span class="w-11 h-11 rounded-xl flex items-center justify-center text-lg flex-shrink-0 bg-violet-100">▶️</span><div><div class="font-bold text-gray-800 text-sm">¿No puedes asistir? Recibes la clase grabada</div><div class="text-xs text-gray-500">Para verla cuando quieras, a tu ritmo.</div></div></div>
@@ -301,9 +303,12 @@
         <div class="rounded-2xl p-4 shadow-sm border bg-rose-50 border-rose-100 flex gap-3 items-center"><span class="w-11 h-11 rounded-xl flex items-center justify-center text-lg flex-shrink-0 bg-rose-100">🏆</span><div><div class="font-bold text-gray-800 text-sm">Simulacro de la prueba nacional cada mes</div><div class="text-xs text-gray-500">La última semana lo resolvemos juntos y te familiarizas con el examen.</div></div></div>
       </div>
     </div>
+    </div>
 
+    <!-- DERECHA: reseñas + precios + FAQ -->
+    <div class="flex flex-col gap-8">
       <!-- PRECIOS -->
-      <div id="precios-box" class="rounded-2xl p-5 text-white shadow-lg" style="background:linear-gradient(160deg,#0a4d84,#00335A);">
+      <div id="precios-box" class="lg:order-2 rounded-2xl p-5 text-white shadow-lg" style="background:linear-gradient(160deg,#0a4d84,#00335A);">
         <div class="mb-1">
           <div class="font-black text-base leading-tight">PRECIOS SIMPLES, SIN COMPROMISOS</div>
         </div>
@@ -324,7 +329,7 @@
       </div>
 
       <!-- RESEÑAS (carrusel) -->
-      <div>
+      <div class="lg:order-1">
         <div class="flex items-center justify-between mb-3">
           <h2 class="font-black text-gray-800 flex items-center gap-2">RESEÑAS DE ALUMNOS <span class="text-yellow-400 text-sm">★★★★★</span></h2>
           <button onclick="goResenasFromLanding()" class="text-swe-blue text-xs font-bold">Ver todas →</button>
@@ -338,7 +343,7 @@
       </div>
 
       <!-- PREGUNTAS FRECUENTES -->
-      <div>
+      <div class="lg:order-3">
         <h2 class="font-black text-gray-800 mb-3">PREGUNTAS FRECUENTES</h2>
         <div class="space-y-2.5">
           <details class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group">
@@ -379,7 +384,12 @@
           </details>
         </div>
       </div>
+    </div>
 
+  </div>
+
+  <!-- EQUIPO (debajo, centrado) -->
+  <div class="max-w-2xl mx-auto px-4 mt-8">
       <!-- EQUIPO: Sophie y Andree -->
       <div>
         <h3 class="font-black text-gray-800 mb-3">SOPHIE Y ANDREE, TU EQUIPO</h3>
@@ -423,11 +433,10 @@
 
       </div>
       </div>
-
   </div>
 
   <!-- WHATSAPP -->
-  <div class="max-w-2xl mx-auto px-4 mt-6 mb-8">
+  <div class="max-w-5xl mx-auto px-4 mt-6 mb-8">
     <div class="bg-white rounded-2xl p-5 shadow border border-green-100 text-center">
       <div class="font-bold text-gray-800 mb-1">¿Tienes dudas antes de empezar?</div>
       <p class="text-sm text-gray-500 mb-3">Escríbenos por WhatsApp, te respondemos personalmente. Estamos para ayudarte. 🙂</p>
