@@ -2415,8 +2415,22 @@ function populateCountrySelect() {
 let _returnToResenas = false;
 function goLoginFromResenas() { _returnToResenas = true; showView('login'); }
 
+// ── Modal de inicio (empezar / ya soy alumno) ──
+async function openStartModal() {
+  try { const cfg = _stripeConfigCache || await getStripeConfig(); const p = (cfg && cfg.priceNew) || 339; const e = document.getElementById('start-modal-price'); if (e) e.textContent = p; } catch (e) {}
+  const m = document.getElementById('start-modal'); if (m) m.classList.remove('hidden');
+}
+function closeStartModal() { const m = document.getElementById('start-modal'); if (m) m.classList.add('hidden'); }
+
 // ── Landing /alumnos: animaciones + reseñas ──
 async function initAlumnosPage() {
+  // Precio real desde la configuración (evita valores fijos desactualizados)
+  try {
+    const cfg = _stripeConfigCache || await getStripeConfig();
+    const p = (cfg && cfg.priceNew) || 339;
+    const lp = document.getElementById('landing-price'); if (lp) lp.textContent = p;
+    const sp = document.getElementById('start-modal-price'); if (sp) sp.textContent = p;
+  } catch (e) {}
   // Contadores que suben
   document.querySelectorAll('#view-alumnos .count-up').forEach(el => {
     const target = parseInt(el.dataset.target, 10) || 0;
