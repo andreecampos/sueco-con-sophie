@@ -599,7 +599,7 @@
   <div class="bg-swe-blue text-white blue-header">
     <div class="flag-line"></div>
     <div class="max-w-4xl mx-auto px-4 py-5 sm:py-8 text-center relative">
-      <!-- (El alumno cierra sesión desde Min konto → Logga ut) -->
+      <!-- (El alumno cierra sesión desde Mitt konto → Logga ut) -->
       <!-- Admin button — hidden for students, shown only for admin -->
       <button id="admin-btn-home" onclick="goAdmin()" class="absolute top-0 right-4 text-blue-300 hover:text-white text-xs transition-colors px-3 py-1.5 rounded-lg hover:bg-white/10" style="display:none">
         ⚙️ Admin
@@ -649,7 +649,7 @@
       <div class="min-w-0 flex-1">
         <div class="font-black text-gray-800 text-xl leading-tight">Hej, <span id="profile-name">Andree</span>! 👋</div>
         <div class="mt-1 flex items-center gap-2">
-          <button onclick="openAccountModal()" class="inline-flex items-center gap-1 text-xs font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-full px-2.5 py-0.5 transition-colors">Min konto</button>
+          <button onclick="openAccountModal()" class="inline-flex items-center gap-1 text-xs font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-full px-2.5 py-0.5 transition-colors">Mitt konto</button>
           <button onclick="openNotifs()" class="relative inline-flex items-center justify-center w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 border border-gray-200 transition-colors" aria-label="Notificaciones" title="Notificaciones">
             <span class="text-sm">🔔</span>
             <span id="notif-badge" class="hidden absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-red-500 text-white text-[10px] font-black flex items-center justify-center leading-none">0</span>
@@ -15000,7 +15000,7 @@ function renderInicio() {
   try { syncNotifs(); renderNotifBadge(); } catch (e) {}
 }
 
-/* ── NOTIFICACIONES (campana junto a Min konto) ─────────────── */
+/* ── NOTIFICACIONES (campana junto a Mitt konto) ─────────────── */
 function _getNotifs() { try { return JSON.parse(localStorage.getItem('sc_notifs') || '[]'); } catch (e) { return []; } }
 function _saveNotifs(a) { try { localStorage.setItem('sc_notifs', JSON.stringify(a)); } catch (e) {} }
 function _pushNotif(n) { const a = _getNotifs(); if (a.some(x => x.id === n.id)) return; a.unshift(n); _saveNotifs(a); }

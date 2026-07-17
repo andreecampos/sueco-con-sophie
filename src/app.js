@@ -5743,7 +5743,7 @@ function renderInicio() {
   try { syncNotifs(); renderNotifBadge(); } catch (e) {}
 }
 
-/* ── NOTIFICACIONES (campana junto a Min konto) ─────────────── */
+/* ── NOTIFICACIONES (campana junto a Mitt konto) ─────────────── */
 function _getNotifs() { try { return JSON.parse(localStorage.getItem('sc_notifs') || '[]'); } catch (e) { return []; } }
 function _saveNotifs(a) { try { localStorage.setItem('sc_notifs', JSON.stringify(a)); } catch (e) {} }
 function _pushNotif(n) { const a = _getNotifs(); if (a.some(x => x.id === n.id)) return; a.unshift(n); _saveNotifs(a); }
