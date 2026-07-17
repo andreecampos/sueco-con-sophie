@@ -793,10 +793,18 @@ async function finishExam(timedOut) {
   if (nextBtn) nextBtn.classList.add('hidden');
   if (lastNote) lastNote.classList.add('hidden');
   if (motiv) motiv.classList.add('hidden');
-  if (approved && ex.medal) {
+  const _medalNow = (typeof medalEarned === 'function') ? medalEarned(st.level) : ex.medal;
+  const _minContent = (typeof ACH_MEDAL_MIN_CONTENT !== 'undefined') ? ACH_MEDAL_MIN_CONTENT : 50;
+  if (approved && ex.medal && _medalNow) {
     set('er-emoji', '🎉'); set('er-title', '¡Felicidades!');
     set('er-sub', '¡Aprobaste las ' + ex.required + ' pruebas y conseguiste la Medalla SFI ' + st.level + '! Dominas este nivel.');
     medal.classList.remove('hidden'); set('er-medal-txt', 'Medalla SFI ' + st.level);
+    // Celebración a pantalla completa (una sola vez, con descarga para redes)
+    try { setTimeout(() => celebrateMedalNow(st.level), 500); } catch (e) {}
+  } else if (approved && ex.medal) {
+    // Aprobó todos los exámenes pero le falta contenido para desbloquear la medalla.
+    set('er-emoji', '🎯'); set('er-title', '¡Exámenes aprobados!');
+    set('er-sub', 'Aprobaste los ' + ex.required + ' exámenes. Completa el ' + _minContent + '% del contenido de SFI ' + st.level + ' para desbloquear tu Medalla.');
   } else if (approved) {
     const nextNum = ex.passes + 1;               // siguiente prueba a rendir
     const isLast = nextNum >= ex.required;

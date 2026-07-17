@@ -88,20 +88,19 @@ function otherEarned(a) { return _logrosPreview || (a.done >= a.goal); }
 
 /* ── Render de la sección de Logros ───────────────────────────────── */
 
-function _medalCard(level, big) {
+function _medalCard(level) {
   const m = MEDAL_META[level];
   const earned = _logrosPreview || medalEarned(level);
-  const size = big ? 'w-24 h-24' : 'w-16 h-16';
   const gray = earned ? '' : 'filter grayscale opacity-40';
-  const img = `<img src="badges/${m.key}.webp" alt="${m.label}" class="${size} object-contain mx-auto ${gray}" style="transition:.3s" onerror="this.style.display='none'">`;
-  const chk = earned ? '<span class="absolute -top-1 -right-1 bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs shadow">✓</span>' : '';
+  const img = `<img src="badges/${m.key}.webp" alt="${m.label}" class="w-24 h-24 sm:w-28 sm:h-28 object-contain mx-auto ${gray}" style="transition:.3s" onerror="this.style.display='none'">`;
+  const chk = earned ? '<span class="absolute top-0 right-1 bg-green-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm shadow">✓</span>' : '';
   return `
-    <div class="flex flex-col items-center text-center">
+    <button onclick="openMedalPreview('${level}')" class="flex flex-col items-center text-center card-hover">
       <div class="relative">${img}${chk}</div>
-      <div class="font-black text-gray-800 text-sm mt-1" style="${earned ? 'color:' + m.color : ''}">${m.label}</div>
-      <div class="text-xs font-bold text-gray-700">SFI ${level}</div>
-      <div class="text-[11px] text-gray-400">${m.sub}</div>
-    </div>`;
+      <div class="font-black text-gray-800 text-base mt-1" style="${earned ? 'color:' + m.color : ''}">${m.label}</div>
+      <div class="text-sm font-bold text-gray-700">SFI ${level}</div>
+      <div class="text-xs text-gray-400">${m.sub}</div>
+    </button>`;
 }
 
 function _otherRow(a) {
@@ -144,9 +143,10 @@ function renderLogros() {
         <div class="font-black text-gray-800">Medallas de nivel</div>
         <div class="text-xs font-bold text-swe-blue bg-blue-50 px-2.5 py-1 rounded-full">${totalMedals}/4</div>
       </div>
-      <div class="grid grid-cols-4 gap-2">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
         ${SFI_LEVELS.map(lv => _medalCard(lv)).join('')}
       </div>
+      <div class="mt-3 text-center text-xs text-gray-400">Toca una medalla para verla y saber cómo conseguirla.</div>
       <div class="mt-4 text-[11px] text-gray-400 leading-snug">Cada medalla se consigue estudiando al menos el ${ACH_MEDAL_MIN_CONTENT}% del nivel y aprobando su Examen Final. Es un reconocimiento interno de Sueco con Sophie.</div>
     </div>
 
@@ -157,6 +157,8 @@ function renderLogros() {
     <div class="space-y-2.5">
       ${others.map(_otherRow).join('')}
     </div>`;
+
+  try { checkNewMedals(); } catch (e) {}
 }
 
 function openLogros() {
@@ -171,9 +173,118 @@ function toggleLogrosPreview() {
   renderLogros();
 }
 
+/* ── Previsualización de UNA medalla (el alumno ve color y cómo ganarla) ── */
+function openMedalPreview(level) {
+  const m = MEDAL_META[level];
+  if (!m) return;
+  const earned = _logrosPreview || medalEarned(level);
+  const admin = (typeof isAdminUser === 'function') && isAdminUser();
+  const setH = (id, v) => { const e = document.getElementById(id); if (e) e.innerHTML = v; };
+  setH('mp-img', `<img src="badges/${m.key}.webp" class="w-40 h-40 object-contain mx-auto" alt="${m.label}">`);
+  setH('mp-title', `Medalla de ${m.label}`);
+  setH('mp-sub', `SFI ${level} · ${m.sub}`);
+  setH('mp-status', earned
+    ? `<div class="bg-green-50 text-green-700 font-bold rounded-xl px-4 py-2.5 text-sm">✓ ¡Ya conseguiste esta medalla!</div>`
+    : `<div class="bg-amber-50 text-amber-800 rounded-xl px-4 py-2.5 text-sm text-left"><b>Cómo conseguirla:</b><br>${medalHint(level)}</div>`);
+  let btns = '';
+  if (earned) btns += `<button onclick="closeMedalPreview();showMedalCelebration('${level}')" class="w-full bg-swe-blue text-white py-3 rounded-xl font-bold text-sm hover:bg-swe-dark">🎉 Ver y descargar mi medalla</button>`;
+  if (admin && !earned) btns += `<button onclick="closeMedalPreview();showMedalCelebration('${level}')" class="w-full bg-violet-100 text-violet-700 py-3 rounded-xl font-bold text-sm">👁 Ver celebración (solo admin)</button>`;
+  btns += `<button onclick="closeMedalPreview()" class="w-full bg-gray-100 text-gray-600 py-3 rounded-xl font-bold text-sm">Cerrar</button>`;
+  setH('mp-btns', btns);
+  const mod = document.getElementById('medal-preview-modal'); if (mod) mod.classList.remove('hidden');
+}
+function closeMedalPreview() { const m = document.getElementById('medal-preview-modal'); if (m) m.classList.add('hidden'); }
+
+/* ── Celebración a pantalla completa + descarga para redes ──────────── */
+function showMedalCelebration(level) {
+  const m = MEDAL_META[level];
+  if (!m) return;
+  const name = (window._sbSession && window._sbSession.name) || '';
+  const t = document.getElementById('celebrate-title'); if (t) t.textContent = '¡Nivel SFI ' + level + ' completado!';
+  const med = document.getElementById('celebrate-medal'); if (med) med.innerHTML = `<img src="badges/${m.key}.webp" class="w-44 h-44 object-contain mx-auto celebrate-pop" alt="${m.label}">`;
+  const lbl = document.getElementById('celebrate-label'); if (lbl) lbl.textContent = 'Has ganado la medalla de ' + m.label;
+  const inp = document.getElementById('celebrate-name'); if (inp) inp.value = name;
+  window._celebrateLevel = level;
+  const mod = document.getElementById('medal-celebrate-modal'); if (mod) mod.classList.remove('hidden');
+}
+function closeMedalCelebrate() { const m = document.getElementById('medal-celebrate-modal'); if (m) m.classList.add('hidden'); }
+
+// Compone la imagen descargable (1080×1350, formato vertical para redes).
+function _composeMedalCard(level, name, cb) {
+  const m = MEDAL_META[level];
+  const W = 1080, H = 1350;
+  const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d');
+  const g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, '#0A66A8'); g.addColorStop(0.55, '#004F7C'); g.addColorStop(1, '#002D54');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  // rayos suaves detrás de la medalla
+  ctx.save(); ctx.translate(W / 2, 560); ctx.globalAlpha = 0.10; ctx.fillStyle = '#FECC02';
+  for (let i = 0; i < 24; i++) { ctx.rotate(Math.PI / 12); ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(40, -520); ctx.lineTo(-40, -520); ctx.closePath(); ctx.fill(); }
+  ctx.restore();
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#FECC02'; ctx.font = '800 62px Poppins, system-ui, Arial';
+  ctx.fillText('¡Nivel SFI ' + level + ' completado!', W / 2, 170);
+  const draw = (img) => {
+    if (img) { const s = 520; ctx.drawImage(img, (W - s) / 2, 300, s, s); }
+    ctx.fillStyle = '#FFFFFF'; ctx.font = '700 52px Poppins, system-ui, Arial';
+    ctx.fillText('Medalla de ' + m.label, W / 2, 930);
+    ctx.fillStyle = '#CFE3F3'; ctx.font = '500 40px Poppins, system-ui, Arial';
+    ctx.fillText('conseguida por', W / 2, 1010);
+    ctx.fillStyle = '#FFFFFF'; ctx.font = '800 66px Poppins, system-ui, Arial';
+    ctx.fillText((name || '').slice(0, 32), W / 2, 1092);
+    // pie con la web
+    ctx.fillStyle = 'rgba(255,255,255,0.14)'; ctx.fillRect(0, H - 130, W, 130);
+    ctx.fillStyle = '#FECC02'; ctx.font = '700 42px Poppins, system-ui, Arial';
+    ctx.fillText('www.suecoconsophie.com', W / 2, H - 52);
+    cb(cv);
+  };
+  const img = new Image();
+  img.onload = () => draw(img);
+  img.onerror = () => draw(null);
+  img.src = 'badges/' + m.key + '.webp';
+}
+function downloadMedalCard() {
+  const level = window._celebrateLevel || 'A';
+  const inp = document.getElementById('celebrate-name');
+  const name = ((inp && inp.value) || (window._sbSession && window._sbSession.name) || '').trim();
+  _composeMedalCard(level, name, (cv) => {
+    try {
+      cv.toBlob((b) => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(b);
+        a.download = 'medalla-sfi-' + level + '-suecoconsophie.png';
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+      }, 'image/png');
+    } catch (e) { alert('No se pudo generar la imagen en este navegador.'); }
+  });
+}
+
+/* ── Disparo automático al conseguir una medalla (sin tabla nueva) ──── */
+function _seenMedals() { try { return JSON.parse(localStorage.getItem('scs_medals_seen') || '[]'); } catch (e) { return []; } }
+function _saveSeenMedals(a) { try { localStorage.setItem('scs_medals_seen', JSON.stringify(a)); } catch (e) {} }
+function checkNewMedals() {
+  if (_logrosPreview) return;
+  let raw = null; try { raw = localStorage.getItem('scs_medals_seen'); } catch (e) {}
+  if (raw === null) { _saveSeenMedals(SFI_LEVELS.filter(medalEarned)); return; } // 1ª vez: sembrar sin celebrar
+  const seen = _seenMedals();
+  for (let i = 0; i < SFI_LEVELS.length; i++) {
+    const lv = SFI_LEVELS[i];
+    if (medalEarned(lv) && seen.indexOf(lv) < 0) { seen.push(lv); _saveSeenMedals(seen); showMedalCelebration(lv); return; }
+  }
+}
+// Marca como vista y celebra (se llama en el momento exacto de ganarla).
+function celebrateMedalNow(level) {
+  try { const seen = _seenMedals(); if (seen.indexOf(level) < 0) { seen.push(level); _saveSeenMedals(seen); } } catch (e) {}
+  showMedalCelebration(level);
+}
+
 if (typeof window !== 'undefined') {
   Object.assign(window, {
     medalEarned, medalHint, otherAchievements, renderLogros, openLogros, toggleLogrosPreview,
+    openMedalPreview, closeMedalPreview, showMedalCelebration, closeMedalCelebrate,
+    downloadMedalCard, checkNewMedals, celebrateMedalNow,
     MEDAL_META, ACH_MEDAL_MIN_CONTENT
   });
 }
