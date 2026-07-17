@@ -2415,51 +2415,61 @@ function populateCountrySelect() {
 let _returnToResenas = false;
 function goLoginFromResenas() { _returnToResenas = true; showView('login'); }
 
-// ── Modal de inicio (empezar / ya soy alumno) ──
-async function openStartModal() {
-  try { const cfg = _stripeConfigCache || await getStripeConfig(); const p = (cfg && cfg.priceNew) || 339; const e = document.getElementById('start-modal-price'); if (e) e.textContent = p; } catch (e) {}
+// ── Planes de suscripción (landing) ──
+// ⬇️ Pega aquí el payment link de 3 MESES de Stripe cuando lo tengas:
+const ENROLL_LINK_3M = '';
+const PLANS = {
+  '3m': { perMonth: 357, total: 1071, totalLabel: '1 071 kr' },
+  '1m': { perMonth: 399, total: 399, totalLabel: '399 kr/mes' }
+};
+let _selectedPlan = '3m';
+function selectPlan(id) { if (PLANS[id]) _selectedPlan = id; _renderPlanSelection(); }
+function _renderPlanSelection() {
+  document.querySelectorAll('#start-modal .plan-card').forEach(c => {
+    const on = c.getAttribute('data-plan') === _selectedPlan;
+    c.classList.toggle('border-swe-blue', on);
+    c.classList.toggle('bg-blue-50', on);
+    c.classList.toggle('border-gray-200', !on);
+    c.classList.toggle('bg-white', !on);
+    const r = c.querySelector('.plan-radio');
+    if (r) {
+      r.classList.toggle('border-swe-blue', on);
+      r.classList.toggle('bg-swe-blue', on);
+      r.classList.toggle('border-gray-300', !on);
+      r.innerHTML = on ? '<span style="width:8px;height:8px;background:#fff;border-radius:50%;display:block"></span>' : '';
+    }
+  });
+  const tot = document.getElementById('modal-total');
+  if (tot) tot.textContent = PLANS[_selectedPlan].totalLabel;
+}
+async function openStartModal(plan) {
+  if (plan && PLANS[plan]) _selectedPlan = plan;
+  // Precio mensual real desde la configuración
+  try {
+    const cfg = _stripeConfigCache || await getStripeConfig();
+    const p = (cfg && cfg.priceNew) || 399;
+    PLANS['1m'].perMonth = p; PLANS['1m'].total = p; PLANS['1m'].totalLabel = p + ' kr/mes';
+    const e = document.getElementById('modal-price-1m'); if (e) e.textContent = p;
+  } catch (e) {}
+  _renderPlanSelection();
   const m = document.getElementById('start-modal'); if (m) m.classList.remove('hidden');
 }
 function closeStartModal() { const m = document.getElementById('start-modal'); if (m) m.classList.add('hidden'); }
+async function startCheckout() {
+  if (_selectedPlan === '1m') { closeStartModal(); openEnrollLink(); return; }
+  // 3 meses
+  if (ENROLL_LINK_3M) { window.open(ENROLL_LINK_3M, '_blank'); closeStartModal(); }
+  else { showToast('El plan de 3 meses estará disponible en breve. Escríbenos por WhatsApp. 🙂', 'info'); }
+}
 
-// ── Landing /alumnos: animaciones + reseñas ──
+// ── Landing /alumnos: precio mensual dinámico ──
 async function initAlumnosPage() {
-  // Precio real desde la configuración (evita valores fijos desactualizados)
   try {
     const cfg = _stripeConfigCache || await getStripeConfig();
-    const p = (cfg && cfg.priceNew) || 339;
-    const lp = document.getElementById('landing-price'); if (lp) lp.textContent = p;
-    const sp = document.getElementById('start-modal-price'); if (sp) sp.textContent = p;
-  } catch (e) {}
-  // Contadores que suben
-  document.querySelectorAll('#view-alumnos .count-up').forEach(el => {
-    const target = parseInt(el.dataset.target, 10) || 0;
-    let cur = 0; const step = Math.max(1, Math.round(target / 40));
-    const t = setInterval(() => { cur += step; if (cur >= target) { cur = target; clearInterval(t); } el.textContent = String(cur); }, 25);
-  });
-  // Barras que se llenan
-  setTimeout(() => {
-    document.querySelectorAll('#landing-bars .bar-fill').forEach(bar => {
-      const target = parseInt(bar.dataset.target, 10) || 0;
-      bar.style.width = target + '%';
-      const pctEl = bar.parentElement && bar.parentElement.parentElement ? bar.parentElement.parentElement.querySelector('.bar-pct') : null;
-      if (pctEl) { let c = 0; const t = setInterval(() => { c += 3; if (c >= target) { c = target; clearInterval(t); } pctEl.textContent = c + '%'; }, 30); }
-    });
-  }, 200);
-  // Reseñas + valoración
-  try {
-    const { data } = await sb.from('reviews').select('*').eq('status', 'approved').order('created_at', { ascending: false }).limit(4);
-    const revs = data || [];
-    const ratingEl = document.getElementById('landing-rating');
-    if (ratingEl && revs.length) { const avg = revs.reduce((a, x) => a + (x.rating || 0), 0) / revs.length; ratingEl.textContent = avg.toFixed(1); }
-    const box = document.getElementById('landing-reviews');
-    if (box) {
-      if (!revs.length) { box.innerHTML = '<div class="sm:col-span-2 text-center text-gray-400 text-sm py-4">Pronto verás aquí las reseñas de nuestros alumnos. 🙌</div>'; }
-      else box.innerHTML = revs.map(rv => `<div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
-        <div class="flex items-center gap-2 mb-2">${reviewAvatarHtml(rv, 'w-9 h-9 text-sm')}<div class="min-w-0"><div class="font-bold text-gray-800 text-sm truncate">${escHtml(rv.name)}</div><div class="text-xs">${starsHtml(rv.rating)}</div></div></div>
-        <p class="text-gray-600 text-sm leading-relaxed" style="display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;">${escHtml(rv.comment)}</p>
-      </div>`).join('');
-    }
+    const p = (cfg && cfg.priceNew) || 399;
+    PLANS['1m'].perMonth = p; PLANS['1m'].total = p; PLANS['1m'].totalLabel = p + ' kr/mes';
+    const lp = document.getElementById('landing-price-1m'); if (lp) lp.textContent = p;
+    const mp = document.getElementById('modal-price-1m'); if (mp) mp.textContent = p;
   } catch (e) {}
 }
 

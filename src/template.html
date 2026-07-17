@@ -282,112 +282,51 @@
 ════════════════════════════════════════════════════════════ -->
 <div id="view-alumnos" class="view" style="background:#f4f7fb; min-height:100vh;">
 
-  <!-- HEADER: logo + marca + ingresar -->
-  <div style="background:#fff; border-bottom:1px solid #e5e7eb; position:sticky; top:0; z-index:40;">
-    <div class="max-w-3xl mx-auto px-4 py-2.5 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <img src="https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/logosophie.jpg" alt="Sueco con Sophie" style="width:38px; height:38px; border-radius:10px; object-fit:cover;" onerror="this.style.display='none'">
-        <span class="font-black text-gray-800 text-sm sm:text-base">Sueco con Sophie 🇸🇪</span>
-      </div>
-      <button onclick="showView('login')" class="text-swe-blue text-sm font-bold bg-blue-50 hover:bg-blue-100 px-3.5 py-1.5 rounded-full transition-colors">Ingresar</button>
-    </div>
+  <!-- HEADER: banner con logo + banderas -->
+  <div class="max-w-2xl mx-auto">
+    <img src="https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/logosophie.jpg" alt="Sueco con Sophie — Tu coach de sueco para latinos" style="width:100%; display:block;" onerror="this.style.display='none'">
   </div>
 
-  <!-- HERO: imagen de portada (diseño profesional) -->
-  <div class="max-w-3xl mx-auto">
-    <img src="https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/sophieportada.png" alt="Sueco con Sophie — De cero a sueco real" style="width:100%; display:block;" onerror="this.style.display='none'">
-  </div>
-  <div class="max-w-3xl mx-auto px-4 mt-4 text-center">
-    <button onclick="openStartModal()" style="background:#FECC02; color:#00335A; border:none; border-radius:14px; padding:16px 34px; font-size:1.1rem; font-weight:900; cursor:pointer; box-shadow:0 8px 24px rgba(254,204,2,0.4); font-family:inherit;">QUIERO EMPEZAR AHORA →</button>
+  <!-- Intro breve + CTA -->
+  <div class="max-w-md mx-auto px-4 mt-5 text-center">
+    <h1 class="text-lg font-black text-gray-800 leading-snug mb-1">Aprende sueco con clases en vivo y una plataforma completa</h1>
+    <p class="text-sm text-gray-500 mb-4">El coaching de Sophie para latinos. A tu ritmo y con apoyo cercano.</p>
+    <button onclick="openStartModal()" style="background:#FECC02; color:#00335A; border:none; border-radius:14px; padding:15px 32px; font-size:1.05rem; font-weight:900; cursor:pointer; box-shadow:0 8px 24px rgba(254,204,2,0.4); font-family:inherit;">QUIERO EMPEZAR AHORA →</button>
     <div class="mt-3"><button onclick="showView('login')" class="text-swe-blue text-sm underline underline-offset-2 font-semibold">Ya soy alumno/a · Entrar</button></div>
   </div>
 
-  <!-- Barra de features (azul oscuro) -->
-  <div class="max-w-3xl mx-auto px-4 mt-6">
-    <div class="rounded-2xl grid grid-cols-2 sm:grid-cols-5 gap-2 p-4 text-center text-white" style="background:#003f6b;">
-      <div class="px-1"><div class="text-2xl mb-1">🎥</div><div class="text-[11px] leading-tight font-semibold">Clases en vivo por Zoom</div></div>
-      <div class="px-1"><div class="text-2xl mb-1">▶️</div><div class="text-[11px] leading-tight font-semibold">Clases grabadas</div></div>
-      <div class="px-1"><div class="text-2xl mb-1">📄</div><div class="text-[11px] leading-tight font-semibold">Material en PDF</div></div>
-      <div class="px-1"><div class="text-2xl mb-1">💻</div><div class="text-[11px] leading-tight font-semibold">Plataforma exclusiva</div></div>
-      <div class="px-1 col-span-2 sm:col-span-1"><div class="text-2xl mb-1">📝</div><div class="text-[11px] leading-tight font-semibold">Simulacro prueba nacional</div></div>
+  <!-- QUÉ INCLUYE EL COACHING -->
+  <div class="max-w-md mx-auto px-4 mt-9">
+    <h2 class="text-xl font-black text-gray-800 text-center mb-4">Todo lo que incluye el coaching</h2>
+    <div class="space-y-2.5">
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex gap-3"><span class="text-xl flex-shrink-0">✅</span><div><div class="font-bold text-gray-800 text-sm">Clases en vivo por Zoom, todas las semanas</div><div class="text-xs text-gray-500">Pierde el miedo a hablar sueco y practica.</div></div></div>
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex gap-3"><span class="text-xl flex-shrink-0">✅</span><div><div class="font-bold text-gray-800 text-sm">¿No puedes asistir? Recibes la clase grabada</div><div class="text-xs text-gray-500">Para verla cuando quieras, a tu ritmo.</div></div></div>
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex gap-3"><span class="text-xl flex-shrink-0">✅</span><div><div class="font-bold text-gray-800 text-sm">Material de estudio en PDF</div><div class="text-xs text-gray-500">Con explicaciones claras y ejercicios.</div></div></div>
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex gap-3"><span class="text-xl flex-shrink-0">✅</span><div><div class="font-bold text-gray-800 text-sm">Acceso exclusivo a la plataforma Sueco con Sophie</div><div class="text-xs text-gray-500">Gramática, vocabulario, comprensión, ejercicios y más — SFI A, B, C y D. A tu propio ritmo.</div></div></div>
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex gap-3"><span class="text-xl flex-shrink-0">✅</span><div><div class="font-bold text-gray-800 text-sm">Simulacro de la prueba nacional cada mes</div><div class="text-xs text-gray-500">La última semana lo resolvemos juntos y te familiarizas con el examen.</div></div></div>
     </div>
   </div>
 
-  <!-- CONTADORES ANIMADOS -->
-  <div class="max-w-3xl mx-auto px-4 mt-6">
-    <div class="bg-white rounded-2xl shadow-lg border border-blue-100 grid grid-cols-2 sm:grid-cols-4 divide-x divide-gray-100">
-      <div class="text-center py-5 px-2"><div class="text-3xl font-black text-swe-blue count-up" data-target="100">0</div><div class="text-xs text-gray-500 mt-1">alumnos +</div></div>
-      <div class="text-center py-5 px-2"><div class="text-3xl font-black text-swe-blue count-up" data-target="11">0</div><div class="text-xs text-gray-500 mt-1">países</div></div>
-      <div class="text-center py-5 px-2"><div class="text-3xl font-black text-swe-blue" id="landing-rating">5.0</div><div class="text-xs text-gray-500 mt-1">★ valoración</div></div>
-      <div class="text-center py-5 px-2"><div class="text-3xl font-black text-swe-blue">1:1</div><div class="text-xs text-gray-500 mt-1">apoyo cercano</div></div>
-    </div>
-  </div>
-
-  <!-- QUÉ INCLUYE -->
-  <div class="max-w-3xl mx-auto px-4 mt-8">
-    <h2 class="text-xl font-black text-gray-800 text-center mb-5">Todo lo que incluye tu suscripción</h2>
+  <!-- PRECIOS -->
+  <div class="max-w-md mx-auto px-4 mt-10">
+    <h2 class="text-xl font-black text-gray-800 text-center mb-1">Precios</h2>
+    <p class="text-sm text-gray-500 text-center mb-5">Cancela cuando quieras · Pago seguro con Stripe</p>
     <div class="space-y-3">
-      <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex gap-3"><span class="text-2xl">🎥</span><div><div class="font-bold text-gray-800">Clases en vivo por Zoom, todas las semanas</div><div class="text-sm text-gray-500">El objetivo: que pierdas el miedo a hablar sueco.</div></div></div>
-      <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex gap-3"><span class="text-2xl">▶️</span><div><div class="font-bold text-gray-800">¿No puedes asistir? Recibes la clase grabada</div><div class="text-sm text-gray-500">Para verla cuando quieras, a tu ritmo.</div></div></div>
-      <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex gap-3"><span class="text-2xl">📄</span><div><div class="font-bold text-gray-800">Material de estudio en PDF</div><div class="text-sm text-gray-500">Con explicaciones claras y ejercicios.</div></div></div>
-      <div class="bg-white rounded-2xl p-4 shadow-sm border border-swe-blue/30 flex gap-3" style="background:linear-gradient(135deg,#eef6fc,#ffffff);"><span class="text-2xl">💻</span><div><div class="font-bold text-gray-800">Acceso exclusivo a la plataforma Sueco con Sophie</div><div class="text-sm text-gray-500">Practica gramática, vocabulario, comprensión, ejercicios interactivos, análisis de tu nivel y mucho más contenido — SFI A, B, C y D.</div></div></div>
-      <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex gap-3"><span class="text-2xl">📝</span><div><div class="font-bold text-gray-800">Simulacro de la prueba nacional cada mes</div><div class="text-sm text-gray-500">La última semana lo resolvemos juntos y te familiarizas con el examen real.</div></div></div>
+      <button onclick="openStartModal('3m')" class="w-full text-left rounded-2xl border-2 border-swe-blue bg-blue-50 p-4 flex items-center justify-between hover:shadow-sm transition-all">
+        <div><div class="flex items-center gap-2"><span class="font-black text-gray-800">3 meses</span><span class="text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded-full">AHORRA 10%</span></div><div class="text-xs text-gray-500 mt-0.5">Total 1 071 kr · cada 3 meses</div></div>
+        <div class="text-right"><div class="font-black text-swe-blue text-xl leading-none">357</div><div class="text-[11px] text-gray-500">kr/mes</div></div>
+      </button>
+      <button onclick="openStartModal('1m')" class="w-full text-left rounded-2xl border-2 border-gray-200 bg-white p-4 flex items-center justify-between hover:shadow-sm transition-all">
+        <div><div class="font-black text-gray-800">Mensual</div><div class="text-xs text-gray-500 mt-0.5">Cada mes</div></div>
+        <div class="text-right"><div class="font-black text-gray-800 text-xl leading-none" id="landing-price-1m">399</div><div class="text-[11px] text-gray-500">kr/mes</div></div>
+      </button>
     </div>
-  </div>
-
-  <!-- GRÁFICO ANIMADO: lo que practicas -->
-  <div class="max-w-3xl mx-auto px-4 mt-8">
-    <div class="bg-white rounded-2xl p-6 shadow border border-blue-100">
-      <h3 class="font-black text-gray-800 text-center mb-1">Practicas las 4 destrezas del sueco</h3>
-      <p class="text-xs text-gray-500 text-center mb-4">Lo que necesitas para la prueba nacional (Nationella provet)</p>
-      <div class="space-y-3" id="landing-bars">
-        <div><div class="flex justify-between text-sm mb-1"><span class="font-semibold text-gray-700">🎧 Comprensión auditiva</span><span class="text-gray-400 bar-pct">0%</span></div><div class="h-3 bg-gray-100 rounded-full overflow-hidden"><div class="bar-fill h-full rounded-full" data-target="95" style="width:0%;background:#006AA7;transition:width 1.2s ease"></div></div></div>
-        <div><div class="flex justify-between text-sm mb-1"><span class="font-semibold text-gray-700">📖 Lectura</span><span class="text-gray-400 bar-pct">0%</span></div><div class="h-3 bg-gray-100 rounded-full overflow-hidden"><div class="bar-fill h-full rounded-full" data-target="92" style="width:0%;background:#0EA5E9;transition:width 1.2s ease"></div></div></div>
-        <div><div class="flex justify-between text-sm mb-1"><span class="font-semibold text-gray-700">✍️ Escritura</span><span class="text-gray-400 bar-pct">0%</span></div><div class="h-3 bg-gray-100 rounded-full overflow-hidden"><div class="bar-fill h-full rounded-full" data-target="90" style="width:0%;background:#F59E0B;transition:width 1.2s ease"></div></div></div>
-        <div><div class="flex justify-between text-sm mb-1"><span class="font-semibold text-gray-700">🗣️ Conversación</span><span class="text-gray-400 bar-pct">0%</span></div><div class="h-3 bg-gray-100 rounded-full overflow-hidden"><div class="bar-fill h-full rounded-full" data-target="93" style="width:0%;background:#34A853;transition:width 1.2s ease"></div></div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- RESEÑAS (prueba social) -->
-  <div class="max-w-3xl mx-auto px-4 mt-8">
-    <h2 class="text-xl font-black text-gray-800 text-center mb-4">Lo que dicen nuestros alumnos</h2>
-    <div id="landing-reviews" class="grid sm:grid-cols-2 gap-3"></div>
-    <div class="text-center mt-4"><button onclick="showView('resenas'); initResenasPage();" class="text-swe-blue text-sm font-bold">⭐ Ver todas las reseñas →</button></div>
-  </div>
-
-  <!-- PRECIO + GARANTÍA -->
-  <div class="max-w-3xl mx-auto px-4 mt-10">
-    <div class="rounded-3xl p-8 text-center text-white" style="background:linear-gradient(160deg,#006AA7,#00335A);">
-      <div class="text-blue-100 text-sm mb-1">Suscripción mensual</div>
-      <div style="font-size:3.2rem; font-weight:900; line-height:1;"><span id="landing-price">339</span> <span style="font-size:1.3rem">kr/mes</span></div>
-      <div class="text-blue-100 text-sm mt-2 mb-5">Sin permanencia · Cancela cuando quieras · Acceso inmediato</div>
-      <button onclick="openStartModal()" style="background:#FECC02; color:#00335A; border:none; border-radius:14px; padding:16px 40px; font-size:1.15rem; font-weight:900; cursor:pointer; box-shadow:0 8px 24px rgba(254,204,2,0.4); font-family:inherit;">¡Empieza hoy tu viaje al sueco! 💛</button>
-      <div class="text-blue-200 text-xs mt-4">🔒 Pago seguro con Stripe</div>
-    </div>
-  </div>
-
-  <!-- HECHO PARA LATINOS -->
-  <div class="max-w-3xl mx-auto px-4 mt-8 text-center">
-    <div class="font-bold text-gray-700 mb-2">Hecho para latinos, pensado en ti ❤️</div>
-    <div class="text-2xl tracking-wide">🇵🇪 🇨🇴 🇪🇨 🇧🇷 🇪🇸 🇸🇻 🇳🇮 🇨🇱 🇦🇷 🇲🇽 <span class="text-sm text-gray-400 align-middle">y más</span></div>
-    <div class="flex flex-wrap justify-center gap-x-5 gap-y-2 mt-5 text-xs font-semibold text-gray-500">
-      <span>🎯 Enfocado en tus metas</span><span>🧠 Método comprobado</span><span>📈 Avanza a tu ritmo</span><span>💙 Apoyo y motivación</span>
-    </div>
-  </div>
-
-  <!-- CÓMO EMPIEZAS (pasos) -->
-  <div class="max-w-3xl mx-auto px-4 mt-10">
-    <h2 class="text-xl font-black text-gray-800 text-center mb-5">Empezar es muy fácil</h2>
-    <div class="grid sm:grid-cols-3 gap-3">
-      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 text-center"><div class="w-10 h-10 mx-auto mb-2 rounded-full bg-swe-blue text-white flex items-center justify-center font-black">1</div><div class="font-bold text-gray-800 text-sm">Suscríbete</div><div class="text-xs text-gray-500 mt-1">Pago mensual seguro con Stripe. Acceso inmediato.</div></div>
-      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 text-center"><div class="w-10 h-10 mx-auto mb-2 rounded-full bg-swe-blue text-white flex items-center justify-center font-black">2</div><div class="font-bold text-gray-800 text-sm">Escríbenos por WhatsApp</div><div class="text-xs text-gray-500 mt-1">Tras el pago, te ubicamos en tu grupo según tu nivel.</div></div>
-      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 text-center"><div class="w-10 h-10 mx-auto mb-2 rounded-full bg-swe-blue text-white flex items-center justify-center font-black">3</div><div class="font-bold text-gray-800 text-sm">¡A aprender!</div><div class="text-xs text-gray-500 mt-1">Clases en vivo + plataforma 24/7 a tu ritmo.</div></div>
-    </div>
+    <button onclick="openStartModal()" class="w-full mt-5 rounded-2xl py-4 font-black" style="background:#FECC02; color:#00335A; box-shadow:0 8px 24px rgba(254,204,2,0.4); border:none; cursor:pointer; font-family:inherit; font-size:1.05rem;">Empezar ahora →</button>
+    <div class="text-center mt-4"><button onclick="showView('resenas'); initResenasPage();" class="text-gray-400 text-xs font-semibold">⭐ Ver reseñas de alumnos →</button></div>
   </div>
 
   <!-- PREGUNTAS FRECUENTES -->
-  <div class="max-w-3xl mx-auto px-4 mt-10">
+  <div class="max-w-md mx-auto px-4 mt-10">
     <h2 class="text-xl font-black text-gray-800 text-center mb-5">Preguntas frecuentes</h2>
     <div class="space-y-2.5">
 
@@ -420,7 +359,7 @@
   </div>
 
   <!-- WHATSAPP -->
-  <div class="max-w-3xl mx-auto px-4 mt-8 mb-6">
+  <div class="max-w-md mx-auto px-4 mt-8 mb-6">
     <div class="bg-white rounded-2xl p-5 shadow border border-green-100 text-center">
       <div class="font-bold text-gray-800 mb-1">¿Tienes dudas antes de empezar?</div>
       <p class="text-sm text-gray-500 mb-3">Escríbenos por WhatsApp, te respondemos personalmente. Estamos para ayudarte. 🙂</p>
@@ -434,28 +373,36 @@
   <a href="https://wa.me/46769184251?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20las%20clases%20de%20sueco" target="_blank" rel="noopener" style="position:fixed; bottom:20px; right:20px; z-index:50; background:#25D366; width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 6px 20px rgba(0,0,0,0.25); text-decoration:none;" title="Escríbenos por WhatsApp"><svg viewBox="0 0 24 24" width="30" height="30" fill="#fff"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg></a>
 </div>
 
-<!-- MODAL: empezar / ya soy alumno -->
-<div id="start-modal" class="hidden fixed inset-0 z-[90] flex items-center justify-center p-4" style="background:rgba(15,23,42,0.65); backdrop-filter:blur(3px);">
-  <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl p-6 text-center relative" style="animation:fadeIn .2s ease;">
+<!-- MODAL: selector de planes (estilo minimalista) -->
+<div id="start-modal" class="hidden fixed inset-0 z-[90] flex items-center justify-center p-4" style="background:rgba(15,23,42,0.7); backdrop-filter:blur(3px);">
+  <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl p-6 relative" style="animation:fadeIn .2s ease;">
     <button onclick="closeStartModal()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 flex items-center justify-center" aria-label="Cerrar">✕</button>
-    <img src="https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/logosophie.jpg" alt="Sueco con Sophie" style="width:60px; height:60px; border-radius:16px; object-fit:cover; margin:2px auto 10px;" onerror="this.style.display='none'">
-    <div class="font-black text-gray-800 text-lg mb-1">Empieza a aprender sueco 🇸🇪</div>
-    <p class="text-sm text-gray-500 mb-5">Elige una opción para continuar</p>
 
-    <button onclick="closeStartModal(); openEnrollLink();" class="w-full rounded-2xl px-4 py-3.5 mb-3 font-black text-left flex items-center justify-between" style="background:#FECC02; color:#00335A;">
-      <span>
-        <span class="block">Empezar ahora</span>
-        <span class="block text-xs font-semibold" style="color:#5a4a00;">Suscripción · <span id="start-modal-price">339</span> kr/mes · cancela cuando quieras</span>
-      </span>
-      <span class="text-xl">→</span>
-    </button>
+    <div class="text-center mb-5">
+      <img src="https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/logosophie.jpg" alt="Sueco con Sophie" style="width:54px; height:54px; border-radius:15px; object-fit:cover; margin:2px auto 8px;" onerror="this.style.display='none'">
+      <div class="font-black text-gray-800 text-lg">Elige tu plan</div>
+      <p class="text-xs text-gray-500 mt-0.5">Clases en vivo + plataforma completa</p>
+    </div>
 
-    <button onclick="closeStartModal(); showView('login');" class="w-full rounded-2xl px-4 py-3.5 font-bold text-swe-blue border-2 border-swe-blue/30 hover:bg-blue-50 transition-colors flex items-center justify-between">
-      <span>Ya soy alumno · Ingresar</span>
-      <span class="text-xl">→</span>
-    </button>
+    <div class="space-y-3">
+      <button type="button" data-plan="3m" onclick="selectPlan('3m')" class="plan-card w-full text-left rounded-2xl border-2 p-4 flex items-center gap-3 transition-all">
+        <span class="plan-radio w-5 h-5 rounded-full border-2 flex-shrink-0 flex items-center justify-center"></span>
+        <div class="flex-1 min-w-0"><div class="flex items-center gap-2"><span class="font-black text-gray-800">3 meses</span><span class="text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded-full">AHORRA 10%</span></div><div class="text-xs text-gray-500 mt-0.5">Total 1 071 kr · cada 3 meses</div></div>
+        <div class="text-right flex-shrink-0"><div class="font-black text-gray-800 text-lg leading-none">357</div><div class="text-[11px] text-gray-500">kr/mes</div></div>
+      </button>
 
-    <div class="text-xs text-gray-400 mt-4">🔒 Pago seguro con Stripe</div>
+      <button type="button" data-plan="1m" onclick="selectPlan('1m')" class="plan-card w-full text-left rounded-2xl border-2 p-4 flex items-center gap-3 transition-all">
+        <span class="plan-radio w-5 h-5 rounded-full border-2 flex-shrink-0 flex items-center justify-center"></span>
+        <div class="flex-1 min-w-0"><div class="font-black text-gray-800">Mensual</div><div class="text-xs text-gray-500 mt-0.5">Cada mes</div></div>
+        <div class="text-right flex-shrink-0"><div class="font-black text-gray-800 text-lg leading-none"><span id="modal-price-1m">399</span></div><div class="text-[11px] text-gray-500">kr/mes</div></div>
+      </button>
+    </div>
+
+    <div class="text-center text-sm text-gray-500 mt-4">Total a pagar: <span class="font-black text-gray-800" id="modal-total">1 071 kr</span></div>
+
+    <button onclick="startCheckout()" class="w-full mt-3 rounded-2xl py-3.5 font-black" style="background:#FECC02; color:#00335A; border:none; cursor:pointer; font-family:inherit; font-size:1.05rem;">Empezar →</button>
+    <button onclick="closeStartModal(); showView('login');" class="w-full mt-2 text-swe-blue text-sm font-semibold py-2">Ya soy alumno · Ingresar</button>
+    <div class="text-center text-xs text-gray-400 mt-1">🔒 Pago seguro con Stripe · Cancela cuando quieras</div>
   </div>
 </div>
 
