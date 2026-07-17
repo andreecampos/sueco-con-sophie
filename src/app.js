@@ -4382,12 +4382,38 @@ function renderHorstEpisodes(level) {
         <div class="flex items-center gap-2 mt-1.5">
           <span class="text-xs bg-swe-blue/10 text-swe-blue px-2 py-0.5 rounded-full font-semibold">${LEVEL_LABEL[ep.level]||ep.level}</span>
           <span class="text-xs text-gray-400">🎧 ${ep.duration}</span>
-          <span class="text-xs text-gray-400">· ${ep.questions.length} preguntas</span>
+          <span class="text-xs text-gray-400">· ${Math.min(HORST_SHOW, ep.questions.length)} preguntas</span>
         </div>
       </div>
       <div class="${epDone ? 'text-green-500' : 'text-swe-blue'} text-lg flex-shrink-0">${epDone ? '↻' : '▶'}</div>
     </div>
   `; }).join('');
+}
+
+// ── Rotación de preguntas: 10 base por audio, mostrar 4 cada vez ──
+// Prioriza preguntas no vistas; solo repite cuando se agotan (por episodio, en localStorage).
+const HORST_SHOW = 4;
+function _horstSeen(epId) { try { return JSON.parse(localStorage.getItem('sc_horst_seen_' + epId) || '[]'); } catch (e) { return []; } }
+function _horstSaveSeen(epId, arr) { try { localStorage.setItem('sc_horst_seen_' + epId, JSON.stringify(arr)); } catch (e) {} }
+function _horstPickQuestions(ep) {
+  const all = ep.questions || [];
+  const n = all.length;
+  if (n <= HORST_SHOW) return all.slice();
+  const idxs = all.map((q, i) => i);
+  const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  let seen = _horstSeen(ep.id).filter(i => i < n);
+  let unseen = idxs.filter(i => seen.indexOf(i) < 0);
+  let chosen;
+  if (unseen.length >= HORST_SHOW) {
+    chosen = shuffle(unseen).slice(0, HORST_SHOW);
+    _horstSaveSeen(ep.id, seen.concat(chosen));
+  } else {
+    // agotadas: usa las que faltan por ver + completa con vistas al azar; reinicia el ciclo
+    const fill = shuffle(idxs.filter(i => unseen.indexOf(i) < 0)).slice(0, HORST_SHOW - unseen.length);
+    chosen = shuffle(unseen.concat(fill));
+    _horstSaveSeen(ep.id, chosen.slice());
+  }
+  return chosen.map(i => all[i]);
 }
 
 // ── Start an episode ─────────────────────────────────────────
@@ -4397,7 +4423,7 @@ function startHorstEpisode(epId, level) {
   if (!ep) return;
 
   horstState.episode = ep;
-  horstState.questions = [...ep.questions].map(shuffleOptions);
+  horstState.questions = _horstPickQuestions(ep).map(shuffleOptions);
   horstState.index = 0;
   horstState.score = 0;
   horstState.answered = false;
@@ -4412,7 +4438,7 @@ function startHorstEpisode(epId, level) {
   if (subEl)   subEl.textContent   = ep.subtitle;
   if (iconEl)  iconEl.textContent  = ep.icon;
   if (aTitle)  aTitle.textContent  = ep.title;
-  if (aDur)    aDur.textContent    = ep.duration + ' · ' + ep.questions.length + ' preguntas';
+  if (aDur)    aDur.textContent    = ep.duration + ' · ' + Math.min(HORST_SHOW, ep.questions.length) + ' preguntas';
 
   // Setup audio
   setupHorstAudio(ep);
@@ -4447,7 +4473,7 @@ function _updateAudioProgress() {
 }
 
 // Lista de audios grabados por Sophie (los .mp3 viven en /audio, se cargan bajo demanda)
-const SOPHIE_AUDIO_KEYS = ['a01','a02','a03','a04','a05','a06','b01','b02','b03','b04','b05','b06'];
+const SOPHIE_AUDIO_KEYS = ['a01','a02','a03','a04','a05','a06','b01','b02','b03','b04','b05','b06','c01','c02','c03','c04','c05','c06','d01','d02','d03','d04','d05','d06'];
 
 // ── Preparar el audio del episodio (HTML5 <audio>, carga solo el que se abre) ──
 function setupHorstAudio(ep) {
