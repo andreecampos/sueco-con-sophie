@@ -2677,10 +2677,15 @@ function selectPlan(id) { if (PLANS[id]) _selectedPlan = id; _renderPlanSelectio
 function _renderPlanSelection() {
   document.querySelectorAll('.plan-card').forEach(c => {
     const on = c.getAttribute('data-plan') === _selectedPlan;
+    // Seleccionado: borde + fondo amarillo + halo, para que se note claramente.
     c.classList.toggle('border-yellow-400', on);
+    c.classList.toggle('bg-yellow-50', on);
     c.classList.toggle('ring-2', on);
-    c.classList.toggle('ring-yellow-200', on);
+    c.classList.toggle('ring-yellow-300', on);
+    c.classList.toggle('shadow-md', on);
+    c.classList.toggle('bg-white', !on);
     c.classList.toggle('border-gray-200', !on);
+    c.classList.toggle('shadow-none', !on);
   });
 }
 async function startCheckout() {
@@ -4376,7 +4381,7 @@ function showLoadingOverlay(message) {
 async function openEnrollLink() {
   const cfg = _stripeConfigCache || await getStripeConfig();
   if (cfg.link) {
-    showLoadingOverlay('Preparando tu inscripción...');
+    // Redirección directa a Stripe (sin pantalla de carga que bloquee el proceso)
     window.location.href = cfg.link;
   } else {
     showToast('El link de pago aún no está configurado. Avisa a tu profesora.', 'info');
@@ -5135,6 +5140,8 @@ let nivelState = {
 // ── Prueba de nivel: 1 vez cada 7 días ──────────────────────
 const NIVEL_COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000;
 function nivelLockUntil() {
+  // El administrador nunca tiene bloqueo: acceso total a la prueba de nivel.
+  try { if (typeof isAdminUser === 'function' && isAdminUser()) return null; } catch (e) {}
   const last = getLastNivel();
   if (!last || !last.ts) return null;
   const until = last.ts + NIVEL_COOLDOWN_MS;
@@ -5158,9 +5165,25 @@ function startNivelTest() {
   nivelState.answered = false;
   nivelState.answers = [];
   nivelState.order = { pool: [], built: [] };
-  nivelState.questions = LEVEL_TEST.questions.map(shuffleOptions);
+  nivelState.questions = _buildNivelQuestions();
   showView('nivel-quiz');
   renderNivelQuestion();
+}
+
+// Construye una prueba ALEATORIA y equilibrada: elige preguntas al azar de cada
+// nivel×destreza, así cada intento es diferente. Mantiene el balance para que
+// la ubicación (A/B/C/D) siga siendo justa. Baraja orden y opciones.
+const NIVEL_PER_GROUP = 2; // preguntas por (nivel × destreza) → 2×4 destrezas×4 niveles = 32
+function _buildNivelQuestions() {
+  const all = (typeof LEVEL_TEST !== 'undefined' && LEVEL_TEST.questions) ? LEVEL_TEST.questions : [];
+  const groups = {};
+  all.forEach(q => { const k = q.nivel + '|' + q.skill; (groups[k] = groups[k] || []).push(q); });
+  let picked = [];
+  Object.keys(groups).forEach(k => {
+    const arr = groups[k].slice().sort(() => Math.random() - 0.5);
+    picked = picked.concat(arr.slice(0, NIVEL_PER_GROUP));
+  });
+  return picked.sort(() => Math.random() - 0.5).map(shuffleOptions);
 }
 
 function nivelCurrent() { return (nivelState.questions || LEVEL_TEST.questions)[nivelState.i]; }
@@ -5168,7 +5191,7 @@ function nivelCurrent() { return (nivelState.questions || LEVEL_TEST.questions)[
 // ── Pintar la pregunta actual ────────────────────────────────
 function renderNivelQuestion() {
   const q = nivelCurrent();
-  const total = LEVEL_TEST.questions.length;
+  const total = (nivelState.questions || LEVEL_TEST.questions).length;
   nivelState.answered = false;
   stopNivelAudio();
 
@@ -5404,12 +5427,12 @@ function showNivelExplanation(isCorrect, text) {
   const nextBtn = document.getElementById('nt-next-btn');
   if (nextBtn) {
     nextBtn.classList.remove('hidden');
-    nextBtn.textContent = (nivelState.i >= LEVEL_TEST.questions.length - 1) ? '🏁 Ver mi nivel' : 'Siguiente →';
+    nextBtn.textContent = (nivelState.i >= (nivelState.questions || LEVEL_TEST.questions).length - 1) ? '🏁 Ver mi nivel' : 'Siguiente →';
   }
 }
 
 function nextNivelQuestion() {
-  if (nivelState.i >= LEVEL_TEST.questions.length - 1) {
+  if (nivelState.i >= (nivelState.questions || LEVEL_TEST.questions).length - 1) {
     finishNivelTest();
   } else {
     nivelState.i++;

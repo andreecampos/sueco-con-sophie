@@ -12295,151 +12295,867 @@ const HORST_DATA = {
      'order'  = tala (ordena las palabras para formar la frase que dirías)
 ═══════════════════════════════════════════════════════════════ */
 const LEVEL_TEST = {
-  skills: {
-    las:   { label: 'Grammatik',     es: 'Gramática',            icon: '📐', color: '#7C3AED' },
-    tala:  { label: 'Ordförråd',     es: 'Vocabulario',          icon: '📚', color: '#F59E0B' },
-    hor:   { label: 'Hörförståelse', es: 'Comprensión auditiva', icon: '🎧', color: '#0EA5E9' },
-    skriv: { label: 'Skriva',        es: 'Escritura',            icon: '✍️', color: '#10B981' },
+  "skills": {
+    "las": {
+      "label": "Grammatik",
+      "es": "Gramática",
+      "icon": "📐",
+      "color": "#7C3AED"
+    },
+    "tala": {
+      "label": "Ordförråd",
+      "es": "Vocabulario",
+      "icon": "📚",
+      "color": "#F59E0B"
+    },
+    "hor": {
+      "label": "Hörförståelse",
+      "es": "Comprensión auditiva",
+      "icon": "🎧",
+      "color": "#0EA5E9"
+    },
+    "skriv": {
+      "label": "Skriva",
+      "es": "Escritura",
+      "icon": "✍️",
+      "color": "#10B981"
+    }
   },
-  questions: [
-    // ═════════════ NIVEL A · Principiante ═════════════
-    { nivel: 'A', skill: 'las', type: 'mc',
-      question: '¿en o ett?  «___ bok» (un libro)',
-      options: ['en', 'ett'], correct: 0,
-      explanation: '«en bok». La mayoría de las palabras usan «en» (8 de cada 10).' },
-    { nivel: 'A', skill: 'las', type: 'mc',
-      question: 'Elige la forma correcta: «Jag ___ svenska» (yo hablo sueco)',
-      options: ['talar', 'tala', 'talade'], correct: 0,
-      explanation: '«talar» es el presente (termina en -r). «talade» es pasado.' },
-    { nivel: 'A', skill: 'tala', type: 'mc',
-      question: '«hund» significa…',
-      options: ['perro', 'gato', 'caballo'], correct: 0,
-      explanation: '«hund» = perro. «katt» = gato, «häst» = caballo.' },
-    { nivel: 'A', skill: 'tala', type: 'mc',
-      question: '«tack» significa…',
-      options: ['gracias', 'perdón', 'hola'], correct: 0,
-      explanation: '«tack» = gracias. «förlåt» = perdón, «hej» = hola.' },
-    { nivel: 'A', skill: 'hor', type: 'listen', audioKey: 'a01',
-      question: 'Según el audio, ¿a qué hora se despierta Sophie?',
-      options: ['A las siete', 'A las ocho', 'A las seis'], correct: 0,
-      explanation: '«Varje morgon vaknar jag klockan sju» = cada mañana me despierto a las siete.' },
-    { nivel: 'A', skill: 'hor', type: 'listen', audioKey: 'a02',
-      question: '¿De dónde es Andree, el esposo de Sophie?',
-      options: ['De Perú', 'De Suecia', 'De España'], correct: 0,
-      explanation: '«Min man heter Andree och kommer från Peru» = mi esposo se llama Andree y viene de Perú.' },
-    { nivel: 'A', skill: 'skriv', type: 'order',
-      question: 'Ordena para decir «Me llamo María».',
-      words: ['Jag', 'heter', 'Maria'], answer: ['Jag', 'heter', 'Maria'],
-      explanation: '«Jag heter Maria». «heter» = me llamo.' },
-    { nivel: 'A', skill: 'skriv', type: 'mc',
-      question: '¿Cómo se dice «bebo café»?',
-      options: ['Jag dricker kaffe', 'Jag kaffe dricker', 'Dricker jag kaffe'], correct: 0,
-      explanation: 'Orden normal: sujeto + verbo + resto → «Jag dricker kaffe».' },
-
-    // ═════════════ NIVEL B · Básico ═════════════
-    { nivel: 'B', skill: 'las', type: 'mc',
-      question: 'Elige el pasado: «Igår ___ jag hem» (ayer fui a casa)',
-      options: ['gick', 'går', 'gå'], correct: 0,
-      explanation: '«gick» = fui (pasado de gå). «går» es presente.' },
-    { nivel: 'B', skill: 'las', type: 'mc',
-      question: 'Plural: «en bil» (un coche) → «två ___» (dos coches)',
-      options: ['bilar', 'bilor', 'biler'], correct: 0,
-      explanation: 'Muchas palabras «en» hacen el plural con -ar: bil → bilar.' },
-    { nivel: 'B', skill: 'tala', type: 'mc',
-      question: '«igår» significa…',
-      options: ['ayer', 'hoy', 'mañana'], correct: 0,
-      explanation: '«igår» = ayer. «idag» = hoy, «imorgon» = mañana.' },
-    { nivel: 'B', skill: 'tala', type: 'mc',
-      question: '«jobb» significa…',
-      options: ['trabajo', 'casa', 'escuela'], correct: 0,
-      explanation: '«jobb» = trabajo (también «arbete»).' },
-    { nivel: 'B', skill: 'hor', type: 'listen', audioKey: 'a03',
-      question: 'En el audio, ¿cómo paga Sophie en la tienda?',
-      options: ['Con tarjeta', 'En efectivo', 'Con Swish'], correct: 0,
-      explanation: '«Jag betalar med kort» = pago con tarjeta.' },
-    { nivel: 'B', skill: 'hor', type: 'listen', audioKey: 'a04',
-      question: 'Según el audio, ¿qué tiempo hace hoy?',
-      options: ['Nublado y frío', 'Soleado y cálido', 'Nieva mucho'], correct: 0,
-      explanation: '«Det är molnigt och kallt» = está nublado y frío. Solo cuatro grados.' },
-    { nivel: 'B', skill: 'skriv', type: 'mc',
-      question: '¿Cómo se pregunta «¿Bebes café?»?',
-      options: ['Dricker du kaffe?', 'Du dricker kaffe?', 'Kaffe du dricker?'], correct: 0,
-      explanation: 'En las preguntas de sí/no, el verbo va primero: «Dricker du kaffe?».' },
-    { nivel: 'B', skill: 'skriv', type: 'order',
-      question: 'Ordena para decir «Voy a comprar mañana».',
-      words: ['Jag', 'ska', 'handla', 'imorgon'], answer: ['Jag', 'ska', 'handla', 'imorgon'],
-      explanation: '«Jag ska handla imorgon». «ska» = voy a (futuro/plan).' },
-
-    // ═════════════ NIVEL C · Intermedio ═════════════
-    { nivel: 'C', skill: 'las', type: 'mc',
-      question: 'Perfecto: «Jag har ___ frukost» (he comido el desayuno)',
-      options: ['ätit', 'äter', 'åt'], correct: 0,
-      explanation: '«har ätit» = he comido. El perfecto es «har + supino» (ätit).' },
-    { nivel: 'C', skill: 'las', type: 'mc',
-      question: 'Subordinada: «Jag vet att han ___» (sé que él no viene)',
-      options: ['inte kommer', 'kommer inte'], correct: 0,
-      explanation: 'En una frase subordinada, el «inte» va ANTES del verbo: «…att han inte kommer».' },
-    { nivel: 'C', skill: 'tala', type: 'mc',
-      question: '«eftersom» significa…',
-      options: ['porque', 'aunque', 'mientras'], correct: 0,
-      explanation: '«eftersom» = porque (da la razón).' },
-    { nivel: 'C', skill: 'tala', type: 'mc',
-      question: '«ändå» significa…',
-      options: ['aun así / de todos modos', 'además', 'por ejemplo'], correct: 0,
-      explanation: '«ändå» = aun así. «dessutom» = además.' },
-    { nivel: 'C', skill: 'hor', type: 'listen', audioKey: 'b01',
-      question: 'En el audio, ¿qué fue lo primero que hizo Sophie al llegar a Suecia?',
-      options: ['Registrarse en Skatteverket', 'Buscar trabajo', 'Comprar una casa'], correct: 0,
-      explanation: '«Det första jag gjorde var att registrera mig hos Skatteverket» = lo primero fue registrarme en Skatteverket (la agencia tributaria).' },
-    { nivel: 'C', skill: 'hor', type: 'listen', audioKey: 'b03',
-      question: 'Según el audio, ¿cómo practicaba sueco en casa?',
-      options: ['Viendo TV con subtítulos', 'Leyendo el periódico', 'Escuchando la radio'], correct: 0,
-      explanation: '«titta på svenska tv-program med undertexter» = ver programas suecos con subtítulos.' },
-    { nivel: 'C', skill: 'skriv', type: 'mc',
-      question: 'Elige la frase correcta (ella dijo que no viene):',
-      options: ['Hon sa att hon inte kommer', 'Hon sa att hon kommer inte', 'Att hon inte kommer hon sa'], correct: 0,
-      explanation: 'Tras «att» (que), el «inte» va antes del verbo: «…att hon inte kommer».' },
-    { nivel: 'C', skill: 'skriv', type: 'order',
-      question: 'Ordena para decir «Creo que el sueco es útil».',
-      words: ['Jag', 'tycker', 'att', 'svenska', 'är', 'användbart'],
-      answer: ['Jag', 'tycker', 'att', 'svenska', 'är', 'användbart'],
-      explanation: '«Jag tycker att svenska är användbart». «tycker att» = creo que.' },
-
-    // ═════════════ NIVEL D · Avanzado ═════════════
-    { nivel: 'D', skill: 'las', type: 'mc',
-      question: 'Voz pasiva: «Dörren ___» (la puerta se abre)',
-      options: ['öppnas', 'öppnar', 'öppnade'], correct: 0,
-      explanation: 'La pasiva se forma con -s: «Dörren öppnas» = la puerta se abre / es abierta.' },
-    { nivel: 'D', skill: 'las', type: 'mc',
-      question: 'Condicional: «Jag ___ vilja ha en kaffe» (querría un café)',
-      options: ['skulle', 'ska', 'vill'], correct: 0,
-      explanation: '«skulle vilja» = querría (forma cortés). «skulle» = -ría.' },
-    { nivel: 'D', skill: 'tala', type: 'mc',
-      question: '«hävda» significa…',
-      options: ['afirmar / sostener', 'preguntar', 'olvidar'], correct: 0,
-      explanation: '«hävda» = afirmar/sostener algo con firmeza.' },
-    { nivel: 'D', skill: 'tala', type: 'mc',
-      question: 'En un texto, «inledning» es…',
-      options: ['la introducción', 'la conclusión', 'el título'], correct: 0,
-      explanation: '«inledning» = introducción. «avslutning» = conclusión.' },
-    { nivel: 'D', skill: 'hor', type: 'listen', audioKey: 'b05',
-      question: 'En el audio, ¿a qué número se llama para consejo médico en Suecia?',
-      options: ['1177', '112', '90000'], correct: 0,
-      explanation: '«Man kan också ringa 1177 — det är sjukvårdsrådgivningen» = también puedes llamar al 1177, que es la línea de consejo sanitario.' },
-    { nivel: 'D', skill: 'hor', type: 'listen', audioKey: 'b06',
-      question: 'Según el audio, ¿qué se come en Midsommar?',
-      options: ['Arenque y fresas', 'Albóndigas y puré', 'Pizza'], correct: 0,
-      explanation: '«man dansar runt en majstång och äter sill och jordgubbar» = se baila alrededor del palo de mayo y se come arenque y fresas.' },
-    { nivel: 'D', skill: 'skriv', type: 'order',
-      question: 'Ordena para decir «Es divertido aprender sueco».',
-      words: ['Det', 'är', 'kul', 'att', 'lära', 'sig', 'svenska'],
-      answer: ['Det', 'är', 'kul', 'att', 'lära', 'sig', 'svenska'],
-      explanation: '«Det är kul att lära sig svenska».' },
-    { nivel: 'D', skill: 'skriv', type: 'mc',
-      question: 'En un correo formal, ¿cómo te despides?',
-      options: ['Med vänliga hälsningar', 'Hej då!', 'Tjena!'], correct: 0,
-      explanation: '«Med vänliga hälsningar» (MVH) = saludos cordiales. Lo demás es informal.' },
-  ],
+  "questions": [
+    {
+      "nivel": "A",
+      "skill": "las",
+      "type": "mc",
+      "question": "¿en o ett?  «___ bok» (un libro)",
+      "options": [
+        "en",
+        "ett"
+      ],
+      "correct": 0,
+      "explanation": "«en bok». La mayoría de las palabras usan «en» (8 de cada 10)."
+    },
+    {
+      "nivel": "A",
+      "skill": "las",
+      "type": "mc",
+      "question": "Elige la forma correcta: «Jag ___ svenska» (yo hablo sueco)",
+      "options": [
+        "talar",
+        "tala",
+        "talade"
+      ],
+      "correct": 0,
+      "explanation": "«talar» es el presente (termina en -r). «talade» es pasado."
+    },
+    {
+      "nivel": "A",
+      "skill": "tala",
+      "type": "mc",
+      "question": "«hund» significa…",
+      "options": [
+        "perro",
+        "gato",
+        "caballo"
+      ],
+      "correct": 0,
+      "explanation": "«hund» = perro. «katt» = gato, «häst» = caballo."
+    },
+    {
+      "nivel": "A",
+      "skill": "tala",
+      "type": "mc",
+      "question": "«tack» significa…",
+      "options": [
+        "gracias",
+        "perdón",
+        "hola"
+      ],
+      "correct": 0,
+      "explanation": "«tack» = gracias. «förlåt» = perdón, «hej» = hola."
+    },
+    {
+      "nivel": "A",
+      "skill": "hor",
+      "type": "listen",
+      "audioKey": "a01",
+      "question": "Según el audio, ¿a qué hora se despierta Sophie?",
+      "options": [
+        "A las siete",
+        "A las ocho",
+        "A las seis"
+      ],
+      "correct": 0,
+      "explanation": "«Varje morgon vaknar jag klockan sju» = cada mañana me despierto a las siete."
+    },
+    {
+      "nivel": "A",
+      "skill": "hor",
+      "type": "listen",
+      "audioKey": "a02",
+      "question": "¿De dónde es Andree, el esposo de Sophie?",
+      "options": [
+        "De Perú",
+        "De Suecia",
+        "De España"
+      ],
+      "correct": 0,
+      "explanation": "«Min man heter Andree och kommer från Peru» = mi esposo se llama Andree y viene de Perú."
+    },
+    {
+      "nivel": "A",
+      "skill": "skriv",
+      "type": "order",
+      "question": "Ordena para decir «Me llamo María».",
+      "words": [
+        "Jag",
+        "heter",
+        "Maria"
+      ],
+      "answer": [
+        "Jag",
+        "heter",
+        "Maria"
+      ],
+      "explanation": "«Jag heter Maria». «heter» = me llamo."
+    },
+    {
+      "nivel": "A",
+      "skill": "skriv",
+      "type": "mc",
+      "question": "¿Cómo se dice «bebo café»?",
+      "options": [
+        "Jag dricker kaffe",
+        "Jag kaffe dricker",
+        "Dricker jag kaffe"
+      ],
+      "correct": 0,
+      "explanation": "Orden normal: sujeto + verbo + resto → «Jag dricker kaffe»."
+    },
+    {
+      "nivel": "B",
+      "skill": "las",
+      "type": "mc",
+      "question": "Elige el pasado: «Igår ___ jag hem» (ayer fui a casa)",
+      "options": [
+        "gick",
+        "går",
+        "gå"
+      ],
+      "correct": 0,
+      "explanation": "«gick» = fui (pasado de gå). «går» es presente."
+    },
+    {
+      "nivel": "B",
+      "skill": "las",
+      "type": "mc",
+      "question": "Plural: «en bil» (un coche) → «två ___» (dos coches)",
+      "options": [
+        "bilar",
+        "bilor",
+        "biler"
+      ],
+      "correct": 0,
+      "explanation": "Muchas palabras «en» hacen el plural con -ar: bil → bilar."
+    },
+    {
+      "nivel": "B",
+      "skill": "tala",
+      "type": "mc",
+      "question": "«igår» significa…",
+      "options": [
+        "ayer",
+        "hoy",
+        "mañana"
+      ],
+      "correct": 0,
+      "explanation": "«igår» = ayer. «idag» = hoy, «imorgon» = mañana."
+    },
+    {
+      "nivel": "B",
+      "skill": "tala",
+      "type": "mc",
+      "question": "«jobb» significa…",
+      "options": [
+        "trabajo",
+        "casa",
+        "escuela"
+      ],
+      "correct": 0,
+      "explanation": "«jobb» = trabajo (también «arbete»)."
+    },
+    {
+      "nivel": "B",
+      "skill": "hor",
+      "type": "listen",
+      "audioKey": "a03",
+      "question": "En el audio, ¿cómo paga Sophie en la tienda?",
+      "options": [
+        "Con tarjeta",
+        "En efectivo",
+        "Con Swish"
+      ],
+      "correct": 0,
+      "explanation": "«Jag betalar med kort» = pago con tarjeta."
+    },
+    {
+      "nivel": "B",
+      "skill": "hor",
+      "type": "listen",
+      "audioKey": "a04",
+      "question": "Según el audio, ¿qué tiempo hace hoy?",
+      "options": [
+        "Nublado y frío",
+        "Soleado y cálido",
+        "Nieva mucho"
+      ],
+      "correct": 0,
+      "explanation": "«Det är molnigt och kallt» = está nublado y frío. Solo cuatro grados."
+    },
+    {
+      "nivel": "B",
+      "skill": "skriv",
+      "type": "mc",
+      "question": "¿Cómo se pregunta «¿Bebes café?»?",
+      "options": [
+        "Dricker du kaffe?",
+        "Du dricker kaffe?",
+        "Kaffe du dricker?"
+      ],
+      "correct": 0,
+      "explanation": "En las preguntas de sí/no, el verbo va primero: «Dricker du kaffe?»."
+    },
+    {
+      "nivel": "B",
+      "skill": "skriv",
+      "type": "order",
+      "question": "Ordena para decir «Voy a comprar mañana».",
+      "words": [
+        "Jag",
+        "ska",
+        "handla",
+        "imorgon"
+      ],
+      "answer": [
+        "Jag",
+        "ska",
+        "handla",
+        "imorgon"
+      ],
+      "explanation": "«Jag ska handla imorgon». «ska» = voy a (futuro/plan)."
+    },
+    {
+      "nivel": "C",
+      "skill": "las",
+      "type": "mc",
+      "question": "Perfecto: «Jag har ___ frukost» (he comido el desayuno)",
+      "options": [
+        "ätit",
+        "äter",
+        "åt"
+      ],
+      "correct": 0,
+      "explanation": "«har ätit» = he comido. El perfecto es «har + supino» (ätit)."
+    },
+    {
+      "nivel": "C",
+      "skill": "las",
+      "type": "mc",
+      "question": "Subordinada: «Jag vet att han ___» (sé que él no viene)",
+      "options": [
+        "inte kommer",
+        "kommer inte"
+      ],
+      "correct": 0,
+      "explanation": "En una frase subordinada, el «inte» va ANTES del verbo: «…att han inte kommer»."
+    },
+    {
+      "nivel": "C",
+      "skill": "tala",
+      "type": "mc",
+      "question": "«eftersom» significa…",
+      "options": [
+        "porque",
+        "aunque",
+        "mientras"
+      ],
+      "correct": 0,
+      "explanation": "«eftersom» = porque (da la razón)."
+    },
+    {
+      "nivel": "C",
+      "skill": "tala",
+      "type": "mc",
+      "question": "«ändå» significa…",
+      "options": [
+        "aun así / de todos modos",
+        "además",
+        "por ejemplo"
+      ],
+      "correct": 0,
+      "explanation": "«ändå» = aun así. «dessutom» = además."
+    },
+    {
+      "nivel": "C",
+      "skill": "hor",
+      "type": "listen",
+      "audioKey": "b01",
+      "question": "En el audio, ¿qué fue lo primero que hizo Sophie al llegar a Suecia?",
+      "options": [
+        "Registrarse en Skatteverket",
+        "Buscar trabajo",
+        "Comprar una casa"
+      ],
+      "correct": 0,
+      "explanation": "«Det första jag gjorde var att registrera mig hos Skatteverket» = lo primero fue registrarme en Skatteverket (la agencia tributaria)."
+    },
+    {
+      "nivel": "C",
+      "skill": "hor",
+      "type": "listen",
+      "audioKey": "b03",
+      "question": "Según el audio, ¿cómo practicaba sueco en casa?",
+      "options": [
+        "Viendo TV con subtítulos",
+        "Leyendo el periódico",
+        "Escuchando la radio"
+      ],
+      "correct": 0,
+      "explanation": "«titta på svenska tv-program med undertexter» = ver programas suecos con subtítulos."
+    },
+    {
+      "nivel": "C",
+      "skill": "skriv",
+      "type": "mc",
+      "question": "Elige la frase correcta (ella dijo que no viene):",
+      "options": [
+        "Hon sa att hon inte kommer",
+        "Hon sa att hon kommer inte",
+        "Att hon inte kommer hon sa"
+      ],
+      "correct": 0,
+      "explanation": "Tras «att» (que), el «inte» va antes del verbo: «…att hon inte kommer»."
+    },
+    {
+      "nivel": "C",
+      "skill": "skriv",
+      "type": "order",
+      "question": "Ordena para decir «Creo que el sueco es útil».",
+      "words": [
+        "Jag",
+        "tycker",
+        "att",
+        "svenska",
+        "är",
+        "användbart"
+      ],
+      "answer": [
+        "Jag",
+        "tycker",
+        "att",
+        "svenska",
+        "är",
+        "användbart"
+      ],
+      "explanation": "«Jag tycker att svenska är användbart». «tycker att» = creo que."
+    },
+    {
+      "nivel": "D",
+      "skill": "las",
+      "type": "mc",
+      "question": "Voz pasiva: «Dörren ___» (la puerta se abre)",
+      "options": [
+        "öppnas",
+        "öppnar",
+        "öppnade"
+      ],
+      "correct": 0,
+      "explanation": "La pasiva se forma con -s: «Dörren öppnas» = la puerta se abre / es abierta."
+    },
+    {
+      "nivel": "D",
+      "skill": "las",
+      "type": "mc",
+      "question": "Condicional: «Jag ___ vilja ha en kaffe» (querría un café)",
+      "options": [
+        "skulle",
+        "ska",
+        "vill"
+      ],
+      "correct": 0,
+      "explanation": "«skulle vilja» = querría (forma cortés). «skulle» = -ría."
+    },
+    {
+      "nivel": "D",
+      "skill": "tala",
+      "type": "mc",
+      "question": "«hävda» significa…",
+      "options": [
+        "afirmar / sostener",
+        "preguntar",
+        "olvidar"
+      ],
+      "correct": 0,
+      "explanation": "«hävda» = afirmar/sostener algo con firmeza."
+    },
+    {
+      "nivel": "D",
+      "skill": "tala",
+      "type": "mc",
+      "question": "En un texto, «inledning» es…",
+      "options": [
+        "la introducción",
+        "la conclusión",
+        "el título"
+      ],
+      "correct": 0,
+      "explanation": "«inledning» = introducción. «avslutning» = conclusión."
+    },
+    {
+      "nivel": "D",
+      "skill": "hor",
+      "type": "listen",
+      "audioKey": "b05",
+      "question": "En el audio, ¿a qué número se llama para consejo médico en Suecia?",
+      "options": [
+        "1177",
+        "112",
+        "90000"
+      ],
+      "correct": 0,
+      "explanation": "«Man kan också ringa 1177 — det är sjukvårdsrådgivningen» = también puedes llamar al 1177, que es la línea de consejo sanitario."
+    },
+    {
+      "nivel": "D",
+      "skill": "hor",
+      "type": "listen",
+      "audioKey": "b06",
+      "question": "Según el audio, ¿qué se come en Midsommar?",
+      "options": [
+        "Arenque y fresas",
+        "Albóndigas y puré",
+        "Pizza"
+      ],
+      "correct": 0,
+      "explanation": "«man dansar runt en majstång och äter sill och jordgubbar» = se baila alrededor del palo de mayo y se come arenque y fresas."
+    },
+    {
+      "nivel": "D",
+      "skill": "skriv",
+      "type": "order",
+      "question": "Ordena para decir «Es divertido aprender sueco».",
+      "words": [
+        "Det",
+        "är",
+        "kul",
+        "att",
+        "lära",
+        "sig",
+        "svenska"
+      ],
+      "answer": [
+        "Det",
+        "är",
+        "kul",
+        "att",
+        "lära",
+        "sig",
+        "svenska"
+      ],
+      "explanation": "«Det är kul att lära sig svenska»."
+    },
+    {
+      "nivel": "D",
+      "skill": "skriv",
+      "type": "mc",
+      "question": "En un correo formal, ¿cómo te despides?",
+      "options": [
+        "Med vänliga hälsningar",
+        "Hej då!",
+        "Tjena!"
+      ],
+      "correct": 0,
+      "explanation": "«Med vänliga hälsningar» (MVH) = saludos cordiales. Lo demás es informal."
+    },
+    {
+      "nivel": "A",
+      "skill": "las",
+      "type": "mc",
+      "question": "Plural: «tre ___» (tres coches, de «bil»)",
+      "options": [
+        "bilar",
+        "bilor",
+        "bil"
+      ],
+      "correct": 0,
+      "explanation": "«bilar». Plural de «en bil»."
+    },
+    {
+      "nivel": "A",
+      "skill": "las",
+      "type": "mc",
+      "question": "«Jag ___ inte kaffe» (no bebo café)",
+      "options": [
+        "dricker",
+        "drickar",
+        "drack"
+      ],
+      "correct": 0,
+      "explanation": "«dricker». Presente."
+    },
+    {
+      "nivel": "B",
+      "skill": "las",
+      "type": "mc",
+      "question": "Comparativo: «Ett hus är ___ än en lägenhet» (más grande)",
+      "options": [
+        "större",
+        "stor",
+        "störst"
+      ],
+      "correct": 0,
+      "explanation": "«större» = más grande (comparativo de «stor»)."
+    },
+    {
+      "nivel": "B",
+      "skill": "las",
+      "type": "mc",
+      "question": "Pretérito: «Igår ___ jag till jobbet» (fui)",
+      "options": [
+        "gick",
+        "går",
+        "gått"
+      ],
+      "correct": 0,
+      "explanation": "«gick» = fui (pretérito de «gå»)."
+    },
+    {
+      "nivel": "C",
+      "skill": "las",
+      "type": "mc",
+      "question": "Frase subordinada: «Jag vet att han ___ imorgon» (no viene)",
+      "options": [
+        "inte kommer",
+        "kommer inte"
+      ],
+      "correct": 0,
+      "explanation": "En subordinada, «inte» va ANTES del verbo: «att han inte kommer»."
+    },
+    {
+      "nivel": "C",
+      "skill": "las",
+      "type": "mc",
+      "question": "«Boken ___ jag läste var bra» (que leí)",
+      "options": [
+        "som",
+        "att",
+        "vilken"
+      ],
+      "correct": 0,
+      "explanation": "«som» introduce la relativa: «Boken som jag läste»."
+    },
+    {
+      "nivel": "D",
+      "skill": "las",
+      "type": "mc",
+      "question": "Voz pasiva (pretérito): «Beslutet ___ igår» (fue tomado)",
+      "options": [
+        "fattades",
+        "fattade",
+        "fattat"
+      ],
+      "correct": 0,
+      "explanation": "Pasiva en pretérito con -s: «fattades»."
+    },
+    {
+      "nivel": "D",
+      "skill": "las",
+      "type": "mc",
+      "question": "Participio de presente: «en ___ film» (emocionante)",
+      "options": [
+        "spännande",
+        "spänd",
+        "spänt"
+      ],
+      "correct": 0,
+      "explanation": "El participio de presente termina en -ande: «spännande»."
+    },
+    {
+      "nivel": "A",
+      "skill": "tala",
+      "type": "mc",
+      "question": "«vatten» significa…",
+      "options": [
+        "agua",
+        "pan",
+        "leche"
+      ],
+      "correct": 0,
+      "explanation": "«vatten» = agua."
+    },
+    {
+      "nivel": "A",
+      "skill": "tala",
+      "type": "mc",
+      "question": "«tack» significa…",
+      "options": [
+        "gracias",
+        "hola",
+        "adiós"
+      ],
+      "correct": 0,
+      "explanation": "«tack» = gracias."
+    },
+    {
+      "nivel": "B",
+      "skill": "tala",
+      "type": "mc",
+      "question": "«att handla» significa…",
+      "options": [
+        "hacer la compra",
+        "cocinar",
+        "dormir"
+      ],
+      "correct": 0,
+      "explanation": "«att handla» = hacer la compra."
+    },
+    {
+      "nivel": "B",
+      "skill": "tala",
+      "type": "mc",
+      "question": "«sjukhus» significa…",
+      "options": [
+        "hospital",
+        "escuela",
+        "tienda"
+      ],
+      "correct": 0,
+      "explanation": "«sjukhus» = hospital."
+    },
+    {
+      "nivel": "C",
+      "skill": "tala",
+      "type": "mc",
+      "question": "«hyresvärd» significa…",
+      "options": [
+        "el arrendador (casero)",
+        "el inquilino",
+        "el vecino"
+      ],
+      "correct": 0,
+      "explanation": "«hyresvärd» = casero. «hyresgäst» = inquilino."
+    },
+    {
+      "nivel": "C",
+      "skill": "tala",
+      "type": "mc",
+      "question": "«ansökan» significa…",
+      "options": [
+        "solicitud",
+        "respuesta",
+        "factura"
+      ],
+      "correct": 0,
+      "explanation": "«ansökan» = solicitud."
+    },
+    {
+      "nivel": "D",
+      "skill": "tala",
+      "type": "mc",
+      "question": "«hållbarhet» significa…",
+      "options": [
+        "sostenibilidad",
+        "velocidad",
+        "libertad"
+      ],
+      "correct": 0,
+      "explanation": "«hållbarhet» = sostenibilidad."
+    },
+    {
+      "nivel": "D",
+      "skill": "tala",
+      "type": "mc",
+      "question": "«jämställdhet» significa…",
+      "options": [
+        "igualdad (de género)",
+        "desigualdad",
+        "competencia"
+      ],
+      "correct": 0,
+      "explanation": "«jämställdhet» = igualdad entre hombres y mujeres."
+    },
+    {
+      "nivel": "A",
+      "skill": "skriv",
+      "type": "order",
+      "question": "Ordena: «Vivo en Estocolmo».",
+      "words": [
+        "Jag",
+        "bor",
+        "i",
+        "Stockholm"
+      ],
+      "answer": [
+        "Jag",
+        "bor",
+        "i",
+        "Stockholm"
+      ],
+      "explanation": "«Jag bor i Stockholm»."
+    },
+    {
+      "nivel": "A",
+      "skill": "skriv",
+      "type": "order",
+      "question": "Ordena: «Ella tiene dos hijos».",
+      "words": [
+        "Hon",
+        "har",
+        "två",
+        "barn"
+      ],
+      "answer": [
+        "Hon",
+        "har",
+        "två",
+        "barn"
+      ],
+      "explanation": "«Hon har två barn»."
+    },
+    {
+      "nivel": "B",
+      "skill": "skriv",
+      "type": "order",
+      "question": "Ordena: «Ayer fui a la escuela».",
+      "words": [
+        "Igår",
+        "gick",
+        "jag",
+        "till",
+        "skolan"
+      ],
+      "answer": [
+        "Igår",
+        "gick",
+        "jag",
+        "till",
+        "skolan"
+      ],
+      "explanation": "«Igår gick jag till skolan» (tras «igår», el verbo va antes del sujeto)."
+    },
+    {
+      "nivel": "B",
+      "skill": "skriv",
+      "type": "order",
+      "question": "Ordena: «Me gusta cocinar».",
+      "words": [
+        "Jag",
+        "tycker",
+        "om",
+        "att",
+        "laga",
+        "mat"
+      ],
+      "answer": [
+        "Jag",
+        "tycker",
+        "om",
+        "att",
+        "laga",
+        "mat"
+      ],
+      "explanation": "«Jag tycker om att laga mat»."
+    },
+    {
+      "nivel": "C",
+      "skill": "skriv",
+      "type": "order",
+      "question": "Ordena: «Creo que él viene mañana».",
+      "words": [
+        "Jag",
+        "tror",
+        "att",
+        "han",
+        "kommer",
+        "imorgon"
+      ],
+      "answer": [
+        "Jag",
+        "tror",
+        "att",
+        "han",
+        "kommer",
+        "imorgon"
+      ],
+      "explanation": "«Jag tror att han kommer imorgon»."
+    },
+    {
+      "nivel": "C",
+      "skill": "skriv",
+      "type": "order",
+      "question": "Ordena: «Cuando llueve, me quedo en casa».",
+      "words": [
+        "När",
+        "det",
+        "regnar",
+        "stannar",
+        "jag",
+        "hemma"
+      ],
+      "answer": [
+        "När",
+        "det",
+        "regnar",
+        "stannar",
+        "jag",
+        "hemma"
+      ],
+      "explanation": "«När det regnar, stannar jag hemma» (tras la subordinada, el verbo principal va primero)."
+    },
+    {
+      "nivel": "D",
+      "skill": "skriv",
+      "type": "order",
+      "question": "Ordena: «Creo que más gente debería viajar en transporte público».",
+      "words": [
+        "Jag",
+        "anser",
+        "att",
+        "fler",
+        "borde",
+        "resa",
+        "kollektivt"
+      ],
+      "answer": [
+        "Jag",
+        "anser",
+        "att",
+        "fler",
+        "borde",
+        "resa",
+        "kollektivt"
+      ],
+      "explanation": "«Jag anser att fler borde resa kollektivt»."
+    },
+    {
+      "nivel": "D",
+      "skill": "skriv",
+      "type": "order",
+      "question": "Ordena: «La decisión fue tomada por el gobierno».",
+      "words": [
+        "Beslutet",
+        "fattades",
+        "av",
+        "regeringen"
+      ],
+      "answer": [
+        "Beslutet",
+        "fattades",
+        "av",
+        "regeringen"
+      ],
+      "explanation": "«Beslutet fattades av regeringen» (pasiva con -s)."
+    }
+  ]
 };
 
 
