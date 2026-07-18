@@ -6892,69 +6892,1835 @@ const DEFAULT_DATA = {
     ],
     read: [
       {
-        id: 'c-r-1', title: 'Att söka jobb i Sverige', tag: 'Arbete', icon: '💼',
-        text: `När man söker jobb i Sverige är det viktigt att skriva ett bra CV och ett personligt brev. I CV:t skriver du din utbildning, din arbetslivserfarenhet och dina språkkunskaper. Det personliga brevet ska förklara varför du passar för tjänsten. Många jobb hittar man på Arbetsförmedlingen eller på företagens egna hemsidor. Det är också vanligt att kontakter, ett så kallat nätverk, hjälper dig att få jobb. Kom ihåg att alltid vara ärlig och att anpassa din ansökan efter varje tjänst.`,
-        questions: [
-          { text: 'Vad ska man skriva när man söker jobb?', options: ['Bara ett telefonnummer', 'Ett CV och ett personligt brev', 'Endast namn', 'Ett recept'], correct: 1, explanation: 'Ett bra CV och ett personligt brev.' },
-          { text: 'Vad förklarar det personliga brevet?', options: ['Din adress', 'Varför du passar för tjänsten', 'Din lön', 'Ditt telefonnummer'], correct: 1, explanation: 'Det personliga brevet ska förklara varför du passar för tjänsten.' },
-          { text: 'Var kan man hitta jobb?', options: ['Bara på tidningen', 'På Arbetsförmedlingen och företagens hemsidor', 'Bara genom vänner', 'På sjukhuset'], correct: 1, explanation: 'På Arbetsförmedlingen eller på företagens egna hemsidor.' },
-          { text: 'Vad betyder ett "nätverk" här?', options: ['Internet', 'Kontakter som hjälper dig', 'En dator', 'Ett fiskenät'], correct: 1, explanation: 'Kontakter, ett så kallat nätverk, hjälper dig att få jobb.' },
-        ]
+            "id": "c-r-1",
+            "unit": 1,
+            "unitTitle": "Arbete och att söka jobb",
+            "title": "Att söka jobb i Sverige",
+            "kind": "Faktatext",
+            "icon": "💼",
+            "text": "Att söka jobb i Sverige kräver ofta både ett CV och ett personligt brev. Många jobb finns på nätet, till exempel på Arbetsförmedlingens webbplats. Det är vanligt att arbetsgivare vill träffa dig på en intervju innan de anställer dig. Kontakter är också viktiga – många får jobb genom vänner eller praktik. Var beredd att berätta om din erfarenhet och varför just du passar för tjänsten.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad behöver man ofta när man söker jobb?",
+                        "options": [
+                              "Ett CV och ett personligt brev",
+                              "Bara ett CV",
+                              "Ett körkort"
+                        ],
+                        "correct": 0,
+                        "explanation": "«kräver ofta både ett CV och ett personligt brev»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Enligt texten får många jobb genom kontakter.",
+                        "answer": true,
+                        "explanation": "«många får jobb genom vänner eller praktik»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Var finns många jobb? På ___ webbplats.",
+                        "answer": "Arbetsförmedlingens",
+                        "accept": [
+                              "arbetsförmedlingen",
+                              "arbetsförmedlingens"
+                        ],
+                        "explanation": "«på Arbetsförmedlingens webbplats»."
+                  }
+            ]
       },
       {
-        id: 'c-r-2', title: 'Sjukvården i Sverige', tag: 'Hälsa', icon: '🏥',
-        text: `Om du blir sjuk i Sverige ska du oftast först kontakta en vårdcentral. Där kan du träffa en läkare eller en sjuksköterska. Om det är akut och livshotande ringer du 112. För råd kan du ringa 1177, som är sjukvårdsupplysningen. Barn upp till arton år får oftast gratis vård. Vuxna betalar en patientavgift, men när du har betalat ett visst belopp under ett år får du ett frikort och slipper betala mer. Det är viktigt att boka tid i förväg, utom vid akuta fall.`,
-        questions: [
-          { text: 'Vem kontaktar man först när man blir sjuk?', options: ['Ett sjukhus direkt', 'En vårdcentral', 'Polisen', 'Apoteket'], correct: 1, explanation: 'Först kontakta en vårdcentral.' },
-          { text: 'Vilket nummer ringer man vid akut och livshotande fara?', options: ['1177', '112', '90000', '114 14'], correct: 1, explanation: 'Om det är akut och livshotande ringer du 112.' },
-          { text: 'Vad är 1177?', options: ['Ett apotek', 'Sjukvårdsupplysningen (råd)', 'En taxi', 'En bank'], correct: 1, explanation: '1177 är sjukvårdsupplysningen.' },
-          { text: 'Vad händer när du betalat ett visst belopp under ett år?', options: ['Du får böta', 'Du får ett frikort och slipper betala mer', 'Du måste betala dubbelt', 'Ingenting'], correct: 1, explanation: 'Du får ett frikort och slipper betala mer.' },
-        ]
+            "id": "c-r-u1-2",
+            "unit": 1,
+            "unitTitle": "Arbete och att söka jobb",
+            "title": "En jobbannons",
+            "kind": "Annons",
+            "icon": "📌",
+            "text": "Vi söker en engagerad medarbetare till vårt lager i Jönköping. Arbetsuppgifterna innebär att packa varor, köra truck och hålla ordning. Vi ser gärna att du har truckkort och erfarenhet, men det är inte ett krav. Tjänsten är en tillsvidareanställning på heltid. Vi erbjuder kollektivavtal och friskvårdsbidrag. Skicka din ansökan senast den 15 april. Vid frågor, kontakta Anna på 070-123 45 67.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vilken typ av anställning är det?",
+                        "options": [
+                              "Tillsvidare på heltid",
+                              "Deltid på helger",
+                              "Sommarjobb"
+                        ],
+                        "correct": 0,
+                        "explanation": "«en tillsvidareanställning på heltid»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Man måste ha truckkort för att söka.",
+                        "answer": false,
+                        "explanation": "«men det är inte ett krav»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Senast vilken månad ska man söka?",
+                        "answer": "april",
+                        "accept": [
+                              "april"
+                        ],
+                        "explanation": "«senast den 15 april»."
+                  }
+            ]
       },
       {
-        id: 'c-r-3', title: 'Att hyra en bostad', tag: 'Boende', icon: '🏠',
-        text: `Att hitta en bostad i storstäderna kan vara svårt. Många ställer sig i en bostadskö, ibland i flera år, för att få en hyresrätt med förstahandskontrakt. Ett förstahandskontrakt betyder att du hyr direkt av hyresvärden och har trygga rättigheter. Ett andrahandskontrakt betyder att du hyr av någon som själv hyr lägenheten. Innan du skriver på ett kontrakt bör du läsa det noga och kontrollera hyran, uppsägningstiden och vad som ingår. Var försiktig med bedragare som ber om pengar i förväg utan att visa lägenheten.`,
-        questions: [
-          { text: 'Vad gör många för att få en hyresrätt?', options: ['Köper direkt', 'Ställer sig i en bostadskö', 'Flyttar utomlands', 'Bygger själva'], correct: 1, explanation: 'Många ställer sig i en bostadskö.' },
-          { text: 'Vad betyder förstahandskontrakt?', options: ['Du hyr av någon som hyr själv', 'Du hyr direkt av hyresvärden', 'Du äger lägenheten', 'Du bor gratis'], correct: 1, explanation: 'Du hyr direkt av hyresvärden och har trygga rättigheter.' },
-          { text: 'Vad bör du kontrollera i kontraktet?', options: ['Bara färgen', 'Hyran, uppsägningstiden och vad som ingår', 'Grannarnas namn', 'Vädret'], correct: 1, explanation: 'Kontrollera hyran, uppsägningstiden och vad som ingår.' },
-          { text: 'Vad varnar texten för?', options: ['Höga hyror', 'Bedragare som ber om pengar i förväg', 'Små lägenheter', 'Långa köer'], correct: 1, explanation: 'Var försiktig med bedragare som ber om pengar i förväg.' },
-        ]
+            "id": "c-r-u2-1",
+            "unit": 2,
+            "unitTitle": "CV och personligt brev",
+            "title": "Tips för ditt CV",
+            "kind": "Faktatext",
+            "icon": "📄",
+            "text": "Ett bra CV är kort och tydligt, oftast en till två sidor. Börja med dina kontaktuppgifter och en kort presentation. Skriv sedan din arbetslivserfarenhet med den senaste tjänsten först. Ta med din utbildning och dina språkkunskaper. Anpassa alltid ditt CV efter jobbet du söker och ta bara med det som är relevant. Kom ihåg att rätta stavfel innan du skickar det.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Hur långt bör ett CV vara?",
+                        "options": [
+                              "En till två sidor",
+                              "Minst fem sidor",
+                              "En halv sida"
+                        ],
+                        "correct": 0,
+                        "explanation": "«oftast en till två sidor»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Man ska skriva den äldsta tjänsten först.",
+                        "answer": false,
+                        "explanation": "«med den senaste tjänsten först»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad ska man rätta innan man skickar? ___fel",
+                        "answer": "stav",
+                        "accept": [
+                              "stavfel"
+                        ],
+                        "explanation": "«rätta stavfel innan du skickar»."
+                  }
+            ]
       },
       {
-        id: 'c-r-4', title: 'Att vara förälder i Sverige', tag: 'Familj & samhälle', icon: '👨‍👩‍👧',
-        text: `I Sverige har föräldrar rätt till föräldraledighet. Det betyder att man kan vara hemma med sitt barn och ändå få pengar från Försäkringskassan. Föräldrarna kan dela på dagarna, och det är vanligt att både mamman och pappan är hemma en tid. När barnet är litet kan det gå på förskola medan föräldrarna arbetar. Skolan är obligatorisk och gratis från sex års ålder. Samhället uppmuntrar jämställdhet, vilket betyder att kvinnor och män ska ha samma möjligheter både hemma och på jobbet.`,
-        questions: [
-          { text: 'Vad är föräldraledighet?', options: ['Semester utomlands', 'Att vara hemma med sitt barn och få pengar', 'En skola', 'Ett jobb'], correct: 1, explanation: 'Vara hemma med sitt barn och ändå få pengar från Försäkringskassan.' },
-          { text: 'Vem betalar under föräldraledigheten?', options: ['Arbetsgivaren ensam', 'Försäkringskassan', 'Skolan', 'Ingen'], correct: 1, explanation: 'Man får pengar från Försäkringskassan.' },
-          { text: 'Från vilken ålder är skolan obligatorisk?', options: ['Tre år', 'Sex år', 'Tio år', 'Arton år'], correct: 1, explanation: 'Skolan är obligatorisk och gratis från sex års ålder.' },
-          { text: 'Vad betyder jämställdhet?', options: ['Att alla är rika', 'Att kvinnor och män har samma möjligheter', 'Att skolan är gratis', 'Att alla jobbar hemma'], correct: 1, explanation: 'Kvinnor och män ska ha samma möjligheter.' },
-        ]
+            "id": "c-r-u2-2",
+            "unit": 2,
+            "unitTitle": "CV och personligt brev",
+            "title": "Ett personligt brev",
+            "kind": "Brev",
+            "icon": "✉️",
+            "text": "Hej! Jag heter Marco och söker tjänsten som kock på er restaurang. Jag har arbetat i kök i fem år, både i Italien och i Sverige. Jag är stresstålig, noggrann och gillar att arbeta i team. Jag tror att min erfarenhet av italiensk mat passar bra hos er. Jag bifogar mitt CV och referenser. Jag ser fram emot att höra från er. Med vänliga hälsningar, Marco Rossi.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vilket jobb söker Marco?",
+                        "options": [
+                              "Kock",
+                              "Servitör",
+                              "Diskare"
+                        ],
+                        "correct": 0,
+                        "explanation": "«söker tjänsten som kock»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Marco har bara arbetat i Italien.",
+                        "answer": false,
+                        "explanation": "«både i Italien och i Sverige»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Hur många år har han arbetat i kök?",
+                        "answer": "fem",
+                        "accept": [
+                              "5"
+                        ],
+                        "explanation": "«arbetat i kök i fem år»."
+                  }
+            ]
       },
-    ],
+      {
+            "id": "c-r-u3-1",
+            "unit": 3,
+            "unitTitle": "Intervju och rättigheter",
+            "title": "Inför intervjun",
+            "kind": "Faktatext",
+            "icon": "🤝",
+            "text": "Inför en anställningsintervju är det bra att förbereda sig. Läs på om företaget och fundera på vad du vill säga om dig själv. Kom i tid och klä dig prydligt. Under intervjun får du ofta frågor om dina styrkor och svagheter. Var ärlig men positiv. Du får också ställa egna frågor, till exempel om arbetstider och lön. Efter intervjun kan du skicka ett kort tackmejl.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad är bra att göra före intervjun?",
+                        "options": [
+                              "Läsa på om företaget",
+                              "Komma sent",
+                              "Låta bli att fråga"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Läs på om företaget»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Man får inte ställa egna frågor.",
+                        "answer": false,
+                        "explanation": "«Du får också ställa egna frågor»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad kan man skicka efter intervjun? Ett ___mejl",
+                        "answer": "tack",
+                        "accept": [
+                              "tackmejl"
+                        ],
+                        "explanation": "«skicka ett kort tackmejl»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-u3-2",
+            "unit": 3,
+            "unitTitle": "Intervju och rättigheter",
+            "title": "Rättigheter på jobbet",
+            "kind": "Faktatext",
+            "icon": "⚖️",
+            "text": "På en svensk arbetsplats har du både rättigheter och skyldigheter. Du har rätt till en säker arbetsmiljö, semester och lön enligt avtal. Facket kan hjälpa dig om det uppstår problem. Samtidigt har du skyldighet att komma i tid, göra ditt arbete och följa reglerna. Om du blir sjuk ska du sjukanmäla dig samma dag. Kollektivavtal reglerar ofta villkoren mellan arbetsgivare och anställda.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vem kan hjälpa dig vid problem på jobbet?",
+                        "options": [
+                              "Facket",
+                              "Grannen",
+                              "Skatteverket"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Facket kan hjälpa dig»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Man ska sjukanmäla sig samma dag.",
+                        "answer": true,
+                        "explanation": "«ska du sjukanmäla dig samma dag»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad reglerar ofta villkoren? ___avtal",
+                        "answer": "kollektiv",
+                        "accept": [
+                              "kollektivavtal"
+                        ],
+                        "explanation": "«Kollektivavtal reglerar ofta villkoren»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-2",
+            "unit": 4,
+            "unitTitle": "Hälsa och vården",
+            "title": "Sjukvården i Sverige",
+            "kind": "Faktatext",
+            "icon": "🏥",
+            "text": "I Sverige börjar du oftast med att kontakta en vårdcentral om du blir sjuk. Där kan du träffa en läkare eller sjuksköterska. Om det är akut och allvarligt ringer du 112 eller åker till en akutmottagning. För rådgivning kan du ringa 1177 dygnet runt. Vården kostar en patientavgift, men det finns ett högkostnadsskydd så att du inte betalar mer än en viss summa per år.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vart vänder man sig först när man blir sjuk?",
+                        "options": [
+                              "Vårdcentralen",
+                              "Akutmottagningen",
+                              "Apoteket"
+                        ],
+                        "correct": 0,
+                        "explanation": "«börjar du oftast med att kontakta en vårdcentral»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Man ringer 112 för enkla råd.",
+                        "answer": false,
+                        "explanation": "112 är för akut; för råd ringer man 1177."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vilket nummer ringer man för rådgivning?",
+                        "answer": "1177",
+                        "accept": [
+                              "1177"
+                        ],
+                        "explanation": "«kan du ringa 1177 dygnet runt»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-u4-2",
+            "unit": 4,
+            "unitTitle": "Hälsa och vården",
+            "title": "Kallelse till hälsokontroll",
+            "kind": "Aviso",
+            "icon": "📋",
+            "text": "Du kallas till en hälsokontroll på din vårdcentral onsdagen den 12 juni klockan 10:15. Ta med legitimation och en lista på eventuella mediciner du tar. Om du inte kan komma, avboka minst 24 timmar i förväg, annars debiteras en avgift. Kontrollen tar cirka 30 minuter. Har du frågor kan du logga in på 1177.se eller ringa oss på vardagar mellan klockan 8 och 16.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad ska du ta med dig?",
+                        "options": [
+                              "Legitimation och en medicinlista",
+                              "Bara pengar",
+                              "Ingenting"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Ta med legitimation och en lista på ... mediciner»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Man kan avboka samma dag utan avgift.",
+                        "answer": false,
+                        "explanation": "«avboka minst 24 timmar i förväg, annars debiteras en avgift»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Hur länge tar kontrollen? cirka ___ minuter",
+                        "answer": "30",
+                        "accept": [
+                              "trettio"
+                        ],
+                        "explanation": "«tar cirka 30 minuter»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-u5-1",
+            "unit": 5,
+            "unitTitle": "Myndigheter",
+            "title": "Skatteverket",
+            "kind": "Faktatext",
+            "icon": "🏛️",
+            "text": "Skatteverket ansvarar för skatter och folkbokföring i Sverige. När du flyttar till Sverige registrerar du dig hos Skatteverket och kan få ett personnummer. Personnumret behövs för nästan allt: att öppna bankkonto, få vård och söka jobb. Varje år ska du deklarera din inkomst, men ofta är deklarationen redan ifylld och du behöver bara godkänna den. Om du flyttar ska du göra en flyttanmälan.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad ansvarar Skatteverket för?",
+                        "options": [
+                              "Skatter och folkbokföring",
+                              "Sjukvård",
+                              "Bostäder"
+                        ],
+                        "correct": 0,
+                        "explanation": "«ansvarar för skatter och folkbokföring»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Personnumret behövs för att öppna bankkonto.",
+                        "answer": true,
+                        "explanation": "«att öppna bankkonto, få vård och söka jobb»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad ska man göra varje år med sin inkomst?",
+                        "answer": "deklarera",
+                        "accept": [
+                              "deklarera",
+                              "deklaration"
+                        ],
+                        "explanation": "«ska du deklarera din inkomst»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-u5-2",
+            "unit": 5,
+            "unitTitle": "Myndigheter",
+            "title": "Försäkringskassan och Arbetsförmedlingen",
+            "kind": "Faktatext",
+            "icon": "🗂️",
+            "text": "Försäkringskassan betalar ut ersättningar, till exempel föräldrapenning, sjukpenning och bostadsbidrag. Du ansöker oftast via deras webbplats med bank-id. Arbetsförmedlingen hjälper dig som är arbetslös att hitta jobb och kan erbjuda utbildningar och praktik. Det är viktigt att du är inskriven där om du söker ersättning. Båda myndigheterna har information på flera språk och du kan boka tid för att få hjälp.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad betalar Försäkringskassan ut?",
+                        "options": [
+                              "Ersättningar som sjukpenning",
+                              "Löner",
+                              "Skatter"
+                        ],
+                        "correct": 0,
+                        "explanation": "«betalar ut ersättningar, till exempel ... sjukpenning»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Arbetsförmedlingen hjälper arbetslösa att hitta jobb.",
+                        "answer": true,
+                        "explanation": "«hjälper dig som är arbetslös att hitta jobb»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad använder man ofta för att ansöka? ___-id",
+                        "answer": "bank",
+                        "accept": [
+                              "bank-id",
+                              "bankid"
+                        ],
+                        "explanation": "«via deras webbplats med bank-id»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-3",
+            "unit": 6,
+            "unitTitle": "Bostad och kontrakt",
+            "title": "Att hyra en bostad",
+            "kind": "Faktatext",
+            "icon": "🏠",
+            "text": "Att hitta en bostad i storstäderna kan vara svårt. Många ställer sig i en bostadskö för att få en hyresrätt med förstahandskontrakt. Ett förstahandskontrakt betyder att du hyr direkt av hyresvärden och har trygga rättigheter. Ett andrahandskontrakt betyder att du hyr av någon som själv hyr lägenheten. Läs alltid kontraktet noga och var försiktig med bedragare som ber om pengar i förväg utan att visa lägenheten.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad betyder ett förstahandskontrakt?",
+                        "options": [
+                              "Du hyr direkt av hyresvärden",
+                              "Du hyr av en annan hyresgäst",
+                              "Du äger lägenheten"
+                        ],
+                        "correct": 0,
+                        "explanation": "«du hyr direkt av hyresvärden»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Man ska alltid betala i förväg innan man ser lägenheten.",
+                        "answer": false,
+                        "explanation": "«var försiktig med bedragare som ber om pengar i förväg»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad ställer man sig i för att få en hyresrätt? En bostads___",
+                        "answer": "kö",
+                        "accept": [
+                              "bostadskö",
+                              "kö"
+                        ],
+                        "explanation": "«ställer sig i en bostadskö»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-u6-2",
+            "unit": 6,
+            "unitTitle": "Bostad och kontrakt",
+            "title": "Meddelande från hyresvärden",
+            "kind": "Aviso",
+            "icon": "🔧",
+            "text": "Information till alla hyresgäster: Nästa vecka byter vi ut vattenledningarna i huset. Vattnet kommer att vara avstängt tisdag den 20 mars mellan klockan 09 och 15. Vi ber er att fylla vatten i förväg. Arbetet är nödvändigt för att undvika framtida läckor. Vi beklagar besväret. Har ni frågor kan ni kontakta fastighetsskötaren. Tack för ert tålamod. Med vänlig hälsning, Fastighetsbolaget.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Varför stängs vattnet av?",
+                        "options": [
+                              "Vattenledningarna byts ut",
+                              "Det är för dyrt",
+                              "Ingen bor där"
+                        ],
+                        "correct": 0,
+                        "explanation": "«byter vi ut vattenledningarna»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Vattnet är avstängt hela dagen.",
+                        "answer": false,
+                        "explanation": "«mellan klockan 09 och 15»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vem kan man kontakta vid frågor?",
+                        "answer": "fastighetsskötaren",
+                        "accept": [
+                              "fastighetsskötaren",
+                              "fastighetsskötare"
+                        ],
+                        "explanation": "«kontakta fastighetsskötaren»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-u7-1",
+            "unit": 7,
+            "unitTitle": "Ekonomi och bank",
+            "title": "Att betala räkningar",
+            "kind": "Faktatext",
+            "icon": "💳",
+            "text": "I Sverige betalar de flesta sina räkningar via internetbanken. Varje räkning har ett sista betalningsdatum, ett belopp och ett OCR-nummer. Om du betalar för sent kan du få en påminnelseavgift. Många väljer autogiro så att räkningarna dras automatiskt. Det är klokt att göra en budget och spara en del av lönen varje månad. På så sätt får du bättre koll på din ekonomi.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad händer om du betalar för sent?",
+                        "options": [
+                              "Du kan få en påminnelseavgift",
+                              "Räkningen försvinner",
+                              "Du får pengar tillbaka"
+                        ],
+                        "correct": 0,
+                        "explanation": "«kan du få en påminnelseavgift»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Med autogiro dras räkningarna automatiskt.",
+                        "answer": true,
+                        "explanation": "«väljer autogiro så att räkningarna dras automatiskt»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad är klokt att göra för att ha koll? En ___",
+                        "answer": "budget",
+                        "accept": [
+                              "budgeten"
+                        ],
+                        "explanation": "«klokt att göra en budget»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-u7-2",
+            "unit": 7,
+            "unitTitle": "Ekonomi och bank",
+            "title": "En påminnelse",
+            "kind": "Aviso",
+            "icon": "⚠️",
+            "text": "Påminnelse: Vår faktura nummer 4821 på 750 kronor har ännu inte betalats. Sista betalningsdag var den 5 maj. Vänligen betala snarast, senast den 19 maj, för att undvika ytterligare avgifter. Använd OCR-numret på fakturan när du betalar. Om du redan har betalat kan du bortse från detta meddelande. Har du frågor om fakturan, kontakta vår kundtjänst på vardagar.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad handlar meddelandet om?",
+                        "options": [
+                              "En obetald faktura",
+                              "En ny produkt",
+                              "En återbetalning"
+                        ],
+                        "correct": 0,
+                        "explanation": "«har ännu inte betalats»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Fakturan är på 750 kronor.",
+                        "answer": true,
+                        "explanation": "«en faktura ... på 750 kronor»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vilket nummer ska man använda när man betalar? ___-numret",
+                        "answer": "OCR",
+                        "accept": [
+                              "ocr",
+                              "ocr-numret"
+                        ],
+                        "explanation": "«Använd OCR-numret»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-4",
+            "unit": 8,
+            "unitTitle": "Familj och skola",
+            "title": "Att vara förälder i Sverige",
+            "kind": "Faktatext",
+            "icon": "👨‍👩‍👧",
+            "text": "Som förälder i Sverige har du rätt till föräldraledighet och föräldrapenning från Försäkringskassan. Barn kan börja på förskola från ett års ålder, och det finns en maxtaxa så att avgiften inte blir för hög. Skolan är gratis och obligatorisk från sex års ålder. Det är vanligt att skolan och föräldrarna har utvecklingssamtal om hur barnet trivs och utvecklas. Ett bra samarbete mellan hem och skola är viktigt.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Från vilken ålder kan barn börja på förskola?",
+                        "options": [
+                              "Från ett års ålder",
+                              "Från tre års ålder",
+                              "Från sex års ålder"
+                        ],
+                        "correct": 0,
+                        "explanation": "«från ett års ålder»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Skolan är gratis i Sverige.",
+                        "answer": true,
+                        "explanation": "«Skolan är gratis och obligatorisk»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad kallas mötet mellan skola och föräldrar? ___samtal",
+                        "answer": "utvecklings",
+                        "accept": [
+                              "utvecklingssamtal"
+                        ],
+                        "explanation": "«har utvecklingssamtal»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-u8-2",
+            "unit": 8,
+            "unitTitle": "Familj och skola",
+            "title": "Meddelande från skolan",
+            "kind": "Mensaje",
+            "icon": "🏫",
+            "text": "Hej alla vårdnadshavare! Nästa fredag har vi en gemensam friluftsdag. Eleverna ska vara på skolan klockan 8 och ta med matsäck, oömma kläder och skor efter väder. Vi är tillbaka cirka klockan 14. Om ditt barn inte kan delta, meddela klassläraren i förväg. Det blir en rolig dag med lekar och samarbete. Vänliga hälsningar, personalen på Björkskolan.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad ska eleverna ta med?",
+                        "options": [
+                              "Matsäck och kläder efter väder",
+                              "Böcker och pengar",
+                              "Ingenting"
+                        ],
+                        "correct": 0,
+                        "explanation": "«ta med matsäck, oömma kläder och skor efter väder»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Friluftsdagen är på en måndag.",
+                        "answer": false,
+                        "explanation": "«Nästa fredag»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vem ska man meddela om barnet inte kan delta?",
+                        "answer": "klassläraren",
+                        "accept": [
+                              "klassläraren",
+                              "läraren"
+                        ],
+                        "explanation": "«meddela klassläraren»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-u9-1",
+            "unit": 9,
+            "unitTitle": "Samhälle och föreningsliv",
+            "title": "Föreningar i Sverige",
+            "kind": "Faktatext",
+            "icon": "🤸",
+            "text": "Föreningslivet är en viktig del av det svenska samhället. Det finns föreningar för nästan allt: idrott, kultur, natur och språk. Att vara med i en förening är ett bra sätt att träffa nya människor, öva svenska och känna sig delaktig. Många föreningar drivs av volontärer, alltså personer som hjälper till utan lön. Ofta kostar det lite eller ingenting att vara medlem. Fråga på biblioteket om du vill hitta en förening.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Varför är det bra att gå med i en förening?",
+                        "options": [
+                              "För att träffa människor och öva svenska",
+                              "För att tjäna pengar",
+                              "För att slippa jobba"
+                        ],
+                        "correct": 0,
+                        "explanation": "«ett bra sätt att träffa nya människor, öva svenska»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Alla föreningar kostar mycket pengar.",
+                        "answer": false,
+                        "explanation": "«kostar det lite eller ingenting att vara medlem»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad kallas personer som hjälper till utan lön?",
+                        "answer": "volontärer",
+                        "accept": [
+                              "volontärer",
+                              "volontär"
+                        ],
+                        "explanation": "«drivs av volontärer»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-u9-2",
+            "unit": 9,
+            "unitTitle": "Samhälle och föreningsliv",
+            "title": "Anslag: språkkafé",
+            "kind": "Anuncio",
+            "icon": "☕",
+            "text": "Välkommen till vårt språkkafé! Varje onsdag klockan 18 träffas vi på biblioteket för att prata svenska tillsammans. Det är gratis och öppet för alla som vill öva. Vi fikar, spelar spel och pratar om olika ämnen. Du behöver inte anmäla dig – kom bara förbi. Det spelar ingen roll hur mycket svenska du kan. Vi hjälps åt och har trevligt tillsammans!",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "När träffas språkkaféet?",
+                        "options": [
+                              "Varje onsdag klockan 18",
+                              "Varje dag",
+                              "På helgerna"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Varje onsdag klockan 18»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Man måste anmäla sig i förväg.",
+                        "answer": false,
+                        "explanation": "«Du behöver inte anmäla dig»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Var träffas de?",
+                        "answer": "biblioteket",
+                        "accept": [
+                              "biblioteket",
+                              "bibliotek"
+                        ],
+                        "explanation": "«på biblioteket»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-u10-1",
+            "unit": 10,
+            "unitTitle": "Nyheter och aktuellt",
+            "title": "Nyhet: fler cyklar i staden",
+            "kind": "Artículo",
+            "icon": "📰",
+            "text": "Allt fler invånare i staden väljer att cykla till jobbet. Enligt kommunen har antalet cyklister ökat med tjugo procent på två år. En orsak är de nya cykelvägarna som byggts. Kommunen menar att det är bra för både miljön och folkhälsan. Samtidigt påpekar vissa att det behövs fler cykelparkeringar. Kommunen planerar nu att bygga ut cykelnätet ytterligare under de kommande åren.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad handlar nyheten om?",
+                        "options": [
+                              "Fler cyklar i staden",
+                              "Dyrare bussar",
+                              "En ny skola"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Allt fler ... väljer att cykla»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Antalet cyklister har minskat.",
+                        "answer": false,
+                        "explanation": "«har antalet cyklister ökat med tjugo procent»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Hur många procent har cyklandet ökat? ___ procent",
+                        "answer": "tjugo",
+                        "accept": [
+                              "20"
+                        ],
+                        "explanation": "«ökat med tjugo procent»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-u10-2",
+            "unit": 10,
+            "unitTitle": "Nyheter och aktuellt",
+            "title": "Väderrapport",
+            "kind": "Aviso",
+            "icon": "🌦️",
+            "text": "Här kommer helgens väder. På lördag blir det mestadels molnigt med lite regn på eftermiddagen. Temperaturen ligger runt tolv grader. På söndag klarnar det upp och solen tittar fram, men det blåser en frisk vind. Nätterna är fortfarande kyliga, så ta med en jacka om du ska vara ute på kvällen. I norra delen av landet kan det komma snö på högre höjder.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Hur blir vädret på söndag?",
+                        "options": [
+                              "Soligt men blåsigt",
+                              "Snö hela dagen",
+                              "Varmt och stilla"
+                        ],
+                        "correct": 0,
+                        "explanation": "«klarnar det upp och solen tittar fram, men det blåser»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "På lördag blir det regn på eftermiddagen.",
+                        "answer": true,
+                        "explanation": "«lite regn på eftermiddagen»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Ungefär hur många grader är det på lördag? ___ grader",
+                        "answer": "tolv",
+                        "accept": [
+                              "12"
+                        ],
+                        "explanation": "«runt tolv grader»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-u11-1",
+            "unit": 11,
+            "unitTitle": "Miljö och hållbarhet",
+            "title": "Att sortera sopor",
+            "kind": "Faktatext",
+            "icon": "♻️",
+            "text": "I Sverige är källsortering en självklar del av vardagen. Du sorterar dina sopor i olika kärl: papper, plast, glas, metall och matavfall. Det sorterade materialet återvinns och blir till nya produkter eller energi. Många bostadsområden har ett miljörum eller en återvinningsstation i närheten. Att sortera rätt är viktigt för miljön och sparar resurser. Farligt avfall, som batterier och elektronik, lämnas på särskilda platser.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad gör man med sorterat material?",
+                        "options": [
+                              "Det återvinns",
+                              "Det slängs i sjön",
+                              "Det bränns hemma"
+                        ],
+                        "correct": 0,
+                        "explanation": "«återvinns och blir till nya produkter eller energi»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Batterier får slängas med matavfallet.",
+                        "answer": false,
+                        "explanation": "«Farligt avfall, som batterier ... lämnas på särskilda platser»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad kallas det att sortera soporna? ___sortering",
+                        "answer": "käll",
+                        "accept": [
+                              "källsortering"
+                        ],
+                        "explanation": "«källsortering»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-u11-2",
+            "unit": 11,
+            "unitTitle": "Miljö och hållbarhet",
+            "title": "Spara energi hemma",
+            "kind": "Faktatext",
+            "icon": "💡",
+            "text": "Det finns många enkla sätt att spara energi hemma. Släck lamporna när du lämnar ett rum och dra ur laddare som inte används. Sänk värmen några grader och ta på dig en tröja i stället. Att duscha kortare tid sparar både vatten och el. Många väljer också energisnåla lampor. Genom att spara energi hjälper du miljön och sänker samtidigt dina räkningar.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vilket är ett sätt att spara energi?",
+                        "options": [
+                              "Släcka lamporna när man går ut ur rummet",
+                              "Ha alla lampor tända",
+                              "Duscha länge"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Släck lamporna när du lämnar ett rum»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Att spara energi kan sänka dina räkningar.",
+                        "answer": true,
+                        "explanation": "«sänker samtidigt dina räkningar»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad kan man sänka några grader? ___n",
+                        "answer": "värme",
+                        "accept": [
+                              "värmen"
+                        ],
+                        "explanation": "«Sänk värmen några grader»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-u12-1",
+            "unit": 12,
+            "unitTitle": "Teknik och sociala medier",
+            "title": "Digitala tjänster",
+            "kind": "Faktatext",
+            "icon": "📱",
+            "text": "I Sverige sköts mycket digitalt. Med bank-id kan du logga in säkert på banken, Skatteverket och Försäkringskassan. Du bokar läkartider, betalar räkningar och skriver under avtal på nätet. Det är smidigt, men det är också viktigt att vara försiktig. Lämna aldrig ut ditt bank-id eller dina koder till någon. Bedragare försöker ibland lura människor via mejl eller telefon. Är du osäker, kontakta banken direkt.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad använder man bank-id till?",
+                        "options": [
+                              "Att logga in säkert på tjänster",
+                              "Att köra bil",
+                              "Att laga mat"
+                        ],
+                        "correct": 0,
+                        "explanation": "«kan du logga in säkert»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Man kan lämna ut sina koder om någon ringer.",
+                        "answer": false,
+                        "explanation": "«Lämna aldrig ut ditt bank-id eller dina koder»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad ska man aldrig lämna ut? Sitt ___-id",
+                        "answer": "bank",
+                        "accept": [
+                              "bank-id",
+                              "bankid"
+                        ],
+                        "explanation": "«Lämna aldrig ut ditt bank-id»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-u12-2",
+            "unit": 12,
+            "unitTitle": "Teknik och sociala medier",
+            "title": "Sociala medier",
+            "kind": "Faktatext",
+            "icon": "💬",
+            "text": "Sociala medier är ett vanligt sätt att hålla kontakt med familj och vänner. Du kan dela bilder, läsa nyheter och gå med i grupper. Det finns många fördelar, men också nackdelar. Allt du läser på nätet är inte sant, och det är lätt att jämföra sitt liv med andras. Tänk på vad du delar och skydda din integritet. Ta pauser ibland och lägg mobilen åt sidan.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad är en nackdel med sociala medier?",
+                        "options": [
+                              "Allt man läser är inte sant",
+                              "Man kan dela bilder",
+                              "Man kan läsa nyheter"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Allt du läser på nätet är inte sant»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Enligt texten bör man skydda sin integritet.",
+                        "answer": true,
+                        "explanation": "«skydda din integritet»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad bör man lägga åt sidan ibland?",
+                        "answer": "mobilen",
+                        "accept": [
+                              "mobilen",
+                              "mobil"
+                        ],
+                        "explanation": "«lägg mobilen åt sidan»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-u13-1",
+            "unit": 13,
+            "unitTitle": "Kultur och traditioner",
+            "title": "Midsommar",
+            "kind": "Faktatext",
+            "icon": "🌼",
+            "text": "Midsommar är en av de största högtiderna i Sverige och firas i slutet av juni. Många åker till landet eller till en park för att fira. Man reser en midsommarstång, dansar runt den och sjunger sånger. Traditionell mat är sill, färskpotatis och jordgubbar. Ofta plockar man blommor och gör kransar. Midsommar handlar om att njuta av den ljusa sommaren tillsammans med familj och vänner.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "När firas midsommar?",
+                        "options": [
+                              "I slutet av juni",
+                              "I december",
+                              "På hösten"
+                        ],
+                        "correct": 0,
+                        "explanation": "«firas i slutet av juni»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Man dansar runt en midsommarstång.",
+                        "answer": true,
+                        "explanation": "«dansar runt den»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vilken frukt är traditionell mat?",
+                        "answer": "jordgubbar",
+                        "accept": [
+                              "jordgubbar",
+                              "jordgubb"
+                        ],
+                        "explanation": "«sill, färskpotatis och jordgubbar»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-u13-2",
+            "unit": 13,
+            "unitTitle": "Kultur och traditioner",
+            "title": "Fika",
+            "kind": "Faktatext",
+            "icon": "☕",
+            "text": "Att fika är en viktig del av den svenska kulturen. Fika betyder att ta en paus och dricka kaffe eller te, ofta med något gott till, som en bulle eller en kaka. Man fikar hemma, på jobbet och med vänner. Det är inte bara maten som är viktig, utan stunden att prata och umgås. Kanelbullen är kanske den mest kända fikaklassikern, och den har till och med en egen dag.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad betyder det att fika?",
+                        "options": [
+                              "Ta en paus med kaffe och något gott",
+                              "Att träna",
+                              "Att sova"
+                        ],
+                        "correct": 0,
+                        "explanation": "«ta en paus och dricka kaffe ... med något gott»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Det viktigaste med fika är bara maten.",
+                        "answer": false,
+                        "explanation": "«inte bara maten ... utan stunden att prata och umgås»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vilken bulle är den mest kända?",
+                        "answer": "kanelbullen",
+                        "accept": [
+                              "kanelbulle",
+                              "kanelbullen"
+                        ],
+                        "explanation": "«Kanelbullen är kanske den mest kända»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-u14-1",
+            "unit": 14,
+            "unitTitle": "Problem och reklamationer",
+            "title": "Att reklamera en vara",
+            "kind": "Faktatext",
+            "icon": "🧾",
+            "text": "Om du köper en vara som är trasig eller fel har du rätt att reklamera den. Enligt konsumentköplagen har du tre års reklamationsrätt. Spara alltid kvittot som bevis på köpet. Kontakta butiken och förklara problemet lugnt och tydligt. Ofta kan du få varan lagad, en ny vara eller pengarna tillbaka. Om butiken inte hjälper dig kan du vända dig till Allmänna reklamationsnämnden, ARN.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Hur länge har man reklamationsrätt?",
+                        "options": [
+                              "Tre år",
+                              "En månad",
+                              "Tio år"
+                        ],
+                        "correct": 0,
+                        "explanation": "«tre års reklamationsrätt»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Man behöver inte spara kvittot.",
+                        "answer": false,
+                        "explanation": "«Spara alltid kvittot som bevis»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vart kan man vända sig om butiken inte hjälper? ___",
+                        "answer": "ARN",
+                        "accept": [
+                              "arn",
+                              "reklamationsnämnden"
+                        ],
+                        "explanation": "«vända dig till Allmänna reklamationsnämnden, ARN»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-u14-2",
+            "unit": 14,
+            "unitTitle": "Problem och reklamationer",
+            "title": "Ett klagomål",
+            "kind": "Mensaje",
+            "icon": "✉️",
+            "text": "Hej! Jag köpte en kaffebryggare i er butik den 3 maj, men den slutade fungera efter bara två veckor. Jag har kvittot kvar och vill reklamera varan. Jag önskar i första hand en ny bryggare, eller annars pengarna tillbaka. Kan ni meddela hur jag ska göra? Jag bifogar en bild på kvittot. Tack på förhand. Med vänlig hälsning, Sara Ek.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Varför skriver Sara?",
+                        "options": [
+                              "Hon vill reklamera en trasig kaffebryggare",
+                              "Hon vill köpa en bryggare",
+                              "Hon tackar för hjälpen"
+                        ],
+                        "correct": 0,
+                        "explanation": "«vill reklamera varan»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Sara har inte kvar kvittot.",
+                        "answer": false,
+                        "explanation": "«Jag har kvittot kvar»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad vill hon i första hand ha? En ny ___",
+                        "answer": "bryggare",
+                        "accept": [
+                              "kaffebryggare",
+                              "bryggare"
+                        ],
+                        "explanation": "«en ny bryggare»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-u15-1",
+            "unit": 15,
+            "unitTitle": "Åsikter och jämförelser",
+            "title": "Insändare: kollektivtrafiken",
+            "kind": "Artículo",
+            "icon": "🚌",
+            "text": "Jag tycker att kollektivtrafiken i vår stad fungerar ganska bra. Det finns många bussar och tunnelbanelinjer, och de går ofta. Ett problem är däremot att biljetterna har blivit dyrare de senaste åren. Jag anser att priset borde sänkas så att fler väljer bussen istället för bilen. Det skulle vara bättre för miljön och minska trafiken. Jag hoppas att politikerna lyssnar på oss invånare.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad tycker skribenten om priset?",
+                        "options": [
+                              "Det borde sänkas",
+                              "Det är för lågt",
+                              "Det är perfekt"
+                        ],
+                        "correct": 0,
+                        "explanation": "«priset borde sänkas»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Skribenten tycker att kollektivtrafiken fungerar ganska bra.",
+                        "answer": true,
+                        "explanation": "«fungerar ganska bra»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad har blivit dyrare? ___na",
+                        "answer": "biljett",
+                        "accept": [
+                              "biljetterna",
+                              "biljett"
+                        ],
+                        "explanation": "«biljetterna har blivit dyrare»."
+                  }
+            ]
+      },
+      {
+            "id": "c-r-u15-2",
+            "unit": 15,
+            "unitTitle": "Åsikter och jämförelser",
+            "title": "Två sätt att bo",
+            "kind": "Artículo",
+            "icon": "🏘️",
+            "text": "Att bo i lägenhet och att bo i hus har både fördelar och nackdelar. I en lägenhet slipper du sköta trädgård och yttre underhåll, och det är ofta billigare. Å andra sidan har du mindre plats och närmare grannar. Ett hus ger mer utrymme och en egen trädgård, men det kräver mer arbete och kostar mer. Vilket som passar bäst beror på din familj, din ekonomi och vad du tycker är viktigt.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad är en fördel med att bo i lägenhet?",
+                        "options": [
+                              "Man slipper sköta trädgård",
+                              "Man har mer plats",
+                              "Det kostar alltid mer"
+                        ],
+                        "correct": 0,
+                        "explanation": "«slipper du sköta trädgård ... ofta billigare»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Ett hus kräver mer arbete än en lägenhet.",
+                        "answer": true,
+                        "explanation": "«det kräver mer arbete och kostar mer»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad ger ett hus mer av? Mer ___",
+                        "answer": "utrymme",
+                        "accept": [
+                              "plats",
+                              "utrymme"
+                        ],
+                        "explanation": "«Ett hus ger mer utrymme»."
+                  }
+            ]
+      }
+],
     write: [
       {
-        id: 'c-w-1', title: 'Skriv ett formellt mejl till hyresvärden', icon: '📧', words: '60–90 ord',
-        prompt: 'Hay un problema en tu apartamento (por ejemplo, la calefacción no funciona). Escribe un correo FORMAL a tu casero (hyresvärd) en sueco.\n\nDebes:\n• Explicar el problema\n• Decir desde cuándo ocurre\n• Pedir que lo arreglen pronto\n• Preguntar cuándo pueden venir',
-        checklist: ['Formell hälsning: Hej / Hej [namn]', 'Beskriv problemet tydligt', 'Säg sedan när: "Sedan i måndags fungerar inte..."', 'Be om åtgärd: "Jag vill be er att åtgärda detta snarast."', 'Avsluta formellt: "Med vänliga hälsningar, [namn]"'],
-        example: 'Hej,\n\nJag hyr lägenheten på Storgatan 5. Sedan i måndags fungerar inte värmen i vardagsrummet, och det är väldigt kallt. Jag vill be er att åtgärda detta snarast. När kan en tekniker komma?\n\nMed vänliga hälsningar,\nPedro Gómez',
-        criteria: ['Contenido: explica el problema y pide solución', 'Registro: formal y educado', 'Gramática: orden de palabras y verbos correctos', 'Estructura: saludo, cuerpo, despedida']
+            "id": "c-w-1",
+            "unit": 1,
+            "unitTitle": "Arbete",
+            "title": "Personligt brev",
+            "icon": "✉️",
+            "words": "60–100 ord",
+            "prompt": "Situation:\nDu söker ett jobb som du är intresserad av.\n\nInstruktioner:\nSkriv ett personligt brev. Hälsa, berätta kort om dig själv och din erfarenhet, förklara varför du passar för jobbet och avsluta artigt.",
+            "req": {
+                  "greeting": true,
+                  "closing": true,
+                  "question": false,
+                  "keywords": [
+                        "erfarenhet",
+                        "söker"
+                  ],
+                  "min": 60,
+                  "max": 100
+            },
+            "selfCheck": [
+                  "Har du hälsat?",
+                  "Har du berättat om din erfarenhet?",
+                  "Har du förklarat varför du passar?",
+                  "Har du avslutat artigt?"
+            ],
+            "hints": [
+                  "Börja med: Hej! Jag heter... och söker tjänsten som...",
+                  "Berätta: Jag har erfarenhet av...",
+                  "Förklara: Jag passar för jobbet eftersom...",
+                  "Avsluta: Med vänliga hälsningar,"
+            ],
+            "useful": [
+                  "hej",
+                  "söker tjänsten",
+                  "erfarenhet",
+                  "eftersom",
+                  "passar",
+                  "med vänliga hälsningar"
+            ],
+            "example": "Hej! Jag heter Marco och jag söker tjänsten som lagerarbetare hos er. Jag har tidigare arbetat två år på ett lager, där jag packade varor och körde truck. Jag är noggrann, stresstålig och gillar att arbeta i team. Jag tror att jag passar bra för jobbet eftersom jag har rätt erfarenhet och gärna lär mig nya saker. Jag bifogar mitt CV. Med vänliga hälsningar, Marco Rossi.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Sammanhang: texten är lätt att följa",
+                  "Sammanbindningsord: och, men, eftersom, därför",
+                  "Längd: 60–100 ord"
+            ]
       },
       {
-        id: 'c-w-2', title: 'Ett personligt brev för ett jobb', icon: '💼', words: '70–100 ord',
-        prompt: 'Estás solicitando un trabajo (por ejemplo, undersköterska). Escribe un breve "personligt brev" en sueco.\n\nIncluye:\n• Qué trabajo solicitas\n• Tu experiencia\n• Por qué eres adecuado/a\n• Tu disponibilidad',
-        checklist: ['"Jag söker tjänsten som..."', 'Beskriv erfarenhet: "Jag har arbetat som..."', 'Motivera: "Jag är ansvarsfull och tycker om att arbeta med människor."', 'Tillgänglighet: "Jag kan börja..."'],
-        example: 'Hej,\n\nJag söker tjänsten som undersköterska på ert boende. Jag har arbetat inom vården i tre år och trivs med att hjälpa människor. Jag är ansvarsfull, punktlig och talar svenska och spanska. Jag kan börja omgående och arbetar gärna både dag och kväll.\n\nMed vänliga hälsningar,\nMaría López',
-        criteria: ['Contenido: menciona puesto, experiencia y motivación', 'Registro: formal', 'Vocabulario: laboral (erfarenhet, ansvarsfull)', 'Coherencia: ideas ordenadas']
+            "id": "c-w-2",
+            "unit": 5,
+            "unitTitle": "Myndigheter",
+            "title": "Mejl till en myndighet",
+            "icon": "🏛️",
+            "words": "60–100 ord",
+            "prompt": "Situation:\nDu behöver hjälp med ett ärende hos en myndighet (t.ex. Skatteverket eller Försäkringskassan).\n\nInstruktioner:\nSkriv ett mejl. Hälsa, förklara ditt ärende tydligt, ställ en fråga och avsluta artigt.",
+            "req": {
+                  "greeting": true,
+                  "closing": true,
+                  "question": true,
+                  "keywords": [
+                        "ärende"
+                  ],
+                  "min": 60,
+                  "max": 100
+            },
+            "selfCheck": [
+                  "Har du hälsat?",
+                  "Har du förklarat ditt ärende tydligt?",
+                  "Har du ställt en fråga?",
+                  "Har du avslutat artigt?"
+            ],
+            "hints": [
+                  "Hej! Jag heter... och har en fråga om...",
+                  "Förklara ärendet lugnt och tydligt",
+                  "Ställ din fråga med «?»",
+                  "Avsluta: Vänliga hälsningar,"
+            ],
+            "useful": [
+                  "hej",
+                  "ärende",
+                  "gäller",
+                  "jag undrar",
+                  "kan ni",
+                  "vänliga hälsningar"
+            ],
+            "example": "Hej! Jag heter Amina Ali och har ett ärende som gäller mitt bostadsbidrag. Jag ansökte för en månad sedan men har ännu inte fått något beslut. Jag undrar hur lång handläggningstiden är och om ni behöver fler papper från mig. Jag har redan skickat in mitt hyreskontrakt. Kan ni meddela hur jag ska göra? Tack på förhand. Med vänliga hälsningar, Amina Ali.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Sammanhang: texten är lätt att följa",
+                  "Sammanbindningsord: och, men, eftersom, därför",
+                  "Längd: 60–100 ord"
+            ]
       },
       {
-        id: 'c-w-3', title: 'En reklamation', icon: '⚠️', words: '50–80 ord',
-        prompt: 'Compraste un producto que está defectuoso. Escribe una reclamación (reklamation) a la tienda en sueco.\n\nDebes:\n• Decir qué compraste y cuándo\n• Explicar el problema\n• Decir qué quieres (reparación, cambio o devolución)',
-        checklist: ['"Jag köpte en ... den ..."', 'Beskriv felet', 'Krav: "Jag vill få den lagad / utbytt / pengarna tillbaka."', 'Hänvisa till kvitto/garanti'],
-        example: 'Hej,\n\nJag köpte en kaffebryggare hos er den 3 maj. Tyvärr fungerar den inte, den startar inte alls. Jag har kvittot kvar. Jag vill få den utbytt eller pengarna tillbaka enligt konsumentlagen.\n\nMed vänliga hälsningar,\nAhmed Ali',
-        criteria: ['Contenido: producto, problema y petición', 'Registro: formal', 'Vocabulario: reklamation, kvitto, garanti', 'Claridad del mensaje']
+            "id": "c-w-3",
+            "unit": 8,
+            "unitTitle": "Familj och skola",
+            "title": "Mejl till förskolan",
+            "icon": "🏫",
+            "words": "60–100 ord",
+            "prompt": "Situation:\nDitt barn går på förskola och du behöver meddela något (t.ex. sjukdom eller ledighet).\n\nInstruktioner:\nSkriv ett mejl till personalen. Hälsa, förklara situationen, ge nödvändig information och avsluta.",
+            "req": {
+                  "greeting": true,
+                  "closing": true,
+                  "question": false,
+                  "keywords": [
+                        "barn"
+                  ],
+                  "min": 60,
+                  "max": 100
+            },
+            "selfCheck": [
+                  "Har du hälsat?",
+                  "Har du förklarat situationen?",
+                  "Har du gett nödvändig information?",
+                  "Har du avslutat?"
+            ],
+            "hints": [
+                  "Hej! Jag är förälder till...",
+                  "Jag vill meddela att...",
+                  "Barnet kommer tillbaka...",
+                  "Vänliga hälsningar,"
+            ],
+            "useful": [
+                  "hej",
+                  "mitt barn",
+                  "sjuk",
+                  "ledig",
+                  "tillbaka",
+                  "vänliga hälsningar"
+            ],
+            "example": "Hej! Jag är mamma till Leo i avdelning Solen. Jag vill meddela att Leo är sjuk idag och därför stannar hemma. Han har feber och ont i halsen. Om han blir bättre kommer han tillbaka på torsdag, annars hör jag av mig igen. Tack för att ni meddelar mig om det händer något viktigt på förskolan. Vänliga hälsningar, Sofia.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Sammanhang: texten är lätt att följa",
+                  "Sammanbindningsord: och, men, eftersom, därför",
+                  "Längd: 60–100 ord"
+            ]
       },
-    ],
+      {
+            "id": "c-w-4",
+            "unit": 3,
+            "unitTitle": "Arbete",
+            "title": "Din arbetslivserfarenhet",
+            "icon": "💼",
+            "words": "60–100 ord",
+            "prompt": "Situation:\nBerätta om din erfarenhet av arbete.\n\nInstruktioner:\nBeskriv ett jobb du har haft: vad du gjorde, vad du lärde dig och om du trivdes. Använd dåtid och sammanbindningsord.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "jobbade"
+                  ],
+                  "min": 60,
+                  "max": 100
+            },
+            "selfCheck": [
+                  "Har du beskrivit vad du gjorde?",
+                  "Har du berättat vad du lärde dig?",
+                  "Har du sagt om du trivdes?",
+                  "Har du använt sammanbindningsord (eftersom, därför, men)?"
+            ],
+            "hints": [
+                  "Jag jobbade som... i...",
+                  "Mina uppgifter var att...",
+                  "Jag lärde mig att...",
+                  "Jag trivdes eftersom..."
+            ],
+            "useful": [
+                  "jobbade",
+                  "uppgifter",
+                  "lärde mig",
+                  "ansvar",
+                  "trivdes",
+                  "eftersom",
+                  "därför"
+            ],
+            "example": "I mitt hemland jobbade jag som lärare i tre år. Mina uppgifter var att undervisa barn, planera lektioner och prata med föräldrar. Jag lärde mig att vara tålmodig och att organisera mitt arbete. Ibland var det stressigt, men jag trivdes ändå eftersom jag tycker om att arbeta med människor. Erfarenheten har hjälpt mig mycket, och nu vill jag gärna jobba med barn även här i Sverige.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Sammanhang: texten är lätt att följa",
+                  "Sammanbindningsord: och, men, eftersom, därför",
+                  "Längd: 60–100 ord"
+            ]
+      },
+      {
+            "id": "c-w-5",
+            "unit": 6,
+            "unitTitle": "Bostad",
+            "title": "Felanmälan till hyresvärden",
+            "icon": "🔧",
+            "words": "60–100 ord",
+            "prompt": "Situation:\nNågot är trasigt i din lägenhet.\n\nInstruktioner:\nSkriv en felanmälan. Hälsa, beskriv problemet tydligt, be om en reparation och säg när du är hemma. Avsluta artigt.",
+            "req": {
+                  "greeting": true,
+                  "closing": true,
+                  "question": false,
+                  "keywords": [
+                        "trasig"
+                  ],
+                  "min": 60,
+                  "max": 100
+            },
+            "selfCheck": [
+                  "Har du hälsat?",
+                  "Har du beskrivit problemet?",
+                  "Har du bett om reparation?",
+                  "Har du sagt när du är hemma?"
+            ],
+            "hints": [
+                  "Hej! Jag bor på... och vill anmäla ett fel.",
+                  "Problemet är att...",
+                  "Kan ni skicka en reparatör?",
+                  "Jag är hemma...",
+                  "Vänliga hälsningar,"
+            ],
+            "useful": [
+                  "hej",
+                  "anmäla",
+                  "trasig",
+                  "reparatör",
+                  "hemma",
+                  "vänliga hälsningar",
+                  "tack på förhand"
+            ],
+            "example": "Hej! Jag heter Ana och bor på Skolgatan 5, lägenhet 12. Jag vill anmäla ett fel eftersom kranen i köket droppar hela tiden och diskmaskinen har slutat fungera. Vattnet rinner även när kranen är stängd, vilket oroar mig. Kan ni skicka en reparatör den här veckan? Jag är hemma på eftermiddagarna efter klockan tre. Tack på förhand för hjälpen. Vänliga hälsningar, Ana.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Sammanhang: texten är lätt att följa",
+                  "Sammanbindningsord: och, men, eftersom, därför",
+                  "Längd: 60–100 ord"
+            ]
+      },
+      {
+            "id": "c-w-6",
+            "unit": 14,
+            "unitTitle": "Reklamationer",
+            "title": "Ett klagomål",
+            "icon": "🧾",
+            "words": "60–100 ord",
+            "prompt": "Situation:\nDu har köpt en vara som är trasig eller fel.\n\nInstruktioner:\nSkriv ett klagomål till butiken. Hälsa, förklara vad som är fel, säg vad du vill ha (ny vara eller pengarna tillbaka) och avsluta.",
+            "req": {
+                  "greeting": true,
+                  "closing": true,
+                  "question": false,
+                  "keywords": [
+                        "reklamera"
+                  ],
+                  "min": 60,
+                  "max": 100
+            },
+            "selfCheck": [
+                  "Har du hälsat?",
+                  "Har du förklarat felet?",
+                  "Har du sagt vad du vill ha?",
+                  "Har du avslutat artigt?"
+            ],
+            "hints": [
+                  "Hej! Jag köpte... den...",
+                  "Problemet är att...",
+                  "Jag vill reklamera varan och få...",
+                  "Vänliga hälsningar,"
+            ],
+            "useful": [
+                  "hej",
+                  "köpte",
+                  "fungerar inte",
+                  "reklamera",
+                  "kvitto",
+                  "pengarna tillbaka",
+                  "vänliga hälsningar"
+            ],
+            "example": "Hej! Jag köpte en kaffebryggare i er butik den 3 maj, men den slutade fungera efter bara två veckor. Jag har kvittot kvar och vill därför reklamera varan. Enligt konsumentköplagen har jag rätt att få hjälp. I första hand önskar jag en ny bryggare, men annars vill jag ha pengarna tillbaka. Kan ni meddela hur jag ska göra? Jag bifogar en bild på kvittot. Vänliga hälsningar, Sara Ek.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Sammanhang: texten är lätt att följa",
+                  "Sammanbindningsord: och, men, eftersom, därför",
+                  "Längd: 60–100 ord"
+            ]
+      },
+      {
+            "id": "c-w-7",
+            "unit": 10,
+            "unitTitle": "Åsikter",
+            "title": "Uttryck en åsikt",
+            "icon": "💬",
+            "words": "60–100 ord",
+            "prompt": "Situation:\nDu vill skriva om en fråga som är viktig för dig (t.ex. kollektivtrafik, miljö eller skola).\n\nInstruktioner:\nUttryck din åsikt tydligt och ge minst två skäl. Använd sammanbindningsord.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "tycker"
+                  ],
+                  "min": 60,
+                  "max": 100
+            },
+            "selfCheck": [
+                  "Har du sagt vad du tycker?",
+                  "Har du gett minst två skäl?",
+                  "Har du förklarat varför (eftersom/därför)?",
+                  "Har du använt sammanbindningsord (eftersom, därför, men)?"
+            ],
+            "hints": [
+                  "Jag tycker att...",
+                  "För det första...",
+                  "För det andra...",
+                  "...eftersom..."
+            ],
+            "useful": [
+                  "jag tycker",
+                  "jag anser",
+                  "för det första",
+                  "för det andra",
+                  "eftersom",
+                  "därför",
+                  "men"
+            ],
+            "example": "Jag tycker att kollektivtrafiken borde vara billigare. För det första skulle fler människor välja bussen istället för bilen, vilket är bra för miljön. För det andra är det viktigt att alla har råd att resa till jobb och skola, även de som tjänar mindre. Jag anser att staden borde satsa mer pengar på detta. Om biljetterna blev billigare skulle luften bli renare och trafiken minska i centrum.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Sammanhang: texten är lätt att följa",
+                  "Sammanbindningsord: och, men, eftersom, därför",
+                  "Längd: 60–100 ord"
+            ]
+      },
+      {
+            "id": "c-w-8",
+            "unit": 15,
+            "unitTitle": "Jämförelser",
+            "title": "Jämför två alternativ",
+            "icon": "⚖️",
+            "words": "60–100 ord",
+            "prompt": "Situation:\nDu ska jämföra två saker (t.ex. att bo i lägenhet eller hus, eller att ta bussen eller cykla).\n\nInstruktioner:\nBeskriv fördelar och nackdelar med båda och säg vad du föredrar och varför.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "fördel"
+                  ],
+                  "min": 60,
+                  "max": 100
+            },
+            "selfCheck": [
+                  "Har du beskrivit båda alternativen?",
+                  "Har du nämnt fördelar och nackdelar?",
+                  "Har du sagt vad du föredrar och varför?",
+                  "Har du använt sammanbindningsord (eftersom, därför, men)?"
+            ],
+            "hints": [
+                  "Å ena sidan...",
+                  "Å andra sidan...",
+                  "En fördel är... men en nackdel är...",
+                  "Jag föredrar... eftersom..."
+            ],
+            "useful": [
+                  "å ena sidan",
+                  "å andra sidan",
+                  "fördel",
+                  "nackdel",
+                  "däremot",
+                  "jag föredrar",
+                  "eftersom"
+            ],
+            "example": "Att bo i lägenhet och att bo i hus har både fördelar och nackdelar. Å ena sidan är en lägenhet ofta billigare, och man slipper sköta trädgård. Å andra sidan har man mindre plats och närmare grannar. Ett hus ger mer utrymme och en egen trädgård, men det kräver mer arbete och kostar mer pengar. Själv föredrar jag en lägenhet just nu eftersom jag inte har tid att sköta ett hus, men i framtiden vill jag kanske ha ett hus.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Sammanhang: texten är lätt att följa",
+                  "Sammanbindningsord: och, men, eftersom, därför",
+                  "Längd: 60–100 ord"
+            ]
+      },
+      {
+            "id": "c-w-9",
+            "unit": 9,
+            "unitTitle": "Berätta",
+            "title": "Berätta om en händelse",
+            "icon": "📖",
+            "words": "60–100 ord",
+            "prompt": "Situation:\nBerätta om något som hände dig nyligen.\n\nInstruktioner:\nBeskriv vad som hände, i vilken ordning, och hur du kände dig. Använd dåtid och sammanbindningsord.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "sedan"
+                  ],
+                  "min": 60,
+                  "max": 100
+            },
+            "selfCheck": [
+                  "Har du berättat vad som hände?",
+                  "Har du använt dåtid?",
+                  "Har du beskrivit hur du kände dig?",
+                  "Har du använt sammanbindningsord (eftersom, därför, men)?"
+            ],
+            "hints": [
+                  "Förra veckan...",
+                  "Först... och sedan...",
+                  "Till slut...",
+                  "Jag kände mig... eftersom..."
+            ],
+            "useful": [
+                  "förra veckan",
+                  "först",
+                  "sedan",
+                  "till slut",
+                  "kände mig",
+                  "eftersom",
+                  "men"
+            ],
+            "example": "Förra veckan hade jag min första arbetsdag på ett nytt jobb. På morgonen var jag ganska nervös eftersom jag inte kände någon. Men när jag kom fram var alla vänliga och hjälpsamma. Först visade chefen mig runt, och sedan fick jag börja med enkla uppgifter. På lunchen åt jag tillsammans med mina nya kollegor. Till slut, när dagen var över, kände jag mig nöjd och glad. Nu ser jag fram emot att lära mig mer.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Sammanhang: texten är lätt att följa",
+                  "Sammanbindningsord: och, men, eftersom, därför",
+                  "Längd: 60–100 ord"
+            ]
+      },
+      {
+            "id": "c-w-10",
+            "unit": 4,
+            "unitTitle": "Hälsa",
+            "title": "Mejl till vårdcentralen",
+            "icon": "🏥",
+            "words": "60–100 ord",
+            "prompt": "Situation:\nDu behöver kontakta vårdcentralen.\n\nInstruktioner:\nSkriv ett mejl. Hälsa, förklara ditt problem eller ärende, ställ en fråga om tid och avsluta artigt.",
+            "req": {
+                  "greeting": true,
+                  "closing": true,
+                  "question": true,
+                  "keywords": [
+                        "tid"
+                  ],
+                  "min": 60,
+                  "max": 100
+            },
+            "selfCheck": [
+                  "Har du hälsat?",
+                  "Har du förklarat ditt problem?",
+                  "Har du frågat om en tid?",
+                  "Har du avslutat artigt?"
+            ],
+            "hints": [
+                  "Hej! Jag heter... och har...",
+                  "Jag har ont i / behöver...",
+                  "Kan jag boka en tid...?",
+                  "Vänliga hälsningar,"
+            ],
+            "useful": [
+                  "hej",
+                  "ont",
+                  "besvär",
+                  "boka en tid",
+                  "den här veckan",
+                  "vänliga hälsningar",
+                  "tack"
+            ],
+            "example": "Hej! Jag heter Pedro och har haft ont i ryggen i över en vecka. Smärtan blir värre när jag lyfter saker på jobbet, och värktabletter hjälper inte längre. Därför skulle jag vilja träffa en läkare. Kan jag boka en tid någon gång den här veckan, helst på eftermiddagen? Jag har möjlighet att komma efter klockan tre. Tack på förhand för hjälpen. Vänliga hälsningar, Pedro.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Sammanhang: texten är lätt att följa",
+                  "Sammanbindningsord: och, men, eftersom, därför",
+                  "Längd: 60–100 ord"
+            ]
+      },
+      {
+            "id": "c-w-11",
+            "unit": 13,
+            "unitTitle": "Kultur",
+            "title": "Berätta om en tradition",
+            "icon": "🌼",
+            "words": "60–100 ord",
+            "prompt": "Situation:\nBerätta om en tradition eller högtid, från Sverige eller ditt hemland.\n\nInstruktioner:\nBeskriv vad man firar, hur man firar och varför den är viktig för dig.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "firar"
+                  ],
+                  "min": 60,
+                  "max": 100
+            },
+            "selfCheck": [
+                  "Har du sagt vad man firar?",
+                  "Har du beskrivit hur man firar?",
+                  "Har du förklarat varför den är viktig?",
+                  "Har du använt sammanbindningsord (eftersom, därför, men)?"
+            ],
+            "hints": [
+                  "I mitt hemland/Sverige firar vi...",
+                  "Man brukar...",
+                  "Traditionen är viktig eftersom..."
+            ],
+            "useful": [
+                  "firar",
+                  "högtid",
+                  "brukar",
+                  "traditionell mat",
+                  "tillsammans",
+                  "eftersom",
+                  "betyder"
+            ],
+            "example": "I mitt hemland firar vi en stor högtid i slutet av året. Familjen samlas hemma hos mor- och farföräldrarna, och vi lagar mycket traditionell mat tillsammans. Vi äter, sjunger och ger varandra små gåvor. Barnen brukar leka medan de vuxna pratar länge. För mig är den här traditionen viktig eftersom den handlar om att umgås med familjen och komma ihåg var man kommer ifrån. Nu försöker jag fira den även här i Sverige.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Sammanhang: texten är lätt att följa",
+                  "Sammanbindningsord: och, men, eftersom, därför",
+                  "Längd: 60–100 ord"
+            ]
+      },
+      {
+            "id": "c-w-12",
+            "unit": 11,
+            "unitTitle": "Miljö",
+            "title": "En samhällsfråga",
+            "icon": "♻️",
+            "words": "60–100 ord",
+            "prompt": "Situation:\nDu läste om en miljöfråga i din stad.\n\nInstruktioner:\nSkriv kort vad frågan handlar om, vad du tycker och ge minst ett förslag på en lösning.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "miljö"
+                  ],
+                  "min": 60,
+                  "max": 100
+            },
+            "selfCheck": [
+                  "Har du förklarat frågan?",
+                  "Har du sagt vad du tycker?",
+                  "Har du gett ett förslag?",
+                  "Har du använt sammanbindningsord (eftersom, därför, men)?"
+            ],
+            "hints": [
+                  "Jag läste att...",
+                  "Jag tycker att det är ett problem eftersom...",
+                  "Ett förslag är att..."
+            ],
+            "useful": [
+                  "jag läste",
+                  "miljö",
+                  "problem",
+                  "jag tycker",
+                  "ett förslag",
+                  "eftersom",
+                  "borde"
+            ],
+            "example": "Jag läste att många slänger skräp i naturen i vår kommun. Jag tycker att det är ett stort problem eftersom skräpet skadar djur och förstör miljön för alla. Dessutom blir det dyrt för kommunen att städa. Ett förslag är att sätta upp fler soptunnor i parkerna och vid busshållplatserna. Man skulle också kunna informera mer i skolorna om varför källsortering är viktigt. Om vi hjälps åt kan vår stad bli renare och trevligare.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Sammanhang: texten är lätt att följa",
+                  "Sammanbindningsord: och, men, eftersom, därför",
+                  "Längd: 60–100 ord"
+            ]
+      },
+      {
+            "id": "c-w-13",
+            "unit": 2,
+            "unitTitle": "CV",
+            "title": "Beskriv dig själv för en arbetsgivare",
+            "icon": "🙋",
+            "words": "60–100 ord",
+            "prompt": "Situation:\nEn arbetsgivare vill veta mer om dig.\n\nInstruktioner:\nBeskriv dig själv: din bakgrund, dina egenskaper och vad du är bra på. Förklara varför du vill ha jobbet.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "jag är"
+                  ],
+                  "min": 60,
+                  "max": 100
+            },
+            "selfCheck": [
+                  "Har du beskrivit din bakgrund?",
+                  "Har du nämnt dina egenskaper?",
+                  "Har du sagt varför du vill ha jobbet?",
+                  "Har du använt sammanbindningsord (eftersom, därför, men)?"
+            ],
+            "hints": [
+                  "Jag heter... och kommer från...",
+                  "Jag är... (egenskaper)",
+                  "Jag är bra på...",
+                  "Jag vill ha jobbet eftersom..."
+            ],
+            "useful": [
+                  "jag heter",
+                  "jag är",
+                  "noggrann",
+                  "ansvarsfull",
+                  "bra på",
+                  "eftersom",
+                  "erfarenhet"
+            ],
+            "example": "Jag heter Nadia och kommer ursprungligen från Syrien, men jag har bott i Sverige i fyra år. Jag är en noggrann och ansvarsfull person som tycker om att arbeta med andra. Tidigare har jag jobbat inom vården, så jag är van vid att ta hand om människor. Jag är bra på att lyssna och hålla mig lugn i stressiga situationer. Jag vill ha det här jobbet eftersom jag trivs med att hjälpa andra och gärna utvecklas vidare.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Sammanhang: texten är lätt att följa",
+                  "Sammanbindningsord: och, men, eftersom, därför",
+                  "Längd: 60–100 ord"
+            ]
+      },
+      {
+            "id": "c-w-14",
+            "unit": 7,
+            "unitTitle": "Ekonomi",
+            "title": "Skriv om din ekonomi",
+            "icon": "💳",
+            "words": "60–100 ord",
+            "prompt": "Situation:\nDu vill berätta hur du sköter din ekonomi.\n\nInstruktioner:\nBeskriv hur du hanterar pengar: hur du betalar räkningar, om du sparar och vad du tycker är viktigt.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "räkningar"
+                  ],
+                  "min": 60,
+                  "max": 100
+            },
+            "selfCheck": [
+                  "Har du beskrivit hur du betalar räkningar?",
+                  "Har du sagt om du sparar?",
+                  "Har du förklarat vad som är viktigt?",
+                  "Har du använt sammanbindningsord (eftersom, därför, men)?"
+            ],
+            "hints": [
+                  "Jag betalar mina räkningar...",
+                  "Varje månad försöker jag spara...",
+                  "Jag tycker att det är viktigt att... eftersom..."
+            ],
+            "useful": [
+                  "räkningar",
+                  "internetbank",
+                  "autogiro",
+                  "spara",
+                  "budget",
+                  "eftersom",
+                  "viktigt"
+            ],
+            "example": "Jag försöker sköta min ekonomi noggrant. Alla mina räkningar betalar jag via internetbanken, och jag har autogiro på hyran så att jag aldrig glömmer den. Varje månad gör jag en enkel budget och försöker spara en liten summa, även om det ibland är svårt. Jag tycker att det är viktigt att ha koll på sina pengar eftersom man då slipper oroa sig och kan känna sig tryggare. I framtiden hoppas jag kunna spara mer.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Sammanhang: texten är lätt att följa",
+                  "Sammanbindningsord: och, men, eftersom, därför",
+                  "Längd: 60–100 ord"
+            ]
+      },
+      {
+            "id": "c-w-15",
+            "unit": 12,
+            "unitTitle": "Teknik",
+            "title": "För- och nackdelar med sociala medier",
+            "icon": "📱",
+            "words": "60–100 ord",
+            "prompt": "Situation:\nDu vill skriva om sociala medier.\n\nInstruktioner:\nBeskriv fördelar och nackdelar med sociala medier och säg vad du själv tycker.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "sociala medier"
+                  ],
+                  "min": 60,
+                  "max": 100
+            },
+            "selfCheck": [
+                  "Har du nämnt fördelar?",
+                  "Har du nämnt nackdelar?",
+                  "Har du sagt vad du själv tycker?",
+                  "Har du använt sammanbindningsord (eftersom, därför, men)?"
+            ],
+            "hints": [
+                  "En fördel med sociala medier är att...",
+                  "En nackdel är däremot att...",
+                  "Själv tycker jag att... eftersom..."
+            ],
+            "useful": [
+                  "sociala medier",
+                  "fördel",
+                  "nackdel",
+                  "däremot",
+                  "hålla kontakt",
+                  "själv tycker jag",
+                  "eftersom"
+            ],
+            "example": "Sociala medier har både fördelar och nackdelar. En stor fördel är att man lätt kan hålla kontakt med familj och vänner, även i andra länder. Man kan också läsa nyheter och lära sig nya saker. En nackdel är däremot att allt man läser inte är sant, och att många lägger för mycket tid på mobilen. Själv tycker jag att sociala medier är bra om man använder dem lagom, eftersom kontakten med andra är viktig men vilan också behövs.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Sammanhang: texten är lätt att följa",
+                  "Sammanbindningsord: och, men, eftersom, därför",
+                  "Längd: 60–100 ord"
+            ]
+      }
+],
     speak: [
       {
         id: 'c-s-1', title: 'Möte på Arbetsförmedlingen', icon: '💼', context: 'En el centro de empleo (Arbetsförmedlingen)',
@@ -12892,11 +14658,13 @@ function skillProgress(kind, level) {
 // filas viejas a la nueva clave para NO perder progreso real de alumnos.
 const _LEGACY_READ_MAP = {
   A: { '0': 'a-r-1', '1': 'a-r-2', '2': 'a-r-3', '3': 'a-r-4' },
-  B: { '0': 'b-r-1', '1': 'b-r-2', '2': 'b-r-3', '3': 'b-r-4' }
+  B: { '0': 'b-r-1', '1': 'b-r-2', '2': 'b-r-3', '3': 'b-r-4' },
+  C: { '0': 'c-r-1', '1': 'c-r-2', '2': 'c-r-3', '3': 'c-r-4' }
 };
 const _LEGACY_WRITE_MAP = {
   A: { '0': 'a-w-1', '1': 'a-w-2', '2': 'a-w-3' },
-  B: { '0': 'b-w-1', '1': 'b-w-2', '2': 'b-w-3' }
+  B: { '0': 'b-w-1', '1': 'b-w-2', '2': 'b-w-3' },
+  C: { '0': 'c-w-1', '1': 'c-w-2', '2': 'c-w-3' }
 };
 async function _backfillByMap(moduleKey, keyName, mapAll) {
   for (const lv in mapAll) {
