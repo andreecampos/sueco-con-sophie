@@ -1406,13 +1406,19 @@ function initRead() {
 function openText(index) {
   const items = DB[state.level].read || [];
   const _t = items[index];
-  state.currentText = _t ? { ..._t, questions: (_t.questions || []).map(q => (q.type && q.type !== 'mc') ? { ...q } : shuffleOptions({ ...q })) } : _t;
+  // Orden variado en cada intento + opciones barajadas; se muestran hasta 10 preguntas.
+  let qs = _t ? (_t.questions || []).map(q => (q.type && q.type !== 'mc') ? { ...q } : shuffleOptions({ ...q })) : [];
+  qs = qs.sort(() => Math.random() - 0.5).slice(0, 10);
+  state.currentText = _t ? { ..._t, questions: qs } : _t;
   state.readItemIndex = index;
   state.readQIndex = 0;
   state.readAnswers = [];
+  state.readLocked = false;
 
+  // Abrir la lectura arriba: se oculta la lista y se sube al inicio (mejor UX).
+  const _grid = document.getElementById('read-grid'); if (_grid) _grid.classList.add('hidden');
   document.getElementById('read-area').classList.remove('hidden');
-  document.getElementById('read-area').scrollIntoView({ behavior: 'smooth' });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 
   document.getElementById('read-title').textContent = state.currentText.title;
   document.getElementById('read-tag').textContent = state.currentText.tag || '';
@@ -1428,6 +1434,13 @@ function randomText() {
   openText(Math.floor(Math.random() * items.length));
 }
 
+// Volver a la lista de lecturas (refresca las palomitas de completado).
+function backToReadList() {
+  document.getElementById('read-area').classList.add('hidden');
+  try { initRead(); } catch (e) { const g = document.getElementById('read-grid'); if (g) g.classList.remove('hidden'); }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 function renderReadQuestion() {
   const qs = state.currentText.questions || [];
   if (state.readQIndex >= qs.length) {
@@ -1436,6 +1449,7 @@ function renderReadQuestion() {
   }
   const q = qs[state.readQIndex];
   const type = q.type || 'mc';
+  state.readLocked = false; // nueva pregunta: se puede responder
   document.getElementById('q-progress-read').textContent = `${state.readQIndex + 1} / ${qs.length}`;
   document.getElementById('read-next-btn').classList.add('hidden');
   let body = `<p class="font-semibold text-gray-800 mb-3">${state.readQIndex + 1}. ${q.text}</p>`;
@@ -1479,6 +1493,7 @@ function _norm(s) {
 }
 
 function answerRead(idx) {
+  if (state.readLocked) return; state.readLocked = true;
   const q = state.currentText.questions[state.readQIndex];
   const btns = document.querySelectorAll('#options-read .option-btn');
   btns.forEach(b => b.classList.add('disabled'));
@@ -1490,6 +1505,7 @@ function answerRead(idx) {
 }
 
 function answerReadTF(val) {
+  if (state.readLocked) return; state.readLocked = true;
   const q = state.currentText.questions[state.readQIndex];
   const btns = document.querySelectorAll('#options-read .option-btn');
   btns.forEach(b => b.classList.add('disabled'));
@@ -1503,11 +1519,13 @@ function answerReadTF(val) {
 }
 
 function answerReadShort() {
+  if (state.readLocked) return;
   const q = state.currentText.questions[state.readQIndex];
   const inp = document.getElementById('read-short-input');
   if (!inp) return;
   const val = _norm(inp.value);
   if (!val) return;
+  state.readLocked = true;
   const accepted = [q.answer].concat(q.accept || []).map(_norm);
   const isCorrect = accepted.includes(val);
   inp.disabled = true;

@@ -121,6 +121,23 @@ const DEFAULT_DATA = {
                               "svenskan"
                         ],
                         "explanation": "«Jag studerar svenska» = estudio sueco."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Ana är trettio år.",
+                        "answer": true,
+                        "explanation": "«Jag är trettio år» = tengo 30 años."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Dónde vive ahora?",
+                        "options": [
+                              "I Lima",
+                              "I Stockholm",
+                              "I Peru"
+                        ],
+                        "correct": 1,
+                        "explanation": "«Nu bor jag i Stockholm»."
                   }
             ]
       },
@@ -158,6 +175,23 @@ const DEFAULT_DATA = {
                               "syrien"
                         ],
                         "explanation": "«Jag kommer från Syrien»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Qué edad tiene Omar?",
+                        "options": [
+                              "Tjugo",
+                              "Tjugofem",
+                              "Trettio"
+                        ],
+                        "correct": 1,
+                        "explanation": "«Jag är tjugofem år» = 25."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Omar kommer från Peru.",
+                        "answer": false,
+                        "explanation": "«från Syrien»."
                   }
             ]
       },
@@ -195,6 +229,26 @@ const DEFAULT_DATA = {
                               "lägenheten"
                         ],
                         "explanation": "«bor i en lägenhet» = viven en un apartamento."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿En qué trabaja Maria?",
+                        "options": [
+                              "Lärare",
+                              "Sjuksköterska",
+                              "Kock"
+                        ],
+                        "correct": 1,
+                        "explanation": "«Maria jobbar som sjuksköterska» = enfermera."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Cuántos años tiene Lucas? (número)",
+                        "answer": "nio",
+                        "accept": [
+                              "9"
+                        ],
+                        "explanation": "«Lucas, som är nio år»."
                   }
             ]
       },
@@ -232,6 +286,23 @@ const DEFAULT_DATA = {
                               "karl"
                         ],
                         "explanation": "«Min man heter Karl»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Dónde vive la mamá de Sofia?",
+                        "options": [
+                              "I Chile",
+                              "I Sverige",
+                              "I Peru"
+                        ],
+                        "correct": 1,
+                        "explanation": "«Min mamma bor också i Sverige»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Sofia har tre barn.",
+                        "answer": false,
+                        "explanation": "«två barn» = dos hijos."
                   }
             ]
       },
@@ -269,6 +340,23 @@ const DEFAULT_DATA = {
                               "5"
                         ],
                         "explanation": "«fem minuter att gå till tunnelbanan»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Qué hay cerca de la casa?",
+                        "options": [
+                              "En park, en skola och ett bibliotek",
+                              "En stor sjö",
+                              "Ett sjukhus"
+                        ],
+                        "correct": 0,
+                        "explanation": "«I närheten finns en park, en skola och ett bibliotek»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "De bor på första våningen.",
+                        "answer": false,
+                        "explanation": "«på tredje våningen» = tercer piso."
                   }
             ]
       },
@@ -306,6 +394,23 @@ const DEFAULT_DATA = {
                               "garderoben"
                         ],
                         "explanation": "«en garderob för mina kläder»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Qué muebles hay?",
+                        "options": [
+                              "En säng, ett bord och en stol",
+                              "En soffa",
+                              "Ett badkar"
+                        ],
+                        "correct": 0,
+                        "explanation": "«en säng, ett bord och en stol»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Det finns en dator på bordet.",
+                        "answer": true,
+                        "explanation": "«På bordet står en lampa och en dator»."
                   }
             ]
       },
@@ -343,6 +448,23 @@ const DEFAULT_DATA = {
                         "text": "Ana träffar en vän på morgonen.",
                         "answer": false,
                         "explanation": "Es «på eftermiddagen» = por la tarde."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Ana har svenska på morgonen.",
+                        "answer": true,
+                        "explanation": "«klockan nio till tolv» = por la mañana."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿A qué hora ve a su amiga?",
+                        "options": [
+                              "Klockan nio",
+                              "Klockan två",
+                              "Klockan tolv"
+                        ],
+                        "correct": 1,
+                        "explanation": "«klockan två träffar hon en vän»."
                   }
             ]
       },
@@ -381,6 +503,26 @@ const DEFAULT_DATA = {
                               "mössan"
                         ],
                         "explanation": "«en mössa» = un gorro."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Cuántos grados hace? minus ___ (número)",
+                        "answer": "fem",
+                        "accept": [
+                              "5"
+                        ],
+                        "explanation": "«minus fem grader»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Cómo va Erik hoy?",
+                        "options": [
+                              "Med cykel",
+                              "Med buss",
+                              "Till fots"
+                        ],
+                        "correct": 1,
+                        "explanation": "«Han tar bussen»."
                   }
             ]
       },
@@ -418,6 +560,23 @@ const DEFAULT_DATA = {
                         "text": "På kvällen lagar Pedro mat.",
                         "answer": true,
                         "explanation": "«På kvällen lagar jag mat»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Qué bebe en el desayuno?",
+                        "options": [
+                              "Te",
+                              "Kaffe",
+                              "Juice"
+                        ],
+                        "correct": 1,
+                        "explanation": "«dricker kaffe»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Pedro vaknar klockan nio.",
+                        "answer": false,
+                        "explanation": "«vaknar jag klockan sju» = a las siete."
                   }
             ]
       },
@@ -455,6 +614,23 @@ const DEFAULT_DATA = {
                         ],
                         "correct": 1,
                         "explanation": "«tittar hon på tv och läser en bok»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Qué hace primero después del trabajo?",
+                        "options": [
+                              "Lagar middag",
+                              "Handlar mat",
+                              "Tittar på tv"
+                        ],
+                        "correct": 1,
+                        "explanation": "«Efter jobbet handlar Maria mat»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Maria lägger sig klockan tio.",
+                        "answer": false,
+                        "explanation": "«klockan elva» = a las once."
                   }
             ]
       },
@@ -492,6 +668,23 @@ const DEFAULT_DATA = {
                         "text": "Lektionen börjar klockan nio.",
                         "answer": false,
                         "explanation": "«Lektionen börjar klockan åtta»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿En qué ciudad estudia?",
+                        "options": [
+                              "I Malmö",
+                              "I Stockholm",
+                              "I Lund"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Jag går på SFI i Malmö»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "De lär sig att laga mat.",
+                        "answer": false,
+                        "explanation": "«läsa, skriva och prata svenska»."
                   }
             ]
       },
@@ -530,6 +723,23 @@ const DEFAULT_DATA = {
                               "läraren"
                         ],
                         "explanation": "Firma «Anna (lärare)»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Qué van a practicar?",
+                        "options": [
+                              "Att skriva",
+                              "Att sjunga",
+                              "Att räkna"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Vi ska öva att skriva»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Imorgon har de prov.",
+                        "answer": false,
+                        "explanation": "«inget prov» = ningún examen."
                   }
             ]
       },
@@ -567,6 +777,21 @@ const DEFAULT_DATA = {
                         "text": "Ali trivs inte med jobbet.",
                         "answer": false,
                         "explanation": "«Han trivs med sitt jobb» = está a gusto."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿A qué hora empieza? klockan ___ (número)",
+                        "answer": "sju",
+                        "accept": [
+                              "7"
+                        ],
+                        "explanation": "«börjar klockan sju»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Ali kör truck.",
+                        "answer": true,
+                        "explanation": "«lyfter lådor och kör truck»."
                   }
             ]
       },
@@ -605,6 +830,23 @@ const DEFAULT_DATA = {
                               "på helger"
                         ],
                         "explanation": "«Arbetstid: helger»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Qué se necesita?",
+                        "options": [
+                              "Tala lite svenska",
+                              "Köra bil",
+                              "Laga mat"
+                        ],
+                        "correct": 0,
+                        "explanation": "«tala lite svenska»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Man måste tala perfekt svenska.",
+                        "answer": false,
+                        "explanation": "solo «lite svenska» = un poco."
                   }
             ]
       },
@@ -642,6 +884,21 @@ const DEFAULT_DATA = {
                         "text": "Anna köper fisk.",
                         "answer": false,
                         "explanation": "Compra «mjölk, bröd och äpplen»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Cuánto cuesta la leche? (número)",
+                        "answer": "tolv",
+                        "accept": [
+                              "12"
+                        ],
+                        "explanation": "«mjölk för tolv kronor»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Anna handlar på ICA.",
+                        "answer": true,
+                        "explanation": "«Anna handlar på ICA»."
                   }
             ]
       },
@@ -680,6 +937,23 @@ const DEFAULT_DATA = {
                               "storgatan 4"
                         ],
                         "explanation": "«butiken på Storgatan 4»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Cuánto descuento en chaquetas?",
+                        "options": [
+                              "25%",
+                              "50%",
+                              "10%"
+                        ],
+                        "correct": 1,
+                        "explanation": "«jackor 50% rabatt»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Skorna kostar från 199 kronor.",
+                        "answer": true,
+                        "explanation": "«Skor från 199 kronor»."
                   }
             ]
       },
@@ -717,6 +991,23 @@ const DEFAULT_DATA = {
                         "text": "Restaurangen är öppen på söndag.",
                         "answer": false,
                         "explanation": "«öppen måndag till fredag»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Cómo se llama el restaurante?",
+                        "options": [
+                              "Gröna Köket",
+                              "Blå Huset",
+                              "Röda Rummet"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Restaurangen heter Gröna Köket»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Lena dricker vatten.",
+                        "answer": true,
+                        "explanation": "«ett glas vatten»."
                   }
             ]
       },
@@ -754,6 +1045,26 @@ const DEFAULT_DATA = {
                         "text": "Man behöver kött.",
                         "answer": false,
                         "explanation": "Se necesita «mjölk, ägg, mjöl och salt»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Qué NO se necesita?",
+                        "options": [
+                              "Kött",
+                              "Mjölk",
+                              "Ägg"
+                        ],
+                        "correct": 0,
+                        "explanation": "Se necesita «mjölk, ägg, mjöl och salt», no kött."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿En qué se fríe? i en ___",
+                        "answer": "stekpanna",
+                        "accept": [
+                              "stekpannan"
+                        ],
+                        "explanation": "«Stek i en stekpanna»."
                   }
             ]
       },
@@ -791,6 +1102,23 @@ const DEFAULT_DATA = {
                         "text": "Bussen går från Centralen.",
                         "answer": true,
                         "explanation": "«Buss 4 går från Centralen»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Resan tar tjugo minuter.",
+                        "answer": true,
+                        "explanation": "«Resan tar tjugo minuter»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿A qué hora sale el primer autobús?",
+                        "options": [
+                              "08:10",
+                              "08:30",
+                              "08:50"
+                        ],
+                        "correct": 0,
+                        "explanation": "«08:10» es el primero."
                   }
             ]
       },
@@ -828,6 +1156,21 @@ const DEFAULT_DATA = {
                               "sara"
                         ],
                         "explanation": "Firma «Kram, Sara»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Cuántos minutos tarde? (número) ___ minuter",
+                        "answer": "tio",
+                        "accept": [
+                              "10"
+                        ],
+                        "explanation": "«tio minuter senare»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Tåget är försenat.",
+                        "answer": true,
+                        "explanation": "«Tåget är försenat»."
                   }
             ]
       },
@@ -865,6 +1208,23 @@ const DEFAULT_DATA = {
                         "text": "Omar ska köpa fisk.",
                         "answer": false,
                         "explanation": "Debe comprar «mjölk och bröd»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Lena ber Omar köpa mat.",
+                        "answer": true,
+                        "explanation": "«Kan du köpa mjölk och bröd»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Qué NO debe comprar?",
+                        "options": [
+                              "Fisk",
+                              "Mjölk",
+                              "Bröd"
+                        ],
+                        "correct": 0,
+                        "explanation": "Solo «mjölk och bröd»."
                   }
             ]
       },
@@ -902,6 +1262,23 @@ const DEFAULT_DATA = {
                               "maria"
                         ],
                         "explanation": "Firma «Hälsningar, Maria»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Cómo estuvo ayer?",
+                        "options": [
+                              "Tråkigt",
+                              "Jättekul",
+                              "Dåligt"
+                        ],
+                        "correct": 1,
+                        "explanation": "«det var jättekul» = muy divertido."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "De ses idag.",
+                        "answer": false,
+                        "explanation": "«Vi ses nästa vecka»."
                   }
             ]
       },
@@ -939,6 +1316,21 @@ const DEFAULT_DATA = {
                         "text": "Tiden är klockan tolv.",
                         "answer": false,
                         "explanation": "Es «klockan 10:00» = a las diez."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿A qué hora es la cita? klockan ___ (número)",
+                        "answer": "tio",
+                        "accept": [
+                              "10"
+                        ],
+                        "explanation": "«klockan 10:00»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Man ska komma tio minuter innan.",
+                        "answer": true,
+                        "explanation": "«Kom tio minuter innan»."
                   }
             ]
       },
@@ -976,6 +1368,23 @@ const DEFAULT_DATA = {
                               "ja lite"
                         ],
                         "explanation": "«Har du feber? – Ja, lite»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Cada cuánto toma la medicina?",
+                        "options": [
+                              "En gång",
+                              "Två gånger",
+                              "Tre gånger"
+                        ],
+                        "correct": 1,
+                        "explanation": "«två gånger om dagen»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Han har ont i huvudet.",
+                        "answer": false,
+                        "explanation": "«ont i magen» = estómago."
                   }
             ]
       },
@@ -1014,6 +1423,23 @@ const DEFAULT_DATA = {
                         "text": "Det blir ingen tårta.",
                         "answer": false,
                         "explanation": "«Det blir tårta och musik» = habrá tarta y música."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Qué día es la fiesta?",
+                        "options": [
+                              "Fredag",
+                              "Lördag",
+                              "Söndag"
+                        ],
+                        "correct": 1,
+                        "explanation": "«Jag fyller år på lördag»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Det blir musik på festen.",
+                        "answer": true,
+                        "explanation": "«tårta och musik»."
                   }
             ]
       },
@@ -1051,6 +1477,23 @@ const DEFAULT_DATA = {
                               "sofia"
                         ],
                         "explanation": "Responde a «Hej Sofia»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Ana tackar för inbjudan.",
+                        "answer": true,
+                        "explanation": "«Tack för inbjudan»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Ana irá a la fiesta?",
+                        "options": [
+                              "Ja, gärna",
+                              "Nej",
+                              "Kanske"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Jag kommer gärna»."
                   }
             ]
       },
@@ -1089,6 +1532,23 @@ const DEFAULT_DATA = {
                         "text": "Hissen fungerar.",
                         "answer": false,
                         "explanation": "«Hissen är trasig»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Hissen lagas imorgon.",
+                        "answer": true,
+                        "explanation": "«Vi lagar hissen imorgon»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Cuándo arreglan el ascensor?",
+                        "options": [
+                              "Idag",
+                              "Imorgon",
+                              "Nästa vecka"
+                        ],
+                        "correct": 1,
+                        "explanation": "«imorgon»."
                   }
             ]
       },
@@ -1125,6 +1585,26 @@ const DEFAULT_DATA = {
                         "type": "tf",
                         "text": "Ana bor i Göteborg.",
                         "answer": false,
+                        "explanation": "«Adress: Storgatan 4, Stockholm»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Cuál es el apellido?",
+                        "options": [
+                              "Lopez",
+                              "Ana",
+                              "Peru"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Namn: Ana Lopez» → apellido Lopez."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿En qué ciudad vive?",
+                        "answer": "Stockholm",
+                        "accept": [
+                              "stockholm"
+                        ],
                         "explanation": "«Adress: Storgatan 4, Stockholm»."
                   }
             ]
@@ -1163,6 +1643,23 @@ const DEFAULT_DATA = {
                               "butiken"
                         ],
                         "explanation": "«jobbar jag i en butik»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Qué tiene Marta?",
+                        "options": [
+                              "En son",
+                              "En dotter",
+                              "Inga barn"
+                        ],
+                        "correct": 1,
+                        "explanation": "«Jag har en dotter»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "På helgen jobbar Marta.",
+                        "answer": false,
+                        "explanation": "«På helgen träffar jag vänner»."
                   }
             ]
       },
@@ -1199,6 +1696,21 @@ const DEFAULT_DATA = {
                               "Femtio kronor"
                         ],
                         "correct": 0,
+                        "explanation": "«Det är gratis att låna böcker»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿A qué hora cierra entre semana? (número)",
+                        "answer": "18",
+                        "accept": [
+                              "arton"
+                        ],
+                        "explanation": "«måndag–fredag 10–18»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Det kostar pengar att låna böcker.",
+                        "answer": false,
                         "explanation": "«Det är gratis att låna böcker»."
                   }
             ]
@@ -1237,6 +1749,26 @@ const DEFAULT_DATA = {
                         "text": "Erik dice: olvida el billete.",
                         "answer": false,
                         "explanation": "«Glöm inte biljetten» = NO olvides el billete."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Cuándo se ven?",
+                        "options": [
+                              "Idag",
+                              "Imorgon",
+                              "Nästa vecka"
+                        ],
+                        "correct": 1,
+                        "explanation": "«Vi ses imorgon»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Quién escribe el mensaje?",
+                        "answer": "Erik",
+                        "accept": [
+                              "erik"
+                        ],
+                        "explanation": "Firma «/Erik»."
                   }
             ]
       }
