@@ -6704,69 +6704,1846 @@ const DEFAULT_DATA = {
     ],
     read: [
       {
-        id: 'd-r-1', title: 'Arbetsmarknaden och integration', tag: 'Samhälle', icon: '📊',
-        text: `Att komma in på den svenska arbetsmarknaden kan vara en utmaning för nyanlända. Även personer med hög utbildning möter ibland hinder, till exempel krav på svensk erfarenhet eller svårigheter att få sina examina validerade. Forskning visar dessutom att diskriminering förekommer: personer med utländskt klingande namn blir oftare bortsorterade redan i ansökningsprocessen. Samtidigt finns det stora möjligheter, särskilt inom bristyrken som vård, teknik och bygg. Experter betonar att både språkkunskaper och ett brett kontaktnät ökar chanserna att få ett arbete som motsvarar ens kompetens.`,
-        questions: [
-          { text: 'Vilket hinder nämns för högutbildade?', options: ['För höga löner', 'Krav på svensk erfarenhet och validering av examina', 'För få jobb totalt', 'Brist på datorer'], correct: 1, explanation: 'Krav på svensk erfarenhet eller svårigheter att få examina validerade.' },
-          { text: 'Vad visar forskningen?', options: ['Att alla får jobb snabbt', 'Att diskriminering förekommer', 'Att lönerna sjunker', 'Att ingen söker jobb'], correct: 1, explanation: 'Diskriminering förekommer, särskilt i ansökningsprocessen.' },
-          { text: 'Inom vilka områden finns stora möjligheter?', options: ['Vård, teknik och bygg', 'Turism och media', 'Endast handel', 'Jordbruk'], correct: 0, explanation: 'Bristyrken som vård, teknik och bygg.' },
-          { text: 'Vad ökar chanserna till rätt jobb, enligt experterna?', options: ['Tur', 'Språkkunskaper och ett brett kontaktnät', 'Att flytta ofta', 'Att sänka sina krav'], correct: 1, explanation: 'Både språkkunskaper och ett brett kontaktnät.' },
-        ]
+            "id": "d-r-1",
+            "unit": 1,
+            "unitTitle": "Arbetsliv och utveckling",
+            "title": "Arbetsmarknaden och integration",
+            "kind": "Artikel",
+            "icon": "💼",
+            "text": "Arbetsmarknaden i Sverige förändras snabbt. Många traditionella yrken försvinner medan nya växer fram, särskilt inom teknik och vård. För nyanlända kan det vara svårt att komma in på arbetsmarknaden, eftersom språket och kontakter ofta är avgörande. Samtidigt visar forskning att arbete är en av de viktigaste faktorerna för integration. Genom ett jobb lär man sig språket, får ett socialt nätverk och känner sig delaktig i samhället. Därför satsar både staten och kommunerna på utbildning, praktik och validering av tidigare erfarenheter.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad är enligt texten avgörande för att få jobb?",
+                        "options": [
+                              "Språket och kontakter",
+                              "Endast utbildning",
+                              "Var man bor"
+                        ],
+                        "correct": 0,
+                        "explanation": "«språket och kontakter är ofta avgörande»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Enligt texten är arbete viktigt för integration.",
+                        "answer": true,
+                        "explanation": "«arbete är en av de viktigaste faktorerna för integration»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad kallas det när tidigare erfarenheter bedöms? ___",
+                        "answer": "validering",
+                        "accept": [
+                              "validering"
+                        ],
+                        "explanation": "«validering av tidigare erfarenheter»."
+                  }
+            ]
       },
       {
-        id: 'd-r-2', title: 'Den svenska demokratin', tag: 'Samhälle', icon: '🗳️',
-        text: `Sverige är en demokrati där medborgarna vart fjärde år röstar i allmänna val till riksdagen, regionerna och kommunerna. Rösträtten är en grundläggande rättighet, och valdeltagandet i Sverige är bland de högsta i världen. Demokratin bygger inte bara på att rösta, utan också på yttrandefrihet, fria medier och möjligheten att engagera sig i föreningar och partier. Makten är delad mellan riksdagen, som stiftar lagar, och regeringen, som styr landet. Domstolarna är oberoende. En viktig princip är att alla är lika inför lagen, oavsett bakgrund eller ställning.`,
-        questions: [
-          { text: 'Hur ofta hålls allmänna val?', options: ['Varje år', 'Vart fjärde år', 'Vartannat år', 'Vart tionde år'], correct: 1, explanation: 'Vart fjärde år röstar medborgarna.' },
-          { text: 'Vad bygger demokratin också på, förutom att rösta?', options: ['Höga skatter', 'Yttrandefrihet, fria medier och engagemang', 'En stark kung', 'Militären'], correct: 1, explanation: 'Yttrandefrihet, fria medier och möjligheten att engagera sig.' },
-          { text: 'Vad gör riksdagen?', options: ['Styr landet dagligen', 'Stiftar lagar', 'Dömer brottslingar', 'Sätter skatter själv'], correct: 1, explanation: 'Riksdagen stiftar lagar; regeringen styr landet.' },
-          { text: 'Vad innebär principen som nämns i slutet?', options: ['Alla är lika inför lagen', 'Bara rika har rättigheter', 'Kungen bestämmer allt', 'Domstolarna styrs av regeringen'], correct: 0, explanation: 'Alla är lika inför lagen, oavsett bakgrund.' },
-        ]
+            "id": "d-r-u1-2",
+            "unit": 1,
+            "unitTitle": "Arbetsliv och utveckling",
+            "title": "Livslångt lärande",
+            "kind": "Artikel",
+            "icon": "📚",
+            "text": "Förr trodde många att man var färdigutbildad när man var ung. Idag ser arbetslivet annorlunda ut. Eftersom tekniken utvecklas snabbt måste vi fortsätta lära oss genom hela livet, något som kallas livslångt lärande. Det behöver inte betyda att man studerar på universitet; man kan gå korta kurser, läsa böcker eller utveckla nya färdigheter på jobbet. Den som är beredd att lära nytt har ofta lättare att byta yrke och anpassa sig. På så sätt blir man mindre sårbar när arbetsmarknaden förändras.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad menas med livslångt lärande?",
+                        "options": [
+                              "Att fortsätta lära sig hela livet",
+                              "Att studera bara när man är ung",
+                              "Att aldrig byta jobb"
+                        ],
+                        "correct": 0,
+                        "explanation": "«fortsätta lära oss genom hela livet»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Livslångt lärande kräver alltid universitetsstudier.",
+                        "answer": false,
+                        "explanation": "«behöver inte betyda att man studerar på universitet»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad har den lättare att göra som lär nytt? Att ___ yrke",
+                        "answer": "byta",
+                        "accept": [
+                              "byta"
+                        ],
+                        "explanation": "«lättare att byta yrke»."
+                  }
+            ]
       },
       {
-        id: 'd-r-3', title: 'Klimat och hållbarhet', tag: 'Miljö', icon: '🌱',
-        text: `Klimatfrågan är en av vår tids största utmaningar. Sverige har som mål att inte ha några nettoutsläpp av växthusgaser år 2045. För att nå dit krävs förändringar inom transport, energi och industri. Många kommuner satsar på kollektivtrafik, cykelvägar och förnybar energi som vind- och vattenkraft. Även individen spelar en roll: att återvinna, konsumera mindre och välja tåget framför flyget gör skillnad. Kritiker påpekar dock att individens ansvar inte får överskugga behovet av politiska beslut och att stora företag måste ta sitt ansvar. Förändring kräver samarbete på alla nivåer.`,
-        questions: [
-          { text: 'Vilket mål har Sverige till år 2045?', options: ['Fler bilar', 'Inga nettoutsläpp av växthusgaser', 'Billigare flyg', 'Mer kol'], correct: 1, explanation: 'Inga nettoutsläpp av växthusgaser år 2045.' },
-          { text: 'Vad satsar många kommuner på?', options: ['Fler motorvägar', 'Kollektivtrafik, cykelvägar och förnybar energi', 'Mer flygtrafik', 'Kolkraft'], correct: 1, explanation: 'Kollektivtrafik, cykelvägar och förnybar energi.' },
-          { text: 'Vad kan individen göra?', options: ['Ingenting', 'Återvinna, konsumera mindre, välja tåget', 'Bara rösta', 'Köpa mer'], correct: 1, explanation: 'Återvinna, konsumera mindre och välja tåget framför flyget.' },
-          { text: 'Vad påpekar kritikerna?', options: ['Att individen ensam kan lösa allt', 'Att politik och företag också måste ta ansvar', 'Att klimatet inte spelar roll', 'Att tåg är dåligt'], correct: 1, explanation: 'Individens ansvar får inte överskugga politiska beslut och företagens ansvar.' },
-        ]
+            "id": "d-r-u2-1",
+            "unit": 2,
+            "unitTitle": "Ansökan och formella brev",
+            "title": "Att skriva en ansökan",
+            "kind": "Faktatext",
+            "icon": "📄",
+            "text": "En bra jobbansökan är anpassad efter både tjänsten och mottagaren. I det personliga brevet ska du inte upprepa hela ditt CV, utan lyfta fram det som är mest relevant för just detta jobb. Förklara varför du är intresserad och vad du kan bidra med. Använd ett formellt men personligt språk, och håll dig till en sida. Kontrollera alltid att namnet på företaget och den du skriver till är korrekt. En slarvig ansökan ger ett dåligt första intryck, även om du är kompetent.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad ska det personliga brevet innehålla?",
+                        "options": [
+                              "Det mest relevanta för jobbet",
+                              "Hela CV:t igen",
+                              "Bara dina kontaktuppgifter"
+                        ],
+                        "correct": 0,
+                        "explanation": "«lyfta fram det som är mest relevant»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Enligt texten spelar ett slarvfel ingen roll.",
+                        "answer": false,
+                        "explanation": "«En slarvig ansökan ger ett dåligt första intryck»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Hur långt bör brevet vara? En ___",
+                        "answer": "sida",
+                        "accept": [
+                              "sida"
+                        ],
+                        "explanation": "«håll dig till en sida»."
+                  }
+            ]
       },
       {
-        id: 'd-r-4', title: 'Det digitala samhället', tag: 'Teknik & samhälle', icon: '💻',
-        text: `Sverige är ett av världens mest digitaliserade länder. Många tjänster sköts numera via internet: du kan deklarera skatt, boka läkartid, betala räkningar och kontakta myndigheter med hjälp av BankID, en digital legitimation. Digitaliseringen gör vardagen enklare och sparar tid, men den skapar också utmaningar. Alla har inte samma vana eller möjlighet att använda digitala verktyg, vilket kan leda till ett så kallat digitalt utanförskap, särskilt bland äldre. Därför är det viktigt att samhället erbjuder stöd och att det fortfarande går att få hjälp på annat sätt än digitalt.`,
-        questions: [
-          { text: 'Vad är BankID?', options: ['En bank', 'En digital legitimation', 'En app för spel', 'Ett socialt medium'], correct: 1, explanation: 'BankID är en digital legitimation.' },
-          { text: 'Vad kan man göra digitalt enligt texten?', options: ['Bara spela', 'Deklarera skatt, boka läkartid och betala räkningar', 'Ingenting viktigt', 'Bara mejla'], correct: 1, explanation: 'Deklarera skatt, boka läkartid, betala räkningar och kontakta myndigheter.' },
-          { text: 'Vad är "digitalt utanförskap"?', options: ['Att ha snabbt internet', 'Att inte kunna eller ha möjlighet att använda digitala verktyg', 'Att gilla teknik', 'Att jobba med datorer'], correct: 1, explanation: 'Alla har inte vana/möjlighet att använda digitala verktyg.' },
-          { text: 'Vilka drabbas särskilt?', options: ['Barn', 'Äldre', 'Företag', 'Studenter'], correct: 1, explanation: 'Särskilt bland äldre.' },
-        ]
+            "id": "d-r-u2-2",
+            "unit": 2,
+            "unitTitle": "Ansökan och formella brev",
+            "title": "Formellt brev till en myndighet",
+            "kind": "Brev",
+            "icon": "✉️",
+            "text": "Till Migrationsverket. Jag skriver angående mitt ärende med diarienummer 2024-5567. Jag ansökte om förlängt uppehållstillstånd i januari och har ännu inte fått något beslut. Eftersom mitt nuvarande tillstånd snart går ut är jag orolig för hur det påverkar mitt arbete. Jag skulle vara tacksam om ni kunde informera mig om handläggningstiden och om ni behöver ytterligare handlingar från mig. Jag bifogar en kopia av min tidigare ansökan. Med vänlig hälsning, Omar Haddad.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad gäller ärendet?",
+                        "options": [
+                              "Förlängt uppehållstillstånd",
+                              "Ett jobb",
+                              "En bostad"
+                        ],
+                        "correct": 0,
+                        "explanation": "«ansökte om förlängt uppehållstillstånd»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Omar har redan fått ett beslut.",
+                        "answer": false,
+                        "explanation": "«har ännu inte fått något beslut»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad kallas numret på ärendet? ___nummer",
+                        "answer": "diarie",
+                        "accept": [
+                              "diarienummer"
+                        ],
+                        "explanation": "«med diarienummer»."
+                  }
+            ]
       },
-    ],
+      {
+            "id": "d-r-u3-1",
+            "unit": 3,
+            "unitTitle": "Kommunikation på jobbet",
+            "title": "Mejl på arbetsplatsen",
+            "kind": "Faktatext",
+            "icon": "📧",
+            "text": "Att kommunicera professionellt på jobbet är en viktig färdighet. I mejl till kollegor och chefer bör du vara tydlig, artig och saklig. Börja med en hälsning, skriv ärendet kort och avsluta vänligt. Undvik att skriva när du är arg; det är bättre att vänta och läsa igenom texten en gång till. Tänk också på att ett mejl kan läsas av flera personer och sparas länge. En genomtänkt kommunikation skapar förtroende och färre missförstånd på arbetsplatsen.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Hur bör man skriva mejl på jobbet?",
+                        "options": [
+                              "Tydligt, artigt och sakligt",
+                              "Så snabbt som möjligt",
+                              "Bara med emojis"
+                        ],
+                        "correct": 0,
+                        "explanation": "«tydlig, artig och saklig»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Man bör skriva direkt när man är arg.",
+                        "answer": false,
+                        "explanation": "«Undvik att skriva när du är arg»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad skapar en genomtänkt kommunikation?",
+                        "answer": "förtroende",
+                        "accept": [
+                              "förtroende"
+                        ],
+                        "explanation": "«skapar förtroende»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-u3-2",
+            "unit": 3,
+            "unitTitle": "Kommunikation på jobbet",
+            "title": "Att framföra en synpunkt",
+            "kind": "Faktatext",
+            "icon": "🗣️",
+            "text": "Ibland behöver man framföra en synpunkt eller kritik på jobbet, till exempel om något inte fungerar. Det är viktigt att göra det på ett konstruktivt sätt. Beskriv problemet konkret, förklara hur det påverkar arbetet och föreslå gärna en lösning. Undvik att skylla på en enskild person. Om du väljer rätt tillfälle och en lugn ton är det större chans att du blir lyssnad på. Att kunna ge och ta emot återkoppling är en del av ett gott samarbete.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Hur bör man framföra kritik?",
+                        "options": [
+                              "Konstruktivt, med förslag på lösning",
+                              "Genom att skylla på någon",
+                              "Aldrig"
+                        ],
+                        "correct": 0,
+                        "explanation": "«göra det på ett konstruktivt sätt ... föreslå gärna en lösning»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Man bör välja rätt tillfälle och en lugn ton.",
+                        "answer": true,
+                        "explanation": "«väljer rätt tillfälle och en lugn ton»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad är en del av ett gott samarbete? Att ge och ta emot ___",
+                        "answer": "återkoppling",
+                        "accept": [
+                              "återkoppling",
+                              "feedback"
+                        ],
+                        "explanation": "«ge och ta emot återkoppling»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-u4-1",
+            "unit": 4,
+            "unitTitle": "Studier och planering",
+            "title": "Att planera sina studier",
+            "kind": "Faktatext",
+            "icon": "🎓",
+            "text": "Den som vill studera vidare i Sverige har många vägar att välja mellan. Efter SFI kan man läsa på komvux, yrkesutbildning eller universitet. Det är klokt att först ta reda på vilka krav som gäller och hur lång tid utbildningen tar. Många kombinerar studier med arbete, vilket kräver god planering. Genom att sätta upp tydliga mål och dela upp arbetet i mindre delar blir det lättare att hålla motivationen uppe. Studievägledare på skolan kan hjälpa dig att hitta rätt.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad kan man läsa efter SFI?",
+                        "options": [
+                              "Komvux, yrkesutbildning eller universitet",
+                              "Bara SFI igen",
+                              "Ingenting"
+                        ],
+                        "correct": 0,
+                        "explanation": "«läsa på komvux, yrkesutbildning eller universitet»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Att kombinera studier och arbete kräver planering.",
+                        "answer": true,
+                        "explanation": "«vilket kräver god planering»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vem kan hjälpa dig att hitta rätt utbildning?",
+                        "answer": "studievägledare",
+                        "accept": [
+                              "studievägledaren",
+                              "studievägledare"
+                        ],
+                        "explanation": "«Studievägledare ... kan hjälpa dig»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-u4-2",
+            "unit": 4,
+            "unitTitle": "Studier och planering",
+            "title": "Anslag: informationsmöte",
+            "kind": "Anuncio",
+            "icon": "📢",
+            "text": "Välkommen till ett informationsmöte om vuxenutbildning! Måndagen den 22 april klockan 17 berättar vi om vilka kurser som finns, hur du ansöker och vilka möjligheter till studiestöd som finns via CSN. Mötet hålls i skolans aula och tar ungefär en timme. Det finns möjlighet att ställa frågor till lärare och studievägledare. Ingen anmälan krävs, men kom i god tid eftersom platserna är begränsade. Ta gärna med en vän som också är intresserad.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad handlar mötet om?",
+                        "options": [
+                              "Vuxenutbildning",
+                              "Ett nytt jobb",
+                              "En resa"
+                        ],
+                        "correct": 0,
+                        "explanation": "«informationsmöte om vuxenutbildning»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Man måste anmäla sig i förväg.",
+                        "answer": false,
+                        "explanation": "«Ingen anmälan krävs»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad heter myndigheten för studiestöd?",
+                        "answer": "CSN",
+                        "accept": [
+                              "csn"
+                        ],
+                        "explanation": "«studiestöd ... via CSN»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-u5-1",
+            "unit": 5,
+            "unitTitle": "Det svenska samhället",
+            "title": "Jämställdhet i Sverige",
+            "kind": "Artikel",
+            "icon": "⚖️",
+            "text": "Sverige är känt för att arbeta mycket med jämställdhet, alltså att kvinnor och män ska ha samma rättigheter och möjligheter. Både föräldrar har rätt till föräldraledighet, och det är vanligt att pappor är hemma med sina barn. På arbetsmarknaden strävar man efter lika lön för lika arbete, även om skillnader fortfarande finns. Jämställdhet handlar inte bara om lagar, utan också om attityder i vardagen. Många menar att ett jämställt samhälle är bättre för alla, både i familjen och i arbetslivet.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad betyder jämställdhet?",
+                        "options": [
+                              "Samma rättigheter för kvinnor och män",
+                              "Att alla tjänar lika",
+                              "Att alla bor lika"
+                        ],
+                        "correct": 0,
+                        "explanation": "«kvinnor och män ska ha samma rättigheter och möjligheter»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Enligt texten finns inga löneskillnader kvar.",
+                        "answer": false,
+                        "explanation": "«även om skillnader fortfarande finns»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad har båda föräldrar rätt till? ___ledighet",
+                        "answer": "föräldra",
+                        "accept": [
+                              "föräldraledighet"
+                        ],
+                        "explanation": "«rätt till föräldraledighet»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-u5-2",
+            "unit": 5,
+            "unitTitle": "Det svenska samhället",
+            "title": "Att lita på varandra",
+            "kind": "Artikel",
+            "icon": "🤝",
+            "text": "Ett kännetecken för det svenska samhället är en hög grad av tillit. Människor litar ofta på varandra och på myndigheter. Detta märks till exempel i att många ärenden sköts digitalt och att man förväntas följa regler även utan kontroll. Tilliten bygger på öppenhet och att institutioner behandlar alla lika. Forskare menar att hög tillit gör samhället mer effektivt, eftersom man slipper kontrollera allt. Samtidigt är tillit något som måste byggas upp över tid och som kan skadas om människor blir lurade.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad kännetecknar enligt texten det svenska samhället?",
+                        "options": [
+                              "Hög tillit",
+                              "Mycket kontroll",
+                              "Lite teknik"
+                        ],
+                        "correct": 0,
+                        "explanation": "«en hög grad av tillit»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Hög tillit gör samhället mindre effektivt.",
+                        "answer": false,
+                        "explanation": "«hög tillit gör samhället mer effektivt»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad bygger tilliten på? Öppenhet och att alla behandlas ___",
+                        "answer": "lika",
+                        "accept": [
+                              "lika"
+                        ],
+                        "explanation": "«behandlar alla lika»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-2",
+            "unit": 6,
+            "unitTitle": "Demokrati och delaktighet",
+            "title": "Den svenska demokratin",
+            "kind": "Artikel",
+            "icon": "🗳️",
+            "text": "Sverige är en demokrati, vilket betyder att folket bestämmer. Vart fjärde år hålls val till riksdagen, regionerna och kommunerna. Alla medborgare över arton år har rätt att rösta. I en demokrati är det viktigt med yttrandefrihet, alltså rätten att uttrycka sin åsikt, och att olika partier kan tävla om väljarnas stöd. Demokrati handlar dock inte bara om att rösta, utan också om att delta i samhället, respektera andras åsikter och ta ansvar. Ett starkt civilsamhälle med föreningar och fri press är också en del av demokratin.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Hur ofta hålls val till riksdagen?",
+                        "options": [
+                              "Vart fjärde år",
+                              "Varje år",
+                              "Vartannat år"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Vart fjärde år hålls val»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Yttrandefrihet betyder rätten att uttrycka sin åsikt.",
+                        "answer": true,
+                        "explanation": "«yttrandefrihet, alltså rätten att uttrycka sin åsikt»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Från vilken ålder får man rösta? Över ___ år",
+                        "answer": "arton",
+                        "accept": [
+                              "18"
+                        ],
+                        "explanation": "«medborgare över arton år»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-u6-2",
+            "unit": 6,
+            "unitTitle": "Demokrati och delaktighet",
+            "title": "Att påverka i sin kommun",
+            "kind": "Faktatext",
+            "icon": "🏛️",
+            "text": "Man kan påverka samhället på många sätt, inte bara genom att rösta i val. I kommunen kan invånare lämna in ett medborgarförslag eller delta i möten där lokala frågor diskuteras. Man kan också engagera sig i en förening, skriva insändare eller kontakta politiker direkt. Att engagera sig kräver tid, men det ger möjlighet att förbättra sitt närområde, till exempel genom bättre kollektivtrafik eller fler mötesplatser. När fler röster hörs blir besluten ofta bättre och mer rättvisa för alla som bor där.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Hur kan man påverka utöver att rösta?",
+                        "options": [
+                              "Genom medborgarförslag och engagemang",
+                              "Bara genom att betala skatt",
+                              "Man kan inte påverka"
+                        ],
+                        "correct": 0,
+                        "explanation": "«lämna in ett medborgarförslag eller delta i möten»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Enligt texten blir besluten bättre när fler röster hörs.",
+                        "answer": true,
+                        "explanation": "«När fler röster hörs blir besluten ofta bättre»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad kan invånare lämna in i kommunen? Ett ___förslag",
+                        "answer": "medborgar",
+                        "accept": [
+                              "medborgarförslag"
+                        ],
+                        "explanation": "«lämna in ett medborgarförslag»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-u7-1",
+            "unit": 7,
+            "unitTitle": "Rättigheter och skyldigheter",
+            "title": "Att bo i Sverige",
+            "kind": "Faktatext",
+            "icon": "📜",
+            "text": "Alla som bor i Sverige har både rättigheter och skyldigheter. Till rättigheterna hör till exempel skydd av lagen, rätt till utbildning och vård samt frihet att uttrycka sin åsikt. Till skyldigheterna hör att följa lagarna, betala skatt och skicka sina barn till skolan. Skatten finansierar den gemensamma välfärden, som skola, sjukvård och äldreomsorg. Systemet bygger på tanken att alla bidrar efter förmåga och får hjälp efter behov. På så sätt hänger rättigheter och skyldigheter tätt ihop.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad finansierar skatten?",
+                        "options": [
+                              "Den gemensamma välfärden",
+                              "Bara vägar",
+                              "Privata företag"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Skatten finansierar den gemensamma välfärden»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Att skicka barn till skolan är en skyldighet.",
+                        "answer": true,
+                        "explanation": "«skicka sina barn till skolan»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Systemet bygger på: bidra efter förmåga och få hjälp efter ___",
+                        "answer": "behov",
+                        "accept": [
+                              "behov"
+                        ],
+                        "explanation": "«får hjälp efter behov»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-u7-2",
+            "unit": 7,
+            "unitTitle": "Rättigheter och skyldigheter",
+            "title": "Konsumenträtt",
+            "kind": "Faktatext",
+            "icon": "🛡️",
+            "text": "Som konsument har du starka rättigheter i Sverige. Om en vara är felaktig har du enligt lag rätt att reklamera den i upp till tre år. Vid köp på internet har du dessutom ofta ångerrätt i fjorton dagar, vilket betyder att du kan lämna tillbaka varan utan att ange skäl. Det är viktigt att spara kvitton och läsa villkoren innan du skriver under ett avtal. Om du och företaget inte kommer överens kan du vända dig till Allmänna reklamationsnämnden för hjälp.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad innebär ångerrätt vid köp på internet?",
+                        "options": [
+                              "Du kan lämna tillbaka varan inom 14 dagar",
+                              "Du får varan gratis",
+                              "Du kan aldrig ångra dig"
+                        ],
+                        "correct": 0,
+                        "explanation": "«ångerrätt i fjorton dagar ... lämna tillbaka varan utan att ange skäl»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Reklamationsrätten gäller i upp till tre år.",
+                        "answer": true,
+                        "explanation": "«reklamera den i upp till tre år»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Hur många dagars ångerrätt är vanligt? ___ dagar",
+                        "answer": "fjorton",
+                        "accept": [
+                              "14"
+                        ],
+                        "explanation": "«ångerrätt i fjorton dagar»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-u8-1",
+            "unit": 8,
+            "unitTitle": "Myndigheter och service",
+            "title": "När myndigheter beslutar",
+            "kind": "Faktatext",
+            "icon": "🗂️",
+            "text": "När en myndighet fattar ett beslut som rör dig har du rätt att få veta varför. Beslutet ska vara skriftligt och innehålla en motivering. Om du inte är nöjd med beslutet kan du oftast överklaga det inom en viss tid, som anges i beslutet. Det är viktigt att läsa noga och hålla koll på datum. Behöver du hjälp att förstå ett brev från en myndighet kan du be om tolk eller kontakta en juristbyrå. Många myndigheter erbjuder också information på flera språk.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad har du rätt till när en myndighet beslutar?",
+                        "options": [
+                              "Att få veta varför",
+                              "Att få pengar",
+                              "Ingenting"
+                        ],
+                        "correct": 0,
+                        "explanation": "«rätt att få veta varför»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Man kan aldrig överklaga ett beslut.",
+                        "answer": false,
+                        "explanation": "«kan du oftast överklaga det»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad kan man be om för att förstå ett brev?",
+                        "answer": "tolk",
+                        "accept": [
+                              "tolk"
+                        ],
+                        "explanation": "«be om tolk»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-u8-2",
+            "unit": 8,
+            "unitTitle": "Myndigheter och service",
+            "title": "Ett myndighetsbeslut",
+            "kind": "Aviso",
+            "icon": "📋",
+            "text": "Beslut om bostadsbidrag. Efter att ha granskat din ansökan har Försäkringskassan beslutat att bevilja dig bostadsbidrag med 1 200 kronor per månad från och med den 1 juni. Beloppet grundas på dina inkomstuppgifter och din hyra. Om dina förhållanden ändras, till exempel din inkomst eller ditt boende, måste du anmäla det direkt. Om du anser att beslutet är felaktigt kan du begära omprövning inom två månader. Beslutet är fattat av handläggare Karlsson.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad handlar beslutet om?",
+                        "options": [
+                              "Bostadsbidrag",
+                              "En böter",
+                              "Ett jobb"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Beslut om bostadsbidrag»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Man ska anmäla om inkomsten ändras.",
+                        "answer": true,
+                        "explanation": "«Om dina förhållanden ändras ... måste du anmäla det»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Inom hur många månader kan man begära omprövning? ___",
+                        "answer": "två",
+                        "accept": [
+                              "2"
+                        ],
+                        "explanation": "«omprövning inom två månader»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-u9-1",
+            "unit": 9,
+            "unitTitle": "Ekonomi och avtal",
+            "title": "Att skriva under ett avtal",
+            "kind": "Faktatext",
+            "icon": "✍️",
+            "text": "Innan du skriver under ett avtal, till exempel för ett mobilabonnemang, ett lån eller en lägenhet, är det viktigt att läsa villkoren noga. Kontrollera hur länge avtalet gäller, vad det kostar och hur du säger upp det. Var särskilt försiktig med avtal som binder dig länge eller har höga avgifter om du vill avsluta i förtid. Ett muntligt avtal gäller också, men ett skriftligt är lättare att bevisa. Om något är oklart, fråga innan du skriver under – efteråt är det ofta för sent.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad bör man göra innan man skriver under?",
+                        "options": [
+                              "Läsa villkoren noga",
+                              "Skriva under direkt",
+                              "Betala extra"
+                        ],
+                        "correct": 0,
+                        "explanation": "«läsa villkoren noga»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Ett muntligt avtal gäller inte alls.",
+                        "answer": false,
+                        "explanation": "«Ett muntligt avtal gäller också»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad är lättare att bevisa? Ett ___ avtal",
+                        "answer": "skriftligt",
+                        "accept": [
+                              "skriftligt"
+                        ],
+                        "explanation": "«ett skriftligt är lättare att bevisa»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-u9-2",
+            "unit": 9,
+            "unitTitle": "Ekonomi och avtal",
+            "title": "Att låna pengar",
+            "kind": "Artikel",
+            "icon": "💳",
+            "text": "Ibland behöver man låna pengar, men det är viktigt att vara försiktig. Så kallade snabblån kan verka enkla, men de har ofta mycket hög ränta, vilket gör att skulden snabbt växer. Innan du lånar bör du fråga dig om du verkligen behöver pengarna och om du kan betala tillbaka. Jämför alltid räntor mellan olika långivare. Om du redan har skulder som du inte klarar av kan du få gratis hjälp av en budget- och skuldrådgivare i din kommun. Att be om hjälp i tid är ett tecken på ansvar.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad är ett problem med snabblån?",
+                        "options": [
+                              "Hög ränta som får skulden att växa",
+                              "De är gratis",
+                              "De är alltid bäst"
+                        ],
+                        "correct": 0,
+                        "explanation": "«mycket hög ränta, vilket gör att skulden snabbt växer»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Man kan få gratis hjälp av en skuldrådgivare.",
+                        "answer": true,
+                        "explanation": "«gratis hjälp av en budget- och skuldrådgivare»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad bör man jämföra mellan långivare?",
+                        "answer": "räntor",
+                        "accept": [
+                              "räntan",
+                              "räntor"
+                        ],
+                        "explanation": "«Jämför alltid räntor»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-3",
+            "unit": 10,
+            "unitTitle": "Miljö och hållbarhet",
+            "title": "Klimat och hållbarhet",
+            "kind": "Artikel",
+            "icon": "🌍",
+            "text": "Klimatförändringarna är en av vår tids största utmaningar. Utsläppen av växthusgaser gör att jordens temperatur stiger, vilket påverkar väder, natur och människor. Sverige har som mål att bli klimatneutralt, alltså att inte släppa ut mer växthusgaser än vad naturen kan ta upp. För att nå dit krävs förändringar inom transport, energi och konsumtion. Även enskilda personer kan bidra genom att resa mer kollektivt, äta mindre kött och köpa färre nya prylar. Många menar att både politiker och medborgare måste ta ansvar tillsammans.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad är Sveriges klimatmål?",
+                        "options": [
+                              "Att bli klimatneutralt",
+                              "Att öka utsläppen",
+                              "Att stoppa all handel"
+                        ],
+                        "correct": 0,
+                        "explanation": "«bli klimatneutralt»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Enskilda personer kan inte påverka klimatet alls.",
+                        "answer": false,
+                        "explanation": "«Även enskilda personer kan bidra»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad kallas gaserna som höjer temperaturen? ___gaser",
+                        "answer": "växthus",
+                        "accept": [
+                              "växthusgaser"
+                        ],
+                        "explanation": "«Utsläppen av växthusgaser»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-u10-2",
+            "unit": 10,
+            "unitTitle": "Miljö och hållbarhet",
+            "title": "Att konsumera hållbart",
+            "kind": "Artikel",
+            "icon": "🛍️",
+            "text": "Vårt sätt att konsumera påverkar miljön mer än många tror. Att ständigt köpa nytt kräver stora mängder resurser och energi, och mycket slängs i onödan. Ett mer hållbart sätt är att laga saker, köpa begagnat och välja produkter av god kvalitet som håller längre. Även maten spelar roll: att slänga mindre och äta mer grönsaker minskar belastningen på miljön. Kritiker menar att ansvaret inte bara ligger på individen, utan att företag och politik måste göra det lättare att välja hållbart.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad är ett mer hållbart sätt att konsumera?",
+                        "options": [
+                              "Laga, köpa begagnat och välja kvalitet",
+                              "Köpa nytt hela tiden",
+                              "Slänga mer"
+                        ],
+                        "correct": 0,
+                        "explanation": "«laga saker, köpa begagnat och välja produkter av god kvalitet»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Enligt kritiker ligger ansvaret bara på individen.",
+                        "answer": false,
+                        "explanation": "«ansvaret inte bara ligger på individen»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad bör man slänga mindre av?",
+                        "answer": "mat",
+                        "accept": [
+                              "maten",
+                              "mat"
+                        ],
+                        "explanation": "«att slänga mindre ... (maten)»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-4",
+            "unit": 11,
+            "unitTitle": "Teknik och digitalisering",
+            "title": "Det digitala samhället",
+            "kind": "Artikel",
+            "icon": "📱",
+            "text": "Sverige är ett av världens mest digitaliserade länder. Det mesta kan skötas på nätet, från bankärenden till kontakt med myndigheter. Digitaliseringen gör livet smidigare och sparar tid, men den skapar också utmaningar. Alla har inte samma vana eller tillgång till tekniken, vilket kan leda till ett så kallat digitalt utanförskap, särskilt bland äldre och nyanlända. Därför är det viktigt att erbjuda hjälp och utbildning så att alla kan vara med. Ett samhälle där alla kan delta digitalt är mer rättvist.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad menas med digitalt utanförskap?",
+                        "options": [
+                              "Att vissa inte kan använda tekniken",
+                              "Att alla har dator",
+                              "Att internet är gratis"
+                        ],
+                        "correct": 0,
+                        "explanation": "«digitalt utanförskap ... inte samma vana eller tillgång»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Alla har samma tillgång till tekniken.",
+                        "answer": false,
+                        "explanation": "«Alla har inte samma vana eller tillgång»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vilka drabbas särskilt? Äldre och ___",
+                        "answer": "nyanlända",
+                        "accept": [
+                              "nyanlända"
+                        ],
+                        "explanation": "«särskilt bland äldre och nyanlända»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-u11-2",
+            "unit": 11,
+            "unitTitle": "Teknik och digitalisering",
+            "title": "Källkritik på nätet",
+            "kind": "Artikel",
+            "icon": "🔍",
+            "text": "På internet finns enorma mängder information, men allt är inte sant. Därför är källkritik en viktig färdighet. När du läser något på nätet bör du fråga dig vem som ligger bakom informationen, varför den har publicerats och om den går att bekräfta någon annanstans. Falska nyheter sprids ofta snabbt, särskilt på sociala medier, eftersom de väcker starka känslor. Genom att stanna upp och tänka efter innan man delar något kan man bidra till ett sundare informationsklimat. Att vara källkritisk är en del av att vara en aktiv medborgare.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad innebär källkritik?",
+                        "options": [
+                              "Att granska var informationen kommer ifrån",
+                              "Att tro på allt",
+                              "Att aldrig läsa nyheter"
+                        ],
+                        "correct": 0,
+                        "explanation": "«fråga dig vem som ligger bakom informationen»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Falska nyheter sprids ofta långsamt.",
+                        "answer": false,
+                        "explanation": "«Falska nyheter sprids ofta snabbt»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad bör man göra innan man delar något? Stanna upp och ___ efter",
+                        "answer": "tänka",
+                        "accept": [
+                              "tänka"
+                        ],
+                        "explanation": "«tänka efter innan man delar»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-u12-1",
+            "unit": 12,
+            "unitTitle": "Medier och nyheter",
+            "title": "Fri press",
+            "kind": "Artikel",
+            "icon": "📰",
+            "text": "En fri och oberoende press är en viktig del av demokratin. Journalisternas uppgift är att granska makten och informera medborgarna om vad som händer i samhället. I Sverige finns lagar som skyddar pressfriheten och källskyddet, vilket betyder att en journalist inte behöver avslöja vem som lämnat information. Detta gör det möjligt att avslöja missförhållanden utan att den som berättar riskerar något. Utan fria medier skulle det vara svårare för medborgarna att fatta välgrundade beslut, till exempel i ett val.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad är journalistens uppgift?",
+                        "options": [
+                              "Att granska makten och informera",
+                              "Att styra landet",
+                              "Att sälja varor"
+                        ],
+                        "correct": 0,
+                        "explanation": "«granska makten och informera medborgarna»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Källskydd betyder att journalisten måste avslöja sina källor.",
+                        "answer": false,
+                        "explanation": "«inte behöver avslöja vem som lämnat information»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad kallas skyddet av den som lämnar information? ___skydd",
+                        "answer": "käll",
+                        "accept": [
+                              "källskydd"
+                        ],
+                        "explanation": "«källskyddet»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-u12-2",
+            "unit": 12,
+            "unitTitle": "Medier och nyheter",
+            "title": "Att jämföra nyheter",
+            "kind": "Faktatext",
+            "icon": "🧭",
+            "text": "För att få en bra bild av en händelse är det klokt att läsa nyheter från flera källor. Olika medier kan beskriva samma sak på olika sätt och lyfta fram olika detaljer. Genom att jämföra får man en mer nyanserad förståelse och märker om något verkar vinklat. Det är också bra att skilja på fakta och åsikter; en nyhetsartikel ska rapportera vad som hänt, medan en ledare eller insändare uttrycker en åsikt. Den som läser aktivt och kritiskt blir svårare att vilseleda.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Varför bör man läsa flera källor?",
+                        "options": [
+                              "För att få en mer nyanserad bild",
+                              "För att det går fortare",
+                              "Det behövs inte"
+                        ],
+                        "correct": 0,
+                        "explanation": "«jämföra får man en mer nyanserad förståelse»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "En insändare uttrycker en åsikt.",
+                        "answer": true,
+                        "explanation": "«en ledare eller insändare uttrycker en åsikt»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad ska man skilja på? Fakta och ___",
+                        "answer": "åsikter",
+                        "accept": [
+                              "åsikt",
+                              "åsikter"
+                        ],
+                        "explanation": "«skilja på fakta och åsikter»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-u13-1",
+            "unit": 13,
+            "unitTitle": "Integration och jämlikhet",
+            "title": "Att komma in i samhället",
+            "kind": "Artikel",
+            "icon": "🌐",
+            "text": "Integration handlar om att bli en del av samhället samtidigt som man får behålla sin identitet. Det är en process som tar tid och kräver insatser från både den enskilda och samhället. Språket, arbete och sociala kontakter spelar en central roll. Samtidigt har samhället ett ansvar att motverka diskriminering och ge alla lika chanser, oavsett bakgrund. Forskning visar att mångfald kan vara en styrka, eftersom olika erfarenheter och perspektiv berikar både arbetsplatser och samhället i stort. Lyckad integration gynnar alla.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad handlar integration om?",
+                        "options": [
+                              "Att bli en del av samhället och behålla sin identitet",
+                              "Att glömma sitt ursprung",
+                              "Att bo isolerat"
+                        ],
+                        "correct": 0,
+                        "explanation": "«bli en del av samhället samtidigt som man får behålla sin identitet»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Enligt texten kan mångfald vara en styrka.",
+                        "answer": true,
+                        "explanation": "«mångfald kan vara en styrka»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad har samhället ansvar att motverka?",
+                        "answer": "diskriminering",
+                        "accept": [
+                              "diskriminering"
+                        ],
+                        "explanation": "«motverka diskriminering»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-u13-2",
+            "unit": 13,
+            "unitTitle": "Integration och jämlikhet",
+            "title": "Alla behövs",
+            "kind": "Insändare",
+            "icon": "✊",
+            "text": "Jag anser att vi måste bli bättre på att ta tillvara alla människors kompetens. Många som kommer till Sverige har en utbildning och erfarenhet som inte används, eftersom deras examen inte alltid erkänns eller för att de saknar kontakter. Det är slöseri, både för individen och för samhället. Jag tycker att det borde bli enklare att validera utländska utbildningar och att fler arbetsgivare borde våga anställa personer med olika bakgrund. Om vi ger alla en rättvis chans vinner hela samhället på det.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad tycker skribenten är slöseri?",
+                        "options": [
+                              "Att inte ta tillvara människors kompetens",
+                              "Att validera utbildningar",
+                              "Att anställa folk"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Det är slöseri ... kompetens som inte används»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Skribenten vill att det ska bli lättare att validera utbildningar.",
+                        "answer": true,
+                        "explanation": "«borde bli enklare att validera utländska utbildningar»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad vinner på en rättvis chans? Hela ___",
+                        "answer": "samhället",
+                        "accept": [
+                              "samhället"
+                        ],
+                        "explanation": "«vinner hela samhället på det»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-u14-1",
+            "unit": 14,
+            "unitTitle": "Debatt och argumentation",
+            "title": "Argument för och emot",
+            "kind": "Faktatext",
+            "icon": "💬",
+            "text": "I en debatt möts olika åsikter, och ofta finns det goda argument på båda sidor. Ett bra argument bygger på fakta och tydliga skäl, inte bara på känslor. När du själv argumenterar är det klokt att också nämna motståndarens synpunkt och sedan bemöta den. På så sätt visar du att du har tänkt igenom frågan. Att kunna lyssna på andra och ändra sig om man får nya fakta är inte en svaghet, utan ett tecken på mognad. Ett respektfullt samtalsklimat gör att fler vågar delta.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad bygger ett bra argument på?",
+                        "options": [
+                              "Fakta och tydliga skäl",
+                              "Bara känslor",
+                              "Att ropa högst"
+                        ],
+                        "correct": 0,
+                        "explanation": "«bygger på fakta och tydliga skäl, inte bara på känslor»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Att ändra sig med nya fakta är en svaghet.",
+                        "answer": false,
+                        "explanation": "«inte en svaghet, utan ett tecken på mognad»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad är klokt att nämna? ___s synpunkt",
+                        "answer": "motståndaren",
+                        "accept": [
+                              "motståndaren",
+                              "motståndare"
+                        ],
+                        "explanation": "«nämna motståndarens synpunkt»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-u14-2",
+            "unit": 14,
+            "unitTitle": "Debatt och argumentation",
+            "title": "Insändare: mer idrott i skolan",
+            "kind": "Insändare",
+            "icon": "🏃",
+            "text": "Jag tycker att skolan borde ha mer idrott på schemat. För det första mår barn bättre av att röra på sig, både fysiskt och psykiskt. För det andra visar studier att elever som rör sig ofta har lättare att koncentrera sig och lär sig mer. Vissa invänder att det tar tid från andra ämnen, men jag menar att en frisk och pigg elev lär sig snabbare ändå. Därför anser jag att fördelarna är större än nackdelarna. Låt oss satsa på både hälsa och kunskap.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad är skribentens åsikt?",
+                        "options": [
+                              "Skolan borde ha mer idrott",
+                              "Idrott är onödigt",
+                              "Barn rör sig för mycket"
+                        ],
+                        "correct": 0,
+                        "explanation": "«skolan borde ha mer idrott på schemat»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Skribenten bemöter en invändning i texten.",
+                        "answer": true,
+                        "explanation": "«Vissa invänder att... men jag menar...»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad har elever som rör sig lättare att göra? Att ___ sig",
+                        "answer": "koncentrera",
+                        "accept": [
+                              "koncentrera"
+                        ],
+                        "explanation": "«lättare att koncentrera sig»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-u15-1",
+            "unit": 15,
+            "unitTitle": "Formella klagomål",
+            "title": "Ett formellt klagomål",
+            "kind": "Brev",
+            "icon": "🧾",
+            "text": "Till kundtjänst. Jag vill framföra ett klagomål gällande en tågresa den 4 mars mellan Göteborg och Stockholm. Tåget var mer än två timmar försenat, utan att någon tydlig information gavs till resenärerna. Detta ledde till att jag missade ett viktigt möte. Enligt era villkor har jag rätt till ersättning vid kraftiga förseningar, och jag begär därför att bli kompenserad. Jag bifogar min biljett som underlag. Jag förväntar mig ett svar inom två veckor. Med vänlig hälsning, Johan Berg.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Varför skriver Johan?",
+                        "options": [
+                              "För att klaga på en försenad tågresa",
+                              "För att boka en resa",
+                              "För att tacka"
+                        ],
+                        "correct": 0,
+                        "explanation": "«klagomål gällande en tågresa ... försenat»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Johan begär ersättning för förseningen.",
+                        "answer": true,
+                        "explanation": "«jag begär därför att bli kompenserad»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Inom hur lång tid vill han ha svar? Två ___",
+                        "answer": "veckor",
+                        "accept": [
+                              "veckor",
+                              "vecka"
+                        ],
+                        "explanation": "«svar inom två veckor»."
+                  }
+            ]
+      },
+      {
+            "id": "d-r-u15-2",
+            "unit": 15,
+            "unitTitle": "Formella klagomål",
+            "title": "Debattartikel: kollektivtrafiken",
+            "kind": "Artikel",
+            "icon": "🚌",
+            "text": "Fler borde resa kollektivt, det är jag övertygad om. Om fler väljer buss och tåg istället för bil minskar både utsläppen och trafiken i städerna, vilket gör luften renare och gatorna säkrare. Samtidigt måste jag erkänna att kollektivtrafiken idag har brister: den är ibland dyr och fungerar dåligt på kvällar och helger. Därför räcker det inte att uppmana människor att åka kollektivt. Politikerna måste också se till att det blir billigare och mer pålitligt. Först då kommer förändringen på allvar.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "Vad anser skribenten?",
+                        "options": [
+                              "Fler borde resa kollektivt, men det måste förbättras",
+                              "Alla borde köra bil",
+                              "Kollektivtrafik är onödig"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Fler borde resa kollektivt ... måste också se till att det blir billigare»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Skribenten tycker att kollektivtrafiken är helt perfekt idag.",
+                        "answer": false,
+                        "explanation": "«har brister: den är ibland dyr och fungerar dåligt»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Vad minskar om fler reser kollektivt? Utsläpp och ___",
+                        "answer": "trafik",
+                        "accept": [
+                              "trafiken",
+                              "trafik"
+                        ],
+                        "explanation": "«minskar både utsläppen och trafiken»."
+                  }
+            ]
+      }
+],
     write: [
       {
-        id: 'd-w-1', title: 'Skriv en åsiktstext', icon: '✍️', words: '100–150 ord',
-        prompt: 'Escribe un texto de OPINIÓN (åsiktstext) en sueco sobre este tema:\n"Ska mobiltelefoner vara förbjudna i skolan?" (¿Deberían prohibirse los móviles en la escuela?)\n\nDebes:\n• Presentar tu opinión claramente\n• Dar al menos dos argumentos\n• Considerar el otro punto de vista\n• Terminar con una conclusión',
-        checklist: ['Inled med din åsikt: "Jag anser att..."', 'Argument 1: "För det första..."', 'Argument 2: "Dessutom..."', 'Motargument: "Visserligen... men..."', 'Avsluta: "Sammanfattningsvis..."'],
-        example: 'Jag anser att mobiltelefoner borde begränsas i skolan. För det första stör de koncentrationen, eftersom eleverna lätt distraheras. Dessutom kan mobiler bidra till mobbning på sociala medier. Visserligen kan telefoner vara användbara för att söka information, men det finns datorer för det. Sammanfattningsvis tror jag att en tydlig regel skulle förbättra både studiero och trivsel i klassrummet.',
-        criteria: ['Contenido: opinión clara + argumentos + contraargumento + conclusión', 'Estructura: introducción, desarrollo, cierre', 'Conectores: för det första, dessutom, visserligen, sammanfattningsvis', 'Gramática avanzada y vocabulario preciso']
+            "id": "d-w-1",
+            "unit": 2,
+            "unitTitle": "Formella brev",
+            "title": "Personligt brev till en tjänst",
+            "icon": "✉️",
+            "words": "100–160 ord",
+            "prompt": "Situation:\nDu söker ett kvalificerat jobb.\n\nInstruktioner:\nSkriv ett personligt brev. Hälsa, presentera dig kort, förklara din erfarenhet och dina egenskaper, motivera varför just du passar och avsluta formellt.",
+            "req": {
+                  "greeting": true,
+                  "closing": true,
+                  "question": false,
+                  "keywords": [
+                        "erfarenhet",
+                        "söker"
+                  ],
+                  "min": 100,
+                  "max": 160
+            },
+            "selfCheck": [
+                  "Har du hälsat och presenterat dig?",
+                  "Har du beskrivit erfarenhet och egenskaper?",
+                  "Har du motiverat varför du passar?",
+                  "Har du avslutat formellt?"
+            ],
+            "hints": [
+                  "Hej! Jag heter... och söker tjänsten som...",
+                  "Jag har erfarenhet av... och är...",
+                  "Jag passar för jobbet eftersom...",
+                  "Med vänliga hälsningar,"
+            ],
+            "useful": [
+                  "hej",
+                  "söker tjänsten",
+                  "erfarenhet",
+                  "eftersom",
+                  "dessutom",
+                  "bidra",
+                  "med vänliga hälsningar"
+            ],
+            "example": "Hej! Mitt namn är Nadia Karim och jag söker tjänsten som undersköterska på ert äldreboende. Jag har arbetat inom vården i fyra år, både i mitt hemland och i Sverige, och jag är van vid att ta hand om människor med olika behov. Jag är lugn, ansvarsfull och bra på att samarbeta. Dessutom talar jag tre språk, vilket kan vara en fördel i mötet med patienter. Jag söker jobbet eftersom jag trivs med att hjälpa andra och gärna vill utvecklas vidare inom vården. Jag bifogar mitt CV och referenser, och jag ser fram emot att höra från er. Med vänliga hälsningar, Nadia Karim.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Struktur: inledning, huvuddel och avslutning",
+                  "Sammanbindningsord: eftersom, därför, däremot, dessutom",
+                  "Anpassning till mottagare och syfte",
+                  "Längd: 100–160 ord"
+            ]
       },
       {
-        id: 'd-w-2', title: 'Ett formellt klagomål till en myndighet', icon: '🏛️', words: '90–130 ord',
-        prompt: 'Escribe una carta FORMAL de queja a una autoridad (myndighet) en sueco. Por ejemplo: has esperado demasiado por una decisión, o recibiste información incorrecta.\n\nDebes:\n• Explicar el asunto y tu caso (con datos)\n• Describir el problema con claridad\n• Explicar cómo te ha afectado\n• Pedir una acción concreta',
-        checklist: ['Formell inledning: "Till [myndighet]"', 'Beskriv ärendet: "Jag skriver angående..."', 'Redogör för problemet sakligt', 'Konsekvens: "Detta har lett till..."', 'Krav: "Jag begär att..." och avsluta formellt'],
-        example: 'Till Migrationsverket,\n\nJag skriver angående mitt ärende med nummer 12345. Jag lämnade in min ansökan för åtta månader sedan och har ännu inte fått något beslut, trots att handläggningstiden uppges vara kortare. Detta har lett till att jag inte kan påbörja mitt arbete. Jag begär därför att mitt ärende prioriteras och att jag får besked om när ett beslut kan väntas.\n\nMed vänlig hälsning,\nOmar Haddad',
-        criteria: ['Contenido: asunto, problema, consecuencia y petición', 'Registro: formal e impersonal', 'Vocabulario administrativo (ärende, handläggning, begära)', 'Estructura de carta formal']
+            "id": "d-w-2",
+            "unit": 8,
+            "unitTitle": "Myndigheter",
+            "title": "Formellt brev till en myndighet",
+            "icon": "🏛️",
+            "words": "100–160 ord",
+            "prompt": "Situation:\nDu har ett ärende hos en myndighet och behöver svar.\n\nInstruktioner:\nSkriv ett formellt brev. Hälsa, ange ditt ärende, förklara situationen tydligt, ställ dina frågor och avsluta artigt.",
+            "req": {
+                  "greeting": true,
+                  "closing": true,
+                  "question": true,
+                  "keywords": [
+                        "ärende"
+                  ],
+                  "min": 100,
+                  "max": 160
+            },
+            "selfCheck": [
+                  "Har du angett ditt ärende?",
+                  "Har du förklarat situationen tydligt?",
+                  "Har du ställt tydliga frågor?",
+                  "Har du avslutat formellt?"
+            ],
+            "hints": [
+                  "Hej! Jag skriver angående...",
+                  "Situationen är att...",
+                  "Jag undrar om ni kan...",
+                  "Med vänlig hälsning,"
+            ],
+            "useful": [
+                  "hej",
+                  "angående",
+                  "ärende",
+                  "eftersom",
+                  "jag undrar",
+                  "kan ni",
+                  "med vänlig hälsning"
+            ],
+            "example": "Hej! Jag skriver angående min ansökan om bostadsbidrag, med ärendenummer 2024-3391. Jag lämnade in ansökan för sex veckor sedan, men har ännu inte fått något beslut. Eftersom min ekonomi är ansträngd är det viktigt för mig att veta hur lång handläggningstiden är. Jag undrar också om ni behöver ytterligare handlingar från mig, till exempel ett nytt hyreskontrakt. Om något i min ansökan är oklart tar jag gärna emot information om hur jag ska komplettera den. Jag bifogar en kopia av mina inkomstuppgifter. Jag är tacksam för ett svar så snart som möjligt. Med vänlig hälsning, Omar Haddad.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Struktur: inledning, huvuddel och avslutning",
+                  "Sammanbindningsord: eftersom, därför, däremot, dessutom",
+                  "Anpassning till mottagare och syfte",
+                  "Längd: 100–160 ord"
+            ]
       },
       {
-        id: 'd-w-3', title: 'Diskussionsinlägg', icon: '💬', words: '80–120 ord',
-        prompt: 'Escribe una intervención (inlägg) para un foro/debate en sueco sobre:\n"Hur kan integrationen i Sverige förbättras?" (¿Cómo se puede mejorar la integración en Suecia?)\n\nDebes:\n• Dar tu punto de vista\n• Proponer al menos dos soluciones concretas\n• Justificar por qué funcionarían',
-        checklist: ['Ta ställning: "Enligt min mening..."', 'Förslag 1 + motivering', 'Förslag 2 + motivering', 'Använd sambandsord: eftersom, därför att, på så sätt', 'Avsluta med en uppmaning eller slutsats'],
-        example: 'Enligt min mening kräver bättre integration insatser från både samhället och individen. För det första bör fler få möjlighet att kombinera SFI med praktik, eftersom man lär sig språket snabbare när man använder det på en arbetsplats. Dessutom skulle mentorprogram, där etablerade svenskar hjälper nyanlända, kunna bygga viktiga kontakter. På så sätt minskar avståndet mellan grupper. Integration är ett gemensamt ansvar, och små konkreta åtgärder kan göra stor skillnad.',
-        criteria: ['Contenido: postura + 2 propuestas justificadas', 'Coherencia y conectores de causa/consecuencia', 'Registro adecuado a un debate', 'Riqueza léxica y corrección gramatical']
+            "id": "d-w-3",
+            "unit": 14,
+            "unitTitle": "Debatt",
+            "title": "Insändare / debattinlägg",
+            "icon": "📰",
+            "words": "100–160 ord",
+            "prompt": "Situation:\nDu vill uttrycka din åsikt om en samhällsfråga i en insändare.\n\nInstruktioner:\nSkriv en insändare. Presentera frågan, uttryck din åsikt, ge minst två argument, bemöt en invändning och avsluta med en slutsats.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "jag anser"
+                  ],
+                  "min": 100,
+                  "max": 160
+            },
+            "selfCheck": [
+                  "Har du presenterat frågan och din åsikt?",
+                  "Har du gett minst två argument?",
+                  "Har du bemött en invändning?",
+                  "Har texten en tydlig avslutning?"
+            ],
+            "hints": [
+                  "Jag anser att...",
+                  "För det första... För det andra...",
+                  "Vissa invänder att..., men...",
+                  "Sammanfattningsvis..."
+            ],
+            "useful": [
+                  "jag anser",
+                  "för det första",
+                  "för det andra",
+                  "dessutom",
+                  "vissa invänder",
+                  "däremot",
+                  "sammanfattningsvis"
+            ],
+            "example": "Jag anser att kollektivtrafiken borde vara billigare. För det första skulle fler människor välja bussen istället för bilen, vilket minskar utsläppen och trafiken i städerna. För det andra är det en rättvisefråga, eftersom alla borde ha råd att ta sig till jobb och skola. Vissa invänder att det skulle bli för dyrt för kommunen, men jag menar att fördelarna för miljön och folkhälsan väger tyngre på lång sikt. Dessutom kan renare luft minska sjukvårdskostnaderna. Sammanfattningsvis tycker jag att politikerna borde satsa mer på billig och pålitlig kollektivtrafik. Om vi vill ha en hållbar framtid måste vi göra det enkelt att välja rätt.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Struktur: inledning, huvuddel och avslutning",
+                  "Sammanbindningsord: eftersom, därför, däremot, dessutom",
+                  "Anpassning till mottagare och syfte",
+                  "Längd: 100–160 ord"
+            ]
       },
-    ],
+      {
+            "id": "d-w-4",
+            "unit": 15,
+            "unitTitle": "Formella klagomål",
+            "title": "Ett formellt klagomål",
+            "icon": "🧾",
+            "words": "100–160 ord",
+            "prompt": "Situation:\nDu har haft ett problem med en tjänst (t.ex. en försenad resa eller en felaktig vara).\n\nInstruktioner:\nSkriv ett formellt klagomål. Hälsa, beskriv vad som hände, förklara konsekvensen, säg vad du kräver och avsluta med en tidsgräns för svar.",
+            "req": {
+                  "greeting": true,
+                  "closing": true,
+                  "question": false,
+                  "keywords": [
+                        "klagomål"
+                  ],
+                  "min": 100,
+                  "max": 160
+            },
+            "selfCheck": [
+                  "Har du beskrivit vad som hände?",
+                  "Har du förklarat konsekvensen?",
+                  "Har du sagt vad du kräver?",
+                  "Har du avslutat formellt?"
+            ],
+            "hints": [
+                  "Hej! Jag vill framföra ett klagomål gällande...",
+                  "Detta ledde till att...",
+                  "Jag kräver därför...",
+                  "Jag förväntar mig svar inom..."
+            ],
+            "useful": [
+                  "hej",
+                  "klagomål",
+                  "gällande",
+                  "ledde till",
+                  "ersättning",
+                  "jag kräver",
+                  "inom två veckor",
+                  "med vänlig hälsning"
+            ],
+            "example": "Hej! Jag vill framföra ett klagomål gällande en tågresa den 4 mars mellan Göteborg och Stockholm. Tåget var mer än två timmar försenat, och ingen tydlig information gavs till oss resenärer. Detta ledde till att jag missade ett viktigt affärsmöte, vilket orsakade mig både stress och ekonomisk skada. Enligt era resevillkor har jag rätt till ersättning vid kraftiga förseningar. Jag kräver därför att bli kompenserad för biljetten samt för de kostnader som förseningen medförde. Jag bifogar min biljett och kvitton som underlag. Jag förväntar mig ett svar inom två veckor. Med vänlig hälsning, Johan Berg.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Struktur: inledning, huvuddel och avslutning",
+                  "Sammanbindningsord: eftersom, därför, däremot, dessutom",
+                  "Anpassning till mottagare och syfte",
+                  "Längd: 100–160 ord"
+            ]
+      },
+      {
+            "id": "d-w-5",
+            "unit": 5,
+            "unitTitle": "Åsikter",
+            "title": "Uttryck och motivera en åsikt",
+            "icon": "💬",
+            "words": "100–160 ord",
+            "prompt": "Situation:\nDu vill uttrycka din åsikt om en fråga som rör samhället.\n\nInstruktioner:\nPresentera frågan, uttryck din åsikt tydligt, ge flera skäl och avsluta med en slutsats. Använd sammanbindningsord.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "jag tycker"
+                  ],
+                  "min": 100,
+                  "max": 160
+            },
+            "selfCheck": [
+                  "Har du uttryckt din åsikt tydligt?",
+                  "Har du gett flera skäl?",
+                  "Har du en tydlig avslutning?",
+                  "Har du använt sammanbindningsord (eftersom, därför, däremot)?"
+            ],
+            "hints": [
+                  "Frågan om... är viktig.",
+                  "Jag tycker att... eftersom...",
+                  "Ett annat skäl är att...",
+                  "Därför anser jag att..."
+            ],
+            "useful": [
+                  "jag tycker",
+                  "eftersom",
+                  "dessutom",
+                  "ett annat skäl",
+                  "däremot",
+                  "därför",
+                  "sammanfattningsvis"
+            ],
+            "example": "Frågan om hur mycket barn ska använda mobiler är viktig och diskuteras mycket idag. Jag tycker att barn bör ha tydliga gränser för sin skärmtid, eftersom för mycket tid framför skärmen kan påverka både sömnen och koncentrationen negativt. Dessutom är det viktigt att barn leker, rör på sig och umgås med andra på riktigt. Ett annat skäl är att allt innehåll på nätet inte är lämpligt för barn. Vissa menar att mobiler också har fördelar, och det stämmer att de kan användas för lärande. Däremot handlar det om balans. Därför anser jag att föräldrar och skola tillsammans bör hjälpa barn att använda tekniken på ett klokt sätt.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Struktur: inledning, huvuddel och avslutning",
+                  "Sammanbindningsord: eftersom, därför, däremot, dessutom",
+                  "Anpassning till mottagare och syfte",
+                  "Längd: 100–160 ord"
+            ]
+      },
+      {
+            "id": "d-w-6",
+            "unit": 9,
+            "unitTitle": "Jämförelser",
+            "title": "Jämför fördelar och nackdelar",
+            "icon": "⚖️",
+            "words": "100–160 ord",
+            "prompt": "Situation:\nDu ska väga fördelar och nackdelar med något (t.ex. att bo i stad eller på landet, eller att arbeta hemifrån).\n\nInstruktioner:\nBeskriv båda sidor, jämför dem och säg vilket du föredrar och varför. Strukturera texten tydligt.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "fördel"
+                  ],
+                  "min": 100,
+                  "max": 160
+            },
+            "selfCheck": [
+                  "Har du beskrivit båda alternativen?",
+                  "Har du nämnt fördelar och nackdelar?",
+                  "Har du sagt vad du föredrar och varför?",
+                  "Har texten en tydlig inledning, huvuddel och avslutning?"
+            ],
+            "hints": [
+                  "Det finns för- och nackdelar med...",
+                  "Å ena sidan... Å andra sidan...",
+                  "En fördel är... men en nackdel är...",
+                  "Själv föredrar jag... eftersom..."
+            ],
+            "useful": [
+                  "å ena sidan",
+                  "å andra sidan",
+                  "fördel",
+                  "nackdel",
+                  "däremot",
+                  "dessutom",
+                  "jag föredrar",
+                  "eftersom"
+            ],
+            "example": "Att arbeta hemifrån har blivit allt vanligare, och det finns tydliga för- och nackdelar. Å ena sidan sparar man tid och pengar på att slippa resa, och man kan ofta planera sin dag mer fritt. Dessutom kan det vara lättare att koncentrera sig utan störningar från kollegor. Å andra sidan kan man känna sig ensam, och gränsen mellan arbete och fritid blir ibland otydlig. En annan nackdel är att spontana samtal med kollegor försvinner. Själv föredrar jag en kombination, eftersom jag då får både lugn och social kontakt. Sammanfattningsvis tror jag att det bästa är att kunna välja utifrån arbetsuppgiften och sina egna behov.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Struktur: inledning, huvuddel och avslutning",
+                  "Sammanbindningsord: eftersom, därför, däremot, dessutom",
+                  "Anpassning till mottagare och syfte",
+                  "Längd: 100–160 ord"
+            ]
+      },
+      {
+            "id": "d-w-7",
+            "unit": 7,
+            "unitTitle": "Orsak och verkan",
+            "title": "Förklara orsaker och konsekvenser",
+            "icon": "🔗",
+            "words": "100–160 ord",
+            "prompt": "Situation:\nDu vill förklara varför något händer och vad det leder till (t.ex. varför fler flyttar till städer, eller varför klimatet förändras).\n\nInstruktioner:\nBeskriv orsakerna och konsekvenserna tydligt. Använd ord som eftersom, därför och det leder till.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "eftersom"
+                  ],
+                  "min": 100,
+                  "max": 160
+            },
+            "selfCheck": [
+                  "Har du förklarat orsakerna?",
+                  "Har du beskrivit konsekvenserna?",
+                  "Har du använt orsaksord (eftersom, därför)?",
+                  "Har texten en tydlig inledning, huvuddel och avslutning?"
+            ],
+            "hints": [
+                  "En orsak till... är att...",
+                  "Detta beror på...",
+                  "Det leder till att...",
+                  "Som en följd av detta..."
+            ],
+            "useful": [
+                  "en orsak",
+                  "beror på",
+                  "eftersom",
+                  "därför",
+                  "det leder till",
+                  "som en följd",
+                  "konsekvens"
+            ],
+            "example": "Allt fler människor flyttar från landsbygden till städerna, och det finns flera orsaker till detta. En viktig orsak är att de flesta jobben och utbildningarna finns i städerna. Dessutom lockar staden med ett större utbud av kultur, service och sociala kontakter. Detta leder till att städerna växer snabbt, medan mindre orter tappar invånare. Som en följd av detta uppstår problem på båda håll: i städerna blir bostäderna dyrare och trängseln ökar, medan landsbygden riskerar att förlora skolor och affärer. Därför menar många att politiken måste satsa på hela landet, så att det går att bo och arbeta även utanför storstäderna.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Struktur: inledning, huvuddel och avslutning",
+                  "Sammanbindningsord: eftersom, därför, däremot, dessutom",
+                  "Anpassning till mottagare och syfte",
+                  "Längd: 100–160 ord"
+            ]
+      },
+      {
+            "id": "d-w-8",
+            "unit": 13,
+            "unitTitle": "Samhälle",
+            "title": "Skriv om integration",
+            "icon": "🌐",
+            "words": "100–160 ord",
+            "prompt": "Situation:\nDu vill skriva om integration och hur samhället kan bli bättre.\n\nInstruktioner:\nFörklara vad du tycker är viktigt för integration, ge exempel och föreslå vad samhället kan göra.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "integration"
+                  ],
+                  "min": 100,
+                  "max": 160
+            },
+            "selfCheck": [
+                  "Har du förklarat vad som är viktigt?",
+                  "Har du gett exempel?",
+                  "Har du föreslagit något?",
+                  "Har du använt sammanbindningsord (eftersom, därför, däremot)?"
+            ],
+            "hints": [
+                  "För en lyckad integration är... viktigt.",
+                  "Till exempel...",
+                  "Samhället kan hjälpa genom att...",
+                  "Om vi... vinner alla på det."
+            ],
+            "useful": [
+                  "integration",
+                  "språket",
+                  "arbete",
+                  "till exempel",
+                  "dessutom",
+                  "samhället borde",
+                  "eftersom"
+            ],
+            "example": "För en lyckad integration är språket och arbetet allra viktigast, eftersom de öppnar dörrar till både gemenskap och självständighet. Genom ett jobb lär man sig svenska i praktiken, får ett socialt nätverk och känner sig delaktig. Till exempel kan praktik och språkkaféer vara ett bra sätt att komma igång. Samtidigt har samhället ett ansvar. Det borde bli lättare att validera utländska utbildningar, och fler arbetsgivare borde våga anställa personer med olika bakgrund. Dessutom är det viktigt att motverka diskriminering, så att alla får en rättvis chans. Om vi tar tillvara allas kompetens vinner hela samhället på det, både ekonomiskt och mänskligt.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Struktur: inledning, huvuddel och avslutning",
+                  "Sammanbindningsord: eftersom, därför, däremot, dessutom",
+                  "Anpassning till mottagare och syfte",
+                  "Längd: 100–160 ord"
+            ]
+      },
+      {
+            "id": "d-w-9",
+            "unit": 3,
+            "unitTitle": "Arbetsliv",
+            "title": "Formellt mejl på jobbet",
+            "icon": "📧",
+            "words": "100–160 ord",
+            "prompt": "Situation:\nDu behöver skriva ett formellt mejl till din chef eller en kollega (t.ex. föreslå en förändring eller be om något).\n\nInstruktioner:\nHälsa, förklara ärendet sakligt, motivera ditt förslag och avsluta artigt.",
+            "req": {
+                  "greeting": true,
+                  "closing": true,
+                  "question": false,
+                  "keywords": [
+                        "förslag"
+                  ],
+                  "min": 100,
+                  "max": 160
+            },
+            "selfCheck": [
+                  "Har du hälsat?",
+                  "Har du förklarat ärendet sakligt?",
+                  "Har du motiverat ditt förslag?",
+                  "Har du avslutat artigt?"
+            ],
+            "hints": [
+                  "Hej [namn]!",
+                  "Jag skriver för att...",
+                  "Jag föreslår att... eftersom...",
+                  "Vänliga hälsningar,"
+            ],
+            "useful": [
+                  "hej",
+                  "jag skriver för att",
+                  "förslag",
+                  "jag föreslår",
+                  "eftersom",
+                  "dessutom",
+                  "vänliga hälsningar"
+            ],
+            "example": "Hej Anna! Jag skriver för att föreslå en liten förändring av våra rutiner på lagret. Jag har märkt att vi ofta letar efter verktyg, vilket tar onödig tid. Jag föreslår därför att vi inför tydligt märkta platser för varje verktyg och en kort avstämning i början av veckan. Detta skulle spara tid och minska stressen, eftersom alla vet var sakerna finns. Dessutom tror jag att det skulle göra arbetsmiljön lugnare. Jag diskuterar gärna förslaget mer om du tycker att det är intressant, till exempel på nästa möte. Tack för att du tar dig tid att läsa. Vänliga hälsningar, Marco.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Struktur: inledning, huvuddel och avslutning",
+                  "Sammanbindningsord: eftersom, därför, däremot, dessutom",
+                  "Anpassning till mottagare och syfte",
+                  "Längd: 100–160 ord"
+            ]
+      },
+      {
+            "id": "d-w-10",
+            "unit": 10,
+            "unitTitle": "Miljö",
+            "title": "Skriv om hållbarhet",
+            "icon": "🌍",
+            "words": "100–160 ord",
+            "prompt": "Situation:\nDu vill skriva om miljö och vad man kan göra för att leva mer hållbart.\n\nInstruktioner:\nBeskriv problemet, ge konkreta exempel på lösningar och förklara vem som har ansvar.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "miljö"
+                  ],
+                  "min": 100,
+                  "max": 160
+            },
+            "selfCheck": [
+                  "Har du beskrivit problemet?",
+                  "Har du gett konkreta lösningar?",
+                  "Har du förklarat vem som har ansvar?",
+                  "Har du använt sammanbindningsord (eftersom, därför, däremot)?"
+            ],
+            "hints": [
+                  "Ett stort miljöproblem är...",
+                  "Man kan till exempel...",
+                  "Ansvaret ligger både på... och...",
+                  "Om vi hjälps åt..."
+            ],
+            "useful": [
+                  "miljö",
+                  "utsläpp",
+                  "till exempel",
+                  "återvinna",
+                  "ansvaret",
+                  "både... och",
+                  "eftersom"
+            ],
+            "example": "Ett av vår tids största problem är klimatförändringarna, som beror på för stora utsläpp av växthusgaser. Som tur är finns det mycket vi kan göra. Man kan till exempel resa mer kollektivt, äta mindre kött, återvinna sopor och köpa färre nya saker. Sådana förändringar minskar belastningen på miljön och sparar ofta pengar. Samtidigt är det viktigt att inte lägga hela ansvaret på den enskilda personen. Politiker och företag måste göra det billigare och enklare att välja hållbart, eftersom alla inte har samma möjligheter. Om både samhället och medborgarna hjälps åt kan vi tillsammans skapa en mer hållbar framtid för kommande generationer.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Struktur: inledning, huvuddel och avslutning",
+                  "Sammanbindningsord: eftersom, därför, däremot, dessutom",
+                  "Anpassning till mottagare och syfte",
+                  "Längd: 100–160 ord"
+            ]
+      },
+      {
+            "id": "d-w-11",
+            "unit": 4,
+            "unitTitle": "Studier",
+            "title": "Motivering till en utbildning",
+            "icon": "🎓",
+            "words": "100–160 ord",
+            "prompt": "Situation:\nDu ansöker om en utbildning och ska motivera varför.\n\nInstruktioner:\nBerätta vilken utbildning du söker, varför du vill läsa den, vad du har för mål och varför du passar.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "utbildning"
+                  ],
+                  "min": 100,
+                  "max": 160
+            },
+            "selfCheck": [
+                  "Har du sagt vilken utbildning du söker?",
+                  "Har du förklarat varför?",
+                  "Har du beskrivit ditt mål?",
+                  "Har du motiverat varför du passar?"
+            ],
+            "hints": [
+                  "Jag söker utbildningen till...",
+                  "Jag vill läsa den eftersom...",
+                  "Mitt mål är att...",
+                  "Jag passar därför att..."
+            ],
+            "useful": [
+                  "jag söker",
+                  "utbildning",
+                  "eftersom",
+                  "mitt mål",
+                  "erfarenhet",
+                  "motiverad",
+                  "därför"
+            ],
+            "example": "Jag söker utbildningen till undersköterska eftersom jag länge har velat arbeta med människor och hjälpa andra. I mitt hemland arbetade jag en tid inom vården, och den erfarenheten har gjort mig ännu mer säker på mitt val. Mitt mål är att kunna få ett fast jobb inom äldreomsorgen och på sikt kanske vidareutbilda mig. Jag tror att jag passar för utbildningen därför att jag är tålmodig, ansvarsfull och van vid att arbeta i team. Dessutom är jag mycket motiverad och beredd att plugga hårt, även vid sidan av mitt nuvarande arbete. Jag hoppas få chansen att visa vad jag kan och utvecklas inom yrket.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Struktur: inledning, huvuddel och avslutning",
+                  "Sammanbindningsord: eftersom, därför, däremot, dessutom",
+                  "Anpassning till mottagare och syfte",
+                  "Längd: 100–160 ord"
+            ]
+      },
+      {
+            "id": "d-w-12",
+            "unit": 11,
+            "unitTitle": "Teknik",
+            "title": "Digitaliseringens för- och nackdelar",
+            "icon": "📱",
+            "words": "100–160 ord",
+            "prompt": "Situation:\nDu vill skriva om hur digitaliseringen påverkar samhället.\n\nInstruktioner:\nBeskriv fördelar och nackdelar med att så mycket sköts digitalt och säg vad du tycker bör göras.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "digitalt"
+                  ],
+                  "min": 100,
+                  "max": 160
+            },
+            "selfCheck": [
+                  "Har du nämnt fördelar?",
+                  "Har du nämnt nackdelar?",
+                  "Har du sagt vad du tycker bör göras?",
+                  "Har texten en tydlig inledning, huvuddel och avslutning?"
+            ],
+            "hints": [
+                  "Digitaliseringen har många fördelar, till exempel...",
+                  "En nackdel är däremot att...",
+                  "Därför tycker jag att samhället bör..."
+            ],
+            "useful": [
+                  "digitalisering",
+                  "fördel",
+                  "nackdel",
+                  "däremot",
+                  "utanförskap",
+                  "därför",
+                  "samhället bör"
+            ],
+            "example": "Digitaliseringen har förändrat samhället på kort tid. En stor fördel är att det mesta går snabbare och smidigare; man kan sköta bankärenden, boka läkartider och kontakta myndigheter direkt från mobilen. Dessutom sparar det både tid och pengar. En nackdel är däremot att alla inte har samma vana eller tillgång till tekniken, vilket kan leda till ett digitalt utanförskap, särskilt bland äldre och nyanlända. Om viktiga tjänster bara finns digitalt riskerar dessa personer att hamna utanför. Därför tycker jag att samhället bör erbjuda utbildning och personlig hjälp för dem som behöver det. På så sätt kan vi ta vara på teknikens fördelar utan att lämna någon efter.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Struktur: inledning, huvuddel och avslutning",
+                  "Sammanbindningsord: eftersom, därför, däremot, dessutom",
+                  "Anpassning till mottagare och syfte",
+                  "Längd: 100–160 ord"
+            ]
+      },
+      {
+            "id": "d-w-13",
+            "unit": 12,
+            "unitTitle": "Medier",
+            "title": "Källkritik och nyheter",
+            "icon": "🔍",
+            "words": "100–160 ord",
+            "prompt": "Situation:\nDu vill skriva om varför källkritik är viktigt.\n\nInstruktioner:\nFörklara vad källkritik är, varför det behövs och ge råd om hur man kan tänka.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "källkritik"
+                  ],
+                  "min": 100,
+                  "max": 160
+            },
+            "selfCheck": [
+                  "Har du förklarat vad källkritik är?",
+                  "Har du sagt varför det behövs?",
+                  "Har du gett råd?",
+                  "Har du använt sammanbindningsord (eftersom, därför, däremot)?"
+            ],
+            "hints": [
+                  "Källkritik betyder att...",
+                  "Det är viktigt eftersom...",
+                  "Man kan till exempel fråga sig..."
+            ],
+            "useful": [
+                  "källkritik",
+                  "information",
+                  "eftersom",
+                  "falska nyheter",
+                  "till exempel",
+                  "däremot",
+                  "därför"
+            ],
+            "example": "På internet finns enorma mängder information, men allt är tyvärr inte sant. Därför är källkritik en viktig färdighet. Källkritik betyder att man granskar var informationen kommer ifrån och om den går att lita på. Det behövs eftersom falska nyheter sprids snabbt, särskilt på sociala medier, och kan påverka vad vi tror och tycker. När man läser något på nätet kan man till exempel fråga sig vem som ligger bakom, varför det har publicerats och om samma sak rapporteras av flera källor. Det är också klokt att skilja på fakta och åsikter. Genom att stanna upp och tänka efter innan man delar något blir man svårare att lura och bidrar till ett sundare samhälle.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Struktur: inledning, huvuddel och avslutning",
+                  "Sammanbindningsord: eftersom, därför, däremot, dessutom",
+                  "Anpassning till mottagare och syfte",
+                  "Längd: 100–160 ord"
+            ]
+      },
+      {
+            "id": "d-w-14",
+            "unit": 6,
+            "unitTitle": "Delaktighet",
+            "title": "Hur man kan påverka samhället",
+            "icon": "🗳️",
+            "words": "100–160 ord",
+            "prompt": "Situation:\nDu vill skriva om hur man kan vara delaktig i samhället.\n\nInstruktioner:\nFörklara olika sätt att påverka, ge exempel och säg varför det är viktigt att engagera sig.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "påverka"
+                  ],
+                  "min": 100,
+                  "max": 160
+            },
+            "selfCheck": [
+                  "Har du beskrivit olika sätt att påverka?",
+                  "Har du gett exempel?",
+                  "Har du förklarat varför det är viktigt?",
+                  "Har du använt sammanbindningsord (eftersom, därför, däremot)?"
+            ],
+            "hints": [
+                  "Man kan påverka på flera sätt, till exempel...",
+                  "Ett annat sätt är att...",
+                  "Det är viktigt eftersom..."
+            ],
+            "useful": [
+                  "påverka",
+                  "rösta",
+                  "engagera sig",
+                  "till exempel",
+                  "förening",
+                  "eftersom",
+                  "dessutom"
+            ],
+            "example": "Att vara delaktig i samhället handlar om mer än att rösta i val, även om det också är viktigt. Man kan påverka på flera sätt. Till exempel kan man engagera sig i en förening, skriva en insändare eller lämna in ett medborgarförslag till kommunen. Ett annat sätt är att gå på möten där lokala frågor diskuteras, eller att helt enkelt prata med sina grannar och politiker. Att engagera sig kräver tid, men det ger möjlighet att förbättra sitt närområde, till exempel genom bättre kollektivtrafik eller fler mötesplatser. Det är viktigt eftersom besluten blir bättre och mer rättvisa när fler röster hörs. Dessutom stärker det känslan av gemenskap. Ett aktivt samhälle behöver aktiva invånare.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Struktur: inledning, huvuddel och avslutning",
+                  "Sammanbindningsord: eftersom, därför, däremot, dessutom",
+                  "Anpassning till mottagare och syfte",
+                  "Längd: 100–160 ord"
+            ]
+      },
+      {
+            "id": "d-w-15",
+            "unit": 1,
+            "unitTitle": "Arbetsliv",
+            "title": "Reflektera över din framtid",
+            "icon": "🔮",
+            "words": "100–160 ord",
+            "prompt": "Situation:\nDu ska reflektera över din arbets- och livssituation och dina planer.\n\nInstruktioner:\nBeskriv var du är nu, vad du vill uppnå och hur du tänker göra det. Motivera dina val.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "framtiden"
+                  ],
+                  "min": 100,
+                  "max": 160
+            },
+            "selfCheck": [
+                  "Har du beskrivit din nuvarande situation?",
+                  "Har du sagt vad du vill uppnå?",
+                  "Har du förklarat hur och varför?",
+                  "Har texten en tydlig inledning, huvuddel och avslutning?"
+            ],
+            "hints": [
+                  "Just nu...",
+                  "I framtiden vill jag...",
+                  "För att nå dit ska jag...",
+                  "Jag väljer detta eftersom..."
+            ],
+            "useful": [
+                  "just nu",
+                  "i framtiden",
+                  "mål",
+                  "för att nå dit",
+                  "eftersom",
+                  "dessutom",
+                  "steg för steg"
+            ],
+            "example": "Just nu studerar jag svenska på SFI och arbetar deltid i en butik. Det är en bra början, men jag har större mål för framtiden. Jag vill utbilda mig till undersköterska, eftersom jag trivs med att arbeta med människor och vill ha ett tryggt yrke. För att nå dit ska jag först klara svenskan och sedan söka en yrkesutbildning. Jag är beredd att kombinera studier med arbete, även om det kräver god planering och tålamod. På längre sikt hoppas jag kunna få ett fast jobb och en egen bostad. Steg för steg närmar jag mig mina mål. Jag väljer den här vägen eftersom jag vill kunna försörja mig själv och samtidigt bidra till samhället.",
+            "criteria": [
+                  "Innehåll: har du gjort uppgiften?",
+                  "Struktur: inledning, huvuddel och avslutning",
+                  "Sammanbindningsord: eftersom, därför, däremot, dessutom",
+                  "Anpassning till mottagare och syfte",
+                  "Längd: 100–160 ord"
+            ]
+      }
+],
     speak: [
       {
         id: 'd-s-1', title: 'Anställningsintervju', icon: '🤝', context: 'Entrevista de trabajo (avanzado)',
