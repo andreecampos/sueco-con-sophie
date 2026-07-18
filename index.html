@@ -1304,6 +1304,27 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════
+     VIEW: UTTAL — Pronunciación (audio con la voz de Sophie)
+════════════════════════════════════════════════════════════ -->
+<div id="view-uttal" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="bg-swe-blue text-white blue-header">
+    <div class="flag-line"></div>
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center gap-3">
+      <button onclick="goMenu()" class="text-blue-300 hover:text-white transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <div>
+        <h1 class="text-lg font-bold">🔊 Uttal</h1>
+        <p class="text-blue-200 text-xs">Pronunciación con la voz de Sophie</p>
+      </div>
+    </div>
+  </div>
+  <div class="max-w-2xl lg:max-w-3xl mx-auto px-4 py-6" style="padding-bottom:6rem;">
+    <div id="uttal-content"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
      VIEW: WRITE — Modo escribir
 ════════════════════════════════════════════════════════════ -->
 <div id="view-write" class="view">
@@ -13491,6 +13512,102 @@ if (typeof window !== 'undefined') {
 
 </script>
 <script>
+/* ═══════════════════════════════════════════════════════════════════
+   PRONUNCIACIÓN (Uttal) — contenido
+   Cada ítem tiene un `key` que corresponde a un archivo de audio
+   (voz clonada de Sophie) guardado en Supabase Storage:
+     https://<proyecto>.supabase.co/storage/v1/object/public/sophie-audio/<key>.mp3
+   El texto que locuta Sophie es el campo `say`.
+   Para generar/subir los audios, ver scripts/audio/README.md
+   ═══════════════════════════════════════════════════════════════════ */
+const PRON_DATA = {
+  intro: 'Escucha a Sophie y repite en voz alta. La pronunciación mejora con la práctica: escucha, imita y repite.',
+  categories: [
+    {
+      id: 'vokaler', title: 'Las 9 vocales suecas', icon: '🅰️',
+      desc: 'El sueco tiene 9 vocales. Las tres especiales (å, ä, ö) y la «u» y la «y» son las más difíciles.',
+      items: [
+        { key: 'pron_v_a', sv: 'A a', tip: 'Como la «a» española: «katt» (gato).', ex: ['katt', 'glass'], say: 'A. Katt. Glass.' },
+        { key: 'pron_v_e', sv: 'E e', tip: 'Como «e», más cerrada en «se».', ex: ['hem', 'se'], say: 'E. Hem. Se.' },
+        { key: 'pron_v_i', sv: 'I i', tip: 'Como la «i» española.', ex: ['fisk', 'bil'], say: 'I. Fisk. Bil.' },
+        { key: 'pron_v_o', sv: 'O o', tip: '¡Ojo! Suele sonar como «u» española: «bok» ≈ /buk/.', ex: ['bok', 'sol'], say: 'O. Bok. Sol.' },
+        { key: 'pron_v_u', sv: 'U u', tip: 'Sonido entre «u» e «i», con labios redondeados.', ex: ['hus', 'buss'], say: 'U. Hus. Buss.' },
+        { key: 'pron_v_y', sv: 'Y y', tip: 'Di «i» pero con labios de «u» (como la «u» francesa).', ex: ['ny', 'by'], say: 'Y. Ny. By.' },
+        { key: 'pron_v_aa', sv: 'Å å', tip: 'Como una «o» española cerrada.', ex: ['år', 'båt'], say: 'Å. År. Båt.' },
+        { key: 'pron_v_ae', sv: 'Ä ä', tip: 'Como una «e» abierta, casi «a».', ex: ['äta', 'här'], say: 'Ä. Äta. Här.' },
+        { key: 'pron_v_oe', sv: 'Ö ö', tip: 'Como «e» con labios redondeados (como «eu» en francés).', ex: ['öra', 'kött'], say: 'Ö. Öra. Kött.' }
+      ]
+    },
+    {
+      id: 'sj', title: 'El sonido «sj»', icon: '🌬️',
+      desc: 'Un sonido soplado, típico del sueco. Aparece en sj-, skj-, stj- y en sk- antes de e, i, y, ä, ö.',
+      items: [
+        { key: 'pron_sj_sju', sv: 'sju', tip: 'siete', ex: ['sju'], say: 'Sju.' },
+        { key: 'pron_sj_sjo', sv: 'sjö', tip: 'lago', ex: ['sjö'], say: 'Sjö.' },
+        { key: 'pron_sj_sjalv', sv: 'själv', tip: 'mismo/a', ex: ['själv'], say: 'Själv.' },
+        { key: 'pron_sj_stjarna', sv: 'stjärna', tip: 'estrella', ex: ['stjärna'], say: 'Stjärna.' },
+        { key: 'pron_sj_skjorta', sv: 'skjorta', tip: 'camisa', ex: ['skjorta'], say: 'Skjorta.' },
+        { key: 'pron_sj_skon', sv: 'skön', tip: 'agradable', ex: ['skön'], say: 'Skön.' },
+        { key: 'pron_sj_station', sv: 'station', tip: 'estación', ex: ['station'], say: 'Station.' }
+      ]
+    },
+    {
+      id: 'tj', title: 'El sonido «tj» / «k» suave', icon: '👅',
+      desc: 'Como una «ch» suave. Aparece en tj-, kj- y en k- antes de e, i, y, ä, ö.',
+      items: [
+        { key: 'pron_tj_tjugo', sv: 'tjugo', tip: 'veinte', ex: ['tjugo'], say: 'Tjugo.' },
+        { key: 'pron_tj_tjena', sv: 'tjena', tip: 'hola (informal)', ex: ['tjena'], say: 'Tjena.' },
+        { key: 'pron_tj_kott', sv: 'kött', tip: 'carne', ex: ['kött'], say: 'Kött.' },
+        { key: 'pron_tj_kyrka', sv: 'kyrka', tip: 'iglesia', ex: ['kyrka'], say: 'Kyrka.' },
+        { key: 'pron_tj_kopa', sv: 'köpa', tip: 'comprar', ex: ['köpa'], say: 'Köpa.' },
+        { key: 'pron_tj_kar', sv: 'kär', tip: 'enamorado/a', ex: ['kär'], say: 'Kär.' }
+      ]
+    },
+    {
+      id: 'ng', title: 'El sonido «ng»', icon: '🔔',
+      desc: 'Un sonido nasal suave, sin pronunciar la «g» al final.',
+      items: [
+        { key: 'pron_ng_ung', sv: 'ung', tip: 'joven', ex: ['ung'], say: 'Ung.' },
+        { key: 'pron_ng_lang', sv: 'lång', tip: 'largo/alto', ex: ['lång'], say: 'Lång.' },
+        { key: 'pron_ng_sang', sv: 'säng', tip: 'cama', ex: ['säng'], say: 'Säng.' },
+        { key: 'pron_ng_tanke', sv: 'tanke', tip: 'pensamiento', ex: ['tanke'], say: 'Tanke.' },
+        { key: 'pron_ng_pengar', sv: 'pengar', tip: 'dinero', ex: ['pengar'], say: 'Pengar.' }
+      ]
+    },
+    {
+      id: 'svara', title: 'Palabras difíciles', icon: '🧗',
+      desc: 'Las palabras que a todos les cuestan. Escúchalas varias veces.',
+      items: [
+        { key: 'pron_sv_sjukskoterska', sv: 'sjuksköterska', tip: 'enfermera (¡la más famosa!)', ex: ['sjuksköterska'], say: 'Sjuksköterska.' },
+        { key: 'pron_sv_kottbullar', sv: 'köttbullar', tip: 'albóndigas', ex: ['köttbullar'], say: 'Köttbullar.' },
+        { key: 'pron_sv_tradgard', sv: 'trädgård', tip: 'jardín', ex: ['trädgård'], say: 'Trädgård.' },
+        { key: 'pron_sv_sjuttiosju', sv: 'sjuttiosju', tip: 'setenta y siete', ex: ['sjuttiosju'], say: 'Sjuttiosju.' },
+        { key: 'pron_sv_forlat', sv: 'förlåt', tip: 'perdón', ex: ['förlåt'], say: 'Förlåt.' },
+        { key: 'pron_sv_ursakta', sv: 'ursäkta', tip: 'disculpa', ex: ['ursäkta'], say: 'Ursäkta.' },
+        { key: 'pron_sv_choklad', sv: 'choklad', tip: 'chocolate', ex: ['choklad'], say: 'Choklad.' },
+        { key: 'pron_sv_restaurang', sv: 'restaurang', tip: 'restaurante', ex: ['restaurang'], say: 'Restaurang.' }
+      ]
+    },
+    {
+      id: 'fraser', title: 'Saludos y frases útiles', icon: '👋',
+      desc: 'Frases del día a día con buena pronunciación.',
+      items: [
+        { key: 'pron_fr_hej', sv: 'Hej', tip: 'Hola', ex: ['Hej'], say: 'Hej.' },
+        { key: 'pron_fr_hejda', sv: 'Hej då', tip: 'Adiós', ex: ['Hej då'], say: 'Hej då.' },
+        { key: 'pron_fr_tack', sv: 'Tack', tip: 'Gracias', ex: ['Tack'], say: 'Tack.' },
+        { key: 'pron_fr_tacksamycket', sv: 'Tack så mycket', tip: 'Muchas gracias', ex: ['Tack så mycket'], say: 'Tack så mycket.' },
+        { key: 'pron_fr_forlat', sv: 'Förlåt', tip: 'Perdón', ex: ['Förlåt'], say: 'Förlåt.' },
+        { key: 'pron_fr_ursakta', sv: 'Ursäkta', tip: 'Disculpe', ex: ['Ursäkta'], say: 'Ursäkta.' },
+        { key: 'pron_fr_varsagod', sv: 'Varsågod', tip: 'De nada / aquí tienes', ex: ['Varsågod'], say: 'Varsågod.' },
+        { key: 'pron_fr_trevligt', sv: 'Trevligt att träffas', tip: 'Encantado de conocerte', ex: ['Trevligt att träffas'], say: 'Trevligt att träffas.' }
+      ]
+    }
+  ]
+};
+if (typeof window !== 'undefined') window.PRON_DATA = PRON_DATA;
+
+</script>
+<script>
 // ═══════════════════════════════════════════════════════════
 //  SUECO CON SOFI — Lógica de la aplicación
 // ═══════════════════════════════════════════════════════════
@@ -13705,7 +13822,12 @@ function renderLevelMenu() {
       ${cats.map(c => catChip(c.icon, c.label, c.c, `<span class="text-[11px] font-black" style="color:${c.c}">${fmtPct(c.p.pct)}</span>`, false)).join('')}
       ${catChip('🏆', 'Examen', '#F59E0B', `<span class="text-[11px] font-black ${ex.medal ? 'text-green-600' : 'text-gray-400'}">${ex.medal ? '🏅' : (canAttempt ? 'Abierto' : 'Pendiente')}</span>`, true)}
     </div>
-    <div class="space-y-3 mb-4">${cats.map(bigCard).join('')}</div>
+    <div class="space-y-3 mb-4">${cats.map(bigCard).join('')}
+      <button onclick="showUttal()" class="w-full flex items-center gap-4 rounded-2xl p-4 shadow-sm border hover:shadow-md transition-all text-left" style="background:#06b6d414; border-color:#06b6d433">
+        <span class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background:#06b6d42e">🔊</span>
+        <div class="flex-1 min-w-0"><div class="font-black text-gray-800">Uttal — Pronunciación</div><div class="text-xs text-gray-500">Escucha a Sophie y repite en voz alta.</div></div>
+        <span class="text-gray-300 text-lg flex-shrink-0">›</span></button>
+    </div>
     <div class="rounded-2xl p-4 mb-3 border-2" style="border-color:#FDE68A; background:#FFFBEB;">
       <div class="flex items-center gap-4">
         <span class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 bg-amber-100">🏆</span>
@@ -13721,6 +13843,66 @@ function renderLevelMenu() {
       <button onclick="${ex.medal ? examInfo : (canAttempt ? "startExam('" + lv + "')" : examInfo)}" class="w-full mt-3 py-2.5 rounded-xl font-bold text-sm ${(canAttempt && !ex.medal) ? 'bg-amber-500 text-white hover:bg-amber-600' : 'bg-gray-200 text-gray-600'}">${ex.medal ? '🏅 Medalla conseguida' : (canAttempt ? (ex.passes > 0 ? '🏆 Siguiente examen (35 min)' : '🏆 Presentar examen (35 min)') : 'ℹ️ Cómo funciona')}</button>
     </div>
     <div class="flex items-center gap-3 bg-blue-50 rounded-2xl p-4"><span class="text-2xl">⭐</span><div class="text-xs text-gray-600">Practica Läsa, Skriva, Tala y Vokabulär, y aprueba el <strong>Examen Final ${ex.required} veces</strong> para conseguir tu <strong>Medalla SFI ${lv}</strong>.</div></div>`;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   UTTAL — Pronunciación (audios con la voz clonada de Sophie)
+   Los MP3 viven en Supabase Storage (bucket público "sophie-audio").
+   Se generan/suben con los scripts de scripts/audio/.
+   ═══════════════════════════════════════════════════════════════════ */
+const AUDIO_BASE = 'https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/sophie-audio/';
+let _pronAudio = null;
+function playPron(key, btnId) {
+  try { if (_pronAudio) { _pronAudio.pause(); _pronAudio = null; } } catch (e) {}
+  const btn = btnId ? document.getElementById(btnId) : null;
+  if (btn) btn.textContent = '⏳';
+  const a = new Audio(AUDIO_BASE + key + '.mp3');
+  _pronAudio = a;
+  a.onended = () => { if (btn) btn.textContent = '🔊'; };
+  a.onerror = () => {
+    if (btn) btn.textContent = '🔊';
+    showToast('Audio próximamente para «' + key + '»', 'info');
+  };
+  a.play().then(() => { if (btn) btn.textContent = '🔉'; }).catch(() => {
+    if (btn) btn.textContent = '🔊';
+    showToast('Audio próximamente', 'info');
+  });
+}
+
+function showUttal() {
+  if (typeof requireAccess === 'function' && !requireAccess()) return;
+  try { stopSpeech(); } catch (e) {}
+  showView('uttal');
+  renderUttal();
+}
+function renderUttal() {
+  const el = document.getElementById('uttal-content');
+  if (!el || typeof PRON_DATA === 'undefined') return;
+  let n = 0;
+  const cats = (PRON_DATA.categories || []).map(cat => {
+    const items = (cat.items || []).map(it => {
+      const bid = 'pbtn_' + it.key;
+      const exHtml = (it.ex && it.ex.length) ? `<div class="text-xs text-gray-400 mt-0.5">${it.ex.join(' · ')}</div>` : '';
+      return `<div class="flex items-center gap-3 bg-white rounded-2xl p-3.5 shadow-sm border border-gray-100">
+          <button id="${bid}" onclick="playPron('${it.key}','${bid}')" class="w-11 h-11 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center text-xl flex-shrink-0 hover:bg-cyan-100" aria-label="Escuchar">🔊</button>
+          <div class="flex-1 min-w-0">
+            <div class="font-black text-gray-800">${it.sv}</div>
+            <div class="text-xs text-gray-500">${it.tip || ''}</div>
+            ${exHtml}
+          </div>
+        </div>`;
+    }).join('');
+    n += (cat.items || []).length;
+    return `<div class="mb-6">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="text-2xl">${cat.icon || '🔊'}</span>
+          <div class="font-black text-gray-800 text-lg">${cat.title}</div>
+        </div>
+        <div class="text-xs text-gray-500 mb-3">${cat.desc || ''}</div>
+        <div class="space-y-2">${items}</div>
+      </div>`;
+  }).join('');
+  el.innerHTML = `<div class="bg-cyan-50 border border-cyan-200 rounded-2xl p-4 text-sm text-cyan-800 mb-5">${PRON_DATA.intro || ''}</div>${cats}`;
 }
 
 /* ═══════════════════════════════════════════════════════════════════

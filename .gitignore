@@ -6,3 +6,6 @@ node_modules/
 *.csv
 migracion-reporte-*.csv
 subida-precio-reporte-*.csv
+
+# Audios generados (se suben a Supabase, no al repo)
+scripts/audio/out/

@@ -1,0 +1,174 @@
+[
+  {
+    "key": "pron_v_a",
+    "text": "A. Katt. Glass."
+  },
+  {
+    "key": "pron_v_e",
+    "text": "E. Hem. Se."
+  },
+  {
+    "key": "pron_v_i",
+    "text": "I. Fisk. Bil."
+  },
+  {
+    "key": "pron_v_o",
+    "text": "O. Bok. Sol."
+  },
+  {
+    "key": "pron_v_u",
+    "text": "U. Hus. Buss."
+  },
+  {
+    "key": "pron_v_y",
+    "text": "Y. Ny. By."
+  },
+  {
+    "key": "pron_v_aa",
+    "text": "Å. År. Båt."
+  },
+  {
+    "key": "pron_v_ae",
+    "text": "Ä. Äta. Här."
+  },
+  {
+    "key": "pron_v_oe",
+    "text": "Ö. Öra. Kött."
+  },
+  {
+    "key": "pron_sj_sju",
+    "text": "Sju."
+  },
+  {
+    "key": "pron_sj_sjo",
+    "text": "Sjö."
+  },
+  {
+    "key": "pron_sj_sjalv",
+    "text": "Själv."
+  },
+  {
+    "key": "pron_sj_stjarna",
+    "text": "Stjärna."
+  },
+  {
+    "key": "pron_sj_skjorta",
+    "text": "Skjorta."
+  },
+  {
+    "key": "pron_sj_skon",
+    "text": "Skön."
+  },
+  {
+    "key": "pron_sj_station",
+    "text": "Station."
+  },
+  {
+    "key": "pron_tj_tjugo",
+    "text": "Tjugo."
+  },
+  {
+    "key": "pron_tj_tjena",
+    "text": "Tjena."
+  },
+  {
+    "key": "pron_tj_kott",
+    "text": "Kött."
+  },
+  {
+    "key": "pron_tj_kyrka",
+    "text": "Kyrka."
+  },
+  {
+    "key": "pron_tj_kopa",
+    "text": "Köpa."
+  },
+  {
+    "key": "pron_tj_kar",
+    "text": "Kär."
+  },
+  {
+    "key": "pron_ng_ung",
+    "text": "Ung."
+  },
+  {
+    "key": "pron_ng_lang",
+    "text": "Lång."
+  },
+  {
+    "key": "pron_ng_sang",
+    "text": "Säng."
+  },
+  {
+    "key": "pron_ng_tanke",
+    "text": "Tanke."
+  },
+  {
+    "key": "pron_ng_pengar",
+    "text": "Pengar."
+  },
+  {
+    "key": "pron_sv_sjukskoterska",
+    "text": "Sjuksköterska."
+  },
+  {
+    "key": "pron_sv_kottbullar",
+    "text": "Köttbullar."
+  },
+  {
+    "key": "pron_sv_tradgard",
+    "text": "Trädgård."
+  },
+  {
+    "key": "pron_sv_sjuttiosju",
+    "text": "Sjuttiosju."
+  },
+  {
+    "key": "pron_sv_forlat",
+    "text": "Förlåt."
+  },
+  {
+    "key": "pron_sv_ursakta",
+    "text": "Ursäkta."
+  },
+  {
+    "key": "pron_sv_choklad",
+    "text": "Choklad."
+  },
+  {
+    "key": "pron_sv_restaurang",
+    "text": "Restaurang."
+  },
+  {
+    "key": "pron_fr_hej",
+    "text": "Hej."
+  },
+  {
+    "key": "pron_fr_hejda",
+    "text": "Hej då."
+  },
+  {
+    "key": "pron_fr_tack",
+    "text": "Tack."
+  },
+  {
+    "key": "pron_fr_tacksamycket",
+    "text": "Tack så mycket."
+  },
+  {
+    "key": "pron_fr_forlat",
+    "text": "Förlåt."
+  },
+  {
+    "key": "pron_fr_ursakta",
+    "text": "Ursäkta."
+  },
+  {
+    "key": "pron_fr_varsagod",
+    "text": "Varsågod."
+  },
+  {
+    "key": "pron_fr_trevligt",
+    "text": "Trevligt att träffas."
+  }
+]

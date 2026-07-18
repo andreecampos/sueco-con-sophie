@@ -212,7 +212,12 @@ function renderLevelMenu() {
       ${cats.map(c => catChip(c.icon, c.label, c.c, `<span class="text-[11px] font-black" style="color:${c.c}">${fmtPct(c.p.pct)}</span>`, false)).join('')}
       ${catChip('🏆', 'Examen', '#F59E0B', `<span class="text-[11px] font-black ${ex.medal ? 'text-green-600' : 'text-gray-400'}">${ex.medal ? '🏅' : (canAttempt ? 'Abierto' : 'Pendiente')}</span>`, true)}
     </div>
-    <div class="space-y-3 mb-4">${cats.map(bigCard).join('')}</div>
+    <div class="space-y-3 mb-4">${cats.map(bigCard).join('')}
+      <button onclick="showUttal()" class="w-full flex items-center gap-4 rounded-2xl p-4 shadow-sm border hover:shadow-md transition-all text-left" style="background:#06b6d414; border-color:#06b6d433">
+        <span class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background:#06b6d42e">🔊</span>
+        <div class="flex-1 min-w-0"><div class="font-black text-gray-800">Uttal — Pronunciación</div><div class="text-xs text-gray-500">Escucha a Sophie y repite en voz alta.</div></div>
+        <span class="text-gray-300 text-lg flex-shrink-0">›</span></button>
+    </div>
     <div class="rounded-2xl p-4 mb-3 border-2" style="border-color:#FDE68A; background:#FFFBEB;">
       <div class="flex items-center gap-4">
         <span class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 bg-amber-100">🏆</span>
@@ -228,6 +233,66 @@ function renderLevelMenu() {
       <button onclick="${ex.medal ? examInfo : (canAttempt ? "startExam('" + lv + "')" : examInfo)}" class="w-full mt-3 py-2.5 rounded-xl font-bold text-sm ${(canAttempt && !ex.medal) ? 'bg-amber-500 text-white hover:bg-amber-600' : 'bg-gray-200 text-gray-600'}">${ex.medal ? '🏅 Medalla conseguida' : (canAttempt ? (ex.passes > 0 ? '🏆 Siguiente examen (35 min)' : '🏆 Presentar examen (35 min)') : 'ℹ️ Cómo funciona')}</button>
     </div>
     <div class="flex items-center gap-3 bg-blue-50 rounded-2xl p-4"><span class="text-2xl">⭐</span><div class="text-xs text-gray-600">Practica Läsa, Skriva, Tala y Vokabulär, y aprueba el <strong>Examen Final ${ex.required} veces</strong> para conseguir tu <strong>Medalla SFI ${lv}</strong>.</div></div>`;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   UTTAL — Pronunciación (audios con la voz clonada de Sophie)
+   Los MP3 viven en Supabase Storage (bucket público "sophie-audio").
+   Se generan/suben con los scripts de scripts/audio/.
+   ═══════════════════════════════════════════════════════════════════ */
+const AUDIO_BASE = 'https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/sophie-audio/';
+let _pronAudio = null;
+function playPron(key, btnId) {
+  try { if (_pronAudio) { _pronAudio.pause(); _pronAudio = null; } } catch (e) {}
+  const btn = btnId ? document.getElementById(btnId) : null;
+  if (btn) btn.textContent = '⏳';
+  const a = new Audio(AUDIO_BASE + key + '.mp3');
+  _pronAudio = a;
+  a.onended = () => { if (btn) btn.textContent = '🔊'; };
+  a.onerror = () => {
+    if (btn) btn.textContent = '🔊';
+    showToast('Audio próximamente para «' + key + '»', 'info');
+  };
+  a.play().then(() => { if (btn) btn.textContent = '🔉'; }).catch(() => {
+    if (btn) btn.textContent = '🔊';
+    showToast('Audio próximamente', 'info');
+  });
+}
+
+function showUttal() {
+  if (typeof requireAccess === 'function' && !requireAccess()) return;
+  try { stopSpeech(); } catch (e) {}
+  showView('uttal');
+  renderUttal();
+}
+function renderUttal() {
+  const el = document.getElementById('uttal-content');
+  if (!el || typeof PRON_DATA === 'undefined') return;
+  let n = 0;
+  const cats = (PRON_DATA.categories || []).map(cat => {
+    const items = (cat.items || []).map(it => {
+      const bid = 'pbtn_' + it.key;
+      const exHtml = (it.ex && it.ex.length) ? `<div class="text-xs text-gray-400 mt-0.5">${it.ex.join(' · ')}</div>` : '';
+      return `<div class="flex items-center gap-3 bg-white rounded-2xl p-3.5 shadow-sm border border-gray-100">
+          <button id="${bid}" onclick="playPron('${it.key}','${bid}')" class="w-11 h-11 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center text-xl flex-shrink-0 hover:bg-cyan-100" aria-label="Escuchar">🔊</button>
+          <div class="flex-1 min-w-0">
+            <div class="font-black text-gray-800">${it.sv}</div>
+            <div class="text-xs text-gray-500">${it.tip || ''}</div>
+            ${exHtml}
+          </div>
+        </div>`;
+    }).join('');
+    n += (cat.items || []).length;
+    return `<div class="mb-6">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="text-2xl">${cat.icon || '🔊'}</span>
+          <div class="font-black text-gray-800 text-lg">${cat.title}</div>
+        </div>
+        <div class="text-xs text-gray-500 mb-3">${cat.desc || ''}</div>
+        <div class="space-y-2">${items}</div>
+      </div>`;
+  }).join('');
+  el.innerHTML = `<div class="bg-cyan-50 border border-cyan-200 rounded-2xl p-4 text-sm text-cyan-800 mb-5">${PRON_DATA.intro || ''}</div>${cats}`;
 }
 
 /* ═══════════════════════════════════════════════════════════════════

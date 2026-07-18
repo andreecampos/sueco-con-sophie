@@ -1304,6 +1304,27 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════
+     VIEW: UTTAL — Pronunciación (audio con la voz de Sophie)
+════════════════════════════════════════════════════════════ -->
+<div id="view-uttal" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <div class="bg-swe-blue text-white blue-header">
+    <div class="flag-line"></div>
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center gap-3">
+      <button onclick="goMenu()" class="text-blue-300 hover:text-white transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <div>
+        <h1 class="text-lg font-bold">🔊 Uttal</h1>
+        <p class="text-blue-200 text-xs">Pronunciación con la voz de Sophie</p>
+      </div>
+    </div>
+  </div>
+  <div class="max-w-2xl lg:max-w-3xl mx-auto px-4 py-6" style="padding-bottom:6rem;">
+    <div id="uttal-content"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
      VIEW: WRITE — Modo escribir
 ════════════════════════════════════════════════════════════ -->
 <div id="view-write" class="view">
@@ -2131,6 +2152,7 @@
 <script src="medborgarData.js"></script>
 <script src="progress.js"></script>
 <script src="achievements.js"></script>
+<script src="pronData.js"></script>
 <script src="app.js"></script>
 
 <!-- ═══════════════════════════════════════════════════════════
