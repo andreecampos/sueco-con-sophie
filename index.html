@@ -15001,6 +15001,10 @@ function renderInicio() {
 }
 
 /* ── NOTIFICACIONES (campana junto a Mitt konto) ─────────────── */
+// VERSIÓN DE CONTENIDO: súbela (+1) cada vez que agregues lecciones/ejercicios.
+// Al subirla, los alumnos reciben el aviso "Nuevo contenido disponible" (una vez)
+// y su porcentaje se recalcula solo (los denominadores son dinámicos).
+const CONTENT_VERSION = { v: 1, note: 'Hemos añadido nuevo contenido a la plataforma.' };
 function _getNotifs() { try { return JSON.parse(localStorage.getItem('sc_notifs') || '[]'); } catch (e) { return []; } }
 function _saveNotifs(a) { try { localStorage.setItem('sc_notifs', JSON.stringify(a)); } catch (e) {} }
 function _pushNotif(n) { const a = _getNotifs(); if (a.some(x => x.id === n.id)) return; a.unshift(n); _saveNotifs(a); }
@@ -15013,6 +15017,25 @@ function syncNotifs() {
       _pushNotif({ id: 'niveltest_' + last.ts, title: '📊 Prueba de nivel disponible', body: 'Ya pasó una semana. Puedes volver a hacer la prueba de nivel para medir tu avance.', ts: until, read: false });
     }
   }
+  // Aviso de contenido nuevo (cuando sube CONTENT_VERSION.v)
+  try {
+    if (typeof CONTENT_VERSION !== 'undefined') {
+      let seen = 0;
+      try { seen = parseInt(localStorage.getItem('sc_content_ver') || '0', 10) || 0; } catch (e) {}
+      if (seen === 0) {
+        // Primera vez que vemos la versión: registrar sin molestar.
+        try { localStorage.setItem('sc_content_ver', String(CONTENT_VERSION.v)); } catch (e) {}
+      } else if (CONTENT_VERSION.v > seen) {
+        _pushNotif({
+          id: 'content_v' + CONTENT_VERSION.v,
+          title: '✨ Nuevo contenido disponible',
+          body: CONTENT_VERSION.note + ' Tu porcentaje de avance puede ajustarse, porque el material nuevo también cuenta para tu progreso. ¡Tus medallas conseguidas no se pierden!',
+          ts: Date.now(), read: false
+        });
+        try { localStorage.setItem('sc_content_ver', String(CONTENT_VERSION.v)); } catch (e) {}
+      }
+    }
+  } catch (e) {}
 }
 function notifUnread() { return _getNotifs().filter(n => !n.read).length; }
 function renderNotifBadge() {
