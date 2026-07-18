@@ -1779,7 +1779,7 @@ const DEFAULT_DATA = {
             "id": "a-w-1",
             "title": "Skriv ett kort meddelande till Carlos",
             "icon": "✉️",
-            "words": "15–30 ord",
+            "words": "30–60 ord",
             "prompt": "Situación:\nCarlos bjuder dig på middag på fredag.\n\nInstrucciones:\nSkriv ett kort meddelande. Tacka ja och fråga vilken tid middagen börjar.",
             "checklist": [
                   "Usa un saludo: Hej Carlos!",
@@ -1796,8 +1796,8 @@ const DEFAULT_DATA = {
                   "Despedirse"
             ],
             "req": {
-                  "min": 15,
-                  "max": 30,
+                  "min": 30,
+                  "max": 60,
                   "greeting": true,
                   "closing": true,
                   "question": true,
@@ -1832,7 +1832,7 @@ const DEFAULT_DATA = {
             "id": "a-w-2",
             "title": "Beskriv dig själv",
             "icon": "🙋",
-            "words": "40–60 ord",
+            "words": "30–60 ord",
             "prompt": "Escribe una presentación sobre ti mismo en sueco.\n\nIncluye:\n• Tu nombre y de dónde vienes\n• Dónde vives en Suecia\n• Tu trabajo o estudios\n• Un hobby o algo que te gusta",
             "checklist": [
                   "Jag heter... och jag kommer från...",
@@ -1848,7 +1848,7 @@ const DEFAULT_DATA = {
                   "Coherencia: las ideas se entienden"
             ],
             "req": {
-                  "min": 40,
+                  "min": 30,
                   "max": 60,
                   "greeting": false,
                   "closing": false,
@@ -1883,7 +1883,7 @@ const DEFAULT_DATA = {
             "id": "a-w-3",
             "title": "Skriv ett meddelande till jobbet",
             "icon": "💼",
-            "words": "20–35 ord",
+            "words": "30–60 ord",
             "prompt": "Estás enfermo y no puedes ir al trabajo hoy. Escribe un mensaje a tu jefe (chef).\n\nEn tu mensaje debes:\n• Decir que estás enfermo\n• Decir que no puedes ir hoy\n• Pedir disculpas",
             "checklist": [
                   "Hej [nombre del jefe]!",
@@ -1899,8 +1899,8 @@ const DEFAULT_DATA = {
                   "Vocabulario: sjuk, tyvärr, förlåt"
             ],
             "req": {
-                  "min": 20,
-                  "max": 35,
+                  "min": 30,
+                  "max": 60,
                   "greeting": true,
                   "closing": true,
                   "question": false,
@@ -1934,7 +1934,7 @@ const DEFAULT_DATA = {
             "unitTitle": "Presentaciones",
             "title": "Presentera dig själv",
             "icon": "🙋",
-            "words": "40–60 ord",
+            "words": "30–60 ord",
             "prompt": "Escribe una presentación sobre ti en sueco.\nIncluye:\n• Tu nombre y de dónde vienes\n• Dónde vives ahora\n• Qué estudias o en qué trabajas\n• Algo que te gusta hacer",
             "checklist": [
                   "Jag heter... och jag kommer från...",
@@ -1950,7 +1950,7 @@ const DEFAULT_DATA = {
                   "Claridad: se entiende el mensaje"
             ],
             "req": {
-                  "min": 40,
+                  "min": 30,
                   "max": 60,
                   "greeting": false,
                   "closing": false,
@@ -1987,7 +1987,7 @@ const DEFAULT_DATA = {
             "unitTitle": "Presentaciones",
             "title": "Fyll i formuläret",
             "icon": "📝",
-            "words": "Frases cortas",
+            "words": "30–60 ord",
             "prompt": "Completa un formulario con tus datos personales. Escribe una línea por campo.",
             "checklist": [
                   "Namn: (tu nombre)",
@@ -2004,8 +2004,8 @@ const DEFAULT_DATA = {
                   "Ortografía de datos básicos"
             ],
             "req": {
-                  "min": 5,
-                  "max": 40,
+                  "min": 30,
+                  "max": 60,
                   "greeting": false,
                   "closing": false,
                   "question": false,
@@ -2041,7 +2041,7 @@ const DEFAULT_DATA = {
             "unitTitle": "Familia",
             "title": "Skriv om din familj",
             "icon": "👪",
-            "words": "40–60 ord",
+            "words": "30–60 ord",
             "prompt": "Escribe sobre tu familia.\nIncluye:\n• Cuántas personas son\n• Cómo se llaman\n• Qué hacen",
             "checklist": [
                   "Jag har en...",
@@ -2057,7 +2057,7 @@ const DEFAULT_DATA = {
                   "Claridad: se entiende el mensaje"
             ],
             "req": {
-                  "min": 40,
+                  "min": 30,
                   "max": 60,
                   "greeting": false,
                   "closing": false,
@@ -2093,7 +2093,7 @@ const DEFAULT_DATA = {
             "unitTitle": "Vivienda",
             "title": "Beskriv ditt hem",
             "icon": "🏠",
-            "words": "40–60 ord",
+            "words": "30–60 ord",
             "prompt": "Describe dónde vives.\nIncluye:\n• Qué tipo de vivienda\n• Cuántas habitaciones\n• Qué hay cerca",
             "checklist": [
                   "Jag bor i en lägenhet / ett hus.",
@@ -2109,7 +2109,7 @@ const DEFAULT_DATA = {
                   "Claridad: se entiende el mensaje"
             ],
             "req": {
-                  "min": 40,
+                  "min": 30,
                   "max": 60,
                   "greeting": false,
                   "closing": false,
@@ -2145,7 +2145,7 @@ const DEFAULT_DATA = {
             "unitTitle": "Rutinas",
             "title": "Skriv om din dag",
             "icon": "⏰",
-            "words": "40–60 ord",
+            "words": "30–60 ord",
             "prompt": "Describe tu día normal.\nIncluye:\n• A qué hora te levantas\n• Qué haces por la mañana\n• Qué haces por la tarde/noche",
             "checklist": [
                   "Jag vaknar klockan...",
@@ -2161,7 +2161,7 @@ const DEFAULT_DATA = {
                   "Claridad: se entiende el mensaje"
             ],
             "req": {
-                  "min": 40,
+                  "min": 30,
                   "max": 60,
                   "greeting": false,
                   "closing": false,
@@ -2195,7 +2195,7 @@ const DEFAULT_DATA = {
             "unitTitle": "Escuela",
             "title": "Meddelande till läraren",
             "icon": "✉️",
-            "words": "20–35 ord",
+            "words": "30–60 ord",
             "prompt": "Escribe un mensaje corto a tu profesor/a. No puedes ir a clase hoy.\nDebes:\n• Saludar\n• Decir que no puedes ir\n• Dar un motivo",
             "checklist": [
                   "Hej [nombre]!",
@@ -2211,8 +2211,8 @@ const DEFAULT_DATA = {
                   "Vocabulario: sjuk, tyvärr, imorgon"
             ],
             "req": {
-                  "min": 20,
-                  "max": 35,
+                  "min": 30,
+                  "max": 60,
                   "greeting": true,
                   "closing": true,
                   "question": false,
@@ -2246,7 +2246,7 @@ const DEFAULT_DATA = {
             "unitTitle": "Compras",
             "title": "Skriv en inköpslista",
             "icon": "🛒",
-            "words": "Palabras/frases",
+            "words": "30–60 ord",
             "prompt": "Vas al supermercado. Escribe tu lista de compras en sueco (al menos 6 cosas).",
             "checklist": [
                   "Escribe una cosa por línea",
@@ -2261,8 +2261,8 @@ const DEFAULT_DATA = {
                   "Formato de lista"
             ],
             "req": {
-                  "min": 6,
-                  "max": 40,
+                  "min": 30,
+                  "max": 60,
                   "greeting": false,
                   "closing": false,
                   "question": false,
@@ -2294,7 +2294,7 @@ const DEFAULT_DATA = {
             "unitTitle": "Comida",
             "title": "Min favoritmat",
             "icon": "🍽️",
-            "words": "30–50 ord",
+            "words": "30–60 ord",
             "prompt": "Escribe sobre tu comida favorita.\nIncluye:\n• Qué te gusta comer\n• Cuándo lo comes\n• Con quién",
             "checklist": [
                   "Min favoritmat är...",
@@ -2311,7 +2311,7 @@ const DEFAULT_DATA = {
             ],
             "req": {
                   "min": 30,
-                  "max": 50,
+                  "max": 60,
                   "greeting": false,
                   "closing": false,
                   "question": false,
@@ -2344,7 +2344,7 @@ const DEFAULT_DATA = {
             "unitTitle": "Transporte",
             "title": "Hur tar du dig till skolan?",
             "icon": "🚌",
-            "words": "30–50 ord",
+            "words": "30–60 ord",
             "prompt": "Explica cómo vas a la escuela.\nIncluye:\n• Qué transporte usas\n• Cuánto tarda\n• A qué hora sales",
             "checklist": [
                   "Jag tar bussen / tunnelbanan / cykeln.",
@@ -2361,7 +2361,7 @@ const DEFAULT_DATA = {
             ],
             "req": {
                   "min": 30,
-                  "max": 50,
+                  "max": 60,
                   "greeting": false,
                   "closing": false,
                   "question": false,
@@ -2394,7 +2394,7 @@ const DEFAULT_DATA = {
             "unitTitle": "Mensajes",
             "title": "Skriv ett SMS till en vän",
             "icon": "💬",
-            "words": "20–35 ord",
+            "words": "30–60 ord",
             "prompt": "Escribe un SMS a un amigo/a.\nDebes:\n• Saludar\n• Invitarle a hacer algo\n• Decir cuándo y dónde",
             "checklist": [
                   "Hej [nombre]!",
@@ -2410,8 +2410,8 @@ const DEFAULT_DATA = {
                   "Vocabulario cotidiano"
             ],
             "req": {
-                  "min": 20,
-                  "max": 35,
+                  "min": 30,
+                  "max": 60,
                   "greeting": true,
                   "closing": true,
                   "question": true,
@@ -2446,7 +2446,7 @@ const DEFAULT_DATA = {
             "unitTitle": "Citas",
             "title": "Boka en tid",
             "icon": "🏥",
-            "words": "20–35 ord",
+            "words": "30–60 ord",
             "prompt": "Escribe un mensaje a la vårdcentral para pedir una cita.\nDebes:\n• Dar tu nombre\n• Explicar el problema\n• Pedir una hora",
             "checklist": [
                   "Hej! Jag heter...",
@@ -2462,8 +2462,8 @@ const DEFAULT_DATA = {
                   "Claridad del mensaje"
             ],
             "req": {
-                  "min": 20,
-                  "max": 35,
+                  "min": 30,
+                  "max": 60,
                   "greeting": true,
                   "closing": true,
                   "question": true,
@@ -2498,7 +2498,7 @@ const DEFAULT_DATA = {
             "unitTitle": "Invitaciones",
             "title": "Skriv en inbjudan",
             "icon": "🎉",
-            "words": "30–50 ord",
+            "words": "30–60 ord",
             "prompt": "Escribe una invitación a una fiesta.\nIncluye:\n• Qué celebras\n• El día y la hora\n• Dónde es",
             "checklist": [
                   "Hej! Jag fyller år / har fest.",
@@ -2515,7 +2515,7 @@ const DEFAULT_DATA = {
             ],
             "req": {
                   "min": 30,
-                  "max": 50,
+                  "max": 60,
                   "greeting": true,
                   "closing": true,
                   "question": false,
@@ -2700,95 +2700,1936 @@ const DEFAULT_DATA = {
 
     read: [
       {
-        id: 'b-r-1',
-        title: 'Integration på arbetsmarknaden',
-        tag: 'Sociedad',
-        icon: '📊',
-        text: `Allt fler nyanlända i Sverige hittar jobb inom ett år efter ankomst, visar en ny rapport från Migrationsverket. Under förra året fick 62 procent av de nyanlända som deltog i etableringsprogrammet ett arbete inom tolv månader. Det är en ökning med åtta procentenheter jämfört med föregående år.\n\nEn av framgångsfaktorerna är det förstärkta samarbetet mellan Arbetsförmedlingen och kommunerna. Kommunerna ansvarar för den initiala mottagningen, medan Arbetsförmedlingen fokuserar på jobbsökning.\n\nKritiker menar dock att kvaliteten på SFI-undervisningen varierar kraftigt mellan kommunerna. En studie från Skolverket visar att elever i storstäderna avklarar SFI snabbare än elever i mindre kommuner.\n\nRegeringen aviserade ytterligare investeringar i yrkessvenska och arbetsplatsförlagd utbildning.`,
-        questions: [
-          { text: '¿Qué porcentaje de recién llegados encontró trabajo en un año?', options: ['52%', '70%', '62%', '80%'], correct: 2, explanation: '62 procent av de nyanlända = el 62% de los recién llegados.' },
-          { text: '¿Cuál es uno de los factores de éxito?', options: ['Más ayudas sociales', 'Colaboración entre Arbetsförmedlingen y municipios', 'Más plazas en SFI', 'Mejor vivienda'], correct: 1, explanation: 'Förstärkt samarbete mellan Arbetsförmedlingen och kommunerna = mayor colaboración entre la Arbetsförmedlingen y los municipios.' },
-          { text: '¿Qué crítica se menciona?', options: ['Pocos profesores', 'La calidad de SFI varía mucho por municipio', 'Programas demasiado cortos', 'Los inmigrantes no quieren trabajar'], correct: 1, explanation: 'Kvaliteten på SFI-undervisningen varierar kraftigt = la calidad de SFI varía mucho.' },
-          { text: '¿Qué anuncia el gobierno?', options: ['Reducción de plazas SFI', 'Más inversión en sueco laboral y formación en empresa', 'Cierre de oficinas de empleo', 'Nuevas leyes de inmigración'], correct: 1, explanation: 'Investeringar i yrkessvenska och arbetsplatsförlagd utbildning = inversiones en sueco laboral y formación en empresa.' },
-          { text: '¿Comparado con el año anterior, cómo ha cambiado el porcentaje?', options: ['Ha bajado 8 puntos', 'Ha subido 8 puntos', 'Se mantiene igual', 'Ha subido 20 puntos'], correct: 1, explanation: 'Ökning med åtta procentenheter = aumento de ocho puntos porcentuales.' },
-        ]
+            "id": "b-r-u1-1",
+            "unit": 1,
+            "unitTitle": "Presentación personal",
+            "title": "Amina berättar",
+            "kind": "Texto personal",
+            "icon": "👋",
+            "text": "Jag heter Amina och är trettiofem år. Jag kom till Sverige för tre år sedan från Somalia. Först bodde jag i Malmö, men nu bor jag i Göteborg med min familj. Jag studerar svenska och jobbar deltid på ett äldreboende. På fritiden gillar jag att träna och träffa vänner.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Cuándo llegó a Suecia?",
+                        "options": [
+                              "För tre år sedan",
+                              "För fem år sedan",
+                              "Förra veckan"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Jag kom till Sverige för tre år sedan»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Amina bor i Malmö nu.",
+                        "answer": false,
+                        "explanation": "«nu bor jag i Göteborg»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Dónde trabaja? på ett ___",
+                        "answer": "äldreboende",
+                        "accept": [
+                              "aldreboende"
+                        ],
+                        "explanation": "«jobbar deltid på ett äldreboende»."
+                  }
+            ]
       },
       {
-        id: 'b-r-2',
-        title: 'Brev från hyresvärden',
-        tag: 'Vivienda formal',
-        icon: '✉️',
-        text: `Göteborg, den 15 maj 2025\n\nTill: Ricardo Méndez, Linnégatan 47\nFrån: Stadshem Fastighets AB\n\nKäre hyresgäst,\n\nVi skriver för att informera dig om att din lägenhet kommer att genomgå en obligatorisk besiktning den 3 juni klockan 10.00–12.00. Under besiktningen kontrolleras el, vatten, ventilation och brandskydd.\n\nVi ber dig vara hemma under angiven tid eller kontakta oss senast den 28 maj om du behöver boka om. Besiktningen är lagstadgad och kan inte skjutas upp mer än en gång.\n\nOm du har husdjur ber vi dig se till att de är säkrade under besöket.\n\nVid frågor, ring oss på 031-556 77 88 eller mejla info@stadshem.se.\n\nMed vänliga hälsningar,\nAnna Bergström, Förvaltare`,
-        questions: [
-          { text: '¿Cuándo es la inspección?', options: ['El 15 de mayo', 'El 3 de junio', 'El 28 de mayo', 'El 1 de julio'], correct: 1, explanation: 'Den 3 juni klockan 10-12 = el 3 de junio de 10 a 12.' },
-          { text: '¿Qué se inspecciona?', options: ['Solo el sistema eléctrico', 'Electricidad, agua, ventilación y protección contra incendios', 'Solo las ventanas', 'El mobiliario'], correct: 1, explanation: 'El, vatten, ventilation och brandskydd = electricidad, agua, ventilación y protección contra incendios.' },
-          { text: '¿Cuándo hay que avisar si no se puede estar en casa?', options: ['Antes del 1 de junio', 'Antes del 28 de mayo', 'Antes del 10 de mayo', 'No hay plazo'], correct: 1, explanation: 'Kontakta oss senast den 28 maj = contactad antes del 28 de mayo.' },
-          { text: '¿Cuántas veces se puede posponer la inspección?', options: ['Indefinidamente', 'Dos veces', 'Una vez', 'No se puede posponer'], correct: 2, explanation: 'Kan inte skjutas upp mer än en gång = no puede posponerse más de una vez.' },
-          { text: '¿Qué dice la carta sobre las mascotas?', options: ['No se permiten mascotas en el edificio', 'Deben estar aseguradas durante la visita', 'Hay que llevarlas al veterinario', 'No se menciona'], correct: 1, explanation: 'Se till att de är säkrade = asegúrate de que estén aseguradas durante la visita.' },
-        ]
+            "id": "b-r-u1-2",
+            "unit": 1,
+            "unitTitle": "Presentación personal",
+            "title": "Marco",
+            "kind": "Texto personal",
+            "icon": "🧑",
+            "text": "Hej! Jag heter Marco och kommer från Italien. Jag har bott i Sverige i fem år. Jag är gift och har en son som heter Leo. Jag arbetar som kock på en restaurang i centrum. Jag tycker om mitt jobb, men det är ibland stressigt.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Cuánto lleva en Suecia?",
+                        "options": [
+                              "Ett år",
+                              "Fem år",
+                              "Tio år"
+                        ],
+                        "correct": 1,
+                        "explanation": "«Jag har bott i Sverige i fem år»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿En qué trabaja? som ___",
+                        "answer": "kock",
+                        "accept": [
+                              "kock"
+                        ],
+                        "explanation": "«Jag arbetar som kock»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Marco är inte gift.",
+                        "answer": false,
+                        "explanation": "«Jag är gift och har en son»."
+                  }
+            ]
       },
       {
-        id: 'b-r-3',
-        title: 'Ansök om a-kassa',
-        tag: 'Trámites',
-        icon: '📋',
-        text: `A-kassan är en ekonomisk ersättning som du kan få om du förlorar ditt jobb. För att ha rätt till a-kassa behöver du uppfylla ett arbetsvillkor: du måste ha arbetat minst 80 timmar per månad i minst sex månader under de senaste tolv månaderna.\n\nDu måste också vara medlem i en a-kassa. Det finns flera a-kassor i Sverige och de är kopplade till olika branscher. Handels a-kassa är för de som jobbar inom handel och Unionen är för tjänstemän.\n\nErsättningen är 80 procent av din tidigare lön, men max 1 200 kronor per dag. Ersättningen betalas ut i 300 dagar.\n\nFör att ansöka: registrera dig som arbetssökande hos Arbetsförmedlingen och ansök sedan hos din a-kassa. Du kan göra allt digitalt med BankID.`,
-        questions: [
-          { text: '¿Cuántas horas mínimo hay que trabajar al mes?', options: ['40 horas', '60 horas', '80 horas', '100 horas'], correct: 2, explanation: 'Minst 80 timmar per månad = mínimo 80 horas al mes.' },
-          { text: '¿Cuánto tiempo mínimo hay que haber sido miembro de la a-kassa?', options: ['3 meses', '6 meses', '1 año', '2 años'], correct: 1, explanation: 'Minst sex månader = mínimo seis meses.' },
-          { text: '¿Qué porcentaje del salario anterior se recibe?', options: ['60%', '70%', '80%', '100%'], correct: 2, explanation: '80 procent av din tidigare lön = 80% de tu salario anterior.' },
-          { text: '¿Cuántos días se recibe la prestación?', options: ['180 días', '200 días', '250 días', '300 días'], correct: 3, explanation: 'Ersättningen betalas ut i 300 dagar = la prestación se paga durante 300 días.' },
-          { text: '¿Cómo se puede solicitar la a-kassa?', options: ['Solo en persona', 'Por carta', 'Digitalmente con BankID', 'Por teléfono'], correct: 2, explanation: 'Du kan göra allt digitalt med BankID = puedes hacerlo todo digitalmente con BankID.' },
-        ]
+            "id": "b-r-u2-1",
+            "unit": 2,
+            "unitTitle": "Familia y relaciones",
+            "title": "Min syster",
+            "kind": "Texto personal",
+            "icon": "👭",
+            "text": "Min syster Nadia är två år äldre än jag. Vi växte upp tillsammans och har alltid varit nära. När vi var små bråkade vi ofta, men idag är hon min bästa vän. Hon bor i Stockholm och vi ringer varandra varje vecka. Ibland åker jag och hälsar på henne.",
+            "questions": [
+                  {
+                        "type": "tf",
+                        "text": "Nadia är yngre än berättaren.",
+                        "answer": false,
+                        "explanation": "«två år äldre än jag»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Con qué frecuencia se llaman?",
+                        "options": [
+                              "Varje dag",
+                              "Varje vecka",
+                              "Varje månad"
+                        ],
+                        "correct": 1,
+                        "explanation": "«vi ringer varandra varje vecka»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Dónde vive Nadia?",
+                        "answer": "Stockholm",
+                        "accept": [
+                              "stockholm"
+                        ],
+                        "explanation": "«Hon bor i Stockholm»."
+                  }
+            ]
       },
       {
-        id: 'b-r-4',
-        title: 'Klimatförändringar i Sverige',
-        tag: 'Medioambiente',
-        icon: '🌿',
-        text: `Sverige är ett av de länder som tar klimatfrågan på störst allvar. Riksdagen har beslutat att Sverige ska vara klimatneutralt år 2045. Det innebär att utsläppen av växthusgaser ska vara noll och att landet aktivt bidrar till att minska koldioxid i atmosfären.\n\nEn viktig del av klimatarbetet är övergången till förnybar energi. Sverige producerar redan mer än hälften av sin el från vattenkraft och vindkraft. Kärnkraft bidrar med ytterligare en tredjedel.\n\nI vardagslivet uppmanas svenska befolkningen att resa kollektivt, äta mindre kött och sortera sitt avfall noggrant. Källsortering är obligatoriskt i Sverige och kommunerna ansvarar för att samla in och återvinna material.\n\nTrots framstegen kvarstår utmaningar inom transportsektorn, som fortfarande är beroende av fossila bränslen.`,
-        questions: [
-          { text: '¿Para qué año quiere Suecia ser climaticamente neutral?', options: ['2030', '2040', '2045', '2050'], correct: 2, explanation: 'Sverige ska vara klimatneutralt år 2045 = Suecia quiere ser climáticamente neutra en 2045.' },
-          { text: '¿Qué tipo de energía produce Suecia principalmente?', options: ['Solar y eólica', 'Hidráulica y eólica', 'Nuclear y carbón', 'Gas y solar'], correct: 1, explanation: 'Vattenkraft och vindkraft = energía hidráulica y eólica.' },
-          { text: '¿Qué se pide a la población sueca en la vida cotidiana?', options: ['Comprar coches eléctricos', 'Usar transporte público, comer menos carne y reciclar', 'Instalar paneles solares', 'No volar al extranjero'], correct: 1, explanation: 'Resa kollektivt, äta mindre kött och sortera sitt avfall = viajar en transporte público, comer menos carne y separar la basura.' },
-          { text: '¿Qué sector sigue siendo un desafío?', options: ['La industria pesada', 'El sector agrícola', 'El transporte', 'La construcción'], correct: 2, explanation: 'Transportsektorn kvarstår som utmaning = el sector del transporte sigue siendo un desafío.' },
-          { text: '¿Qué porcentaje aproximado de la electricidad produce la energía nuclear?', options: ['10%', '20%', 'Un tercio (33%)', 'Más de la mitad'], correct: 2, explanation: 'Kärnkraft bidrar med ytterligare en tredjedel = la energía nuclear contribuye con otro tercio.' },
-        ]
+            "id": "b-r-u2-2",
+            "unit": 2,
+            "unitTitle": "Familia y relaciones",
+            "title": "En vanlig helg",
+            "kind": "Texto personal",
+            "icon": "🏡",
+            "text": "I helgen var hela familjen hemma hos mina föräldrar. Vi lagade mat tillsammans och åt en stor middag. Barnen lekte i trädgården medan vi vuxna pratade och drack kaffe. Det var en lugn och trevlig dag. På kvällen åkte vi hem, trötta men glada.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Dónde se reunieron?",
+                        "options": [
+                              "Hemma hos föräldrarna",
+                              "På en restaurang",
+                              "I parken"
+                        ],
+                        "correct": 0,
+                        "explanation": "«hemma hos mina föräldrar»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Barnen lekte i trädgården.",
+                        "answer": true,
+                        "explanation": "«Barnen lekte i trädgården»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Qué bebieron los adultos?",
+                        "answer": "kaffe",
+                        "accept": [
+                              "kaffe"
+                        ],
+                        "explanation": "«drack kaffe»."
+                  }
+            ]
       },
-    ],
+      {
+            "id": "b-r-2",
+            "title": "Brev från hyresvärden",
+            "tag": "Vivienda formal",
+            "icon": "✉️",
+            "text": "Göteborg, den 15 maj 2025\n\nTill: Ricardo Méndez, Linnégatan 47\nFrån: Stadshem Fastighets AB\n\nKäre hyresgäst,\n\nVi skriver för att informera dig om att din lägenhet kommer att genomgå en obligatorisk besiktning den 3 juni klockan 10.00–12.00. Under besiktningen kontrolleras el, vatten, ventilation och brandskydd.\n\nVi ber dig vara hemma under angiven tid eller kontakta oss senast den 28 maj om du behöver boka om. Besiktningen är lagstadgad och kan inte skjutas upp mer än en gång.\n\nOm du har husdjur ber vi dig se till att de är säkrade under besöket.\n\nVid frågor, ring oss på 031-556 77 88 eller mejla info@stadshem.se.\n\nMed vänliga hälsningar,\nAnna Bergström, Förvaltare",
+            "questions": [
+                  {
+                        "text": "¿Cuándo es la inspección?",
+                        "options": [
+                              "El 15 de mayo",
+                              "El 3 de junio",
+                              "El 28 de mayo",
+                              "El 1 de julio"
+                        ],
+                        "correct": 1,
+                        "explanation": "Den 3 juni klockan 10-12 = el 3 de junio de 10 a 12."
+                  },
+                  {
+                        "text": "¿Qué se inspecciona?",
+                        "options": [
+                              "Solo el sistema eléctrico",
+                              "Electricidad, agua, ventilación y protección contra incendios",
+                              "Solo las ventanas",
+                              "El mobiliario"
+                        ],
+                        "correct": 1,
+                        "explanation": "El, vatten, ventilation och brandskydd = electricidad, agua, ventilación y protección contra incendios."
+                  },
+                  {
+                        "text": "¿Cuándo hay que avisar si no se puede estar en casa?",
+                        "options": [
+                              "Antes del 1 de junio",
+                              "Antes del 28 de mayo",
+                              "Antes del 10 de mayo",
+                              "No hay plazo"
+                        ],
+                        "correct": 1,
+                        "explanation": "Kontakta oss senast den 28 maj = contactad antes del 28 de mayo."
+                  },
+                  {
+                        "text": "¿Cuántas veces se puede posponer la inspección?",
+                        "options": [
+                              "Indefinidamente",
+                              "Dos veces",
+                              "Una vez",
+                              "No se puede posponer"
+                        ],
+                        "correct": 2,
+                        "explanation": "Kan inte skjutas upp mer än en gång = no puede posponerse más de una vez."
+                  },
+                  {
+                        "text": "¿Qué dice la carta sobre las mascotas?",
+                        "options": [
+                              "No se permiten mascotas en el edificio",
+                              "Deben estar aseguradas durante la visita",
+                              "Hay que llevarlas al veterinario",
+                              "No se menciona"
+                        ],
+                        "correct": 1,
+                        "explanation": "Se till att de är säkrade = asegúrate de que estén aseguradas durante la visita."
+                  }
+            ],
+            "unit": 3,
+            "unitTitle": "Vivienda y barrio",
+            "kind": "Carta"
+      },
+      {
+            "id": "b-r-u3-1",
+            "unit": 3,
+            "unitTitle": "Vivienda y barrio",
+            "title": "Vårt nya område",
+            "kind": "Texto personal",
+            "icon": "🏘️",
+            "text": "För ett halvår sedan flyttade vi till ett nytt område. Lägenheten är större än den förra och har en fin balkong. I närheten finns en matbutik, en förskola och en park. Bussen till centrum tar femton minuter. Vi trivs mycket bra här och grannarna är trevliga.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Cuándo se mudaron?",
+                        "options": [
+                              "För ett halvår sedan",
+                              "Förra veckan",
+                              "För tre år sedan"
+                        ],
+                        "correct": 0,
+                        "explanation": "«För ett halvår sedan flyttade vi»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Den nya lägenheten är mindre.",
+                        "answer": false,
+                        "explanation": "«större än den förra»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Cuánto tarda el bus al centro? (número) ___ minuter",
+                        "answer": "femton",
+                        "accept": [
+                              "15"
+                        ],
+                        "explanation": "«tar femton minuter»."
+                  }
+            ]
+      },
+      {
+            "id": "b-r-u4-1",
+            "unit": 4,
+            "unitTitle": "Rutinas y tiempo libre",
+            "title": "Min fritid",
+            "kind": "Texto personal",
+            "icon": "⚽",
+            "text": "På vardagarna är jag ganska upptagen med jobb och svenska. Men på helgerna har jag mer tid för mig själv. Jag brukar promenera i skogen, laga god mat och ibland gå på bio. Förra lördagen spelade jag fotboll med några vänner. Det var kul, även om vi förlorade.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Qué hizo el sábado pasado?",
+                        "options": [
+                              "Spelade fotboll",
+                              "Gick på bio",
+                              "Lagade mat"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Förra lördagen spelade jag fotboll»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Laget vann matchen.",
+                        "answer": false,
+                        "explanation": "«även om vi förlorade»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Dónde suele pasear? i ___",
+                        "answer": "skogen",
+                        "accept": [
+                              "skog",
+                              "skogen"
+                        ],
+                        "explanation": "«promenera i skogen»."
+                  }
+            ]
+      },
+      {
+            "id": "b-r-u4-2",
+            "unit": 4,
+            "unitTitle": "Rutinas y tiempo libre",
+            "title": "En bra vana",
+            "kind": "Texto personal",
+            "icon": "🌅",
+            "text": "Sedan ett år tillbaka går jag upp tidigt varje morgon. Jag dricker ett glas vatten och tar en kort promenad innan frukost. Det ger mig energi för hela dagen. I början var det svårt, men nu är det en vana. Jag mår mycket bättre än förut.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Qué hace antes del desayuno?",
+                        "options": [
+                              "Tar en promenad",
+                              "Tittar på tv",
+                              "Sover"
+                        ],
+                        "correct": 0,
+                        "explanation": "«tar en kort promenad innan frukost»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "I början var det lätt.",
+                        "answer": false,
+                        "explanation": "«I början var det svårt»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Qué bebe al despertar? ett glas ___",
+                        "answer": "vatten",
+                        "accept": [
+                              "vatten"
+                        ],
+                        "explanation": "«ett glas vatten»."
+                  }
+            ]
+      },
+      {
+            "id": "b-r-u5-1",
+            "unit": 5,
+            "unitTitle": "Escuela y estudios",
+            "title": "Mitt mål",
+            "kind": "Texto personal",
+            "icon": "🎯",
+            "text": "Jag studerar svenska på SFI sedan ett år. I början förstod jag nästan ingenting, men nu kan jag prata om vardagliga saker. Mitt mål är att klara nivå D och sedan studera till undersköterska. Läraren säger att jag gör framsteg. Jag pluggar varje kväll efter jobbet.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Qué quiere estudiar después?",
+                        "options": [
+                              "Till undersköterska",
+                              "Till lärare",
+                              "Till kock"
+                        ],
+                        "correct": 0,
+                        "explanation": "«studera till undersköterska»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Berättaren pluggar på morgonen.",
+                        "answer": false,
+                        "explanation": "«pluggar varje kväll efter jobbet»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Qué nivel quiere aprobar? nivå ___",
+                        "answer": "D",
+                        "accept": [
+                              "d"
+                        ],
+                        "explanation": "«klara nivå D»."
+                  }
+            ]
+      },
+      {
+            "id": "b-r-u5-2",
+            "unit": 5,
+            "unitTitle": "Escuela y estudios",
+            "title": "Meddelande från skolan",
+            "kind": "Mensaje",
+            "icon": "🏫",
+            "text": "Hej alla elever! Nästa vecka är det studiedag på fredag, så då är skolan stängd. På måndag har vi ett prov i läsförståelse. Glöm inte att ta med er penna och legitimation. Om ni är sjuka, ring och anmäl frånvaro före klockan åtta. Hälsningar, Rektorn.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Por qué cierra el viernes?",
+                        "options": [
+                              "Studiedag",
+                              "Semester",
+                              "Reparación"
+                        ],
+                        "correct": 0,
+                        "explanation": "«studiedag på fredag»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "El lunes hay examen.",
+                        "answer": true,
+                        "explanation": "«På måndag har vi ett prov»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Antes de qué hora hay que avisar la ausencia? klockan ___",
+                        "answer": "åtta",
+                        "accept": [
+                              "8",
+                              "atta"
+                        ],
+                        "explanation": "«före klockan åtta»."
+                  }
+            ]
+      },
+      {
+            "id": "b-r-1",
+            "title": "Integration på arbetsmarknaden",
+            "tag": "Sociedad",
+            "icon": "📊",
+            "text": "Allt fler nyanlända i Sverige hittar jobb inom ett år efter ankomst, visar en ny rapport från Migrationsverket. Under förra året fick 62 procent av de nyanlända som deltog i etableringsprogrammet ett arbete inom tolv månader. Det är en ökning med åtta procentenheter jämfört med föregående år.\n\nEn av framgångsfaktorerna är det förstärkta samarbetet mellan Arbetsförmedlingen och kommunerna. Kommunerna ansvarar för den initiala mottagningen, medan Arbetsförmedlingen fokuserar på jobbsökning.\n\nKritiker menar dock att kvaliteten på SFI-undervisningen varierar kraftigt mellan kommunerna. En studie från Skolverket visar att elever i storstäderna avklarar SFI snabbare än elever i mindre kommuner.\n\nRegeringen aviserade ytterligare investeringar i yrkessvenska och arbetsplatsförlagd utbildning.",
+            "questions": [
+                  {
+                        "text": "¿Qué porcentaje de recién llegados encontró trabajo en un año?",
+                        "options": [
+                              "52%",
+                              "70%",
+                              "62%",
+                              "80%"
+                        ],
+                        "correct": 2,
+                        "explanation": "62 procent av de nyanlända = el 62% de los recién llegados."
+                  },
+                  {
+                        "text": "¿Cuál es uno de los factores de éxito?",
+                        "options": [
+                              "Más ayudas sociales",
+                              "Colaboración entre Arbetsförmedlingen y municipios",
+                              "Más plazas en SFI",
+                              "Mejor vivienda"
+                        ],
+                        "correct": 1,
+                        "explanation": "Förstärkt samarbete mellan Arbetsförmedlingen och kommunerna = mayor colaboración entre la Arbetsförmedlingen y los municipios."
+                  },
+                  {
+                        "text": "¿Qué crítica se menciona?",
+                        "options": [
+                              "Pocos profesores",
+                              "La calidad de SFI varía mucho por municipio",
+                              "Programas demasiado cortos",
+                              "Los inmigrantes no quieren trabajar"
+                        ],
+                        "correct": 1,
+                        "explanation": "Kvaliteten på SFI-undervisningen varierar kraftigt = la calidad de SFI varía mucho."
+                  },
+                  {
+                        "text": "¿Qué anuncia el gobierno?",
+                        "options": [
+                              "Reducción de plazas SFI",
+                              "Más inversión en sueco laboral y formación en empresa",
+                              "Cierre de oficinas de empleo",
+                              "Nuevas leyes de inmigración"
+                        ],
+                        "correct": 1,
+                        "explanation": "Investeringar i yrkessvenska och arbetsplatsförlagd utbildning = inversiones en sueco laboral y formación en empresa."
+                  },
+                  {
+                        "text": "¿Comparado con el año anterior, cómo ha cambiado el porcentaje?",
+                        "options": [
+                              "Ha bajado 8 puntos",
+                              "Ha subido 8 puntos",
+                              "Se mantiene igual",
+                              "Ha subido 20 puntos"
+                        ],
+                        "correct": 1,
+                        "explanation": "Ökning med åtta procentenheter = aumento de ocho puntos porcentuales."
+                  }
+            ],
+            "unit": 6,
+            "unitTitle": "Trabajo",
+            "kind": "Texto informativo"
+      },
+      {
+            "id": "b-r-u6-1",
+            "unit": 6,
+            "unitTitle": "Trabajo",
+            "title": "Min första arbetsdag",
+            "kind": "Texto personal",
+            "icon": "💼",
+            "text": "Igår var min första dag på det nya jobbet. Jag var lite nervös på morgonen, men mina kollegor var vänliga och hjälpsamma. Chefen visade mig runt och förklarade mina uppgifter. På lunchen åt jag tillsammans med teamet. När dagen var slut kände jag mig nöjd och glad.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Cuándo fue su primer día?",
+                        "options": [
+                              "Igår",
+                              "Idag",
+                              "Förra månaden"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Igår var min första dag»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Kollegorna var otrevliga.",
+                        "answer": false,
+                        "explanation": "«mina kollegor var vänliga och hjälpsamma»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Con quién almorzó? med ___",
+                        "answer": "teamet",
+                        "accept": [
+                              "laget",
+                              "teamet"
+                        ],
+                        "explanation": "«åt jag tillsammans med teamet»."
+                  }
+            ]
+      },
+      {
+            "id": "b-r-3",
+            "title": "Ansök om a-kassa",
+            "tag": "Trámites",
+            "icon": "📋",
+            "text": "A-kassan är en ekonomisk ersättning som du kan få om du förlorar ditt jobb. För att ha rätt till a-kassa behöver du uppfylla ett arbetsvillkor: du måste ha arbetat minst 80 timmar per månad i minst sex månader under de senaste tolv månaderna.\n\nDu måste också vara medlem i en a-kassa. Det finns flera a-kassor i Sverige och de är kopplade till olika branscher. Handels a-kassa är för de som jobbar inom handel och Unionen är för tjänstemän.\n\nErsättningen är 80 procent av din tidigare lön, men max 1 200 kronor per dag. Ersättningen betalas ut i 300 dagar.\n\nFör att ansöka: registrera dig som arbetssökande hos Arbetsförmedlingen och ansök sedan hos din a-kassa. Du kan göra allt digitalt med BankID.",
+            "questions": [
+                  {
+                        "text": "¿Cuántas horas mínimo hay que trabajar al mes?",
+                        "options": [
+                              "40 horas",
+                              "60 horas",
+                              "80 horas",
+                              "100 horas"
+                        ],
+                        "correct": 2,
+                        "explanation": "Minst 80 timmar per månad = mínimo 80 horas al mes."
+                  },
+                  {
+                        "text": "¿Cuánto tiempo mínimo hay que haber sido miembro de la a-kassa?",
+                        "options": [
+                              "3 meses",
+                              "6 meses",
+                              "1 año",
+                              "2 años"
+                        ],
+                        "correct": 1,
+                        "explanation": "Minst sex månader = mínimo seis meses."
+                  },
+                  {
+                        "text": "¿Qué porcentaje del salario anterior se recibe?",
+                        "options": [
+                              "60%",
+                              "70%",
+                              "80%",
+                              "100%"
+                        ],
+                        "correct": 2,
+                        "explanation": "80 procent av din tidigare lön = 80% de tu salario anterior."
+                  },
+                  {
+                        "text": "¿Cuántos días se recibe la prestación?",
+                        "options": [
+                              "180 días",
+                              "200 días",
+                              "250 días",
+                              "300 días"
+                        ],
+                        "correct": 3,
+                        "explanation": "Ersättningen betalas ut i 300 dagar = la prestación se paga durante 300 días."
+                  },
+                  {
+                        "text": "¿Cómo se puede solicitar la a-kassa?",
+                        "options": [
+                              "Solo en persona",
+                              "Por carta",
+                              "Digitalmente con BankID",
+                              "Por teléfono"
+                        ],
+                        "correct": 2,
+                        "explanation": "Du kan göra allt digitalt med BankID = puedes hacerlo todo digitalmente con BankID."
+                  }
+            ],
+            "unit": 7,
+            "unitTitle": "Buscar trabajo",
+            "kind": "Texto informativo"
+      },
+      {
+            "id": "b-r-u7-1",
+            "unit": 7,
+            "unitTitle": "Buscar trabajo",
+            "title": "En jobbannons",
+            "kind": "Anuncio",
+            "icon": "📌",
+            "text": "Vi söker en butiksbiträde till vår matbutik i Solna. Du ska vara serviceinriktad och kunna arbeta i team. Erfarenhet är bra men inte ett krav. Vi erbjuder deltid, cirka tjugo timmar i veckan. Skicka din ansökan och ditt CV till jobb@butiken.se senast den 30 mars.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Qué puesto buscan?",
+                        "options": [
+                              "Butiksbiträde",
+                              "Kock",
+                              "Lärare"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Vi söker en butiksbiträde»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Se necesita experiencia obligatoria.",
+                        "answer": false,
+                        "explanation": "«Erfarenhet är bra men inte ett krav»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Cuántas horas por semana? cirka ___ timmar",
+                        "answer": "tjugo",
+                        "accept": [
+                              "20"
+                        ],
+                        "explanation": "«cirka tjugo timmar i veckan»."
+                  }
+            ]
+      },
+      {
+            "id": "b-r-u8-1",
+            "unit": 8,
+            "unitTitle": "Compras y devoluciones",
+            "title": "Ett köp som blev fel",
+            "kind": "Texto personal",
+            "icon": "🛍️",
+            "text": "Förra veckan köpte jag ett par skor på internet. När paketet kom var skorna för små. Jag kontaktade kundtjänst och de sa att jag kunde byta dem gratis. Jag skickade tillbaka skorna och några dagar senare fick jag ett större par. Nu passar de perfekt.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Cuál era el problema?",
+                        "options": [
+                              "Skorna var för små",
+                              "Fel färg",
+                              "Trasiga"
+                        ],
+                        "correct": 0,
+                        "explanation": "«skorna för små»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Han fick betala för el cambio.",
+                        "answer": false,
+                        "explanation": "«byta dem gratis»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Qué compró? ett par ___",
+                        "answer": "skor",
+                        "accept": [
+                              "skorna"
+                        ],
+                        "explanation": "«köpte jag ett par skor»."
+                  }
+            ]
+      },
+      {
+            "id": "b-r-u8-2",
+            "unit": 8,
+            "unitTitle": "Compras y devoluciones",
+            "title": "REA-annons",
+            "kind": "Anuncio",
+            "icon": "🏷️",
+            "text": "Stor vinterrea hos oss! Alla jackor och vinterskor säljs nu till halva priset. Öppettider: måndag–fredag 10–19, lördag 10–17. Vi har även en avdelning för barnkläder med extra bra priser. Välkommen in till butiken på Drottninggatan 12. Erbjudandet gäller så länge lagret räcker.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Qué descuento hay en abrigos?",
+                        "options": [
+                              "Halva priset",
+                              "25%",
+                              "Ingen rabatt"
+                        ],
+                        "correct": 0,
+                        "explanation": "«till halva priset»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Los sábados abren hasta las 19.",
+                        "answer": false,
+                        "explanation": "«lördag 10–17»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿En qué calle está la tienda?",
+                        "answer": "Drottninggatan",
+                        "accept": [
+                              "drottninggatan"
+                        ],
+                        "explanation": "«på Drottninggatan 12»."
+                  }
+            ]
+      },
+      {
+            "id": "b-r-u9-1",
+            "unit": 9,
+            "unitTitle": "Alimentación y recetas",
+            "title": "Köttbullar",
+            "kind": "Instrucción",
+            "icon": "🍽️",
+            "text": "Så här gör du köttbullar. Blanda köttfärs med lök, ägg, ströbröd och lite mjölk. Krydda med salt och peppar. Rulla små bollar och stek dem i smör tills de är gyllenbruna. Servera med kokt potatis, brunsås och lingonsylt. Det är en klassisk svensk husmanskost.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Con qué se fríen las albóndigas?",
+                        "options": [
+                              "I smör",
+                              "I vatten",
+                              "I olja"
+                        ],
+                        "correct": 0,
+                        "explanation": "«stek dem i smör»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Se sirven con arroz.",
+                        "answer": false,
+                        "explanation": "«Servera med kokt potatis, brunsås och lingonsylt»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Qué mermelada se sirve? ___sylt",
+                        "answer": "lingon",
+                        "accept": [
+                              "lingonsylt"
+                        ],
+                        "explanation": "«lingonsylt»."
+                  }
+            ]
+      },
+      {
+            "id": "b-r-u9-2",
+            "unit": 9,
+            "unitTitle": "Alimentación y recetas",
+            "title": "Middag hos en vän",
+            "kind": "Texto personal",
+            "icon": "🍲",
+            "text": "I lördags var jag bjuden på middag hos min vän Sara. Hon lagade en indisk gryta med kyckling och ris. Det var väldigt gott, men lite starkt för mig. Vi pratade länge och lyssnade på musik. Innan jag gick hem fick jag receptet, så nu kan jag laga det själv.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Qué cocinó Sara?",
+                        "options": [
+                              "En indisk gryta",
+                              "Pizza",
+                              "Köttbullar"
+                        ],
+                        "correct": 0,
+                        "explanation": "«en indisk gryta med kyckling»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "La comida estaba sosa.",
+                        "answer": false,
+                        "explanation": "«lite starkt för mig» = un poco picante."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Qué recibió antes de irse? ___et",
+                        "answer": "recept",
+                        "accept": [
+                              "receptet"
+                        ],
+                        "explanation": "«fick jag receptet»."
+                  }
+            ]
+      },
+      {
+            "id": "b-r-u10-1",
+            "unit": 10,
+            "unitTitle": "Salud y vårdcentral",
+            "title": "På vårdcentralen",
+            "kind": "Texto personal",
+            "icon": "🏥",
+            "text": "I måndags mådde jag inte bra. Jag hade ont i halsen och feber. Jag ringde vårdcentralen och fick en tid samma eftermiddag. Läkaren undersökte mig och sa att det var en vanlig förkylning. Hon rekommenderade vila och mycket vatten. Efter några dagar kände jag mig bättre.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Qué síntomas tenía?",
+                        "options": [
+                              "Ont i halsen och feber",
+                              "Ont i benet",
+                              "Huvudvärk"
+                        ],
+                        "correct": 0,
+                        "explanation": "«ont i halsen och feber»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Era una enfermedad grave.",
+                        "answer": false,
+                        "explanation": "«en vanlig förkylning» = un resfriado común."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Qué recomendó la médica? vila och mycket ___",
+                        "answer": "vatten",
+                        "accept": [
+                              "vatten"
+                        ],
+                        "explanation": "«vila och mycket vatten»."
+                  }
+            ]
+      },
+      {
+            "id": "b-r-u10-2",
+            "unit": 10,
+            "unitTitle": "Salud y vårdcentral",
+            "title": "Kallelse",
+            "kind": "Aviso",
+            "icon": "📋",
+            "text": "Hej! Du har en bokad tid för en hälsokontroll på vårdcentralen tisdag den 14 maj klockan 09:30. Kom fem minuter innan och ta med legitimation. Om du inte kan komma, avboka minst ett dygn i förväg, annars får du betala en avgift. Välkommen!",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Para qué es la cita?",
+                        "options": [
+                              "En hälsokontroll",
+                              "En operation",
+                              "Ett prov"
+                        ],
+                        "correct": 0,
+                        "explanation": "«en hälsokontroll»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Puedes cancelar el mismo día sin coste.",
+                        "answer": false,
+                        "explanation": "«avboka minst ett dygn i förväg, annars ... en avgift»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Qué hay que llevar?",
+                        "answer": "legitimation",
+                        "accept": [
+                              "leg",
+                              "legitimation"
+                        ],
+                        "explanation": "«ta med legitimation»."
+                  }
+            ]
+      },
+      {
+            "id": "b-r-u11-1",
+            "unit": 11,
+            "unitTitle": "Transporte y viajes",
+            "title": "En resa till Kiruna",
+            "kind": "Texto personal",
+            "icon": "🚆",
+            "text": "I vintras reste jag och min familj till Kiruna i norra Sverige. Vi tog nattåget från Stockholm och resan tog nästan sjutton timmar. Det var kallt, nästan minus tjugo grader, men väldigt vackert med snö överallt. Vi såg norrsken på himlen. Det var en resa jag aldrig glömmer.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Cómo viajaron?",
+                        "options": [
+                              "Med nattåg",
+                              "Med flyg",
+                              "Med bil"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Vi tog nattåget»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Hacía calor en Kiruna.",
+                        "answer": false,
+                        "explanation": "«nästan minus tjugo grader»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Qué vieron en el cielo?",
+                        "answer": "norrsken",
+                        "accept": [
+                              "norrskenet"
+                        ],
+                        "explanation": "«Vi såg norrsken»."
+                  }
+            ]
+      },
+      {
+            "id": "b-r-u11-2",
+            "unit": 11,
+            "unitTitle": "Transporte y viajes",
+            "title": "Trafikinfo",
+            "kind": "Aviso",
+            "icon": "🚧",
+            "text": "Information till resenärer: På grund av arbete på spåret är tågtrafiken mellan Uppsala och Stockholm inställd i helgen. Ersättningsbussar går från stationen var trettionde minut. Räkna med längre restid än vanligt. Vi ber om ursäkt för problemen. Tack för ditt tålamod.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Por qué se cancelan los trenes?",
+                        "options": [
+                              "Arbete på spåret",
+                              "Dåligt väder",
+                              "Strejk"
+                        ],
+                        "correct": 0,
+                        "explanation": "«arbete på spåret»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Hay autobuses de reemplazo.",
+                        "answer": true,
+                        "explanation": "«Ersättningsbussar går»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Cada cuántos minutos salen los buses? var ___ minut",
+                        "answer": "trettionde",
+                        "accept": [
+                              "30",
+                              "trettio"
+                        ],
+                        "explanation": "«var trettionde minut»."
+                  }
+            ]
+      },
+      {
+            "id": "b-r-u12-1",
+            "unit": 12,
+            "unitTitle": "Citas e invitaciones",
+            "title": "Bokningsbekräftelse",
+            "kind": "Aviso",
+            "icon": "📅",
+            "text": "Tack för din bokning! Du har bokat ett bord för fyra personer på restaurang Smaka lördag den 8 juni klockan 19:00. Om ni blir fler eller färre, hör av er senast dagen innan. Vi ser fram emot ert besök. Vänliga hälsningar, restaurang Smaka.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Para cuántas personas es la reserva?",
+                        "options": [
+                              "Två",
+                              "Fyra",
+                              "Sex"
+                        ],
+                        "correct": 1,
+                        "explanation": "«ett bord för fyra personer»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "La reserva es para el almuerzo.",
+                        "answer": false,
+                        "explanation": "«klockan 19:00» = por la noche."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Cómo se llama el restaurante?",
+                        "answer": "Smaka",
+                        "accept": [
+                              "smaka"
+                        ],
+                        "explanation": "«restaurang Smaka»."
+                  }
+            ]
+      },
+      {
+            "id": "b-r-u12-2",
+            "unit": 12,
+            "unitTitle": "Citas e invitaciones",
+            "title": "En inbjudan",
+            "kind": "Invitación",
+            "icon": "🎉",
+            "text": "Hej! Jag vill bjuda in dig till min examensfest lördagen den 15 juni klockan 17. Festen är hemma hos mig på Parkvägen 8. Det blir mat, musik och dans. Säg gärna till senast den 10 juni om du kan komma. Jag hoppas verkligen att vi ses! Kram, Lisa.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Qué se celebra?",
+                        "options": [
+                              "En examensfest",
+                              "Ett bröllop",
+                              "En födelsedag"
+                        ],
+                        "correct": 0,
+                        "explanation": "«min examensfest»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Hay que confirmar antes del 10 de junio.",
+                        "answer": true,
+                        "explanation": "«Säg gärna till senast den 10 juni»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Quién invita? (nombre)",
+                        "answer": "Lisa",
+                        "accept": [
+                              "lisa"
+                        ],
+                        "explanation": "«Kram, Lisa»."
+                  }
+            ]
+      },
+      {
+            "id": "b-r-u13-1",
+            "unit": 13,
+            "unitTitle": "Mensajes y correos",
+            "title": "Ett mejl till en vän",
+            "kind": "Mensaje",
+            "icon": "📧",
+            "text": "Hej Omar! Tack för sist, det var jättekul att träffas förra veckan. Jag undrar om du vill komma på middag hos oss nästa fredag? Vi tänkte grilla om vädret är fint. Ta gärna med din familj. Hör av dig när du kan. Ha det bra! Hälsningar, David.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Qué propone David?",
+                        "options": [
+                              "Middag på fredag",
+                              "En resa",
+                              "En film"
+                        ],
+                        "correct": 0,
+                        "explanation": "«komma på middag hos oss nästa fredag»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "David quiere ir solo con Omar.",
+                        "answer": false,
+                        "explanation": "«Ta gärna med din familj»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Qué piensan hacer si hace buen tiempo?",
+                        "answer": "grilla",
+                        "accept": [
+                              "grilla"
+                        ],
+                        "explanation": "«Vi tänkte grilla»."
+                  }
+            ]
+      },
+      {
+            "id": "b-r-u13-2",
+            "unit": 13,
+            "unitTitle": "Mensajes y correos",
+            "title": "Meddelande till hyresvärden",
+            "kind": "Mensaje",
+            "icon": "🔧",
+            "text": "Hej! Jag heter Ana och bor på Skolgatan 5, lägenhet 12. Jag vill anmäla ett problem: kranen i köket droppar hela tiden och diskmaskinen fungerar inte. Kan ni skicka en reparatör den här veckan? Jag är hemma på eftermiddagarna. Tack på förhand. Vänliga hälsningar, Ana.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Qué problema reporta?",
+                        "options": [
+                              "Kranen droppar och diskmaskinen är trasig",
+                              "Ingen värme",
+                              "Trasig dörr"
+                        ],
+                        "correct": 0,
+                        "explanation": "«kranen droppar ... diskmaskinen fungerar inte»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Ana está en casa por las mañanas.",
+                        "answer": false,
+                        "explanation": "«hemma på eftermiddagarna»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿En qué calle vive?",
+                        "answer": "Skolgatan",
+                        "accept": [
+                              "skolgatan"
+                        ],
+                        "explanation": "«på Skolgatan 5»."
+                  }
+            ]
+      },
+      {
+            "id": "b-r-4",
+            "title": "Klimatförändringar i Sverige",
+            "tag": "Medioambiente",
+            "icon": "🌿",
+            "text": "Sverige är ett av de länder som tar klimatfrågan på störst allvar. Riksdagen har beslutat att Sverige ska vara klimatneutralt år 2045. Det innebär att utsläppen av växthusgaser ska vara noll och att landet aktivt bidrar till att minska koldioxid i atmosfären.\n\nEn viktig del av klimatarbetet är övergången till förnybar energi. Sverige producerar redan mer än hälften av sin el från vattenkraft och vindkraft. Kärnkraft bidrar med ytterligare en tredjedel.\n\nI vardagslivet uppmanas svenska befolkningen att resa kollektivt, äta mindre kött och sortera sitt avfall noggrant. Källsortering är obligatoriskt i Sverige och kommunerna ansvarar för att samla in och återvinna material.\n\nTrots framstegen kvarstår utmaningar inom transportsektorn, som fortfarande är beroende av fossila bränslen.",
+            "questions": [
+                  {
+                        "text": "¿Para qué año quiere Suecia ser climaticamente neutral?",
+                        "options": [
+                              "2030",
+                              "2040",
+                              "2045",
+                              "2050"
+                        ],
+                        "correct": 2,
+                        "explanation": "Sverige ska vara klimatneutralt år 2045 = Suecia quiere ser climáticamente neutra en 2045."
+                  },
+                  {
+                        "text": "¿Qué tipo de energía produce Suecia principalmente?",
+                        "options": [
+                              "Solar y eólica",
+                              "Hidráulica y eólica",
+                              "Nuclear y carbón",
+                              "Gas y solar"
+                        ],
+                        "correct": 1,
+                        "explanation": "Vattenkraft och vindkraft = energía hidráulica y eólica."
+                  },
+                  {
+                        "text": "¿Qué se pide a la población sueca en la vida cotidiana?",
+                        "options": [
+                              "Comprar coches eléctricos",
+                              "Usar transporte público, comer menos carne y reciclar",
+                              "Instalar paneles solares",
+                              "No volar al extranjero"
+                        ],
+                        "correct": 1,
+                        "explanation": "Resa kollektivt, äta mindre kött och sortera sitt avfall = viajar en transporte público, comer menos carne y separar la basura."
+                  },
+                  {
+                        "text": "¿Qué sector sigue siendo un desafío?",
+                        "options": [
+                              "La industria pesada",
+                              "El sector agrícola",
+                              "El transporte",
+                              "La construcción"
+                        ],
+                        "correct": 2,
+                        "explanation": "Transportsektorn kvarstår som utmaning = el sector del transporte sigue siendo un desafío."
+                  },
+                  {
+                        "text": "¿Qué porcentaje aproximado de la electricidad produce la energía nuclear?",
+                        "options": [
+                              "10%",
+                              "20%",
+                              "Un tercio (33%)",
+                              "Más de la mitad"
+                        ],
+                        "correct": 2,
+                        "explanation": "Kärnkraft bidrar med ytterligare en tredjedel = la energía nuclear contribuye con otro tercio."
+                  }
+            ],
+            "unit": 14,
+            "unitTitle": "Noticias y sociedad",
+            "kind": "Artículo"
+      },
+      {
+            "id": "b-r-u14-1",
+            "unit": 14,
+            "unitTitle": "Noticias y sociedad",
+            "title": "Nyhet: ny cykelväg",
+            "kind": "Artículo",
+            "icon": "📰",
+            "text": "Från och med nästa månad öppnar en ny cykelväg mellan centrum och universitetet. Kommunen hoppas att fler ska välja cykeln istället för bilen. Det är bra både för hälsan och för miljön. Cykelvägen är fem kilometer lång och har belysning. Många invånare är positiva till förändringen.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Qué se inaugura?",
+                        "options": [
+                              "En ny cykelväg",
+                              "En ny skola",
+                              "Ett sjukhus"
+                        ],
+                        "correct": 0,
+                        "explanation": "«en ny cykelväg»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "La ciudad quiere que la gente use más el coche.",
+                        "answer": false,
+                        "explanation": "«fler ska välja cykeln istället för bilen»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Cuántos km mide? (número) ___ kilometer",
+                        "answer": "fem",
+                        "accept": [
+                              "5"
+                        ],
+                        "explanation": "«fem kilometer lång»."
+                  }
+            ]
+      },
+      {
+            "id": "b-r-u15-1",
+            "unit": 15,
+            "unitTitle": "Experiencias y planes",
+            "title": "Mitt första år i Sverige",
+            "kind": "Texto personal",
+            "icon": "🏅",
+            "text": "När jag kom till Sverige kändes allt nytt och svårt. Jag förstod inte språket och saknade mitt hemland. Men steg för steg blev det bättre. Jag hittade vänner på SFI och började förstå hur samhället fungerar. Idag känner jag mig hemma här och ser positivt på framtiden.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Cómo se sentía al principio?",
+                        "options": [
+                              "Allt var svårt",
+                              "Allt var lätt",
+                              "Han var glad"
+                        ],
+                        "correct": 0,
+                        "explanation": "«allt nytt och svårt»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Ahora se siente en casa en Suecia.",
+                        "answer": true,
+                        "explanation": "«Idag känner jag mig hemma här»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Dónde encontró amigos? på ___",
+                        "answer": "SFI",
+                        "accept": [
+                              "sfi"
+                        ],
+                        "explanation": "«hittade vänner på SFI»."
+                  }
+            ]
+      },
+      {
+            "id": "b-r-u15-2",
+            "unit": 15,
+            "unitTitle": "Experiencias y planes",
+            "title": "Mina planer",
+            "kind": "Texto personal",
+            "icon": "🔮",
+            "text": "I framtiden vill jag utbilda mig och få ett fast jobb. Först ska jag klara svenskan och sedan söka en yrkesutbildning. Om några år hoppas jag kunna köpa en egen lägenhet. Jag vill också resa tillbaka till mitt hemland och hälsa på min familj. Jag tror att framtiden blir bra.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Qué quiere hacer primero?",
+                        "options": [
+                              "Klara svenskan",
+                              "Köpa en lägenhet",
+                              "Resa"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Först ska jag klara svenskan»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "No quiere volver a su país.",
+                        "answer": false,
+                        "explanation": "«resa tillbaka till mitt hemland»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Qué quiere comprar? en egen ___",
+                        "answer": "lägenhet",
+                        "accept": [
+                              "lagenhet",
+                              "lägenheten"
+                        ],
+                        "explanation": "«köpa en egen lägenhet»."
+                  }
+            ]
+      }
+],
 
     write: [
       {
-        id: 'b-w-1',
-        title: 'Skriv ett formellt klagomålsbrev',
-        icon: '📨',
-        words: '80–120 ord',
-        prompt: 'Has vivido en tu apartamento durante dos años. Hace tres semanas que la calefacción no funciona. Ya has llamado al casero dos veces sin respuesta.\n\nEscribe una carta formal al casero (hyresvärden) en sueco.\n\nEn tu carta debes:\n• Explicar el problema y desde cuándo\n• Mencionar que ya te has puesto en contacto antes\n• Pedir que se solucione urgentemente\n• Indicar que contactarás a Hyresnämnden si no se resuelve',
-        checklist: ['Encabezado formal: [Ciudad], den [fecha]', 'Saludo: Käre hyresvärd,', 'Explica el problema con fecha', 'Menciona los contactos anteriores', 'Da un plazo: inom sju dagar', 'Cierre: Med vänliga hälsningar,'],
-        example: 'Stockholm, den 28 juni 2025\n\nKäre hyresvärd,\n\nJag skriver för att informera dig om ett allvarligt problem med uppvärmningen i min lägenhet på Björnvägen 14. Sedan den 5 juni fungerar inte värmen ordentligt och temperaturen inomhus understiger tio grader.\n\nJag har redan försökt kontakta dig per telefon den 10 och 17 juni men har inte fått något svar.\n\nJag ber dig att snarast möjligt skicka en reparatör. Om problemet inte är löst inom sju dagar kommer jag att kontakta Hyresnämnden för vidare åtgärder.\n\nMed vänliga hälsningar,\nSofía González',
-        criteria: ['Registro formal apropiado', 'Menciona todas las tareas requeridas', 'Usa conectores: dessutom, dock, trots det', 'Gramática: perfekt och konditionalis', 'Cohesión y coherencia del texto']
+            "id": "b-w-1",
+            "unit": 1,
+            "unitTitle": "Presentación",
+            "title": "Berätta om dig själv",
+            "icon": "👋",
+            "words": "30–60 ord",
+            "prompt": "Situación:\nDu ska presentera dig i din SFI-grupp.\n\nInstrucciones:\nBerätta vem du är: varifrån du kommer, hur länge du har bott i Sverige och vad du gör. Använd minst två sammanbindningsord (och, men, sedan).",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "bor"
+                  ],
+                  "min": 30,
+                  "max": 60
+            },
+            "selfCheck": [
+                  "¿De dónde vienes?",
+                  "¿Cuánto llevas en Suecia?",
+                  "¿Qué estudias o en qué trabajas?",
+                  "¿Usaste conectores como och, men, sedan o därför att?"
+            ],
+            "hints": [
+                  "Empieza: Jag heter... och kommer från...",
+                  "Di cuánto tiempo: Jag har bott i Sverige i...",
+                  "Une ideas con «och», «men», «sedan»"
+            ],
+            "useful": [
+                  "kom till",
+                  "bor",
+                  "har bott",
+                  "studerar",
+                  "jobbar",
+                  "sedan",
+                  "men"
+            ],
+            "example": "Jag heter Amina och kommer från Somalia. Jag har bott i Sverige i tre år. Först bodde jag i Malmö, men sedan flyttade jag till Göteborg. Nu studerar jag svenska på SFI och jobbar deltid på ett äldreboende.",
+            "criteria": [
+                  "Contenido: ¿cumpliste la tarea?",
+                  "Coherencia: se entiende tu texto",
+                  "Conectores: och, men, sedan, därför att",
+                  "Extensión adecuada (30–60 palabras)"
+            ]
       },
       {
-        id: 'b-w-2',
-        title: 'Argumenterande text',
-        icon: '🖊️',
-        words: '80–100 ord',
-        prompt: 'Muchas personas creen que aprender el idioma del país de acogida es la clave para integrarse. ¿Estás de acuerdo?\n\nEscribe un texto de opinión en sueco con argumentos.\n\nTu texto debe:\n• Presentar tu opinión claramente\n• Dar al menos dos argumentos\n• Mencionar un posible contraargumento\n• Concluir con tu posición final',
-        checklist: ['Jag anser att...', 'Å ena sidan... / Å andra sidan...', 'Dessutom...', 'Dock bör man komma ihåg att...', 'Sammanfattningsvis...'],
-        example: 'Jag anser att det är mycket viktigt att lära sig landets språk för att integreras väl. Å ena sidan gör språket att man kan kommunicera med myndigheter, hitta arbete och skapa vänskaper. Dessutom visar det ett engagemang för det nya landet.\n\nÅ andra sidan bör man komma ihåg att integration är en komplex process. Vissa äldre personer kan ha svårare att lära sig ett nytt språk trots stor vilja.\n\nSammanfattningsvis anser jag att språket är det viktigaste verktyget för integration, men att samhället också behöver stödja inlärningsprocessen.',
-        criteria: ['Presenta una opinión clara', 'Argumentos bien desarrollados', 'Usa conectores de discurso', 'Menciona un contraargumento', 'Conclusión coherente', 'Vocabulario nivel B: etablera, engagemang, komplex']
+            "id": "b-w-2",
+            "unit": 2,
+            "unitTitle": "Familia",
+            "title": "Skriv om din familj",
+            "icon": "👪",
+            "words": "30–60 ord",
+            "prompt": "Situación:\nEn vän vill veta mer om din familj.\n\nInstrucciones:\nBeskriv din familj: vilka de är, vad de gör och er relation. Skriv sammanhängande med sammanbindningsord.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "familj"
+                  ],
+                  "min": 30,
+                  "max": 60
+            },
+            "selfCheck": [
+                  "¿Quiénes forman tu familia?",
+                  "¿Qué hacen?",
+                  "¿Cómo es tu relación con ellos?",
+                  "¿Usaste conectores como och, men, sedan o därför att?"
+            ],
+            "hints": [
+                  "Min familj består av...",
+                  "Min man/fru/syster heter... och...",
+                  "Vi brukar... tillsammans"
+            ],
+            "useful": [
+                  "familj",
+                  "syster",
+                  "bror",
+                  "föräldrar",
+                  "tillsammans",
+                  "brukar",
+                  "för det mesta"
+            ],
+            "example": "Min familj är inte så stor. Jag bor med min man och våra två barn. Min syster bor också i Sverige, men mina föräldrar bor kvar i mitt hemland. Vi ringer varandra ofta och för det mesta träffas vi på sommaren.",
+            "criteria": [
+                  "Contenido: ¿cumpliste la tarea?",
+                  "Coherencia: se entiende tu texto",
+                  "Conectores: och, men, sedan, därför att",
+                  "Extensión adecuada (30–60 palabras)"
+            ]
       },
       {
-        id: 'b-w-3',
-        title: 'Rapport från praktikplatsen',
-        icon: '📝',
-        words: '80–100 ord',
-        prompt: 'Has hecho una semana de prácticas (praktik) en una empresa sueca. Tu profesor de SFI te pide que escribas un informe corto.\n\nDescribe:\n• Dónde hiciste las prácticas y qué hace la empresa\n• Qué hiciste durante la semana\n• Qué aprendiste sobre el entorno laboral sueco\n• Cómo fue comunicarte en sueco',
-        checklist: ['Usa tiempos pasados: preteritum y perfekt', 'Describe actividades concretas', 'Reflexión sobre el aprendizaje', 'Usa vocabulario laboral: arbetsplats, kolleger, arbetsuppgifter'],
-        example: 'Jag gjorde min praktik på ett litet IT-företag i Kista som heter TechNord AB. Företaget utvecklar appar för smartphones.\n\nUnder veckan hjälpte jag till med kundservice och administration. Jag svarade på mejl och deltog i ett teammöte på tisdagen.\n\nJag lärde mig mycket om den svenska arbetsplatskulturen. Det var informellt och alla pratade med varandra på ett respektfullt men avslappnat sätt. Att kommunicera på svenska var svårt i början men jag förstod det mesta och mina kolleger var tålmodiga.',
-        criteria: ['Uso correcto de pretérito perfecto', 'Vocabulario laboral adecuado', 'Estructura clara: inicio, desarrollo, reflexión', 'Honestidad y naturalidad en la expresión', 'Frases complejas con bisatser']
+            "id": "b-w-3",
+            "unit": 3,
+            "unitTitle": "Vivienda y barrio",
+            "title": "Beskriv ditt område",
+            "icon": "🏘️",
+            "words": "30–60 ord",
+            "prompt": "Situación:\nEn person som ska flytta frågar om ditt bostadsområde.\n\nInstrucciones:\nBeskriv var du bor och hur området är. Nämn vad som finns i närheten och vad du tycker.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "bor"
+                  ],
+                  "min": 30,
+                  "max": 60
+            },
+            "selfCheck": [
+                  "¿Dónde vives?",
+                  "¿Qué hay cerca?",
+                  "¿Qué te gusta o no del barrio?",
+                  "¿Usaste conectores como och, men, sedan o därför att?"
+            ],
+            "hints": [
+                  "Jag bor i ett område som heter...",
+                  "I närheten finns...",
+                  "Jag trivs bra, men..."
+            ],
+            "useful": [
+                  "område",
+                  "lägenhet",
+                  "i närheten",
+                  "matbutik",
+                  "park",
+                  "trivs",
+                  "men"
+            ],
+            "example": "Jag bor i ett lugnt område utanför centrum. Lägenheten är inte så stor, men den är mysig. I närheten finns en matbutik, en förskola och en fin park. Bussen till centrum tar femton minuter. Jag trivs bra här därför att grannarna är trevliga.",
+            "criteria": [
+                  "Contenido: ¿cumpliste la tarea?",
+                  "Coherencia: se entiende tu texto",
+                  "Conectores: och, men, sedan, därför att",
+                  "Extensión adecuada (30–60 palabras)"
+            ]
       },
-    ],
+      {
+            "id": "b-w-4",
+            "unit": 4,
+            "unitTitle": "Rutinas y tiempo libre",
+            "title": "Berätta om förra helgen",
+            "icon": "📅",
+            "words": "30–60 ord",
+            "prompt": "Situación:\nDin lärare vill att du berättar om din helg.\n\nInstrucciones:\nBerätta vad du gjorde förra helgen. Använd dåtid (t.ex. åkte, träffade, lagade).",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "sedan"
+                  ],
+                  "min": 30,
+                  "max": 60
+            },
+            "selfCheck": [
+                  "¿Qué hiciste el fin de semana?",
+                  "¿Con quién?",
+                  "¿Usaste el pasado (dåtid)?",
+                  "¿Usaste conectores como och, men, sedan o därför att?"
+            ],
+            "hints": [
+                  "I helgen... / Förra lördagen...",
+                  "Först... och sedan...",
+                  "På kvällen..."
+            ],
+            "useful": [
+                  "i helgen",
+                  "förra lördagen",
+                  "åkte",
+                  "träffade",
+                  "lagade",
+                  "sedan",
+                  "sträffade"
+            ],
+            "example": "Förra helgen var lugn och skön. På lördagen träffade jag några vänner och vi fikade i centrum. Sedan handlade jag mat och lagade middag hemma. På söndagen sov jag länge och tog en promenad i parken. Det var en riktigt trevlig helg.",
+            "criteria": [
+                  "Contenido: ¿cumpliste la tarea?",
+                  "Coherencia: se entiende tu texto",
+                  "Conectores: och, men, sedan, därför att",
+                  "Extensión adecuada (30–60 palabras)"
+            ]
+      },
+      {
+            "id": "b-w-5",
+            "unit": 5,
+            "unitTitle": "Escuela y estudios",
+            "title": "Dina studier och ditt mål",
+            "icon": "🎯",
+            "words": "30–60 ord",
+            "prompt": "Situación:\nDu skriver om varför du studerar svenska.\n\nInstrucciones:\nBerätta hur det går med svenskan och vad ditt mål är. Förklara varför.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "därför"
+                  ],
+                  "min": 30,
+                  "max": 60
+            },
+            "selfCheck": [
+                  "¿Cómo te va con el sueco?",
+                  "¿Cuál es tu meta?",
+                  "¿Por qué (därför att...)?",
+                  "¿Usaste conectores como och, men, sedan o därför att?"
+            ],
+            "hints": [
+                  "Jag studerar svenska därför att...",
+                  "Mitt mål är att...",
+                  "I början var det svårt, men nu..."
+            ],
+            "useful": [
+                  "studerar",
+                  "mål",
+                  "därför att",
+                  "klara",
+                  "utbildning",
+                  "framsteg",
+                  "men"
+            ],
+            "example": "Jag studerar svenska därför att jag vill kunna jobba och prata med människor här. I början var det svårt och jag förstod nästan ingenting, men nu går det bättre. Mitt mål är att klara nivå D och sedan börja en utbildning till undersköterska.",
+            "criteria": [
+                  "Contenido: ¿cumpliste la tarea?",
+                  "Coherencia: se entiende tu texto",
+                  "Conectores: och, men, sedan, därför att",
+                  "Extensión adecuada (30–60 palabras)"
+            ]
+      },
+      {
+            "id": "b-w-6",
+            "unit": 6,
+            "unitTitle": "Trabajo",
+            "title": "Ett jobb du har haft",
+            "icon": "💼",
+            "words": "30–60 ord",
+            "prompt": "Situación:\nBerätta om ett jobb, i Sverige eller i ditt hemland.\n\nInstrucciones:\nBeskriv jobbet: vad du gjorde, om du trivdes och varför. Använd dåtid.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "jobb"
+                  ],
+                  "min": 30,
+                  "max": 60
+            },
+            "selfCheck": [
+                  "¿Qué trabajo era?",
+                  "¿Qué hacías?",
+                  "¿Te gustaba? ¿Por qué?",
+                  "¿Usaste conectores como och, men, sedan o därför att?"
+            ],
+            "hints": [
+                  "Jag jobbade som... i...",
+                  "Mina uppgifter var att...",
+                  "Jag trivdes, men ibland..."
+            ],
+            "useful": [
+                  "jobbade",
+                  "arbetade",
+                  "uppgifter",
+                  "kollegor",
+                  "trivdes",
+                  "därför att",
+                  "men"
+            ],
+            "example": "I mitt hemland jobbade jag som lärare i en skola. Mina uppgifter var att undervisa barn och rätta prov. Jag trivdes bra därför att jag tycker om att arbeta med människor. Ibland var det stressigt, men mina kollegor var snälla och hjälpte mig mycket.",
+            "criteria": [
+                  "Contenido: ¿cumpliste la tarea?",
+                  "Coherencia: se entiende tu texto",
+                  "Conectores: och, men, sedan, därför att",
+                  "Extensión adecuada (30–60 palabras)"
+            ]
+      },
+      {
+            "id": "b-w-7",
+            "unit": 7,
+            "unitTitle": "Buscar trabajo",
+            "title": "Ett kort personligt brev",
+            "icon": "✉️",
+            "words": "30–60 ord",
+            "prompt": "Situación:\nDu söker ett deltidsjobb i en matbutik.\n\nInstrucciones:\nSkriv ett kort brev. Hälsa, berätta kort om dig själv och varför du passar för jobbet, och avsluta artigt.",
+            "req": {
+                  "greeting": true,
+                  "closing": true,
+                  "question": false,
+                  "keywords": [
+                        "jobb"
+                  ],
+                  "min": 30,
+                  "max": 60
+            },
+            "selfCheck": [
+                  "¿Saludaste?",
+                  "¿Contaste algo de ti y por qué encajas?",
+                  "¿Te despediste correctamente?",
+                  "¿Usaste conectores como och, men, sedan o därför att?"
+            ],
+            "hints": [
+                  "Hej! Jag heter... och söker jobbet som...",
+                  "Jag är... och har erfarenhet av...",
+                  "Med vänliga hälsningar,"
+            ],
+            "useful": [
+                  "hej",
+                  "söker",
+                  "erfarenhet",
+                  "serviceinriktad",
+                  "passar",
+                  "med vänliga hälsningar"
+            ],
+            "example": "Hej! Jag heter Marco och jag är intresserad av jobbet som butiksbiträde. Jag är serviceinriktad och gillar att arbeta med människor. Sedan tidigare har jag erfarenhet från en restaurang, därför tror jag att jag passar bra. Med vänliga hälsningar, Marco.",
+            "criteria": [
+                  "Contenido: ¿cumpliste la tarea?",
+                  "Coherencia: se entiende tu texto",
+                  "Conectores: och, men, sedan, därför att",
+                  "Extensión adecuada (30–60 palabras)"
+            ]
+      },
+      {
+            "id": "b-w-8",
+            "unit": 8,
+            "unitTitle": "Compras y devoluciones",
+            "title": "Något du har köpt",
+            "icon": "🛍️",
+            "words": "30–60 ord",
+            "prompt": "Situación:\nBerätta om en sak du köpte som blev fel.\n\nInstrucciones:\nBeskriv vad du köpte, vad problemet var och hur det löste sig. Använd dåtid.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "köpte"
+                  ],
+                  "min": 30,
+                  "max": 60
+            },
+            "selfCheck": [
+                  "¿Qué compraste?",
+                  "¿Cuál era el problema?",
+                  "¿Cómo se resolvió?",
+                  "¿Usaste conectores como och, men, sedan o därför att?"
+            ],
+            "hints": [
+                  "Förra veckan köpte jag...",
+                  "Problemet var att...",
+                  "Sedan kontaktade jag..."
+            ],
+            "useful": [
+                  "köpte",
+                  "beställde",
+                  "problemet",
+                  "för liten",
+                  "bytte",
+                  "kontaktade",
+                  "sedan"
+            ],
+            "example": "Förra månaden köpte jag en jacka på internet. När paketet kom var jackan för liten och fel färg. Sedan kontaktade jag kundtjänst och de var hjälpsamma. Jag skickade tillbaka jackan och fick en ny gratis. Nu är jag nöjd med mitt köp.",
+            "criteria": [
+                  "Contenido: ¿cumpliste la tarea?",
+                  "Coherencia: se entiende tu texto",
+                  "Conectores: och, men, sedan, därför att",
+                  "Extensión adecuada (30–60 palabras)"
+            ]
+      },
+      {
+            "id": "b-w-9",
+            "unit": 9,
+            "unitTitle": "Alimentación",
+            "title": "En middag du minns",
+            "icon": "🍽️",
+            "words": "30–60 ord",
+            "prompt": "Situación:\nBerätta om en god middag du har ätit.\n\nInstrucciones:\nBeskriv maten, var du var och med vem. Berätta om det var gott.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "mat"
+                  ],
+                  "min": 30,
+                  "max": 60
+            },
+            "selfCheck": [
+                  "¿Qué comida era?",
+                  "¿Dónde y con quién?",
+                  "¿Cómo estaba?",
+                  "¿Usaste conectores como och, men, sedan o därför att?"
+            ],
+            "hints": [
+                  "I lördags åt jag...",
+                  "Vi var hemma hos.../på en restaurang...",
+                  "Det var gott, men lite..."
+            ],
+            "useful": [
+                  "mat",
+                  "åt",
+                  "lagade",
+                  "gott",
+                  "starkt",
+                  "tillsammans",
+                  "sedan"
+            ],
+            "example": "I lördags var jag bjuden på middag hos min vän Sara. Hon lagade en indisk gryta med kyckling och ris. Det var väldigt gott, men lite starkt för mig. Vi pratade länge och lyssnade på musik. Sedan fick jag receptet så att jag kan laga det själv.",
+            "criteria": [
+                  "Contenido: ¿cumpliste la tarea?",
+                  "Coherencia: se entiende tu texto",
+                  "Conectores: och, men, sedan, därför att",
+                  "Extensión adecuada (30–60 palabras)"
+            ]
+      },
+      {
+            "id": "b-w-10",
+            "unit": 10,
+            "unitTitle": "Salud",
+            "title": "Ett besök på vårdcentralen",
+            "icon": "🏥",
+            "words": "30–60 ord",
+            "prompt": "Situación:\nBerätta om en gång du var sjuk.\n\nInstrucciones:\nBeskriv vad som hände: symtom, vad läkaren sa och hur det gick. Använd dåtid.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "ont"
+                  ],
+                  "min": 30,
+                  "max": 60
+            },
+            "selfCheck": [
+                  "¿Qué te pasó?",
+                  "¿Qué dijo el médico?",
+                  "¿Cómo terminó?",
+                  "¿Usaste conectores como och, men, sedan o därför att?"
+            ],
+            "hints": [
+                  "I måndags mådde jag inte bra...",
+                  "Jag hade ont i...",
+                  "Läkaren sa att..."
+            ],
+            "useful": [
+                  "ont",
+                  "feber",
+                  "förkylning",
+                  "läkaren",
+                  "undersökte",
+                  "vila",
+                  "sedan"
+            ],
+            "example": "I måndags mådde jag inte bra. Jag hade ont i halsen och feber, därför ringde jag vårdcentralen. Jag fick en tid samma dag och läkaren undersökte mig. Hon sa att det bara var en förkylning och att jag skulle vila. Efter några dagar mådde jag bättre.",
+            "criteria": [
+                  "Contenido: ¿cumpliste la tarea?",
+                  "Coherencia: se entiende tu texto",
+                  "Conectores: och, men, sedan, därför att",
+                  "Extensión adecuada (30–60 palabras)"
+            ]
+      },
+      {
+            "id": "b-w-11",
+            "unit": 11,
+            "unitTitle": "Transporte y viajes",
+            "title": "Berätta om en resa",
+            "icon": "✈️",
+            "words": "30–60 ord",
+            "prompt": "Situación:\nBerätta om en resa du har gjort.\n\nInstrucciones:\nBeskriv vart du åkte, hur du reste och vad du gjorde. Använd dåtid.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "åkte"
+                  ],
+                  "min": 30,
+                  "max": 60
+            },
+            "selfCheck": [
+                  "¿Adónde fuiste?",
+                  "¿Cómo viajaste?",
+                  "¿Qué hiciste allí?",
+                  "¿Usaste conectores como och, men, sedan o därför att?"
+            ],
+            "hints": [
+                  "I vintras/förra sommaren åkte jag till...",
+                  "Vi reste med...",
+                  "Vi såg... och..."
+            ],
+            "useful": [
+                  "åkte",
+                  "reste",
+                  "tåg",
+                  "flyg",
+                  "såg",
+                  "besökte",
+                  "sedan"
+            ],
+            "example": "Förra vintern reste jag och min familj till Kiruna i norra Sverige. Vi åkte nattåg från Stockholm och resan tog nästan sjutton timmar. Det var mycket kallt, men väldigt vackert. Vi såg norrsken på himlen och åkte skidor. Det var en resa jag aldrig glömmer.",
+            "criteria": [
+                  "Contenido: ¿cumpliste la tarea?",
+                  "Coherencia: se entiende tu texto",
+                  "Conectores: och, men, sedan, därför att",
+                  "Extensión adecuada (30–60 palabras)"
+            ]
+      },
+      {
+            "id": "b-w-12",
+            "unit": 12,
+            "unitTitle": "Invitaciones",
+            "title": "Bjud in en vän",
+            "icon": "🎉",
+            "words": "30–60 ord",
+            "prompt": "Situación:\nDu vill bjuda in en vän till en fest.\n\nInstrucciones:\nSkriv ett mejl. Hälsa, berätta om festen (dag, tid, plats), fråga om vännen kan komma och avsluta.",
+            "req": {
+                  "greeting": true,
+                  "closing": true,
+                  "question": true,
+                  "keywords": [
+                        "fest"
+                  ],
+                  "min": 30,
+                  "max": 60
+            },
+            "selfCheck": [
+                  "¿Saludaste?",
+                  "¿Diste día, hora y lugar?",
+                  "¿Preguntaste si puede venir?",
+                  "¿Te despediste?"
+            ],
+            "hints": [
+                  "Hej [nombre]!",
+                  "Jag har fest den... klockan... hemma hos mig.",
+                  "Kan du komma? Hör av dig!",
+                  "Kram,"
+            ],
+            "useful": [
+                  "hej",
+                  "fest",
+                  "klockan",
+                  "hemma hos mig",
+                  "kan du komma",
+                  "hör av dig",
+                  "kram"
+            ],
+            "example": "Hej Lisa! Jag fyller år på lördag och vill bjuda in dig till en fest. Den börjar klockan sex hemma hos mig på Parkvägen 8. Det blir mat, musik och dans. Kan du komma? Hör gärna av dig senast på torsdag. Kram, Ana.",
+            "criteria": [
+                  "Contenido: ¿cumpliste la tarea?",
+                  "Coherencia: se entiende tu texto",
+                  "Conectores: och, men, sedan, därför att",
+                  "Extensión adecuada (30–60 palabras)"
+            ]
+      },
+      {
+            "id": "b-w-13",
+            "unit": 13,
+            "unitTitle": "Mensajes y correos",
+            "title": "Mejl till hyresvärden",
+            "icon": "🔧",
+            "words": "30–60 ord",
+            "prompt": "Situación:\nNågot är trasigt i din lägenhet.\n\nInstrucciones:\nSkriv ett mejl till hyresvärden. Hälsa, beskriv problemet, be om hjälp och avsluta artigt.",
+            "req": {
+                  "greeting": true,
+                  "closing": true,
+                  "question": false,
+                  "keywords": [
+                        "problem"
+                  ],
+                  "min": 30,
+                  "max": 60
+            },
+            "selfCheck": [
+                  "¿Saludaste?",
+                  "¿Describiste el problema?",
+                  "¿Pediste ayuda/reparación?",
+                  "¿Te despediste?"
+            ],
+            "hints": [
+                  "Hej! Jag bor på... och vill anmäla ett problem.",
+                  "Kranen/värmen/dörren...",
+                  "Kan ni skicka en reparatör?",
+                  "Vänliga hälsningar,"
+            ],
+            "useful": [
+                  "hej",
+                  "anmäla",
+                  "problem",
+                  "trasig",
+                  "reparatör",
+                  "vänliga hälsningar",
+                  "tack på förhand"
+            ],
+            "example": "Hej! Jag heter Ana och bor på Skolgatan 5. Jag vill anmäla ett problem, för kranen i köket droppar hela tiden och diskmaskinen fungerar inte. Kan ni skicka en reparatör den här veckan? Jag är hemma på eftermiddagarna. Tack på förhand. Vänliga hälsningar, Ana.",
+            "criteria": [
+                  "Contenido: ¿cumpliste la tarea?",
+                  "Coherencia: se entiende tu texto",
+                  "Conectores: och, men, sedan, därför att",
+                  "Extensión adecuada (30–60 palabras)"
+            ]
+      },
+      {
+            "id": "b-w-14",
+            "unit": 14,
+            "unitTitle": "Noticias y sociedad",
+            "title": "Vad tycker du?",
+            "icon": "📰",
+            "words": "30–60 ord",
+            "prompt": "Situación:\nDu läste en nyhet om en ny cykelväg i din stad.\n\nInstrucciones:\nSkriv kort vad nyheten handlade om och vad du tycker. Förklara varför.",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "därför"
+                  ],
+                  "min": 30,
+                  "max": 60
+            },
+            "selfCheck": [
+                  "¿De qué trataba la noticia?",
+                  "¿Qué opinas?",
+                  "¿Por qué (därför att...)?",
+                  "¿Usaste conectores como och, men, sedan o därför att?"
+            ],
+            "hints": [
+                  "Jag läste att...",
+                  "Jag tycker att det är bra/dåligt...",
+                  "...därför att..."
+            ],
+            "useful": [
+                  "jag läste",
+                  "nyhet",
+                  "cykelväg",
+                  "jag tycker",
+                  "bra för miljön",
+                  "därför att",
+                  "men"
+            ],
+            "example": "Jag läste en nyhet om att kommunen ska bygga en ny cykelväg mellan centrum och universitetet. Jag tycker att det är en bra idé därför att fler kan cykla istället för att ta bilen. Det är bra både för hälsan och för miljön, men jag hoppas att den blir klar snart.",
+            "criteria": [
+                  "Contenido: ¿cumpliste la tarea?",
+                  "Coherencia: se entiende tu texto",
+                  "Conectores: och, men, sedan, därför att",
+                  "Extensión adecuada (30–60 palabras)"
+            ]
+      },
+      {
+            "id": "b-w-15",
+            "unit": 15,
+            "unitTitle": "Experiencias y planes",
+            "title": "Dina planer för framtiden",
+            "icon": "🔮",
+            "words": "30–60 ord",
+            "prompt": "Situación:\nBerätta om dina planer.\n\nInstrucciones:\nSkriv vad du vill göra i framtiden och varför. Använd framtid (ska, vill, hoppas).",
+            "req": {
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "framtiden"
+                  ],
+                  "min": 30,
+                  "max": 60
+            },
+            "selfCheck": [
+                  "¿Qué quieres hacer en el futuro?",
+                  "¿En qué orden (först, sedan)?",
+                  "¿Por qué?",
+                  "¿Usaste conectores como och, men, sedan o därför att?"
+            ],
+            "hints": [
+                  "I framtiden vill jag...",
+                  "Först ska jag... och sedan...",
+                  "Jag hoppas att..."
+            ],
+            "useful": [
+                  "framtiden",
+                  "vill",
+                  "ska",
+                  "hoppas",
+                  "utbildning",
+                  "fast jobb",
+                  "sedan"
+            ],
+            "example": "I framtiden vill jag utbilda mig och få ett fast jobb. Först ska jag klara svenskan och sedan söka en yrkesutbildning. Om några år hoppas jag kunna köpa en egen lägenhet. Jag vill också resa tillbaka till mitt hemland och hälsa på min familj. Jag tror att framtiden blir bra.",
+            "criteria": [
+                  "Contenido: ¿cumpliste la tarea?",
+                  "Coherencia: se entiende tu texto",
+                  "Conectores: och, men, sedan, därför att",
+                  "Extensión adecuada (30–60 palabras)"
+            ]
+      }
+],
 
     speak: [
       {

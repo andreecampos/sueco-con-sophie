@@ -214,8 +214,14 @@ function skillProgress(kind, level) {
 // Migración idempotente: el progreso de Läsa se guardaba por ÍNDICE
 // (A:read:0..3). Ahora se guarda por ID (A:read:a-r-1...). Copiamos las
 // filas viejas a la nueva clave para NO perder progreso real de alumnos.
-const _LEGACY_READ_MAP = { A: { '0': 'a-r-1', '1': 'a-r-2', '2': 'a-r-3', '3': 'a-r-4' } };
-const _LEGACY_WRITE_MAP = { A: { '0': 'a-w-1', '1': 'a-w-2', '2': 'a-w-3' } };
+const _LEGACY_READ_MAP = {
+  A: { '0': 'a-r-1', '1': 'a-r-2', '2': 'a-r-3', '3': 'a-r-4' },
+  B: { '0': 'b-r-1', '1': 'b-r-2', '2': 'b-r-3', '3': 'b-r-4' }
+};
+const _LEGACY_WRITE_MAP = {
+  A: { '0': 'a-w-1', '1': 'a-w-2', '2': 'a-w-3' },
+  B: { '0': 'b-w-1', '1': 'b-w-2', '2': 'b-w-3' }
+};
 async function _backfillByMap(moduleKey, keyName, mapAll) {
   for (const lv in mapAll) {
     const map = mapAll[lv];
