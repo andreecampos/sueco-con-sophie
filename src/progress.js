@@ -207,8 +207,29 @@ function skillProgress(kind, level) {
   const key = kind === 'reading' ? 'read' : 'write';
   const arr = (typeof DB !== 'undefined' && DB[level] && DB[level][key]) ? DB[level][key] : [];
   let done = 0;
-  arr.forEach((it, i) => { if (isCompleted(kind, level + ':' + key + ':' + i)) done++; });
+  arr.forEach((it, i) => { const cid = it.id || i; if (isCompleted(kind, level + ':' + key + ':' + cid)) done++; });
   return { done, total: arr.length, pct: pctClamp(done, arr.length) };
+}
+
+// Migración idempotente: el progreso de Läsa se guardaba por ÍNDICE
+// (A:read:0..3). Ahora se guarda por ID (A:read:a-r-1...). Copiamos las
+// filas viejas a la nueva clave para NO perder progreso real de alumnos.
+const _LEGACY_READ_MAP = { A: { '0': 'a-r-1', '1': 'a-r-2', '2': 'a-r-3', '3': 'a-r-4' } };
+async function backfillReadingIds() {
+  try {
+    for (const lv in _LEGACY_READ_MAP) {
+      const map = _LEGACY_READ_MAP[lv];
+      for (const oldIdx in map) {
+        const oldKey = _upKey('reading', lv + ':read:' + oldIdx);
+        const newId = map[oldIdx];
+        const newKey = _upKey('reading', lv + ':read:' + newId);
+        const oldRow = UNIFIED_PROGRESS[oldKey];
+        if (oldRow && oldRow.status === 'completed' && !UNIFIED_PROGRESS[newKey]) {
+          await progressMark('reading', lv + ':read:' + newId, { status: 'completed', level: lv, score: oldRow.score || 0 });
+        }
+      }
+    }
+  } catch (e) {}
 }
 
 // Progreso de Vokabulär por nivel y (opcional) categoría 'word'|'verb'.
@@ -284,6 +305,7 @@ async function loadUnifiedProgress() {
   } catch (e) {}
   UNIFIED_LOADED = true;
   try { await backfillLocalProgress(); } catch (e) {}
+  try { await backfillReadingIds(); } catch (e) {}
 }
 
 async function loadVocabProgress() {

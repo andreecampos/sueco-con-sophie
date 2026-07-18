@@ -2224,58 +2224,1159 @@ const DEFAULT_DATA = {
 
     read: [
       {
-        id: 'a-r-1',
-        title: 'Familjen Lindgren',
-        tag: 'Familia',
-        icon: '👨‍👩‍👧‍👦',
-        text: `Maria och Erik Lindgren bor i en lägenhet i Stockholm. De har två barn: Emma, som är sex år, och Lucas, som är nio år. Maria jobbar som sjuksköterska och Erik jobbar på ett kontor i centrum. Barnen går i skolan nära hemmet. På helgerna brukar familjen gå på promenader i parken eller besöka morföräldrar som bor i Uppsala. De gillar att laga mat tillsammans och Emmas favoriträtt är pannkakor.`,
-        questions: [
-          { text: '¿Dónde vive la familia Lindgren?', options: ['En una casa en Uppsala', 'En un apartamento en Estocolmo', 'En una casa en Gotemburgo', 'En Uppsala'], correct: 1, explanation: 'De bor i en lägenhet i Stockholm = viven en un apartamento en Estocolmo.' },
-          { text: '¿Cuántos hijos tienen Maria y Erik?', options: ['Uno', 'Dos', 'Tres', 'Cuatro'], correct: 1, explanation: 'De har två barn = tienen dos hijos.' },
-          { text: '¿Dónde trabaja Erik?', options: ['En un hospital', 'En una escuela', 'En una oficina en el centro', 'En un supermercado'], correct: 2, explanation: 'Erik jobbar på ett kontor i centrum = Erik trabaja en una oficina en el centro.' },
-          { text: '¿Cuál es el plato favorito de Emma?', options: ['Köttbullar (albóndigas)', 'Pizza', 'Pannkakor (tortitas)', 'Fisk (pescado)'], correct: 2, explanation: 'Emmas favoriträtt är pannkakor = el plato favorito de Emma son las tortitas.' },
-        ]
+            "id": "a-r-u1-1",
+            "unit": 1,
+            "unitTitle": "Presentaciones",
+            "title": "Hej! Jag heter Ana",
+            "kind": "Texto personal",
+            "icon": "👋",
+            "text": "Hej! Jag heter Ana. Jag är trettio år. Jag kommer från Peru. Nu bor jag i Stockholm. Jag studerar svenska på SFI.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿De dónde viene Ana?",
+                        "options": [
+                              "Från Chile",
+                              "Från Peru",
+                              "Från Spanien"
+                        ],
+                        "correct": 1,
+                        "explanation": "«Jag kommer från Peru» = vengo de Perú."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Ana bor i Göteborg.",
+                        "answer": false,
+                        "explanation": "Ella dice «Nu bor jag i Stockholm» = vivo en Estocolmo."
+                  },
+                  {
+                        "type": "short",
+                        "text": "Completa: «Jag studerar ___» (¿qué estudia?)",
+                        "answer": "svenska",
+                        "accept": [
+                              "svenskan"
+                        ],
+                        "explanation": "«Jag studerar svenska» = estudio sueco."
+                  }
+            ]
       },
       {
-        id: 'a-r-2',
-        title: 'Min dag',
-        tag: 'Rutina diaria',
-        icon: '📅',
-        text: `Jag heter Pedro och jag kommer från Spanien. Jag bor i Göteborg och studerar svenska på SFI. Varje morgon vaknar jag klockan sju. Jag äter frukost och dricker kaffe. Sedan tar jag spårvagnen till skolan. Lektionerna börjar klockan nio och slutar klockan tolv. På lunch äter jag i skolans matsal. På eftermiddagen jobbar jag ibland som vikarie på ett café. På kvällen lagar jag mat och studerar svenska i en timme innan jag sover.`,
-        questions: [
-          { text: '¿De dónde viene Pedro?', options: ['De Italia', 'De España', 'De Portugal', 'De México'], correct: 1, explanation: 'Jag kommer från Spanien = vengo de España.' },
-          { text: '¿A qué hora empieza la clase?', options: ['A las ocho', 'A las nueve', 'A las diez', 'A las siete'], correct: 1, explanation: 'Lektionerna börjar klockan nio = las clases empiezan a las nueve.' },
-          { text: '¿Cómo va Pedro a la escuela?', options: ['En metro', 'En autobús', 'En tranvía', 'Caminando'], correct: 2, explanation: 'Jag tar spårvagnen = tomo el tranvía.' },
-          { text: '¿Qué hace Pedro por las tardes algunas veces?', options: ['Estudia en la biblioteca', 'Trabaja en una cafetería', 'Practica deporte', 'Ve la televisión'], correct: 1, explanation: 'Jobbar jag ibland som vikarie på ett café = a veces trabajo como suplente en una cafetería.' },
-        ]
+            "id": "a-r-u1-2",
+            "unit": 1,
+            "unitTitle": "Presentaciones",
+            "title": "Vad heter du?",
+            "kind": "Diálogo",
+            "icon": "💬",
+            "text": "– Hej, vad heter du?\n– Jag heter Omar.\n– Var kommer du ifrån?\n– Jag kommer från Syrien.\n– Hur gammal är du?\n– Jag är tjugofem år.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Cómo se llama?",
+                        "options": [
+                              "Ali",
+                              "Omar",
+                              "Karl"
+                        ],
+                        "correct": 1,
+                        "explanation": "«Jag heter Omar»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Omar är tjugofem år.",
+                        "answer": true,
+                        "explanation": "«Jag är tjugofem år» = tengo 25 años."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿De qué país es Omar? (en sueco)",
+                        "answer": "Syrien",
+                        "accept": [
+                              "syrien"
+                        ],
+                        "explanation": "«Jag kommer från Syrien»."
+                  }
+            ]
       },
       {
-        id: 'a-r-3',
-        title: 'Lägenheten',
-        tag: 'Vivienda',
-        icon: '🏠',
-        text: `Fatima och hennes familj bor i en lägenhet i Husby. Lägenheten har tre rum och kök. De bor på tredje våningen och har en liten balkong. Hyran är nio tusen kronor i månaden. Fatima gillar sin lägenhet men vill ha en större trädgård för sina barn. I närheten finns en park, en skola och ett bibliotek. Det tar fem minuter att gå till tunnelbanan. De har bott där i två år och trivs bra.`,
-        questions: [
-          { text: '¿Cuántas habitaciones tiene el apartamento?', options: ['Dos habitaciones', 'Tres habitaciones', 'Cuatro habitaciones', 'Una habitación'], correct: 1, explanation: 'Tre rum och kök = tres habitaciones y cocina.' },
-          { text: '¿En qué piso vive Fatima?', options: ['En el primero', 'En el segundo', 'En el tercero', 'En la planta baja'], correct: 2, explanation: 'De bor på tredje våningen = viven en el tercer piso.' },
-          { text: '¿Cuánto tarda en llegar al metro?', options: ['10 minutos caminando', '5 minutos caminando', '15 minutos en autobús', '3 minutos en coche'], correct: 1, explanation: 'Fem minuter att gå till tunnelbanan = cinco minutos andando hasta el metro.' },
-          { text: '¿Qué echa de menos Fatima?', options: ['Un garaje', 'Un jardín más grande', 'Un balcón', 'Una piscina'], correct: 1, explanation: 'Vill ha en större trädgård = quiere tener un jardín más grande.' },
-        ]
+            "id": "a-r-1",
+            "unit": 2,
+            "unitTitle": "Familia",
+            "title": "Familjen Lindgren",
+            "kind": "Texto personal",
+            "icon": "👨‍👩‍👧‍👦",
+            "text": "Maria och Erik Lindgren bor i en lägenhet i Stockholm. De har två barn: Emma, som är sex år, och Lucas, som är nio år. Maria jobbar som sjuksköterska och Erik jobbar på ett kontor i centrum. Barnen går i skolan nära hemmet.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Cuántos hijos tienen?",
+                        "options": [
+                              "Ett",
+                              "Två",
+                              "Tre"
+                        ],
+                        "correct": 1,
+                        "explanation": "«De har två barn» = tienen dos hijos."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Erik jobbar på ett sjukhus.",
+                        "answer": false,
+                        "explanation": "Erik «jobbar på ett kontor» = trabaja en una oficina."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Dónde viven? «i en ___ i Stockholm»",
+                        "answer": "lägenhet",
+                        "accept": [
+                              "lägenheten"
+                        ],
+                        "explanation": "«bor i en lägenhet» = viven en un apartamento."
+                  }
+            ]
       },
       {
-        id: 'a-r-4',
-        title: 'På restaurangen',
-        tag: 'Restaurante',
-        icon: '🍽️',
-        text: `Idag äter Lena och hennes kolleger lunch på en restaurang nära jobbet. Restaurangen heter Gröna Köket och serverar vegetarisk mat. Lena beställer en vegetarisk lasagne och ett glas vatten. Hennes kollega Ahmed beställer en sallad med bröd. Lunchen kostar nittiofem kronor per person. Restaurangen är öppen måndag till fredag klockan elva till fjorton. De betalar med kort och ger lite dricks till servitören.`,
-        questions: [
-          { text: '¿Qué tipo de comida sirve el restaurante?', options: ['Comida española', 'Comida japonesa', 'Comida vegetariana', 'Comida italiana'], correct: 2, explanation: 'Serverar vegetarisk mat = sirven comida vegetariana.' },
-          { text: '¿Qué pide Lena?', options: ['Ensalada y pan', 'Lasaña vegetariana y agua', 'Sopa y zumo', 'Pizza y refresco'], correct: 1, explanation: 'Lena beställer en vegetarisk lasagne och ett glas vatten = Lena pide una lasaña vegetariana y un vaso de agua.' },
-          { text: '¿Cuánto cuesta el almuerzo?', options: ['75 coronas', '85 coronas', '95 coronas', '105 coronas'], correct: 2, explanation: 'Nittiofem kronor per person = noventa y cinco coronas por persona.' },
-          { text: '¿Cuándo está abierto el restaurante?', options: ['Todos los días de 10 a 15', 'Lunes a viernes de 11 a 14', 'Lunes a sábado de 11 a 15', 'Solo los fines de semana'], correct: 1, explanation: 'Måndag till fredag klockan elva till fjorton = lunes a viernes de once a catorce.' },
-        ]
+            "id": "a-r-u2-2",
+            "unit": 2,
+            "unitTitle": "Familia",
+            "title": "Min familj",
+            "kind": "Texto personal",
+            "icon": "👪",
+            "text": "Jag heter Sofia. Jag har en man och två barn. Min man heter Karl. Mina barn heter Lisa och Tom. Min mamma bor också i Sverige, men min pappa bor i Chile.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Cuántos hijos tiene Sofia?",
+                        "options": [
+                              "Ett",
+                              "Två",
+                              "Tre"
+                        ],
+                        "correct": 1,
+                        "explanation": "«två barn» = dos hijos."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Sofias pappa bor i Sverige.",
+                        "answer": false,
+                        "explanation": "«min pappa bor i Chile» = su papá vive en Chile."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Cómo se llama el esposo?",
+                        "answer": "Karl",
+                        "accept": [
+                              "karl"
+                        ],
+                        "explanation": "«Min man heter Karl»."
+                  }
+            ]
       },
-    ],
+      {
+            "id": "a-r-3",
+            "unit": 3,
+            "unitTitle": "Vivienda",
+            "title": "Lägenheten",
+            "kind": "Texto personal",
+            "icon": "🏠",
+            "text": "Fatima och hennes familj bor i en lägenhet i Husby. Lägenheten har tre rum och kök. De bor på tredje våningen och har en liten balkong. I närheten finns en park, en skola och ett bibliotek. Det tar fem minuter att gå till tunnelbanan.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Cuántas habitaciones tiene?",
+                        "options": [
+                              "Två rum",
+                              "Tre rum",
+                              "Fyra rum"
+                        ],
+                        "correct": 1,
+                        "explanation": "«tre rum och kök»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "De bor på tredje våningen.",
+                        "answer": true,
+                        "explanation": "«De bor på tredje våningen» = en el tercer piso."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Cuánto se tarda al metro? (número) ___ minuter",
+                        "answer": "fem",
+                        "accept": [
+                              "5"
+                        ],
+                        "explanation": "«fem minuter att gå till tunnelbanan»."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u3-2",
+            "unit": 3,
+            "unitTitle": "Vivienda",
+            "title": "Mitt rum",
+            "kind": "Texto personal",
+            "icon": "🛏️",
+            "text": "I mitt rum finns en säng, ett bord och en stol. På bordet står en lampa och en dator. Jag har en garderob för mina kläder. Rummet är litet men mysigt.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Qué hay sobre la mesa?",
+                        "options": [
+                              "En tv",
+                              "En lampa och en dator",
+                              "En säng"
+                        ],
+                        "correct": 1,
+                        "explanation": "«På bordet står en lampa och en dator»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Rummet är stort.",
+                        "answer": false,
+                        "explanation": "«Rummet är litet men mysigt» = pequeño pero acogedor."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Dónde guarda la ropa? en una ___",
+                        "answer": "garderob",
+                        "accept": [
+                              "garderoben"
+                        ],
+                        "explanation": "«en garderob för mina kläder»."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u4-1",
+            "unit": 4,
+            "unitTitle": "El tiempo",
+            "title": " Anas dag",
+            "kind": "Horario",
+            "icon": "📅",
+            "text": "Idag är det måndag den femte mars. Klockan är nio. Ana har svenska klockan nio till tolv. På eftermiddagen klockan två träffar hon en vän.",
+            "questions": [
+                  {
+                        "type": "short",
+                        "text": "¿Qué día es hoy? (en sueco)",
+                        "answer": "måndag",
+                        "accept": [
+                              "mandag"
+                        ],
+                        "explanation": "«Idag är det måndag» = hoy es lunes."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿A qué hora empieza el sueco?",
+                        "options": [
+                              "Klockan åtta",
+                              "Klockan nio",
+                              "Klockan tio"
+                        ],
+                        "correct": 1,
+                        "explanation": "«klockan nio till tolv»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Ana träffar en vän på morgonen.",
+                        "answer": false,
+                        "explanation": "Es «på eftermiddagen» = por la tarde."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u4-2",
+            "unit": 4,
+            "unitTitle": "El tiempo",
+            "title": "Kallt väder",
+            "kind": "Texto personal",
+            "icon": "🌨️",
+            "text": "Idag är det kallt och det snöar. Det är minus fem grader. Erik tar på sig en varm jacka, en mössa och vantar. Han cyklar inte idag. Han tar bussen.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Qué tiempo hace?",
+                        "options": [
+                              "Sol och varmt",
+                              "Kallt och snö",
+                              "Regn"
+                        ],
+                        "correct": 1,
+                        "explanation": "«det är kallt och det snöar»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Erik cyklar idag.",
+                        "answer": false,
+                        "explanation": "«Han cyklar inte idag. Han tar bussen»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Qué se pone en la cabeza? en una ___",
+                        "answer": "mössa",
+                        "accept": [
+                              "mossa",
+                              "mössan"
+                        ],
+                        "explanation": "«en mössa» = un gorro."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-2",
+            "unit": 5,
+            "unitTitle": "Rutinas diarias",
+            "title": "Min dag",
+            "kind": "Texto personal",
+            "icon": "⏰",
+            "text": "Jag heter Pedro. Varje morgon vaknar jag klockan sju. Jag äter frukost och dricker kaffe. Sedan tar jag spårvagnen till skolan. Lektionerna börjar klockan nio. På kvällen lagar jag mat och studerar svenska.",
+            "questions": [
+                  {
+                        "type": "short",
+                        "text": "¿A qué hora se despierta? (número) klockan ___",
+                        "answer": "sju",
+                        "accept": [
+                              "7"
+                        ],
+                        "explanation": "«vaknar jag klockan sju» = a las siete."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Cómo va a la escuela?",
+                        "options": [
+                              "Med buss",
+                              "Med spårvagn",
+                              "Till fots"
+                        ],
+                        "correct": 1,
+                        "explanation": "«tar jag spårvagnen» = tomo el tranvía."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "På kvällen lagar Pedro mat.",
+                        "answer": true,
+                        "explanation": "«På kvällen lagar jag mat»."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u5-2",
+            "unit": 5,
+            "unitTitle": "Rutinas diarias",
+            "title": "Efter jobbet",
+            "kind": "Texto personal",
+            "icon": "🌙",
+            "text": "Efter jobbet handlar Maria mat. Sedan lagar hon middag. På kvällen tittar hon på tv och läser en bok. Hon går och lägger sig klockan elva.",
+            "questions": [
+                  {
+                        "type": "short",
+                        "text": "¿A qué hora se acuesta? (número) klockan ___",
+                        "answer": "elva",
+                        "accept": [
+                              "11"
+                        ],
+                        "explanation": "«lägger sig klockan elva» = a las once."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Maria lagar middag.",
+                        "answer": true,
+                        "explanation": "«Sedan lagar hon middag»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Qué hace por la noche?",
+                        "options": [
+                              "Jobbar",
+                              "Tittar på tv och läser",
+                              "Springer"
+                        ],
+                        "correct": 1,
+                        "explanation": "«tittar hon på tv och läser en bok»."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u6-1",
+            "unit": 6,
+            "unitTitle": "Escuela y clase",
+            "title": "På SFI",
+            "kind": "Texto personal",
+            "icon": "🏫",
+            "text": "Jag går på SFI i Malmö. Vi är femton elever i klassen. Läraren heter Anna. Vi lär oss att läsa, skriva och prata svenska. Lektionen börjar klockan åtta.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Cuántos alumnos hay?",
+                        "options": [
+                              "Tio",
+                              "Femton",
+                              "Tjugo"
+                        ],
+                        "correct": 1,
+                        "explanation": "«Vi är femton elever»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Cómo se llama la profesora?",
+                        "answer": "Anna",
+                        "accept": [
+                              "anna"
+                        ],
+                        "explanation": "«Läraren heter Anna»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Lektionen börjar klockan nio.",
+                        "answer": false,
+                        "explanation": "«Lektionen börjar klockan åtta»."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u6-2",
+            "unit": 6,
+            "unitTitle": "Escuela y clase",
+            "title": "Meddelande från läraren",
+            "kind": "Mensaje",
+            "icon": "✉️",
+            "text": "Hej! Imorgon har vi inget prov. Ta med er böcker och en penna. Vi ska öva att skriva. Hälsningar, Anna (lärare)",
+            "questions": [
+                  {
+                        "type": "tf",
+                        "text": "Det är prov imorgon.",
+                        "answer": false,
+                        "explanation": "«Imorgon har vi inget prov» = mañana no hay examen."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Qué deben traer?",
+                        "options": [
+                              "Mat",
+                              "Böcker och en penna",
+                              "Pengar"
+                        ],
+                        "correct": 1,
+                        "explanation": "«Ta med er böcker och en penna»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Quién escribe el mensaje?",
+                        "answer": "Anna",
+                        "accept": [
+                              "anna",
+                              "läraren"
+                        ],
+                        "explanation": "Firma «Anna (lärare)»."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u7-1",
+            "unit": 7,
+            "unitTitle": "Trabajo",
+            "title": "Ali jobbar",
+            "kind": "Texto personal",
+            "icon": "💼",
+            "text": "Ali jobbar på ett lager. Han börjar klockan sju på morgonen och slutar klockan fyra. Han lyfter lådor och kör truck. Han trivs med sitt jobb.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Dónde trabaja Ali?",
+                        "options": [
+                              "På ett café",
+                              "På ett lager",
+                              "På ett sjukhus"
+                        ],
+                        "correct": 1,
+                        "explanation": "«Ali jobbar på ett lager» = en un almacén."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿A qué hora termina? (número) klockan ___",
+                        "answer": "fyra",
+                        "accept": [
+                              "4"
+                        ],
+                        "explanation": "«slutar klockan fyra» = a las cuatro."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Ali trivs inte med jobbet.",
+                        "answer": false,
+                        "explanation": "«Han trivs med sitt jobb» = está a gusto."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u7-2",
+            "unit": 7,
+            "unitTitle": "Trabajo",
+            "title": "Vi söker personal",
+            "kind": "Anuncio",
+            "icon": "📌",
+            "text": "Vi söker personal till vårt café. Du ska vara trevlig och tala lite svenska. Arbetstid: helger. Ring 070-123 45 67.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Qué buscan?",
+                        "options": [
+                              "Personal till ett café",
+                              "En lärare",
+                              "En läkare"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Vi söker personal till vårt café»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Man jobbar på vardagar.",
+                        "answer": false,
+                        "explanation": "«Arbetstid: helger» = fines de semana."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Qué días se trabaja? (en sueco)",
+                        "answer": "helger",
+                        "accept": [
+                              "helg",
+                              "på helger"
+                        ],
+                        "explanation": "«Arbetstid: helger»."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u8-1",
+            "unit": 8,
+            "unitTitle": "Compras",
+            "title": "Anna handlar",
+            "kind": "Texto personal",
+            "icon": "🛒",
+            "text": "Anna handlar på ICA. Hon köper mjölk för tolv kronor, bröd för tjugofem kronor och äpplen för tjugo kronor. Hon betalar med kort.",
+            "questions": [
+                  {
+                        "type": "short",
+                        "text": "¿Cuánto cuesta el pan? (número)",
+                        "answer": "tjugofem",
+                        "accept": [
+                              "25"
+                        ],
+                        "explanation": "«bröd för tjugofem kronor» = 25 coronas."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Cómo paga Anna?",
+                        "options": [
+                              "Med kort",
+                              "Med kontanter",
+                              "Med telefon"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Hon betalar med kort» = con tarjeta."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Anna köper fisk.",
+                        "answer": false,
+                        "explanation": "Compra «mjölk, bröd och äpplen»."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u8-2",
+            "unit": 8,
+            "unitTitle": "Compras",
+            "title": "REA i butiken",
+            "kind": "Anuncio",
+            "icon": "🏷️",
+            "text": "REA! Denna vecka: jackor 50% rabatt. Skor från 199 kronor. Välkommen till butiken på Storgatan 4!",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Qué está en oferta?",
+                        "options": [
+                              "Böcker",
+                              "Jackor",
+                              "Mat"
+                        ],
+                        "correct": 1,
+                        "explanation": "«jackor 50% rabatt» = chaquetas al 50%."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Skorna kostar 500 kronor.",
+                        "answer": false,
+                        "explanation": "«Skor från 199 kronor»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿En qué calle está la tienda?",
+                        "answer": "Storgatan",
+                        "accept": [
+                              "storgatan",
+                              "storgatan 4"
+                        ],
+                        "explanation": "«butiken på Storgatan 4»."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-4",
+            "unit": 9,
+            "unitTitle": "Comida y bebida",
+            "title": "På restaurangen",
+            "kind": "Texto personal",
+            "icon": "🍽️",
+            "text": "Idag äter Lena lunch på en restaurang. Restaurangen heter Gröna Köket och serverar vegetarisk mat. Lena beställer en vegetarisk lasagne och ett glas vatten. Lunchen kostar nittiofem kronor. Restaurangen är öppen måndag till fredag.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Qué tipo de comida sirven?",
+                        "options": [
+                              "Kött",
+                              "Vegetarisk mat",
+                              "Fisk"
+                        ],
+                        "correct": 1,
+                        "explanation": "«serverar vegetarisk mat»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Cuánto cuesta el almuerzo? (número)",
+                        "answer": "nittiofem",
+                        "accept": [
+                              "95"
+                        ],
+                        "explanation": "«Lunchen kostar nittiofem kronor» = 95."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Restaurangen är öppen på söndag.",
+                        "answer": false,
+                        "explanation": "«öppen måndag till fredag»."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u9-2",
+            "unit": 9,
+            "unitTitle": "Comida y bebida",
+            "title": "Recept: pannkakor",
+            "kind": "Instrucción",
+            "icon": "🥞",
+            "text": "Recept: pannkakor. Du behöver mjölk, ägg, mjöl och lite salt. Blanda allt. Stek i en stekpanna. Ät med sylt.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Qué plato es?",
+                        "options": [
+                              "Soppa",
+                              "Pannkakor",
+                              "Sallad"
+                        ],
+                        "correct": 1,
+                        "explanation": "«Recept: pannkakor» = receta de tortitas."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Con qué se comen? med ___",
+                        "answer": "sylt",
+                        "accept": [
+                              "sylten"
+                        ],
+                        "explanation": "«Ät med sylt» = con mermelada."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Man behöver kött.",
+                        "answer": false,
+                        "explanation": "Se necesita «mjölk, ägg, mjöl och salt»."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u10-1",
+            "unit": 10,
+            "unitTitle": "Transporte",
+            "title": "Buss 4",
+            "kind": "Horario",
+            "icon": "🚌",
+            "text": "Buss 4 går från Centralen klockan 08:10, 08:30 och 08:50. Resan tar tjugo minuter. En biljett kostar trettio kronor.",
+            "questions": [
+                  {
+                        "type": "short",
+                        "text": "¿Cuánto dura el viaje? (número) ___ minuter",
+                        "answer": "tjugo",
+                        "accept": [
+                              "20"
+                        ],
+                        "explanation": "«Resan tar tjugo minuter» = 20 minutos."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Cuánto cuesta el billete?",
+                        "options": [
+                              "Tjugo kronor",
+                              "Trettio kronor",
+                              "Femtio kronor"
+                        ],
+                        "correct": 1,
+                        "explanation": "«En biljett kostar trettio kronor» = 30."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Bussen går från Centralen.",
+                        "answer": true,
+                        "explanation": "«Buss 4 går från Centralen»."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u10-2",
+            "unit": 10,
+            "unitTitle": "Transporte",
+            "title": "Tåget är försenat",
+            "kind": "Mensaje",
+            "icon": "📱",
+            "text": "Hej! Tåget är försenat. Jag kommer tio minuter senare. Vänta på mig vid stationen. Kram, Sara",
+            "questions": [
+                  {
+                        "type": "tf",
+                        "text": "Tåget är i tid.",
+                        "answer": false,
+                        "explanation": "«Tåget är försenat» = el tren va con retraso."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Dónde debe esperar?",
+                        "options": [
+                              "Vid stationen",
+                              "Hemma",
+                              "På jobbet"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Vänta på mig vid stationen»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Quién escribe el mensaje?",
+                        "answer": "Sara",
+                        "accept": [
+                              "sara"
+                        ],
+                        "explanation": "Firma «Kram, Sara»."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u11-1",
+            "unit": 11,
+            "unitTitle": "Mensajes cortos",
+            "title": "SMS till Omar",
+            "kind": "Mensaje",
+            "icon": "💬",
+            "text": "Hej Omar! Kan du köpa mjölk och bröd på vägen hem? Tack! /Lena",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Qué debe comprar Omar?",
+                        "options": [
+                              "Mjölk och bröd",
+                              "Fisk och ris",
+                              "Kött"
+                        ],
+                        "correct": 0,
+                        "explanation": "«köpa mjölk och bröd»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Quién envía el mensaje?",
+                        "answer": "Lena",
+                        "accept": [
+                              "lena"
+                        ],
+                        "explanation": "Firma «/Lena»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Omar ska köpa fisk.",
+                        "answer": false,
+                        "explanation": "Debe comprar «mjölk och bröd»."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u11-2",
+            "unit": 11,
+            "unitTitle": "Mensajes cortos",
+            "title": "Tack för igår",
+            "kind": "Mensaje",
+            "icon": "📩",
+            "text": "Hej! Tack för igår, det var jättekul. Vi ses nästa vecka. Hälsningar, Maria",
+            "questions": [
+                  {
+                        "type": "tf",
+                        "text": "Maria tackar för igår.",
+                        "answer": true,
+                        "explanation": "«Tack för igår» = gracias por ayer."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Cuándo se ven?",
+                        "options": [
+                              "Imorgon",
+                              "Nästa vecka",
+                              "Idag"
+                        ],
+                        "correct": 1,
+                        "explanation": "«Vi ses nästa vecka»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Quién escribe? (nombre)",
+                        "answer": "Maria",
+                        "accept": [
+                              "maria"
+                        ],
+                        "explanation": "Firma «Hälsningar, Maria»."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u12-1",
+            "unit": 12,
+            "unitTitle": "Citas",
+            "title": "Tid hos doktorn",
+            "kind": "Aviso",
+            "icon": "🏥",
+            "text": "Du har en tid hos doktorn tisdag den 6 maj klockan 10:00. Vårdcentralen ligger på Vasagatan 8. Kom tio minuter innan.",
+            "questions": [
+                  {
+                        "type": "short",
+                        "text": "¿Qué día es la cita? (en sueco)",
+                        "answer": "tisdag",
+                        "accept": [
+                              "tisdagen"
+                        ],
+                        "explanation": "«tisdag den 6 maj»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Dónde está el centro de salud?",
+                        "options": [
+                              "Storgatan 4",
+                              "Vasagatan 8",
+                              "Kungsgatan 2"
+                        ],
+                        "correct": 1,
+                        "explanation": "«Vårdcentralen ligger på Vasagatan 8»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Tiden är klockan tolv.",
+                        "answer": false,
+                        "explanation": "Es «klockan 10:00» = a las diez."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u12-2",
+            "unit": 12,
+            "unitTitle": "Citas",
+            "title": "Hos doktorn",
+            "kind": "Diálogo",
+            "icon": "🩺",
+            "text": "– Hej, jag har ont i magen.\n– Har du feber?\n– Ja, lite.\n– Ta den här medicinen två gånger om dagen.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Qué le duele?",
+                        "options": [
+                              "Halsen",
+                              "Magen",
+                              "Huvudet"
+                        ],
+                        "correct": 1,
+                        "explanation": "«ont i magen» = dolor de estómago."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Han ska ta medicinen en gång om dagen.",
+                        "answer": false,
+                        "explanation": "«två gånger om dagen» = dos veces al día."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Tiene fiebre? (ja/nej)",
+                        "answer": "ja",
+                        "accept": [
+                              "ja lite"
+                        ],
+                        "explanation": "«Har du feber? – Ja, lite»."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u13-1",
+            "unit": 13,
+            "unitTitle": "Invitaciones",
+            "title": "Kom på fest!",
+            "kind": "Invitación",
+            "icon": "🎉",
+            "text": "Hej! Jag fyller år på lördag. Kom på fest klockan 18 hemma hos mig. Det blir tårta och musik! /Sofia",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Qué se celebra?",
+                        "options": [
+                              "En bröllop",
+                              "En födelsedag",
+                              "En jul"
+                        ],
+                        "correct": 1,
+                        "explanation": "«Jag fyller år» = cumplo años."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿A qué hora es la fiesta? (número) klockan ___",
+                        "answer": "18",
+                        "accept": [
+                              "arton",
+                              "klockan 18"
+                        ],
+                        "explanation": "«klockan 18» = a las 18."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Det blir ingen tårta.",
+                        "answer": false,
+                        "explanation": "«Det blir tårta och musik» = habrá tarta y música."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u13-2",
+            "unit": 13,
+            "unitTitle": "Invitaciones",
+            "title": "Svar på inbjudan",
+            "kind": "Mensaje",
+            "icon": "💌",
+            "text": "Hej Sofia! Tack för inbjudan. Jag kommer gärna! Ska jag ta med något? Kram, Ana",
+            "questions": [
+                  {
+                        "type": "tf",
+                        "text": "Ana kommer inte till festen.",
+                        "answer": false,
+                        "explanation": "«Jag kommer gärna» = iré con gusto."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Qué pregunta Ana?",
+                        "options": [
+                              "Var är festen",
+                              "Om hon ska ta med något",
+                              "Vem kommer"
+                        ],
+                        "correct": 1,
+                        "explanation": "«Ska jag ta med något?»"
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Quién invitó a la fiesta? (nombre)",
+                        "answer": "Sofia",
+                        "accept": [
+                              "sofia"
+                        ],
+                        "explanation": "Responde a «Hej Sofia»."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u14-1",
+            "unit": 14,
+            "unitTitle": "Anuncios y formularios",
+            "title": "Hissen är trasig",
+            "kind": "Cartel",
+            "icon": "⚠️",
+            "text": "OBS! Hissen är trasig. Använd trappan. Vi lagar hissen imorgon. Tack för förståelsen.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Qué pasa?",
+                        "options": [
+                              "Hissen är trasig",
+                              "Dörren är öppen",
+                              "Vattnet är kallt"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Hissen är trasig» = el ascensor está roto."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Qué se debe usar? (en sueco)",
+                        "answer": "trappan",
+                        "accept": [
+                              "trappa",
+                              "trapporna"
+                        ],
+                        "explanation": "«Använd trappan» = usa la escalera."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Hissen fungerar.",
+                        "answer": false,
+                        "explanation": "«Hissen är trasig»."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u14-2",
+            "unit": 14,
+            "unitTitle": "Anuncios y formularios",
+            "title": "Anmälan",
+            "kind": "Formulario",
+            "icon": "📝",
+            "text": "ANMÄLAN\nNamn: Ana Lopez\nAdress: Storgatan 4, Stockholm\nTelefon: 070-111 22 33\nLand: Peru",
+            "questions": [
+                  {
+                        "type": "short",
+                        "text": "¿Cuál es el país (Land)?",
+                        "answer": "Peru",
+                        "accept": [
+                              "peru"
+                        ],
+                        "explanation": "«Land: Peru»."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Cuál es el teléfono?",
+                        "options": [
+                              "070-111 22 33",
+                              "08-123 45",
+                              "070-999 88"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Telefon: 070-111 22 33»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Ana bor i Göteborg.",
+                        "answer": false,
+                        "explanation": "«Adress: Storgatan 4, Stockholm»."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u15-1",
+            "unit": 15,
+            "unitTitle": "Evaluación final",
+            "title": "Marta berättar",
+            "kind": "Texto personal",
+            "icon": "🏅",
+            "text": "Jag heter Marta. Jag är från Polen, men jag bor i Sverige nu. Jag har en dotter. På morgonen går jag till SFI och på eftermiddagen jobbar jag i en butik. På helgen träffar jag vänner.",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿De dónde es Marta?",
+                        "options": [
+                              "Från Sverige",
+                              "Från Polen",
+                              "Från Peru"
+                        ],
+                        "correct": 1,
+                        "explanation": "«Jag är från Polen»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Marta jobbar på morgonen.",
+                        "answer": false,
+                        "explanation": "Por la mañana va a SFI; trabaja «på eftermiddagen»."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿Dónde trabaja? i en ___",
+                        "answer": "butik",
+                        "accept": [
+                              "butiken"
+                        ],
+                        "explanation": "«jobbar jag i en butik»."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u15-2",
+            "unit": 15,
+            "unitTitle": "Evaluación final",
+            "title": "Biblioteket",
+            "kind": "Horario",
+            "icon": "📚",
+            "text": "Biblioteket är öppet måndag–fredag 10–18 och lördag 11–15. På söndag är det stängt. Det är gratis att låna böcker.",
+            "questions": [
+                  {
+                        "type": "short",
+                        "text": "¿A qué hora abre el sábado? (número)",
+                        "answer": "11",
+                        "accept": [
+                              "elva"
+                        ],
+                        "explanation": "«lördag 11–15»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Biblioteket är öppet på söndag.",
+                        "answer": false,
+                        "explanation": "«På söndag är det stängt» = domingo cerrado."
+                  },
+                  {
+                        "type": "mc",
+                        "text": "¿Cuánto cuesta pedir libros?",
+                        "options": [
+                              "Gratis",
+                              "Tio kronor",
+                              "Femtio kronor"
+                        ],
+                        "correct": 0,
+                        "explanation": "«Det är gratis att låna böcker»."
+                  }
+            ]
+      },
+      {
+            "id": "a-r-u15-3",
+            "unit": 15,
+            "unitTitle": "Evaluación final",
+            "title": "Vi ses imorgon",
+            "kind": "Mensaje",
+            "icon": "✅",
+            "text": "Hej! Vi ses imorgon klockan 14 vid stationen. Glöm inte biljetten! /Erik",
+            "questions": [
+                  {
+                        "type": "mc",
+                        "text": "¿Dónde se ven?",
+                        "options": [
+                              "Vid stationen",
+                              "Hemma",
+                              "På skolan"
+                        ],
+                        "correct": 0,
+                        "explanation": "«vid stationen» = en la estación."
+                  },
+                  {
+                        "type": "short",
+                        "text": "¿A qué hora? (número) klockan ___",
+                        "answer": "14",
+                        "accept": [
+                              "fjorton"
+                        ],
+                        "explanation": "«klockan 14»."
+                  },
+                  {
+                        "type": "tf",
+                        "text": "Erik dice: olvida el billete.",
+                        "answer": false,
+                        "explanation": "«Glöm inte biljetten» = NO olvides el billete."
+                  }
+            ]
+      }
+],
 
     write: [
       {
@@ -8678,8 +9779,29 @@ function skillProgress(kind, level) {
   const key = kind === 'reading' ? 'read' : 'write';
   const arr = (typeof DB !== 'undefined' && DB[level] && DB[level][key]) ? DB[level][key] : [];
   let done = 0;
-  arr.forEach((it, i) => { if (isCompleted(kind, level + ':' + key + ':' + i)) done++; });
+  arr.forEach((it, i) => { const cid = it.id || i; if (isCompleted(kind, level + ':' + key + ':' + cid)) done++; });
   return { done, total: arr.length, pct: pctClamp(done, arr.length) };
+}
+
+// Migración idempotente: el progreso de Läsa se guardaba por ÍNDICE
+// (A:read:0..3). Ahora se guarda por ID (A:read:a-r-1...). Copiamos las
+// filas viejas a la nueva clave para NO perder progreso real de alumnos.
+const _LEGACY_READ_MAP = { A: { '0': 'a-r-1', '1': 'a-r-2', '2': 'a-r-3', '3': 'a-r-4' } };
+async function backfillReadingIds() {
+  try {
+    for (const lv in _LEGACY_READ_MAP) {
+      const map = _LEGACY_READ_MAP[lv];
+      for (const oldIdx in map) {
+        const oldKey = _upKey('reading', lv + ':read:' + oldIdx);
+        const newId = map[oldIdx];
+        const newKey = _upKey('reading', lv + ':read:' + newId);
+        const oldRow = UNIFIED_PROGRESS[oldKey];
+        if (oldRow && oldRow.status === 'completed' && !UNIFIED_PROGRESS[newKey]) {
+          await progressMark('reading', lv + ':read:' + newId, { status: 'completed', level: lv, score: oldRow.score || 0 });
+        }
+      }
+    }
+  } catch (e) {}
 }
 
 // Progreso de Vokabulär por nivel y (opcional) categoría 'word'|'verb'.
@@ -8755,6 +9877,7 @@ async function loadUnifiedProgress() {
   } catch (e) {}
   UNIFIED_LOADED = true;
   try { await backfillLocalProgress(); } catch (e) {}
+  try { await backfillReadingIds(); } catch (e) {}
 }
 
 async function loadVocabProgress() {
@@ -10615,27 +11738,55 @@ function initRead() {
     showView('read');
     return;
   }
-  items.forEach((item, i) => {
-    grid.innerHTML += `
-      <div class="card-hover glass rounded-2xl p-5 shadow border border-blue-100 cursor-pointer" onclick="openText(${i})">
+  // Si las lecturas están organizadas por unidad, se muestran agrupadas.
+  const hasUnits = items.some(it => it.unit != null);
+  const cardHTML = (item, i) => {
+    const done = (typeof isCompleted === 'function' && item.id) ? isCompleted('reading', state.level + ':read:' + item.id) : false;
+    return `
+      <div class="card-hover glass rounded-2xl p-5 shadow border ${done ? 'border-green-200' : 'border-blue-100'} cursor-pointer" onclick="openText(${i})">
         <div class="flex items-center gap-3 mb-3">
           <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center text-xl">${item.icon || '📖'}</div>
-          <div>
+          <div class="min-w-0">
             <div class="font-bold text-gray-800">${item.title}</div>
-            <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">${item.tag || ''}</span>
+            <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">${item.kind || item.tag || ''}</span>
           </div>
+          ${done ? '<span class="ml-auto text-green-500 flex-shrink-0" title="Completada">✓</span>' : ''}
         </div>
         <div class="text-xs text-gray-500 line-clamp-2">${item.text?.substring(0, 80) || ''}...</div>
         <div class="mt-2 text-xs text-green-500 font-medium">${item.questions?.length || 0} preguntas →</div>
       </div>`;
-  });
+  };
+  if (hasUnits) {
+    const units = [];
+    items.forEach((it, i) => {
+      const u = it.unit || 0;
+      let g = units.find(x => x.u === u);
+      if (!g) { g = { u, title: it.unitTitle || ('Unidad ' + u), items: [] }; units.push(g); }
+      g.items.push({ it, i });
+    });
+    grid.className = 'space-y-6';
+    grid.innerHTML = units.map(g => {
+      const doneN = g.items.filter(x => x.it.id && isCompleted('reading', state.level + ':read:' + x.it.id)).length;
+      return `
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <span class="w-7 h-7 rounded-lg bg-swe-blue text-white flex items-center justify-center font-black text-sm flex-shrink-0">${g.u}</span>
+          <div class="font-black text-gray-800">${g.title}</div>
+          <span class="ml-auto text-xs font-bold ${doneN === g.items.length ? 'text-green-600' : 'text-gray-400'}">${doneN}/${g.items.length}</span>
+        </div>
+        <div class="grid md:grid-cols-2 gap-3">${g.items.map(x => cardHTML(x.it, x.i)).join('')}</div>
+      </div>`;
+    }).join('');
+  } else {
+    grid.innerHTML = items.map((item, i) => cardHTML(item, i)).join('');
+  }
   showView('read');
 }
 
 function openText(index) {
   const items = DB[state.level].read || [];
   const _t = items[index];
-  state.currentText = _t ? { ..._t, questions: (_t.questions || []).map(shuffleOptions) } : _t;
+  state.currentText = _t ? { ..._t, questions: (_t.questions || []).map(q => (q.type && q.type !== 'mc') ? { ...q } : shuffleOptions({ ...q })) } : _t;
   state.readItemIndex = index;
   state.readQIndex = 0;
   state.readAnswers = [];
@@ -10664,17 +11815,47 @@ function renderReadQuestion() {
     return;
   }
   const q = qs[state.readQIndex];
+  const type = q.type || 'mc';
   document.getElementById('q-progress-read').textContent = `${state.readQIndex + 1} / ${qs.length}`;
   document.getElementById('read-next-btn').classList.add('hidden');
-  document.getElementById('read-questions-container').innerHTML = `
-    <p class="font-semibold text-gray-800 mb-3">${state.readQIndex + 1}. ${q.text}</p>
-    <div class="space-y-2" id="options-read">
-      ${q.options.map((opt, i) => `
+  let body = `<p class="font-semibold text-gray-800 mb-3">${state.readQIndex + 1}. ${q.text}</p>`;
+  if (type === 'tf') {
+    body += `<div class="space-y-2" id="options-read">
+      <button onclick="answerReadTF(true)" class="option-btn w-full text-left px-4 py-3 border-2 border-gray-200 rounded-xl text-sm font-medium text-gray-700 flex items-center gap-3"><span class="w-7 h-7 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">✔️</span>Sant (Verdadero)</button>
+      <button onclick="answerReadTF(false)" class="option-btn w-full text-left px-4 py-3 border-2 border-gray-200 rounded-xl text-sm font-medium text-gray-700 flex items-center gap-3"><span class="w-7 h-7 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">❌</span>Falskt (Falso)</button>
+    </div>`;
+  } else if (type === 'short') {
+    body += `<div class="flex gap-2">
+      <input id="read-short-input" type="text" autocomplete="off" class="flex-1 border-2 border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-green-400" placeholder="Escribe tu respuesta en sueco" onkeydown="if(event.key==='Enter')answerReadShort()">
+      <button onclick="answerReadShort()" class="bg-green-500 text-white px-4 py-3 rounded-xl font-bold text-sm flex-shrink-0">Comprobar</button>
+    </div>`;
+  } else {
+    body += `<div class="space-y-2" id="options-read">
+      ${(q.options || []).map((opt, i) => `
         <button onclick="answerRead(${i})" class="option-btn w-full text-left px-4 py-3 border-2 border-gray-200 rounded-xl text-sm font-medium text-gray-700 flex items-center gap-3">
           <span class="w-7 h-7 rounded-lg bg-gray-100 flex items-center justify-center font-bold text-gray-500 flex-shrink-0 text-xs">${'ABCD'[i]}</span>
           ${opt}
         </button>`).join('')}
     </div>`;
+  }
+  document.getElementById('read-questions-container').innerHTML = body;
+  const inp = document.getElementById('read-short-input'); if (inp) inp.focus();
+}
+
+// Feedback + registro común para todos los tipos de pregunta.
+function _readReveal(isCorrect, explanation) {
+  if (isCorrect) { state.stats.correct++; saveStats(); updateStats(); }
+  state.readAnswers.push(isCorrect);
+  document.getElementById('read-questions-container').innerHTML += `
+    <div class="mt-3 p-3 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}">
+      <div class="text-sm font-semibold ${isCorrect ? 'text-green-700' : 'text-red-700'}">${isCorrect ? '✅ ¡Correcto!' : '❌ Incorrecto'}</div>
+      <div class="text-xs text-gray-600 mt-1">${explanation || ''}</div>
+    </div>`;
+  document.getElementById('read-next-btn').classList.remove('hidden');
+}
+
+function _norm(s) {
+  return String(s || '').toLowerCase().trim().replace(/[.,;:!?¿¡"'()]/g, '').replace(/\s+/g, ' ');
 }
 
 function answerRead(idx) {
@@ -10685,16 +11866,35 @@ function answerRead(idx) {
     if (i === q.correct) b.classList.add('correct');
     else if (i === idx && idx !== q.correct) b.classList.add('wrong');
   });
-  const isCorrect = idx === q.correct;
-  if (isCorrect) { state.stats.correct++; saveStats(); updateStats(); }
-  state.readAnswers.push(isCorrect);
+  _readReveal(idx === q.correct, q.explanation);
+}
 
-  document.getElementById('read-questions-container').innerHTML += `
-    <div class="mt-3 p-3 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}">
-      <div class="text-sm font-semibold ${isCorrect ? 'text-green-700' : 'text-red-700'}">${isCorrect ? '✅ ¡Correcto!' : '❌ Incorrecto'}</div>
-      <div class="text-xs text-gray-600 mt-1">${q.explanation}</div>
-    </div>`;
-  document.getElementById('read-next-btn').classList.remove('hidden');
+function answerReadTF(val) {
+  const q = state.currentText.questions[state.readQIndex];
+  const btns = document.querySelectorAll('#options-read .option-btn');
+  btns.forEach(b => b.classList.add('disabled'));
+  // btn[0]=Sant(true), btn[1]=Falskt(false)
+  const correctIdx = q.answer ? 0 : 1, chosenIdx = val ? 0 : 1;
+  btns.forEach((b, i) => {
+    if (i === correctIdx) b.classList.add('correct');
+    else if (i === chosenIdx) b.classList.add('wrong');
+  });
+  _readReveal(val === q.answer, q.explanation);
+}
+
+function answerReadShort() {
+  const q = state.currentText.questions[state.readQIndex];
+  const inp = document.getElementById('read-short-input');
+  if (!inp) return;
+  const val = _norm(inp.value);
+  if (!val) return;
+  const accepted = [q.answer].concat(q.accept || []).map(_norm);
+  const isCorrect = accepted.includes(val);
+  inp.disabled = true;
+  inp.classList.add(isCorrect ? 'border-green-400' : 'border-red-400');
+  const btn = inp.nextElementSibling; if (btn) btn.disabled = true;
+  const exp = (q.explanation || '') + (isCorrect ? '' : ` <b>Respuesta:</b> ${q.answer}`);
+  _readReveal(isCorrect, exp);
 }
 
 function nextReadQuestion() {
@@ -10714,7 +11914,12 @@ function showReadResult() {
   document.getElementById('read-result-score').textContent = `${correct} / ${total}`;
   document.getElementById('read-result-msg').textContent = pct >= 75 ? '¡Excelente lectura!' : '¡Sigue practicando!';
   // Completó la actividad de lectura (terminó las preguntas).
-  try { if (typeof markCompleted === 'function' && state.readItemIndex != null) markCompleted('reading', state.level + ':read:' + state.readItemIndex, state.level, pct); } catch (e) {}
+  try {
+    if (typeof markCompleted === 'function' && state.currentText) {
+      const cid = state.currentText.id || state.readItemIndex;
+      markCompleted('reading', state.level + ':read:' + cid, state.level, pct);
+    }
+  } catch (e) {}
 }
 
 function nextText() {

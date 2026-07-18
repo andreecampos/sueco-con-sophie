@@ -1358,27 +1358,55 @@ function initRead() {
     showView('read');
     return;
   }
-  items.forEach((item, i) => {
-    grid.innerHTML += `
-      <div class="card-hover glass rounded-2xl p-5 shadow border border-blue-100 cursor-pointer" onclick="openText(${i})">
+  // Si las lecturas están organizadas por unidad, se muestran agrupadas.
+  const hasUnits = items.some(it => it.unit != null);
+  const cardHTML = (item, i) => {
+    const done = (typeof isCompleted === 'function' && item.id) ? isCompleted('reading', state.level + ':read:' + item.id) : false;
+    return `
+      <div class="card-hover glass rounded-2xl p-5 shadow border ${done ? 'border-green-200' : 'border-blue-100'} cursor-pointer" onclick="openText(${i})">
         <div class="flex items-center gap-3 mb-3">
           <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center text-xl">${item.icon || '📖'}</div>
-          <div>
+          <div class="min-w-0">
             <div class="font-bold text-gray-800">${item.title}</div>
-            <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">${item.tag || ''}</span>
+            <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">${item.kind || item.tag || ''}</span>
           </div>
+          ${done ? '<span class="ml-auto text-green-500 flex-shrink-0" title="Completada">✓</span>' : ''}
         </div>
         <div class="text-xs text-gray-500 line-clamp-2">${item.text?.substring(0, 80) || ''}...</div>
         <div class="mt-2 text-xs text-green-500 font-medium">${item.questions?.length || 0} preguntas →</div>
       </div>`;
-  });
+  };
+  if (hasUnits) {
+    const units = [];
+    items.forEach((it, i) => {
+      const u = it.unit || 0;
+      let g = units.find(x => x.u === u);
+      if (!g) { g = { u, title: it.unitTitle || ('Unidad ' + u), items: [] }; units.push(g); }
+      g.items.push({ it, i });
+    });
+    grid.className = 'space-y-6';
+    grid.innerHTML = units.map(g => {
+      const doneN = g.items.filter(x => x.it.id && isCompleted('reading', state.level + ':read:' + x.it.id)).length;
+      return `
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <span class="w-7 h-7 rounded-lg bg-swe-blue text-white flex items-center justify-center font-black text-sm flex-shrink-0">${g.u}</span>
+          <div class="font-black text-gray-800">${g.title}</div>
+          <span class="ml-auto text-xs font-bold ${doneN === g.items.length ? 'text-green-600' : 'text-gray-400'}">${doneN}/${g.items.length}</span>
+        </div>
+        <div class="grid md:grid-cols-2 gap-3">${g.items.map(x => cardHTML(x.it, x.i)).join('')}</div>
+      </div>`;
+    }).join('');
+  } else {
+    grid.innerHTML = items.map((item, i) => cardHTML(item, i)).join('');
+  }
   showView('read');
 }
 
 function openText(index) {
   const items = DB[state.level].read || [];
   const _t = items[index];
-  state.currentText = _t ? { ..._t, questions: (_t.questions || []).map(shuffleOptions) } : _t;
+  state.currentText = _t ? { ..._t, questions: (_t.questions || []).map(q => (q.type && q.type !== 'mc') ? { ...q } : shuffleOptions({ ...q })) } : _t;
   state.readItemIndex = index;
   state.readQIndex = 0;
   state.readAnswers = [];
@@ -1407,17 +1435,47 @@ function renderReadQuestion() {
     return;
   }
   const q = qs[state.readQIndex];
+  const type = q.type || 'mc';
   document.getElementById('q-progress-read').textContent = `${state.readQIndex + 1} / ${qs.length}`;
   document.getElementById('read-next-btn').classList.add('hidden');
-  document.getElementById('read-questions-container').innerHTML = `
-    <p class="font-semibold text-gray-800 mb-3">${state.readQIndex + 1}. ${q.text}</p>
-    <div class="space-y-2" id="options-read">
-      ${q.options.map((opt, i) => `
+  let body = `<p class="font-semibold text-gray-800 mb-3">${state.readQIndex + 1}. ${q.text}</p>`;
+  if (type === 'tf') {
+    body += `<div class="space-y-2" id="options-read">
+      <button onclick="answerReadTF(true)" class="option-btn w-full text-left px-4 py-3 border-2 border-gray-200 rounded-xl text-sm font-medium text-gray-700 flex items-center gap-3"><span class="w-7 h-7 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">✔️</span>Sant (Verdadero)</button>
+      <button onclick="answerReadTF(false)" class="option-btn w-full text-left px-4 py-3 border-2 border-gray-200 rounded-xl text-sm font-medium text-gray-700 flex items-center gap-3"><span class="w-7 h-7 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">❌</span>Falskt (Falso)</button>
+    </div>`;
+  } else if (type === 'short') {
+    body += `<div class="flex gap-2">
+      <input id="read-short-input" type="text" autocomplete="off" class="flex-1 border-2 border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-green-400" placeholder="Escribe tu respuesta en sueco" onkeydown="if(event.key==='Enter')answerReadShort()">
+      <button onclick="answerReadShort()" class="bg-green-500 text-white px-4 py-3 rounded-xl font-bold text-sm flex-shrink-0">Comprobar</button>
+    </div>`;
+  } else {
+    body += `<div class="space-y-2" id="options-read">
+      ${(q.options || []).map((opt, i) => `
         <button onclick="answerRead(${i})" class="option-btn w-full text-left px-4 py-3 border-2 border-gray-200 rounded-xl text-sm font-medium text-gray-700 flex items-center gap-3">
           <span class="w-7 h-7 rounded-lg bg-gray-100 flex items-center justify-center font-bold text-gray-500 flex-shrink-0 text-xs">${'ABCD'[i]}</span>
           ${opt}
         </button>`).join('')}
     </div>`;
+  }
+  document.getElementById('read-questions-container').innerHTML = body;
+  const inp = document.getElementById('read-short-input'); if (inp) inp.focus();
+}
+
+// Feedback + registro común para todos los tipos de pregunta.
+function _readReveal(isCorrect, explanation) {
+  if (isCorrect) { state.stats.correct++; saveStats(); updateStats(); }
+  state.readAnswers.push(isCorrect);
+  document.getElementById('read-questions-container').innerHTML += `
+    <div class="mt-3 p-3 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}">
+      <div class="text-sm font-semibold ${isCorrect ? 'text-green-700' : 'text-red-700'}">${isCorrect ? '✅ ¡Correcto!' : '❌ Incorrecto'}</div>
+      <div class="text-xs text-gray-600 mt-1">${explanation || ''}</div>
+    </div>`;
+  document.getElementById('read-next-btn').classList.remove('hidden');
+}
+
+function _norm(s) {
+  return String(s || '').toLowerCase().trim().replace(/[.,;:!?¿¡"'()]/g, '').replace(/\s+/g, ' ');
 }
 
 function answerRead(idx) {
@@ -1428,16 +1486,35 @@ function answerRead(idx) {
     if (i === q.correct) b.classList.add('correct');
     else if (i === idx && idx !== q.correct) b.classList.add('wrong');
   });
-  const isCorrect = idx === q.correct;
-  if (isCorrect) { state.stats.correct++; saveStats(); updateStats(); }
-  state.readAnswers.push(isCorrect);
+  _readReveal(idx === q.correct, q.explanation);
+}
 
-  document.getElementById('read-questions-container').innerHTML += `
-    <div class="mt-3 p-3 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}">
-      <div class="text-sm font-semibold ${isCorrect ? 'text-green-700' : 'text-red-700'}">${isCorrect ? '✅ ¡Correcto!' : '❌ Incorrecto'}</div>
-      <div class="text-xs text-gray-600 mt-1">${q.explanation}</div>
-    </div>`;
-  document.getElementById('read-next-btn').classList.remove('hidden');
+function answerReadTF(val) {
+  const q = state.currentText.questions[state.readQIndex];
+  const btns = document.querySelectorAll('#options-read .option-btn');
+  btns.forEach(b => b.classList.add('disabled'));
+  // btn[0]=Sant(true), btn[1]=Falskt(false)
+  const correctIdx = q.answer ? 0 : 1, chosenIdx = val ? 0 : 1;
+  btns.forEach((b, i) => {
+    if (i === correctIdx) b.classList.add('correct');
+    else if (i === chosenIdx) b.classList.add('wrong');
+  });
+  _readReveal(val === q.answer, q.explanation);
+}
+
+function answerReadShort() {
+  const q = state.currentText.questions[state.readQIndex];
+  const inp = document.getElementById('read-short-input');
+  if (!inp) return;
+  const val = _norm(inp.value);
+  if (!val) return;
+  const accepted = [q.answer].concat(q.accept || []).map(_norm);
+  const isCorrect = accepted.includes(val);
+  inp.disabled = true;
+  inp.classList.add(isCorrect ? 'border-green-400' : 'border-red-400');
+  const btn = inp.nextElementSibling; if (btn) btn.disabled = true;
+  const exp = (q.explanation || '') + (isCorrect ? '' : ` <b>Respuesta:</b> ${q.answer}`);
+  _readReveal(isCorrect, exp);
 }
 
 function nextReadQuestion() {
@@ -1457,7 +1534,12 @@ function showReadResult() {
   document.getElementById('read-result-score').textContent = `${correct} / ${total}`;
   document.getElementById('read-result-msg').textContent = pct >= 75 ? '¡Excelente lectura!' : '¡Sigue practicando!';
   // Completó la actividad de lectura (terminó las preguntas).
-  try { if (typeof markCompleted === 'function' && state.readItemIndex != null) markCompleted('reading', state.level + ':read:' + state.readItemIndex, state.level, pct); } catch (e) {}
+  try {
+    if (typeof markCompleted === 'function' && state.currentText) {
+      const cid = state.currentText.id || state.readItemIndex;
+      markCompleted('reading', state.level + ':read:' + cid, state.level, pct);
+    }
+  } catch (e) {}
 }
 
 function nextText() {
