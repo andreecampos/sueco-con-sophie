@@ -1329,6 +1329,7 @@
 
     <!-- Writing area -->
     <div id="write-area" class="hidden">
+      <button onclick="backToWriteList()" class="mb-3 inline-flex items-center gap-1 text-sm font-semibold text-swe-blue hover:text-swe-dark">← Volver a la lista</button>
       <div class="glass rounded-2xl p-6 shadow border border-blue-100 mb-4">
         <div class="flex items-center gap-3 mb-4">
           <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-xl" id="write-icon">✍️</div>
@@ -3942,6 +3943,18 @@ const DEFAULT_DATA = {
         example: 'Hej Anna!\n\nJag är tyvärr sjuk idag och kan inte komma till jobbet. Jag har ont i halsen och feber. Förlåt för besväret.\n\nMed vänliga hälsningar,\nCarlos',
         criteria: ['Contenido: explica el motivo', 'Tono: formal y respetuoso', 'Brevedad: mensaje corto y claro', 'Vocabulario: sjuk, tyvärr, förlåt']
       },
+{"id": "a-w-4", "unit": 1, "unitTitle": "Presentaciones", "title": "Presentera dig själv", "icon": "🙋", "words": "40–60 ord", "prompt": "Escribe una presentación sobre ti en sueco.\nIncluye:\n• Tu nombre y de dónde vienes\n• Dónde vives ahora\n• Qué estudias o en qué trabajas\n• Algo que te gusta hacer", "checklist": ["Jag heter... och jag kommer från...", "Jag bor i...", "Jag studerar svenska på SFI.", "På fritiden tycker jag om att..."], "example": "Hej! Jag heter Ana och jag kommer från Peru. Nu bor jag i Stockholm. Jag studerar svenska på SFI. På fritiden tycker jag om att promenera och laga mat.", "criteria": ["Contenido: ¿cumpliste todas las tareas?", "Gramática: verbos y orden de palabras", "Vocabulario: palabras del nivel A", "Claridad: se entiende el mensaje"]},
+{"id": "a-w-5", "unit": 1, "unitTitle": "Presentaciones", "title": "Fyll i formuläret", "icon": "📝", "words": "Frases cortas", "prompt": "Completa un formulario con tus datos personales. Escribe una línea por campo.", "checklist": ["Namn: (tu nombre)", "Efternamn: (tu apellido)", "Adress: (tu dirección)", "Telefon: (tu teléfono)", "Land: (tu país)"], "example": "Namn: Ana\nEfternamn: Lopez\nAdress: Storgatan 4, Stockholm\nTelefon: 070-111 22 33\nE-post: ana@mail.se\nLand: Peru", "criteria": ["Contenido: completaste todos los campos", "Datos claros", "Formato de formulario", "Ortografía de datos básicos"]},
+{"id": "a-w-6", "unit": 2, "unitTitle": "Familia", "title": "Skriv om din familj", "icon": "👪", "words": "40–60 ord", "prompt": "Escribe sobre tu familia.\nIncluye:\n• Cuántas personas son\n• Cómo se llaman\n• Qué hacen", "checklist": ["Jag har en...", "Min man/fru heter...", "Jag har ... barn.", "Min mamma/pappa bor i..."], "example": "Jag heter Sofia. Jag har en man och två barn. Min man heter Karl. Mina barn heter Lisa och Tom. Min mamma bor i Sverige, men min pappa bor i Chile.", "criteria": ["Contenido: ¿cumpliste todas las tareas?", "Gramática: verbos y orden de palabras", "Vocabulario: palabras del nivel A", "Claridad: se entiende el mensaje"]},
+{"id": "a-w-7", "unit": 3, "unitTitle": "Vivienda", "title": "Beskriv ditt hem", "icon": "🏠", "words": "40–60 ord", "prompt": "Describe dónde vives.\nIncluye:\n• Qué tipo de vivienda\n• Cuántas habitaciones\n• Qué hay cerca", "checklist": ["Jag bor i en lägenhet / ett hus.", "Den har ... rum.", "I närheten finns...", "Jag trivs bra."], "example": "Jag bor i en lägenhet i Husby. Lägenheten har tre rum och kök. I närheten finns en park och en skola. Det tar fem minuter att gå till tunnelbanan. Jag trivs bra.", "criteria": ["Contenido: ¿cumpliste todas las tareas?", "Gramática: verbos y orden de palabras", "Vocabulario: palabras del nivel A", "Claridad: se entiende el mensaje"]},
+{"id": "a-w-8", "unit": 5, "unitTitle": "Rutinas", "title": "Skriv om din dag", "icon": "⏰", "words": "40–60 ord", "prompt": "Describe tu día normal.\nIncluye:\n• A qué hora te levantas\n• Qué haces por la mañana\n• Qué haces por la tarde/noche", "checklist": ["Jag vaknar klockan...", "På morgonen...", "Sedan...", "På kvällen..."], "example": "Jag vaknar klockan sju. Jag äter frukost och dricker kaffe. Sedan tar jag bussen till SFI. På eftermiddagen handlar jag mat. På kvällen lagar jag mat och tittar på tv.", "criteria": ["Contenido: ¿cumpliste todas las tareas?", "Gramática: verbos y orden de palabras", "Vocabulario: palabras del nivel A", "Claridad: se entiende el mensaje"]},
+{"id": "a-w-9", "unit": 6, "unitTitle": "Escuela", "title": "Meddelande till läraren", "icon": "✉️", "words": "20–35 ord", "prompt": "Escribe un mensaje corto a tu profesor/a. No puedes ir a clase hoy.\nDebes:\n• Saludar\n• Decir que no puedes ir\n• Dar un motivo", "checklist": ["Hej [nombre]!", "Jag kan tyvärr inte komma till SFI idag.", "Jag är sjuk / Mitt barn är sjukt.", "Vi ses imorgon. Hälsningar, [tu nombre]"], "example": "Hej Anna!\nJag kan tyvärr inte komma till SFI idag. Jag är sjuk och har feber. Vi ses imorgon.\nHälsningar, Pedro", "criteria": ["Contenido: saludo, motivo, despedida", "Tono respetuoso", "Mensaje corto y claro", "Vocabulario: sjuk, tyvärr, imorgon"]},
+{"id": "a-w-10", "unit": 8, "unitTitle": "Compras", "title": "Skriv en inköpslista", "icon": "🛒", "words": "Palabras/frases", "prompt": "Vas al supermercado. Escribe tu lista de compras en sueco (al menos 6 cosas).", "checklist": ["Escribe una cosa por línea", "Puedes añadir cantidades: två äpplen", "Usa palabras de comida en sueco"], "example": "Inköpslista:\n- mjölk\n- bröd\n- ägg\n- ost\n- äpplen\n- kaffe\n- ris", "criteria": ["Contenido: al menos 6 productos", "Vocabulario de comida en sueco", "Ortografía básica", "Formato de lista"]},
+{"id": "a-w-11", "unit": 9, "unitTitle": "Comida", "title": "Min favoritmat", "icon": "🍽️", "words": "30–50 ord", "prompt": "Escribe sobre tu comida favorita.\nIncluye:\n• Qué te gusta comer\n• Cuándo lo comes\n• Con quién", "checklist": ["Min favoritmat är...", "Jag äter det ofta / på helgen.", "Jag lagar mat med...", "Det smakar gott."], "example": "Min favoritmat är pannkakor. Jag äter dem på helgen med min familj. Ibland lagar jag också ris med kyckling. Det smakar jättegott!", "criteria": ["Contenido: ¿cumpliste todas las tareas?", "Gramática: verbos y orden de palabras", "Vocabulario: palabras del nivel A", "Claridad: se entiende el mensaje"]},
+{"id": "a-w-12", "unit": 10, "unitTitle": "Transporte", "title": "Hur tar du dig till skolan?", "icon": "🚌", "words": "30–50 ord", "prompt": "Explica cómo vas a la escuela.\nIncluye:\n• Qué transporte usas\n• Cuánto tarda\n• A qué hora sales", "checklist": ["Jag tar bussen / tunnelbanan / cykeln.", "Resan tar ... minuter.", "Jag åker klockan...", "Sedan går jag till klassen."], "example": "Jag tar bussen till skolan. Resan tar tjugo minuter. Jag åker hemifrån klockan åtta. Ibland cyklar jag när det är fint väder.", "criteria": ["Contenido: ¿cumpliste todas las tareas?", "Gramática: verbos y orden de palabras", "Vocabulario: palabras del nivel A", "Claridad: se entiende el mensaje"]},
+{"id": "a-w-13", "unit": 11, "unitTitle": "Mensajes", "title": "Skriv ett SMS till en vän", "icon": "💬", "words": "20–35 ord", "prompt": "Escribe un SMS a un amigo/a.\nDebes:\n• Saludar\n• Invitarle a hacer algo\n• Decir cuándo y dónde", "checklist": ["Hej [nombre]!", "Vill du... på lördag?", "Vi kan ses klockan... vid...", "Hör av dig! / Kram"], "example": "Hej Omar! Vill du ta en fika på lördag? Vi kan ses klockan tre vid caféet i centrum. Hör av dig! Kram, Ana", "criteria": ["Contenido: saludo, invitación, hora/lugar", "Tono informal y amable", "Mensaje corto", "Vocabulario cotidiano"]},
+{"id": "a-w-14", "unit": 12, "unitTitle": "Citas", "title": "Boka en tid", "icon": "🏥", "words": "20–35 ord", "prompt": "Escribe un mensaje a la vårdcentral para pedir una cita.\nDebes:\n• Dar tu nombre\n• Explicar el problema\n• Pedir una hora", "checklist": ["Hej! Jag heter...", "Jag har ont i...", "Kan jag boka en tid den här veckan?", "Tack för hjälpen!"], "example": "Hej! Jag heter Pedro. Jag har ont i halsen och lite feber. Kan jag boka en tid den här veckan? Tack för hjälpen!", "criteria": ["Contenido: nombre, problema, petición", "Tono cortés", "Vocabulario: ont, feber, tid", "Claridad del mensaje"]},
+{"id": "a-w-15", "unit": 13, "unitTitle": "Invitaciones", "title": "Skriv en inbjudan", "icon": "🎉", "words": "30–50 ord", "prompt": "Escribe una invitación a una fiesta.\nIncluye:\n• Qué celebras\n• El día y la hora\n• Dónde es", "checklist": ["Hej! Jag fyller år / har fest.", "Kom på fest på lördag!", "Vi börjar klockan...", "Välkommen! Hälsningar, [tu nombre]"], "example": "Hej! Jag fyller år på lördag och vill bjuda in dig till fest. Vi börjar klockan sex hemma hos mig på Storgatan 4. Det blir tårta och musik. Välkommen! Hälsningar, Sofia", "criteria": ["Contenido: ¿cumpliste todas las tareas?", "Gramática: verbos y orden de palabras", "Vocabulario: palabras del nivel A", "Claridad: se entiende el mensaje"]}
     ],
 
     speak: [
@@ -10320,21 +10333,24 @@ function skillProgress(kind, level) {
 // (A:read:0..3). Ahora se guarda por ID (A:read:a-r-1...). Copiamos las
 // filas viejas a la nueva clave para NO perder progreso real de alumnos.
 const _LEGACY_READ_MAP = { A: { '0': 'a-r-1', '1': 'a-r-2', '2': 'a-r-3', '3': 'a-r-4' } };
-async function backfillReadingIds() {
-  try {
-    for (const lv in _LEGACY_READ_MAP) {
-      const map = _LEGACY_READ_MAP[lv];
-      for (const oldIdx in map) {
-        const oldKey = _upKey('reading', lv + ':read:' + oldIdx);
-        const newId = map[oldIdx];
-        const newKey = _upKey('reading', lv + ':read:' + newId);
-        const oldRow = UNIFIED_PROGRESS[oldKey];
-        if (oldRow && oldRow.status === 'completed' && !UNIFIED_PROGRESS[newKey]) {
-          await progressMark('reading', lv + ':read:' + newId, { status: 'completed', level: lv, score: oldRow.score || 0 });
-        }
+const _LEGACY_WRITE_MAP = { A: { '0': 'a-w-1', '1': 'a-w-2', '2': 'a-w-3' } };
+async function _backfillByMap(moduleKey, keyName, mapAll) {
+  for (const lv in mapAll) {
+    const map = mapAll[lv];
+    for (const oldIdx in map) {
+      const oldKey = _upKey(moduleKey, lv + ':' + keyName + ':' + oldIdx);
+      const newId = map[oldIdx];
+      const newKey = _upKey(moduleKey, lv + ':' + keyName + ':' + newId);
+      const oldRow = UNIFIED_PROGRESS[oldKey];
+      if (oldRow && oldRow.status === 'completed' && !UNIFIED_PROGRESS[newKey]) {
+        await progressMark(moduleKey, lv + ':' + keyName + ':' + newId, { status: 'completed', level: lv, score: oldRow.score || 0 });
       }
     }
-  } catch (e) {}
+  }
+}
+async function backfillReadingIds() {
+  try { await _backfillByMap('reading', 'read', _LEGACY_READ_MAP); } catch (e) {}
+  try { await _backfillByMap('writing', 'write', _LEGACY_WRITE_MAP); } catch (e) {}
 }
 
 // Progreso de Vokabulär por nivel y (opcional) categoría 'word'|'verb'.
@@ -12511,8 +12527,9 @@ function openWrite(index) {
   state.currentWrite = items[index];
   state.writeIndex = index;
 
+  const _wg = document.getElementById('write-grid'); if (_wg) _wg.classList.add('hidden');
   document.getElementById('write-area').classList.remove('hidden');
-  document.getElementById('write-area').scrollIntoView({ behavior: 'smooth' });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 
   document.getElementById('write-title').textContent = state.currentWrite.title;
   document.getElementById('write-words').textContent = state.currentWrite.words || '';
@@ -12534,6 +12551,12 @@ function randomWrite() {
   openWrite(Math.floor(Math.random() * items.length));
 }
 
+function backToWriteList() {
+  document.getElementById('write-area').classList.add('hidden');
+  try { initWrite(); } catch (e) { const g = document.getElementById('write-grid'); if (g) g.classList.remove('hidden'); }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 function countWords() {
   const txt = document.getElementById('write-textarea').value.trim();
   const words = txt ? txt.split(/\s+/).length : 0;
@@ -12550,7 +12573,12 @@ function showExample() {
   ).join('');
   area.scrollIntoView({ behavior: 'smooth' });
   // Completó la actividad de escritura (escribió y comparó con el ejemplo).
-  try { if (typeof markCompleted === 'function' && state.writeIndex != null) markCompleted('writing', state.level + ':write:' + state.writeIndex, state.level); } catch (e) {}
+  try {
+    if (typeof markCompleted === 'function' && state.currentWrite) {
+      const cid = state.currentWrite.id || state.writeIndex;
+      markCompleted('writing', state.level + ':write:' + cid, state.level);
+    }
+  } catch (e) {}
 }
 
 function clearWrite() {

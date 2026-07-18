@@ -1598,8 +1598,9 @@ function openWrite(index) {
   state.currentWrite = items[index];
   state.writeIndex = index;
 
+  const _wg = document.getElementById('write-grid'); if (_wg) _wg.classList.add('hidden');
   document.getElementById('write-area').classList.remove('hidden');
-  document.getElementById('write-area').scrollIntoView({ behavior: 'smooth' });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 
   document.getElementById('write-title').textContent = state.currentWrite.title;
   document.getElementById('write-words').textContent = state.currentWrite.words || '';
@@ -1621,6 +1622,12 @@ function randomWrite() {
   openWrite(Math.floor(Math.random() * items.length));
 }
 
+function backToWriteList() {
+  document.getElementById('write-area').classList.add('hidden');
+  try { initWrite(); } catch (e) { const g = document.getElementById('write-grid'); if (g) g.classList.remove('hidden'); }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 function countWords() {
   const txt = document.getElementById('write-textarea').value.trim();
   const words = txt ? txt.split(/\s+/).length : 0;
@@ -1637,7 +1644,12 @@ function showExample() {
   ).join('');
   area.scrollIntoView({ behavior: 'smooth' });
   // Completó la actividad de escritura (escribió y comparó con el ejemplo).
-  try { if (typeof markCompleted === 'function' && state.writeIndex != null) markCompleted('writing', state.level + ':write:' + state.writeIndex, state.level); } catch (e) {}
+  try {
+    if (typeof markCompleted === 'function' && state.currentWrite) {
+      const cid = state.currentWrite.id || state.writeIndex;
+      markCompleted('writing', state.level + ':write:' + cid, state.level);
+    }
+  } catch (e) {}
 }
 
 function clearWrite() {

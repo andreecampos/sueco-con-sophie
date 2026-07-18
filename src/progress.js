@@ -215,21 +215,24 @@ function skillProgress(kind, level) {
 // (A:read:0..3). Ahora se guarda por ID (A:read:a-r-1...). Copiamos las
 // filas viejas a la nueva clave para NO perder progreso real de alumnos.
 const _LEGACY_READ_MAP = { A: { '0': 'a-r-1', '1': 'a-r-2', '2': 'a-r-3', '3': 'a-r-4' } };
-async function backfillReadingIds() {
-  try {
-    for (const lv in _LEGACY_READ_MAP) {
-      const map = _LEGACY_READ_MAP[lv];
-      for (const oldIdx in map) {
-        const oldKey = _upKey('reading', lv + ':read:' + oldIdx);
-        const newId = map[oldIdx];
-        const newKey = _upKey('reading', lv + ':read:' + newId);
-        const oldRow = UNIFIED_PROGRESS[oldKey];
-        if (oldRow && oldRow.status === 'completed' && !UNIFIED_PROGRESS[newKey]) {
-          await progressMark('reading', lv + ':read:' + newId, { status: 'completed', level: lv, score: oldRow.score || 0 });
-        }
+const _LEGACY_WRITE_MAP = { A: { '0': 'a-w-1', '1': 'a-w-2', '2': 'a-w-3' } };
+async function _backfillByMap(moduleKey, keyName, mapAll) {
+  for (const lv in mapAll) {
+    const map = mapAll[lv];
+    for (const oldIdx in map) {
+      const oldKey = _upKey(moduleKey, lv + ':' + keyName + ':' + oldIdx);
+      const newId = map[oldIdx];
+      const newKey = _upKey(moduleKey, lv + ':' + keyName + ':' + newId);
+      const oldRow = UNIFIED_PROGRESS[oldKey];
+      if (oldRow && oldRow.status === 'completed' && !UNIFIED_PROGRESS[newKey]) {
+        await progressMark(moduleKey, lv + ':' + keyName + ':' + newId, { status: 'completed', level: lv, score: oldRow.score || 0 });
       }
     }
-  } catch (e) {}
+  }
+}
+async function backfillReadingIds() {
+  try { await _backfillByMap('reading', 'read', _LEGACY_READ_MAP); } catch (e) {}
+  try { await _backfillByMap('writing', 'write', _LEGACY_WRITE_MAP); } catch (e) {}
 }
 
 // Progreso de Vokabulär por nivel y (opcional) categoría 'word'|'verb'.
