@@ -1460,7 +1460,7 @@ function renderReadQuestion() {
     </div>`;
   } else if (type === 'short') {
     body += `<div class="flex gap-2">
-      <input id="read-short-input" type="text" autocomplete="off" class="flex-1 border-2 border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-green-400" placeholder="Escribe tu respuesta en sueco" onkeydown="if(event.key==='Enter')answerReadShort()">
+      <input id="read-short-input" type="text" name="lasa-svar" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" class="flex-1 border-2 border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-green-400" placeholder="Escribe tu respuesta en sueco" onkeydown="if(event.key==='Enter')answerReadShort()">
       <button onclick="answerReadShort()" class="bg-green-500 text-white px-4 py-3 rounded-xl font-bold text-sm flex-shrink-0">Comprobar</button>
     </div>`;
   } else {
@@ -1548,12 +1548,15 @@ function showReadResult() {
   document.getElementById('read-next-btn').classList.add('hidden');
   const res = document.getElementById('read-result');
   res.classList.remove('hidden');
-  document.getElementById('read-result-emoji').textContent = pct >= 75 ? '🎉' : pct >= 50 ? '💪' : '📚';
+  const passed = pct >= 60; // se necesita 60% para dar la lectura por dominada
+  document.getElementById('read-result-emoji').textContent = pct >= 80 ? '🎉' : passed ? '💪' : '📚';
   document.getElementById('read-result-score').textContent = `${correct} / ${total}`;
-  document.getElementById('read-result-msg').textContent = pct >= 75 ? '¡Excelente lectura!' : '¡Sigue practicando!';
-  // Completó la actividad de lectura (terminó las preguntas).
+  document.getElementById('read-result-msg').textContent = passed
+    ? '¡Bien hecho! Lectura completada.'
+    : 'Necesitas al menos 60% para completarla. ¡Inténtalo de nuevo!';
+  // Solo se marca como completada si APROBÓ (≥60%). Si falló, no cuenta.
   try {
-    if (typeof markCompleted === 'function' && state.currentText) {
+    if (passed && typeof markCompleted === 'function' && state.currentText) {
       const cid = state.currentText.id || state.readItemIndex;
       markCompleted('reading', state.level + ':read:' + cid, state.level, pct);
     }
@@ -1571,6 +1574,7 @@ function initWrite() {
   document.getElementById('write-header-sub').textContent = `${LEVEL_LABEL[state.level]||state.level} — Producción escrita`;
   document.getElementById('write-area').classList.add('hidden');
   const grid = document.getElementById('write-grid');
+  grid.classList.remove('hidden'); // vuelve a mostrar la lista (fix pantalla en blanco)
   grid.innerHTML = '';
   if (items.length === 0) {
     grid.innerHTML = '<div class="text-center py-12 text-gray-400"><div class="text-4xl mb-2">📭</div><p>No hay tareas disponibles.</p></div>';
