@@ -212,12 +212,7 @@ function renderLevelMenu() {
       ${cats.map(c => catChip(c.icon, c.label, c.c, `<span class="text-[11px] font-black" style="color:${c.c}">${fmtPct(c.p.pct)}</span>`, false)).join('')}
       ${catChip('🏆', 'Examen', '#F59E0B', `<span class="text-[11px] font-black ${ex.medal ? 'text-green-600' : 'text-gray-400'}">${ex.medal ? '🏅' : (canAttempt ? 'Abierto' : 'Pendiente')}</span>`, true)}
     </div>
-    <div class="space-y-3 mb-4">${cats.map(bigCard).join('')}
-      <button onclick="showUttal()" class="w-full flex items-center gap-4 rounded-2xl p-4 shadow-sm border hover:shadow-md transition-all text-left" style="background:#06b6d414; border-color:#06b6d433">
-        <span class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style="background:#06b6d42e">🔊</span>
-        <div class="flex-1 min-w-0"><div class="font-black text-gray-800">Uttal — Pronunciación</div><div class="text-xs text-gray-500">Escucha a Sophie y repite en voz alta.</div></div>
-        <span class="text-gray-300 text-lg flex-shrink-0">›</span></button>
-    </div>
+    <div class="space-y-3 mb-4">${cats.map(bigCard).join('')}</div>
     <div class="rounded-2xl p-4 mb-3 border-2" style="border-color:#FDE68A; background:#FFFBEB;">
       <div class="flex items-center gap-4">
         <span class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 bg-amber-100">🏆</span>
@@ -233,131 +228,6 @@ function renderLevelMenu() {
       <button onclick="${ex.medal ? examInfo : (canAttempt ? "startExam('" + lv + "')" : examInfo)}" class="w-full mt-3 py-2.5 rounded-xl font-bold text-sm ${(canAttempt && !ex.medal) ? 'bg-amber-500 text-white hover:bg-amber-600' : 'bg-gray-200 text-gray-600'}">${ex.medal ? '🏅 Medalla conseguida' : (canAttempt ? (ex.passes > 0 ? '🏆 Siguiente examen (35 min)' : '🏆 Presentar examen (35 min)') : 'ℹ️ Cómo funciona')}</button>
     </div>
     <div class="flex items-center gap-3 bg-blue-50 rounded-2xl p-4"><span class="text-2xl">⭐</span><div class="text-xs text-gray-600">Practica Läsa, Skriva, Tala y Vokabulär, y aprueba el <strong>Examen Final ${ex.required} veces</strong> para conseguir tu <strong>Medalla SFI ${lv}</strong>.</div></div>`;
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   UTTAL — Pronunciación (audios con la voz clonada de Sophie)
-   Los MP3 viven en Supabase Storage (bucket público "sophie-audio").
-   Se generan/suben con los scripts de scripts/audio/.
-   ═══════════════════════════════════════════════════════════════════ */
-const AUDIO_BASE = 'https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/sophie-audio/';
-let _pronAudio = null;
-let _pronRate = 1;
-let _pronTextId = null;
-
-function showUttal() {
-  if (typeof requireAccess === 'function' && !requireAccess()) return;
-  try { stopSpeech(); } catch (e) {}
-  showView('uttal');
-  renderUttal();
-}
-
-function _allPronTexts() {
-  if (typeof PRON_TEXTS === 'undefined') return [];
-  return ['A', 'B', 'C', 'D'].reduce((acc, lv) => acc.concat(PRON_TEXTS[lv] || []), []);
-}
-
-function renderUttal() {
-  const el = document.getElementById('uttal-content');
-  if (!el) return;
-  // ── Textos para leer y repetir ──
-  const texts = (typeof PRON_TEXTS !== 'undefined' && PRON_TEXTS.A) ? PRON_TEXTS.A : [];
-  const textCards = texts.map(t => `
-    <button onclick="openPronText('${t.id}')" class="w-full flex items-center gap-3 bg-white rounded-2xl p-4 shadow-sm border border-gray-100 text-left card-hover">
-      <span class="w-11 h-11 rounded-xl bg-cyan-50 flex items-center justify-center text-xl flex-shrink-0">${t.icon || '📖'}</span>
-      <div class="flex-1 min-w-0"><div class="font-black text-gray-800">${t.title}</div><div class="text-xs text-gray-500">${t.theme || ''}</div></div>
-      <span class="text-cyan-500 text-lg flex-shrink-0">🔊 ›</span>
-    </button>`).join('');
-
-  // ── Sonidos y palabras difíciles ──
-  const cats = (typeof PRON_DATA !== 'undefined' ? (PRON_DATA.categories || []) : []).map(cat => {
-    const items = (cat.items || []).map(it => {
-      const bid = 'pbtn_' + it.key;
-      const exHtml = (it.ex && it.ex.length) ? `<div class="text-xs text-gray-400 mt-0.5">${it.ex.join(' · ')}</div>` : '';
-      return `<div class="flex items-center gap-3 bg-white rounded-2xl p-3.5 shadow-sm border border-gray-100">
-          <button id="${bid}" onclick="playPron('${it.key}','${bid}')" class="w-11 h-11 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center text-xl flex-shrink-0 hover:bg-cyan-100" aria-label="Escuchar">🔊</button>
-          <div class="flex-1 min-w-0"><div class="font-black text-gray-800">${it.sv}</div><div class="text-xs text-gray-500">${it.tip || ''}</div>${exHtml}</div>
-        </div>`;
-    }).join('');
-    return `<div class="mb-6">
-        <div class="flex items-center gap-2 mb-1"><span class="text-2xl">${cat.icon || '🔊'}</span><div class="font-black text-gray-800 text-lg">${cat.title}</div></div>
-        <div class="text-xs text-gray-500 mb-3">${cat.desc || ''}</div>
-        <div class="space-y-2">${items}</div>
-      </div>`;
-  }).join('');
-
-  el.innerHTML = `
-    <div class="bg-cyan-50 border border-cyan-200 rounded-2xl p-4 text-sm text-cyan-800 mb-5">Lee el texto, escucha a Sophie y <strong>repite en voz alta</strong>. Usa la velocidad «Lento» para practicar los sonidos difíciles.</div>
-    <div class="flex items-center gap-2 mb-3"><span class="text-2xl">📖</span><div class="font-black text-gray-800 text-lg">Textos para leer y repetir — SFI A</div></div>
-    <div class="space-y-2 mb-8">${textCards || '<div class="text-sm text-gray-400">Próximamente.</div>'}</div>
-    <div class="flex items-center gap-2 mb-1"><span class="text-2xl">🗣️</span><div class="font-black text-gray-800 text-lg">Sonidos y palabras difíciles</div></div>
-    <div class="text-xs text-gray-500 mb-4">Practica los sonidos que no existen en español.</div>
-    ${cats}`;
-}
-
-// Reproductor de un TEXTO (leer + escuchar + repetir, con velocidad)
-function openPronText(id) {
-  const t = _allPronTexts().find(x => x.id === id);
-  if (!t) return;
-  _pronTextId = id; _pronRate = 1;
-  const el = document.getElementById('uttal-content');
-  el.innerHTML = `
-    <button onclick="renderUttal()" class="mb-3 inline-flex items-center gap-1 text-sm font-semibold text-swe-blue hover:text-swe-dark">← Volver</button>
-    <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
-      <div class="flex items-center gap-2 mb-4"><span class="text-2xl">${t.icon || '📖'}</span><div class="font-black text-gray-800 text-lg">${t.title}</div></div>
-      <div class="bg-gray-50 rounded-2xl p-5 text-gray-800 text-lg leading-loose" style="white-space:pre-line">${t.text}</div>
-      <div id="pron-es" class="hidden text-sm text-gray-500 mt-3 leading-relaxed">${t.es || ''}</div>
-      <button onclick="togglePronEs()" class="text-xs text-swe-blue font-semibold mt-2 underline">Ver traducción</button>
-      <div class="mt-5">
-        <div class="text-xs font-black text-gray-500 uppercase tracking-wide mb-2 text-center">Velocidad</div>
-        <div class="grid grid-cols-3 gap-2" id="pron-speed">
-          <button onclick="setPronRate(0.7)" data-r="0.7" class="py-2 rounded-xl font-bold text-sm border-2">🐢 Lento</button>
-          <button onclick="setPronRate(1)" data-r="1" class="py-2 rounded-xl font-bold text-sm border-2">▶ Normal</button>
-          <button onclick="setPronRate(1.3)" data-r="1.3" class="py-2 rounded-xl font-bold text-sm border-2">🐇 Rápido</button>
-        </div>
-      </div>
-      <button id="pron-play" onclick="playPronText('${t.audioKey}')" class="w-full bg-swe-blue text-white py-3.5 rounded-2xl font-black mt-4 hover:bg-swe-dark">▶ Escuchar a Sophie</button>
-      <div class="text-center text-xs text-gray-400 mt-3">Escucha y repite en voz alta.</div>
-    </div>`;
-  _updatePronSpeedUI();
-}
-function togglePronEs() { const e = document.getElementById('pron-es'); if (e) e.classList.toggle('hidden'); }
-function _updatePronSpeedUI() {
-  document.querySelectorAll('#pron-speed button').forEach(b => {
-    const on = parseFloat(b.getAttribute('data-r')) === _pronRate;
-    b.classList.toggle('bg-swe-blue', on); b.classList.toggle('text-white', on); b.classList.toggle('border-swe-blue', on);
-    b.classList.toggle('text-gray-600', !on); b.classList.toggle('border-gray-200', !on);
-  });
-}
-function setPronRate(r) {
-  _pronRate = r;
-  if (_pronAudio) { _pronAudio.playbackRate = r; try { _pronAudio.preservesPitch = true; _pronAudio.mozPreservesPitch = true; _pronAudio.webkitPreservesPitch = true; } catch (e) {} }
-  _updatePronSpeedUI();
-}
-function playPronText(audioKey) {
-  const btn = document.getElementById('pron-play');
-  if (_pronAudio && _pronAudio._key === audioKey && !_pronAudio.paused) { _pronAudio.pause(); if (btn) btn.textContent = '▶ Escuchar a Sophie'; return; }
-  try { if (_pronAudio) _pronAudio.pause(); } catch (e) {}
-  const a = new Audio(AUDIO_BASE + audioKey + '.mp3'); a._key = audioKey; _pronAudio = a;
-  try { a.preservesPitch = true; a.mozPreservesPitch = true; a.webkitPreservesPitch = true; } catch (e) {}
-  a.playbackRate = _pronRate;
-  if (btn) btn.textContent = '⏳';
-  a.onplaying = () => { if (btn) btn.textContent = '⏸ Pausar'; };
-  a.onended = () => { if (btn) btn.textContent = '▶ Escuchar a Sophie'; };
-  a.onerror = () => { if (btn) btn.textContent = '▶ Escuchar a Sophie'; showToast('Audio próximamente para este texto', 'info'); };
-  a.play().catch(() => { if (btn) btn.textContent = '▶ Escuchar a Sophie'; showToast('Audio próximamente', 'info'); });
-}
-// Reproductor de una PALABRA/sonido suelto
-function playPron(key, btnId) {
-  const btn = btnId ? document.getElementById(btnId) : null;
-  try { if (_pronAudio) _pronAudio.pause(); } catch (e) {}
-  const a = new Audio(AUDIO_BASE + key + '.mp3'); a._key = key; _pronAudio = a;
-  try { a.preservesPitch = true; a.mozPreservesPitch = true; a.webkitPreservesPitch = true; } catch (e) {}
-  a.playbackRate = _pronRate;
-  if (btn) btn.textContent = '⏳';
-  a.onended = () => { if (btn) btn.textContent = '🔊'; };
-  a.onerror = () => { if (btn) btn.textContent = '🔊'; showToast('Audio próximamente', 'info'); };
-  a.play().then(() => { if (btn) btn.textContent = '🔉'; }).catch(() => { if (btn) btn.textContent = '🔊'; showToast('Audio próximamente', 'info'); });
 }
 
 /* ═══════════════════════════════════════════════════════════════════
