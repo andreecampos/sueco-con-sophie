@@ -23,12 +23,20 @@ function add(key, text) {
   manifest.push({ key, text });
 }
 
-// ── Pronunciación (Uttal) ──
+// ── Pronunciación: sonidos y palabras (PRON_DATA) ──
 try {
   const PRON = loadConst('src/pronData.js', 'PRON_DATA');
   (PRON.categories || []).forEach(cat => (cat.items || []).forEach(it => add(it.key, it.say || it.sv)));
-  console.log('Pronunciación:', (PRON.categories || []).reduce((n, c) => n + (c.items || []).length, 0), 'ítems');
-} catch (e) { console.error('No se pudo leer pronData.js:', e.message); }
+  console.log('Sonidos/palabras:', (PRON.categories || []).reduce((n, c) => n + (c.items || []).length, 0), 'ítems');
+} catch (e) { console.error('No se pudo leer PRON_DATA:', e.message); }
+
+// ── Pronunciación: textos para leer y repetir (PRON_TEXTS) ──
+try {
+  const TEXTS = loadConst('src/pronData.js', 'PRON_TEXTS');
+  let n = 0;
+  ['A', 'B', 'C', 'D'].forEach(lv => (TEXTS[lv] || []).forEach(t => { add(t.audioKey, t.say || t.text); n++; }));
+  console.log('Textos:', n);
+} catch (e) { console.error('No se pudo leer PRON_TEXTS:', e.message); }
 
 // (En el futuro aquí se pueden añadir lecturas de Läsa, vocabulario, etc.)
 

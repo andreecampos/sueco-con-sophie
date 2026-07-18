@@ -170,5 +170,21 @@
   {
     "key": "pron_fr_trevligt",
     "text": "Trevligt att träffas."
+  },
+  {
+    "key": "text_a_1",
+    "text": "Hej! Jag heter Ana. Jag kommer från Peru. Nu bor jag i Stockholm. Jag studerar svenska på SFI. Jag tycker om att laga mat och promenera."
+  },
+  {
+    "key": "text_a_2",
+    "text": "Jag har en stor familj. Min man heter Karl. Vi har två barn, Lisa och Tom. Min mamma bor också i Sverige. Vi äter middag tillsammans varje söndag."
+  },
+  {
+    "key": "text_a_3",
+    "text": "Jag vaknar klockan sju. Jag äter frukost och dricker kaffe. Sedan tar jag bussen till skolan. På eftermiddagen handlar jag mat. På kvällen läser jag en bok."
+  },
+  {
+    "key": "text_a_4",
+    "text": "Idag går jag till affären. Jag köper bröd, mjölk och äpplen. Brödet kostar tjugo kronor. Jag betalar med kort. Sedan går jag hem och lagar middag."
   }
 ]

@@ -90,4 +90,42 @@ const PRON_DATA = {
     }
   ]
 };
-if (typeof window !== 'undefined') window.PRON_DATA = PRON_DATA;
+
+/* ── Textos para leer y repetir (escuchar a Sophie) ──────────────────
+   Cada texto tiene un audioKey → un MP3 en Supabase Storage con la voz
+   de Sophie leyendo el texto completo. El alumno lee, escucha y repite.
+   La velocidad (lento/normal/rápido) se controla en el reproductor.   */
+const PRON_TEXTS = {
+  A: [
+    {
+      id: 'txt_a_1', audioKey: 'text_a_1', icon: '👋',
+      title: 'Jag heter Ana', theme: 'Presentación',
+      text: 'Hej! Jag heter Ana.\nJag kommer från Peru.\nNu bor jag i Stockholm.\nJag studerar svenska på SFI.\nJag tycker om att laga mat och promenera.',
+      es: '¡Hola! Me llamo Ana. Vengo de Perú. Ahora vivo en Estocolmo. Estudio sueco en SFI. Me gusta cocinar y pasear.',
+      say: 'Hej! Jag heter Ana. Jag kommer från Peru. Nu bor jag i Stockholm. Jag studerar svenska på SFI. Jag tycker om att laga mat och promenera.'
+    },
+    {
+      id: 'txt_a_2', audioKey: 'text_a_2', icon: '👪',
+      title: 'Min familj', theme: 'Familia',
+      text: 'Jag har en stor familj.\nMin man heter Karl.\nVi har två barn, Lisa och Tom.\nMin mamma bor också i Sverige.\nVi äter middag tillsammans varje söndag.',
+      es: 'Tengo una familia grande. Mi esposo se llama Karl. Tenemos dos hijos, Lisa y Tom. Mi mamá también vive en Suecia. Cenamos juntos cada domingo.',
+      say: 'Jag har en stor familj. Min man heter Karl. Vi har två barn, Lisa och Tom. Min mamma bor också i Sverige. Vi äter middag tillsammans varje söndag.'
+    },
+    {
+      id: 'txt_a_3', audioKey: 'text_a_3', icon: '⏰',
+      title: 'En vanlig dag', theme: 'Rutina diaria',
+      text: 'Jag vaknar klockan sju.\nJag äter frukost och dricker kaffe.\nSedan tar jag bussen till skolan.\nPå eftermiddagen handlar jag mat.\nPå kvällen läser jag en bok.',
+      es: 'Me despierto a las siete. Desayuno y tomo café. Luego tomo el autobús a la escuela. Por la tarde compro comida. Por la noche leo un libro.',
+      say: 'Jag vaknar klockan sju. Jag äter frukost och dricker kaffe. Sedan tar jag bussen till skolan. På eftermiddagen handlar jag mat. På kvällen läser jag en bok.'
+    },
+    {
+      id: 'txt_a_4', audioKey: 'text_a_4', icon: '🛒',
+      title: 'I affären', theme: 'Compras',
+      text: 'Idag går jag till affären.\nJag köper bröd, mjölk och äpplen.\nBrödet kostar tjugo kronor.\nJag betalar med kort.\nSedan går jag hem och lagar middag.',
+      es: 'Hoy voy a la tienda. Compro pan, leche y manzanas. El pan cuesta veinte coronas. Pago con tarjeta. Luego voy a casa y hago la cena.',
+      say: 'Idag går jag till affären. Jag köper bröd, mjölk och äpplen. Brödet kostar tjugo kronor. Jag betalar med kort. Sedan går jag hem och lagar middag.'
+    }
+  ]
+};
+
+if (typeof window !== 'undefined') { window.PRON_DATA = PRON_DATA; window.PRON_TEXTS = PRON_TEXTS; }
