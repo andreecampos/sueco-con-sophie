@@ -1776,48 +1776,775 @@ const DEFAULT_DATA = {
 
     write: [
       {
-        id: 'a-w-1',
-        title: 'Skriv ett mejl till din granne',
-        icon: '📧',
-        words: '30–50 ord',
-        prompt: 'Tu vecino Carlos te ha invitado a una cena el próximo viernes. Escríbele un correo en sueco.\n\nEn tu correo debes:\n• Aceptar la invitación\n• Preguntar a qué hora empieza\n• Preguntar si debes llevar algo',
-        checklist: ['Usa un saludo: Hej Carlos!', 'Acepta: Tack för inbjudan! Jag kommer gärna.', 'Pregunta la hora: Vilken tid börjar middagen?', 'Pregunta qué llevar: Ska jag ta med något?', 'Firma: Hälsningar, [tu nombre]'],
-        example: 'Hej Carlos!\n\nTack för inbjudan till middagen på fredag! Jag kommer gärna. Vilken tid börjar det? Ska jag ta med något att äta eller dricka?\n\nSer fram emot det!\nHälsningar, Ana',
-        criteria: ['Contenido: ¿Cumplió todas las tareas?', 'Gramática: verbos correctos, orden de palabras', 'Vocabulario: palabras adecuadas al nivel A', 'Formato: saludo, cuerpo, firma']
+            "id": "a-w-1",
+            "title": "Skriv ett kort meddelande till Carlos",
+            "icon": "✉️",
+            "words": "15–30 ord",
+            "prompt": "Situación:\nCarlos bjuder dig på middag på fredag.\n\nInstrucciones:\nSkriv ett kort meddelande. Tacka ja och fråga vilken tid middagen börjar.",
+            "checklist": [
+                  "Usa un saludo: Hej Carlos!",
+                  "Acepta: Tack för inbjudan! Jag kommer gärna.",
+                  "Pregunta la hora: Vilken tid börjar middagen?",
+                  "Pregunta qué llevar: Ska jag ta med något?",
+                  "Firma: Hälsningar, [tu nombre]"
+            ],
+            "example": "Hej Carlos! Tack för inbjudan, jag kommer gärna på fredag. Vilken tid börjar middagen? Hälsningar, Ana",
+            "criteria": [
+                  "Saludar",
+                  "Aceptar la invitación",
+                  "Preguntar la hora",
+                  "Despedirse"
+            ],
+            "req": {
+                  "min": 15,
+                  "max": 30,
+                  "greeting": true,
+                  "closing": true,
+                  "question": true,
+                  "keywords": [
+                        "tack",
+                        "tid"
+                  ]
+            },
+            "selfCheck": [
+                  "¿Empezaste con un saludo (Hej)?",
+                  "¿Aceptaste la invitación (tack/ja)?",
+                  "¿Preguntaste la hora?",
+                  "¿Te despediste (Hälsningar)?"
+            ],
+            "hints": [
+                  "Empieza con un saludo: Hej Carlos!",
+                  "Para aceptar: Tack för inbjudan!",
+                  "Para preguntar la hora usa «Vilken tid...?»",
+                  "Termina con: Hälsningar, [tu nombre]"
+            ],
+            "useful": [
+                  "hej",
+                  "tack",
+                  "middag",
+                  "fredag",
+                  "komma",
+                  "vilken tid",
+                  "hälsningar"
+            ]
       },
       {
-        id: 'a-w-2',
-        title: 'Beskriv dig själv',
-        icon: '🙋',
-        words: '40–60 ord',
-        prompt: 'Escribe una presentación sobre ti mismo en sueco.\n\nIncluye:\n• Tu nombre y de dónde vienes\n• Dónde vives en Suecia\n• Tu trabajo o estudios\n• Un hobby o algo que te gusta',
-        checklist: ['Jag heter... och jag kommer från...', 'Jag bor i... sedan...', 'Jag jobbar/studerar...', 'På fritiden tycker jag om att...'],
-        example: 'Hej! Jag heter María och jag kommer från Colombia. Jag bor i Malmö sedan ett år. Jag studerar svenska på SFI och jobbar ibland på ett café. På fritiden tycker jag om att promenera och laga mat.',
-        criteria: ['Contenido: se presenta correctamente', 'Gramática: verbos en presente', 'Vocabulario: palabras de presentación básica', 'Coherencia: las ideas se entienden']
+            "id": "a-w-2",
+            "title": "Beskriv dig själv",
+            "icon": "🙋",
+            "words": "40–60 ord",
+            "prompt": "Escribe una presentación sobre ti mismo en sueco.\n\nIncluye:\n• Tu nombre y de dónde vienes\n• Dónde vives en Suecia\n• Tu trabajo o estudios\n• Un hobby o algo que te gusta",
+            "checklist": [
+                  "Jag heter... och jag kommer från...",
+                  "Jag bor i... sedan...",
+                  "Jag jobbar/studerar...",
+                  "På fritiden tycker jag om att..."
+            ],
+            "example": "Hej! Jag heter María och jag kommer från Colombia. Jag bor i Malmö sedan ett år. Jag studerar svenska på SFI och jobbar ibland på ett café. På fritiden tycker jag om att promenera och laga mat.",
+            "criteria": [
+                  "Contenido: se presenta correctamente",
+                  "Gramática: verbos en presente",
+                  "Vocabulario: palabras de presentación básica",
+                  "Coherencia: las ideas se entienden"
+            ],
+            "req": {
+                  "min": 40,
+                  "max": 60,
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "heter",
+                        "från",
+                        "bor"
+                  ]
+            },
+            "selfCheck": [
+                  "¿Dijiste tu nombre?",
+                  "¿De dónde vienes?",
+                  "¿Dónde vives?",
+                  "¿Qué estudias o en qué trabajas?"
+            ],
+            "hints": [
+                  "Empieza con: Jag heter...",
+                  "Di de dónde vienes: Jag kommer från...",
+                  "Di dónde vives: Jag bor i..."
+            ],
+            "useful": [
+                  "jag heter",
+                  "kommer från",
+                  "bor i",
+                  "studerar",
+                  "jobbar",
+                  "på fritiden"
+            ]
       },
       {
-        id: 'a-w-3',
-        title: 'Skriv ett meddelande till jobbet',
-        icon: '💼',
-        words: '20–35 ord',
-        prompt: 'Estás enfermo y no puedes ir al trabajo hoy. Escribe un mensaje a tu jefe (chef).\n\nEn tu mensaje debes:\n• Decir que estás enfermo\n• Decir que no puedes ir hoy\n• Pedir disculpas',
-        checklist: ['Hej [nombre del jefe]!', 'Jag är sjuk idag...', 'Jag kan tyvärr inte komma till jobbet.', 'Förlåt för besväret. / Sorry för kort varsel.'],
-        example: 'Hej Anna!\n\nJag är tyvärr sjuk idag och kan inte komma till jobbet. Jag har ont i halsen och feber. Förlåt för besväret.\n\nMed vänliga hälsningar,\nCarlos',
-        criteria: ['Contenido: explica el motivo', 'Tono: formal y respetuoso', 'Brevedad: mensaje corto y claro', 'Vocabulario: sjuk, tyvärr, förlåt']
+            "id": "a-w-3",
+            "title": "Skriv ett meddelande till jobbet",
+            "icon": "💼",
+            "words": "20–35 ord",
+            "prompt": "Estás enfermo y no puedes ir al trabajo hoy. Escribe un mensaje a tu jefe (chef).\n\nEn tu mensaje debes:\n• Decir que estás enfermo\n• Decir que no puedes ir hoy\n• Pedir disculpas",
+            "checklist": [
+                  "Hej [nombre del jefe]!",
+                  "Jag är sjuk idag...",
+                  "Jag kan tyvärr inte komma till jobbet.",
+                  "Förlåt för besväret. / Sorry för kort varsel."
+            ],
+            "example": "Hej Anna!\n\nJag är tyvärr sjuk idag och kan inte komma till jobbet. Jag har ont i halsen och feber. Förlåt för besväret.\n\nMed vänliga hälsningar,\nCarlos",
+            "criteria": [
+                  "Contenido: explica el motivo",
+                  "Tono: formal y respetuoso",
+                  "Brevedad: mensaje corto y claro",
+                  "Vocabulario: sjuk, tyvärr, förlåt"
+            ],
+            "req": {
+                  "min": 20,
+                  "max": 35,
+                  "greeting": true,
+                  "closing": true,
+                  "question": false,
+                  "keywords": [
+                        "sjuk"
+                  ]
+            },
+            "selfCheck": [
+                  "¿Saludaste?",
+                  "¿Dijiste que estás enfermo?",
+                  "¿Dijiste que no puedes ir?",
+                  "¿Te despediste?"
+            ],
+            "hints": [
+                  "Saluda: Hej [nombre]!",
+                  "Di el motivo: Jag är sjuk...",
+                  "Despídete: Med vänliga hälsningar"
+            ],
+            "useful": [
+                  "hej",
+                  "sjuk",
+                  "idag",
+                  "kan inte komma",
+                  "förlåt",
+                  "hälsningar"
+            ]
       },
-{"id": "a-w-4", "unit": 1, "unitTitle": "Presentaciones", "title": "Presentera dig själv", "icon": "🙋", "words": "40–60 ord", "prompt": "Escribe una presentación sobre ti en sueco.\nIncluye:\n• Tu nombre y de dónde vienes\n• Dónde vives ahora\n• Qué estudias o en qué trabajas\n• Algo que te gusta hacer", "checklist": ["Jag heter... och jag kommer från...", "Jag bor i...", "Jag studerar svenska på SFI.", "På fritiden tycker jag om att..."], "example": "Hej! Jag heter Ana och jag kommer från Peru. Nu bor jag i Stockholm. Jag studerar svenska på SFI. På fritiden tycker jag om att promenera och laga mat.", "criteria": ["Contenido: ¿cumpliste todas las tareas?", "Gramática: verbos y orden de palabras", "Vocabulario: palabras del nivel A", "Claridad: se entiende el mensaje"]},
-{"id": "a-w-5", "unit": 1, "unitTitle": "Presentaciones", "title": "Fyll i formuläret", "icon": "📝", "words": "Frases cortas", "prompt": "Completa un formulario con tus datos personales. Escribe una línea por campo.", "checklist": ["Namn: (tu nombre)", "Efternamn: (tu apellido)", "Adress: (tu dirección)", "Telefon: (tu teléfono)", "Land: (tu país)"], "example": "Namn: Ana\nEfternamn: Lopez\nAdress: Storgatan 4, Stockholm\nTelefon: 070-111 22 33\nE-post: ana@mail.se\nLand: Peru", "criteria": ["Contenido: completaste todos los campos", "Datos claros", "Formato de formulario", "Ortografía de datos básicos"]},
-{"id": "a-w-6", "unit": 2, "unitTitle": "Familia", "title": "Skriv om din familj", "icon": "👪", "words": "40–60 ord", "prompt": "Escribe sobre tu familia.\nIncluye:\n• Cuántas personas son\n• Cómo se llaman\n• Qué hacen", "checklist": ["Jag har en...", "Min man/fru heter...", "Jag har ... barn.", "Min mamma/pappa bor i..."], "example": "Jag heter Sofia. Jag har en man och två barn. Min man heter Karl. Mina barn heter Lisa och Tom. Min mamma bor i Sverige, men min pappa bor i Chile.", "criteria": ["Contenido: ¿cumpliste todas las tareas?", "Gramática: verbos y orden de palabras", "Vocabulario: palabras del nivel A", "Claridad: se entiende el mensaje"]},
-{"id": "a-w-7", "unit": 3, "unitTitle": "Vivienda", "title": "Beskriv ditt hem", "icon": "🏠", "words": "40–60 ord", "prompt": "Describe dónde vives.\nIncluye:\n• Qué tipo de vivienda\n• Cuántas habitaciones\n• Qué hay cerca", "checklist": ["Jag bor i en lägenhet / ett hus.", "Den har ... rum.", "I närheten finns...", "Jag trivs bra."], "example": "Jag bor i en lägenhet i Husby. Lägenheten har tre rum och kök. I närheten finns en park och en skola. Det tar fem minuter att gå till tunnelbanan. Jag trivs bra.", "criteria": ["Contenido: ¿cumpliste todas las tareas?", "Gramática: verbos y orden de palabras", "Vocabulario: palabras del nivel A", "Claridad: se entiende el mensaje"]},
-{"id": "a-w-8", "unit": 5, "unitTitle": "Rutinas", "title": "Skriv om din dag", "icon": "⏰", "words": "40–60 ord", "prompt": "Describe tu día normal.\nIncluye:\n• A qué hora te levantas\n• Qué haces por la mañana\n• Qué haces por la tarde/noche", "checklist": ["Jag vaknar klockan...", "På morgonen...", "Sedan...", "På kvällen..."], "example": "Jag vaknar klockan sju. Jag äter frukost och dricker kaffe. Sedan tar jag bussen till SFI. På eftermiddagen handlar jag mat. På kvällen lagar jag mat och tittar på tv.", "criteria": ["Contenido: ¿cumpliste todas las tareas?", "Gramática: verbos y orden de palabras", "Vocabulario: palabras del nivel A", "Claridad: se entiende el mensaje"]},
-{"id": "a-w-9", "unit": 6, "unitTitle": "Escuela", "title": "Meddelande till läraren", "icon": "✉️", "words": "20–35 ord", "prompt": "Escribe un mensaje corto a tu profesor/a. No puedes ir a clase hoy.\nDebes:\n• Saludar\n• Decir que no puedes ir\n• Dar un motivo", "checklist": ["Hej [nombre]!", "Jag kan tyvärr inte komma till SFI idag.", "Jag är sjuk / Mitt barn är sjukt.", "Vi ses imorgon. Hälsningar, [tu nombre]"], "example": "Hej Anna!\nJag kan tyvärr inte komma till SFI idag. Jag är sjuk och har feber. Vi ses imorgon.\nHälsningar, Pedro", "criteria": ["Contenido: saludo, motivo, despedida", "Tono respetuoso", "Mensaje corto y claro", "Vocabulario: sjuk, tyvärr, imorgon"]},
-{"id": "a-w-10", "unit": 8, "unitTitle": "Compras", "title": "Skriv en inköpslista", "icon": "🛒", "words": "Palabras/frases", "prompt": "Vas al supermercado. Escribe tu lista de compras en sueco (al menos 6 cosas).", "checklist": ["Escribe una cosa por línea", "Puedes añadir cantidades: två äpplen", "Usa palabras de comida en sueco"], "example": "Inköpslista:\n- mjölk\n- bröd\n- ägg\n- ost\n- äpplen\n- kaffe\n- ris", "criteria": ["Contenido: al menos 6 productos", "Vocabulario de comida en sueco", "Ortografía básica", "Formato de lista"]},
-{"id": "a-w-11", "unit": 9, "unitTitle": "Comida", "title": "Min favoritmat", "icon": "🍽️", "words": "30–50 ord", "prompt": "Escribe sobre tu comida favorita.\nIncluye:\n• Qué te gusta comer\n• Cuándo lo comes\n• Con quién", "checklist": ["Min favoritmat är...", "Jag äter det ofta / på helgen.", "Jag lagar mat med...", "Det smakar gott."], "example": "Min favoritmat är pannkakor. Jag äter dem på helgen med min familj. Ibland lagar jag också ris med kyckling. Det smakar jättegott!", "criteria": ["Contenido: ¿cumpliste todas las tareas?", "Gramática: verbos y orden de palabras", "Vocabulario: palabras del nivel A", "Claridad: se entiende el mensaje"]},
-{"id": "a-w-12", "unit": 10, "unitTitle": "Transporte", "title": "Hur tar du dig till skolan?", "icon": "🚌", "words": "30–50 ord", "prompt": "Explica cómo vas a la escuela.\nIncluye:\n• Qué transporte usas\n• Cuánto tarda\n• A qué hora sales", "checklist": ["Jag tar bussen / tunnelbanan / cykeln.", "Resan tar ... minuter.", "Jag åker klockan...", "Sedan går jag till klassen."], "example": "Jag tar bussen till skolan. Resan tar tjugo minuter. Jag åker hemifrån klockan åtta. Ibland cyklar jag när det är fint väder.", "criteria": ["Contenido: ¿cumpliste todas las tareas?", "Gramática: verbos y orden de palabras", "Vocabulario: palabras del nivel A", "Claridad: se entiende el mensaje"]},
-{"id": "a-w-13", "unit": 11, "unitTitle": "Mensajes", "title": "Skriv ett SMS till en vän", "icon": "💬", "words": "20–35 ord", "prompt": "Escribe un SMS a un amigo/a.\nDebes:\n• Saludar\n• Invitarle a hacer algo\n• Decir cuándo y dónde", "checklist": ["Hej [nombre]!", "Vill du... på lördag?", "Vi kan ses klockan... vid...", "Hör av dig! / Kram"], "example": "Hej Omar! Vill du ta en fika på lördag? Vi kan ses klockan tre vid caféet i centrum. Hör av dig! Kram, Ana", "criteria": ["Contenido: saludo, invitación, hora/lugar", "Tono informal y amable", "Mensaje corto", "Vocabulario cotidiano"]},
-{"id": "a-w-14", "unit": 12, "unitTitle": "Citas", "title": "Boka en tid", "icon": "🏥", "words": "20–35 ord", "prompt": "Escribe un mensaje a la vårdcentral para pedir una cita.\nDebes:\n• Dar tu nombre\n• Explicar el problema\n• Pedir una hora", "checklist": ["Hej! Jag heter...", "Jag har ont i...", "Kan jag boka en tid den här veckan?", "Tack för hjälpen!"], "example": "Hej! Jag heter Pedro. Jag har ont i halsen och lite feber. Kan jag boka en tid den här veckan? Tack för hjälpen!", "criteria": ["Contenido: nombre, problema, petición", "Tono cortés", "Vocabulario: ont, feber, tid", "Claridad del mensaje"]},
-{"id": "a-w-15", "unit": 13, "unitTitle": "Invitaciones", "title": "Skriv en inbjudan", "icon": "🎉", "words": "30–50 ord", "prompt": "Escribe una invitación a una fiesta.\nIncluye:\n• Qué celebras\n• El día y la hora\n• Dónde es", "checklist": ["Hej! Jag fyller år / har fest.", "Kom på fest på lördag!", "Vi börjar klockan...", "Välkommen! Hälsningar, [tu nombre]"], "example": "Hej! Jag fyller år på lördag och vill bjuda in dig till fest. Vi börjar klockan sex hemma hos mig på Storgatan 4. Det blir tårta och musik. Välkommen! Hälsningar, Sofia", "criteria": ["Contenido: ¿cumpliste todas las tareas?", "Gramática: verbos y orden de palabras", "Vocabulario: palabras del nivel A", "Claridad: se entiende el mensaje"]}
-    ],
+      {
+            "id": "a-w-4",
+            "unit": 1,
+            "unitTitle": "Presentaciones",
+            "title": "Presentera dig själv",
+            "icon": "🙋",
+            "words": "40–60 ord",
+            "prompt": "Escribe una presentación sobre ti en sueco.\nIncluye:\n• Tu nombre y de dónde vienes\n• Dónde vives ahora\n• Qué estudias o en qué trabajas\n• Algo que te gusta hacer",
+            "checklist": [
+                  "Jag heter... och jag kommer från...",
+                  "Jag bor i...",
+                  "Jag studerar svenska på SFI.",
+                  "På fritiden tycker jag om att..."
+            ],
+            "example": "Hej! Jag heter Ana och jag kommer från Peru. Nu bor jag i Stockholm. Jag studerar svenska på SFI. På fritiden tycker jag om att promenera och laga mat.",
+            "criteria": [
+                  "Contenido: ¿cumpliste todas las tareas?",
+                  "Gramática: verbos y orden de palabras",
+                  "Vocabulario: palabras del nivel A",
+                  "Claridad: se entiende el mensaje"
+            ],
+            "req": {
+                  "min": 40,
+                  "max": 60,
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "heter",
+                        "från",
+                        "bor"
+                  ]
+            },
+            "selfCheck": [
+                  "¿Dijiste tu nombre y país?",
+                  "¿Dónde vives ahora?",
+                  "¿Qué estudias o en qué trabajas?",
+                  "¿Algo que te gusta hacer?"
+            ],
+            "hints": [
+                  "Jag heter... och jag kommer från...",
+                  "Jag bor i...",
+                  "På fritiden tycker jag om att..."
+            ],
+            "useful": [
+                  "jag heter",
+                  "kommer från",
+                  "bor i",
+                  "studerar",
+                  "jobbar",
+                  "fritiden"
+            ]
+      },
+      {
+            "id": "a-w-5",
+            "unit": 1,
+            "unitTitle": "Presentaciones",
+            "title": "Fyll i formuläret",
+            "icon": "📝",
+            "words": "Frases cortas",
+            "prompt": "Completa un formulario con tus datos personales. Escribe una línea por campo.",
+            "checklist": [
+                  "Namn: (tu nombre)",
+                  "Efternamn: (tu apellido)",
+                  "Adress: (tu dirección)",
+                  "Telefon: (tu teléfono)",
+                  "Land: (tu país)"
+            ],
+            "example": "Namn: Ana\nEfternamn: Lopez\nAdress: Storgatan 4, Stockholm\nTelefon: 070-111 22 33\nE-post: ana@mail.se\nLand: Peru",
+            "criteria": [
+                  "Contenido: completaste todos los campos",
+                  "Datos claros",
+                  "Formato de formulario",
+                  "Ortografía de datos básicos"
+            ],
+            "req": {
+                  "min": 5,
+                  "max": 40,
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "namn",
+                        "adress",
+                        "telefon"
+                  ]
+            },
+            "selfCheck": [
+                  "¿Pusiste tu nombre?",
+                  "¿Tu dirección?",
+                  "¿Tu teléfono?",
+                  "¿Tu país?"
+            ],
+            "hints": [
+                  "Escribe una línea por dato",
+                  "Namn: ...",
+                  "Adress: ..., Telefon: ..."
+            ],
+            "useful": [
+                  "namn",
+                  "efternamn",
+                  "adress",
+                  "telefon",
+                  "e-post",
+                  "land"
+            ]
+      },
+      {
+            "id": "a-w-6",
+            "unit": 2,
+            "unitTitle": "Familia",
+            "title": "Skriv om din familj",
+            "icon": "👪",
+            "words": "40–60 ord",
+            "prompt": "Escribe sobre tu familia.\nIncluye:\n• Cuántas personas son\n• Cómo se llaman\n• Qué hacen",
+            "checklist": [
+                  "Jag har en...",
+                  "Min man/fru heter...",
+                  "Jag har ... barn.",
+                  "Min mamma/pappa bor i..."
+            ],
+            "example": "Jag heter Sofia. Jag har en man och två barn. Min man heter Karl. Mina barn heter Lisa och Tom. Min mamma bor i Sverige, men min pappa bor i Chile.",
+            "criteria": [
+                  "Contenido: ¿cumpliste todas las tareas?",
+                  "Gramática: verbos y orden de palabras",
+                  "Vocabulario: palabras del nivel A",
+                  "Claridad: se entiende el mensaje"
+            ],
+            "req": {
+                  "min": 40,
+                  "max": 60,
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "heter",
+                        "har"
+                  ]
+            },
+            "selfCheck": [
+                  "¿Cuántas personas son?",
+                  "¿Cómo se llaman?",
+                  "¿Qué hacen (trabajo/escuela)?"
+            ],
+            "hints": [
+                  "Jag har en...",
+                  "Min man/fru heter...",
+                  "Jag har ... barn."
+            ],
+            "useful": [
+                  "familj",
+                  "man",
+                  "fru",
+                  "barn",
+                  "mamma",
+                  "pappa",
+                  "heter"
+            ]
+      },
+      {
+            "id": "a-w-7",
+            "unit": 3,
+            "unitTitle": "Vivienda",
+            "title": "Beskriv ditt hem",
+            "icon": "🏠",
+            "words": "40–60 ord",
+            "prompt": "Describe dónde vives.\nIncluye:\n• Qué tipo de vivienda\n• Cuántas habitaciones\n• Qué hay cerca",
+            "checklist": [
+                  "Jag bor i en lägenhet / ett hus.",
+                  "Den har ... rum.",
+                  "I närheten finns...",
+                  "Jag trivs bra."
+            ],
+            "example": "Jag bor i en lägenhet i Husby. Lägenheten har tre rum och kök. I närheten finns en park och en skola. Det tar fem minuter att gå till tunnelbanan. Jag trivs bra.",
+            "criteria": [
+                  "Contenido: ¿cumpliste todas las tareas?",
+                  "Gramática: verbos y orden de palabras",
+                  "Vocabulario: palabras del nivel A",
+                  "Claridad: se entiende el mensaje"
+            ],
+            "req": {
+                  "min": 40,
+                  "max": 60,
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "bor",
+                        "rum"
+                  ]
+            },
+            "selfCheck": [
+                  "¿Qué tipo de vivienda?",
+                  "¿Cuántas habitaciones?",
+                  "¿Qué hay cerca?"
+            ],
+            "hints": [
+                  "Jag bor i en lägenhet / ett hus.",
+                  "Den har ... rum.",
+                  "I närheten finns..."
+            ],
+            "useful": [
+                  "lägenhet",
+                  "hus",
+                  "rum",
+                  "kök",
+                  "balkong",
+                  "närheten",
+                  "trivs"
+            ]
+      },
+      {
+            "id": "a-w-8",
+            "unit": 5,
+            "unitTitle": "Rutinas",
+            "title": "Skriv om din dag",
+            "icon": "⏰",
+            "words": "40–60 ord",
+            "prompt": "Describe tu día normal.\nIncluye:\n• A qué hora te levantas\n• Qué haces por la mañana\n• Qué haces por la tarde/noche",
+            "checklist": [
+                  "Jag vaknar klockan...",
+                  "På morgonen...",
+                  "Sedan...",
+                  "På kvällen..."
+            ],
+            "example": "Jag vaknar klockan sju. Jag äter frukost och dricker kaffe. Sedan tar jag bussen till SFI. På eftermiddagen handlar jag mat. På kvällen lagar jag mat och tittar på tv.",
+            "criteria": [
+                  "Contenido: ¿cumpliste todas las tareas?",
+                  "Gramática: verbos y orden de palabras",
+                  "Vocabulario: palabras del nivel A",
+                  "Claridad: se entiende el mensaje"
+            ],
+            "req": {
+                  "min": 40,
+                  "max": 60,
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "klockan"
+                  ]
+            },
+            "selfCheck": [
+                  "¿A qué hora te levantas?",
+                  "¿Qué haces por la mañana?",
+                  "¿Qué haces por la tarde/noche?"
+            ],
+            "hints": [
+                  "Jag vaknar klockan...",
+                  "På morgonen...",
+                  "På kvällen..."
+            ],
+            "useful": [
+                  "vaknar",
+                  "frukost",
+                  "klockan",
+                  "sedan",
+                  "eftermiddagen",
+                  "kvällen"
+            ]
+      },
+      {
+            "id": "a-w-9",
+            "unit": 6,
+            "unitTitle": "Escuela",
+            "title": "Meddelande till läraren",
+            "icon": "✉️",
+            "words": "20–35 ord",
+            "prompt": "Escribe un mensaje corto a tu profesor/a. No puedes ir a clase hoy.\nDebes:\n• Saludar\n• Decir que no puedes ir\n• Dar un motivo",
+            "checklist": [
+                  "Hej [nombre]!",
+                  "Jag kan tyvärr inte komma till SFI idag.",
+                  "Jag är sjuk / Mitt barn är sjukt.",
+                  "Vi ses imorgon. Hälsningar, [tu nombre]"
+            ],
+            "example": "Hej Anna!\nJag kan tyvärr inte komma till SFI idag. Jag är sjuk och har feber. Vi ses imorgon.\nHälsningar, Pedro",
+            "criteria": [
+                  "Contenido: saludo, motivo, despedida",
+                  "Tono respetuoso",
+                  "Mensaje corto y claro",
+                  "Vocabulario: sjuk, tyvärr, imorgon"
+            ],
+            "req": {
+                  "min": 20,
+                  "max": 35,
+                  "greeting": true,
+                  "closing": true,
+                  "question": false,
+                  "keywords": [
+                        "idag"
+                  ]
+            },
+            "selfCheck": [
+                  "¿Saludaste al profesor?",
+                  "¿Dijiste que no puedes ir?",
+                  "¿Diste un motivo?",
+                  "¿Te despediste?"
+            ],
+            "hints": [
+                  "Hej [nombre]!",
+                  "Jag kan tyvärr inte komma till SFI idag.",
+                  "Vi ses imorgon. Hälsningar,"
+            ],
+            "useful": [
+                  "hej",
+                  "sjuk",
+                  "idag",
+                  "kan inte komma",
+                  "imorgon",
+                  "hälsningar"
+            ]
+      },
+      {
+            "id": "a-w-10",
+            "unit": 8,
+            "unitTitle": "Compras",
+            "title": "Skriv en inköpslista",
+            "icon": "🛒",
+            "words": "Palabras/frases",
+            "prompt": "Vas al supermercado. Escribe tu lista de compras en sueco (al menos 6 cosas).",
+            "checklist": [
+                  "Escribe una cosa por línea",
+                  "Puedes añadir cantidades: två äpplen",
+                  "Usa palabras de comida en sueco"
+            ],
+            "example": "Inköpslista:\n- mjölk\n- bröd\n- ägg\n- ost\n- äpplen\n- kaffe\n- ris",
+            "criteria": [
+                  "Contenido: al menos 6 productos",
+                  "Vocabulario de comida en sueco",
+                  "Ortografía básica",
+                  "Formato de lista"
+            ],
+            "req": {
+                  "min": 6,
+                  "max": 40,
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": []
+            },
+            "selfCheck": [
+                  "¿Escribiste al menos 6 productos?",
+                  "¿Los escribiste en sueco?",
+                  "¿Una cosa por línea?"
+            ],
+            "hints": [
+                  "Una cosa por línea",
+                  "Ejemplo: mjölk, bröd, ägg...",
+                  "Puedes añadir cantidades: två äpplen"
+            ],
+            "useful": [
+                  "mjölk",
+                  "bröd",
+                  "ägg",
+                  "ost",
+                  "frukt",
+                  "kaffe",
+                  "ris"
+            ]
+      },
+      {
+            "id": "a-w-11",
+            "unit": 9,
+            "unitTitle": "Comida",
+            "title": "Min favoritmat",
+            "icon": "🍽️",
+            "words": "30–50 ord",
+            "prompt": "Escribe sobre tu comida favorita.\nIncluye:\n• Qué te gusta comer\n• Cuándo lo comes\n• Con quién",
+            "checklist": [
+                  "Min favoritmat är...",
+                  "Jag äter det ofta / på helgen.",
+                  "Jag lagar mat med...",
+                  "Det smakar gott."
+            ],
+            "example": "Min favoritmat är pannkakor. Jag äter dem på helgen med min familj. Ibland lagar jag också ris med kyckling. Det smakar jättegott!",
+            "criteria": [
+                  "Contenido: ¿cumpliste todas las tareas?",
+                  "Gramática: verbos y orden de palabras",
+                  "Vocabulario: palabras del nivel A",
+                  "Claridad: se entiende el mensaje"
+            ],
+            "req": {
+                  "min": 30,
+                  "max": 50,
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "mat"
+                  ]
+            },
+            "selfCheck": [
+                  "¿Qué te gusta comer?",
+                  "¿Cuándo lo comes?",
+                  "¿Con quién?"
+            ],
+            "hints": [
+                  "Min favoritmat är...",
+                  "Jag äter det på helgen / med...",
+                  "Det smakar gott."
+            ],
+            "useful": [
+                  "favoritmat",
+                  "äta",
+                  "laga mat",
+                  "gott",
+                  "helgen",
+                  "tillsammans"
+            ]
+      },
+      {
+            "id": "a-w-12",
+            "unit": 10,
+            "unitTitle": "Transporte",
+            "title": "Hur tar du dig till skolan?",
+            "icon": "🚌",
+            "words": "30–50 ord",
+            "prompt": "Explica cómo vas a la escuela.\nIncluye:\n• Qué transporte usas\n• Cuánto tarda\n• A qué hora sales",
+            "checklist": [
+                  "Jag tar bussen / tunnelbanan / cykeln.",
+                  "Resan tar ... minuter.",
+                  "Jag åker klockan...",
+                  "Sedan går jag till klassen."
+            ],
+            "example": "Jag tar bussen till skolan. Resan tar tjugo minuter. Jag åker hemifrån klockan åtta. Ibland cyklar jag när det är fint väder.",
+            "criteria": [
+                  "Contenido: ¿cumpliste todas las tareas?",
+                  "Gramática: verbos y orden de palabras",
+                  "Vocabulario: palabras del nivel A",
+                  "Claridad: se entiende el mensaje"
+            ],
+            "req": {
+                  "min": 30,
+                  "max": 50,
+                  "greeting": false,
+                  "closing": false,
+                  "question": false,
+                  "keywords": [
+                        "minuter"
+                  ]
+            },
+            "selfCheck": [
+                  "¿Qué transporte usas?",
+                  "¿Cuánto tarda?",
+                  "¿A qué hora sales?"
+            ],
+            "hints": [
+                  "Jag tar bussen / cykeln...",
+                  "Resan tar ... minuter.",
+                  "Jag åker klockan..."
+            ],
+            "useful": [
+                  "buss",
+                  "tunnelbana",
+                  "cykel",
+                  "åker",
+                  "minuter",
+                  "klockan"
+            ]
+      },
+      {
+            "id": "a-w-13",
+            "unit": 11,
+            "unitTitle": "Mensajes",
+            "title": "Skriv ett SMS till en vän",
+            "icon": "💬",
+            "words": "20–35 ord",
+            "prompt": "Escribe un SMS a un amigo/a.\nDebes:\n• Saludar\n• Invitarle a hacer algo\n• Decir cuándo y dónde",
+            "checklist": [
+                  "Hej [nombre]!",
+                  "Vill du... på lördag?",
+                  "Vi kan ses klockan... vid...",
+                  "Hör av dig! / Kram"
+            ],
+            "example": "Hej Omar! Vill du ta en fika på lördag? Vi kan ses klockan tre vid caféet i centrum. Hör av dig! Kram, Ana",
+            "criteria": [
+                  "Contenido: saludo, invitación, hora/lugar",
+                  "Tono informal y amable",
+                  "Mensaje corto",
+                  "Vocabulario cotidiano"
+            ],
+            "req": {
+                  "min": 20,
+                  "max": 35,
+                  "greeting": true,
+                  "closing": true,
+                  "question": true,
+                  "keywords": [
+                        "lördag"
+                  ]
+            },
+            "selfCheck": [
+                  "¿Saludaste?",
+                  "¿Invitaste a hacer algo?",
+                  "¿Dijiste cuándo y dónde?",
+                  "¿Te despediste?"
+            ],
+            "hints": [
+                  "Hej [nombre]!",
+                  "Vill du... på lördag?",
+                  "Vi kan ses klockan... vid...",
+                  "Kram / Hälsningar"
+            ],
+            "useful": [
+                  "hej",
+                  "vill du",
+                  "lördag",
+                  "klockan",
+                  "vid",
+                  "kram"
+            ]
+      },
+      {
+            "id": "a-w-14",
+            "unit": 12,
+            "unitTitle": "Citas",
+            "title": "Boka en tid",
+            "icon": "🏥",
+            "words": "20–35 ord",
+            "prompt": "Escribe un mensaje a la vårdcentral para pedir una cita.\nDebes:\n• Dar tu nombre\n• Explicar el problema\n• Pedir una hora",
+            "checklist": [
+                  "Hej! Jag heter...",
+                  "Jag har ont i...",
+                  "Kan jag boka en tid den här veckan?",
+                  "Tack för hjälpen!"
+            ],
+            "example": "Hej! Jag heter Pedro. Jag har ont i halsen och lite feber. Kan jag boka en tid den här veckan? Tack för hjälpen!",
+            "criteria": [
+                  "Contenido: nombre, problema, petición",
+                  "Tono cortés",
+                  "Vocabulario: ont, feber, tid",
+                  "Claridad del mensaje"
+            ],
+            "req": {
+                  "min": 20,
+                  "max": 35,
+                  "greeting": true,
+                  "closing": true,
+                  "question": true,
+                  "keywords": [
+                        "tid"
+                  ]
+            },
+            "selfCheck": [
+                  "¿Diste tu nombre?",
+                  "¿Explicaste el problema?",
+                  "¿Pediste una hora?",
+                  "¿Diste las gracias?"
+            ],
+            "hints": [
+                  "Hej! Jag heter...",
+                  "Jag har ont i...",
+                  "Kan jag boka en tid...?",
+                  "Tack för hjälpen!"
+            ],
+            "useful": [
+                  "hej",
+                  "ont",
+                  "feber",
+                  "boka en tid",
+                  "den här veckan",
+                  "tack"
+            ]
+      },
+      {
+            "id": "a-w-15",
+            "unit": 13,
+            "unitTitle": "Invitaciones",
+            "title": "Skriv en inbjudan",
+            "icon": "🎉",
+            "words": "30–50 ord",
+            "prompt": "Escribe una invitación a una fiesta.\nIncluye:\n• Qué celebras\n• El día y la hora\n• Dónde es",
+            "checklist": [
+                  "Hej! Jag fyller år / har fest.",
+                  "Kom på fest på lördag!",
+                  "Vi börjar klockan...",
+                  "Välkommen! Hälsningar, [tu nombre]"
+            ],
+            "example": "Hej! Jag fyller år på lördag och vill bjuda in dig till fest. Vi börjar klockan sex hemma hos mig på Storgatan 4. Det blir tårta och musik. Välkommen! Hälsningar, Sofia",
+            "criteria": [
+                  "Contenido: ¿cumpliste todas las tareas?",
+                  "Gramática: verbos y orden de palabras",
+                  "Vocabulario: palabras del nivel A",
+                  "Claridad: se entiende el mensaje"
+            ],
+            "req": {
+                  "min": 30,
+                  "max": 50,
+                  "greeting": true,
+                  "closing": true,
+                  "question": false,
+                  "keywords": [
+                        "fest"
+                  ]
+            },
+            "selfCheck": [
+                  "¿Qué celebras?",
+                  "¿El día y la hora?",
+                  "¿Dónde es?",
+                  "¿Te despediste?"
+            ],
+            "hints": [
+                  "Hej! Jag fyller år / har fest.",
+                  "Vi börjar klockan... hemma hos mig.",
+                  "Välkommen! Hälsningar,"
+            ],
+            "useful": [
+                  "hej",
+                  "fyller år",
+                  "fest",
+                  "klockan",
+                  "tårta",
+                  "välkommen",
+                  "hälsningar"
+            ]
+      }
+],
 
     speak: [
       {

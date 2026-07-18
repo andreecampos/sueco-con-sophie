@@ -1601,23 +1601,29 @@ function openWrite(index) {
   const items = DB[state.level].write || [];
   state.currentWrite = items[index];
   state.writeIndex = index;
+  state.writeSubmitted = false;
+  state.hintIndex = 0;
 
   const _wg = document.getElementById('write-grid'); if (_wg) _wg.classList.add('hidden');
   document.getElementById('write-area').classList.remove('hidden');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  document.getElementById('write-title').textContent = state.currentWrite.title;
-  document.getElementById('write-words').textContent = state.currentWrite.words || '';
-  document.getElementById('write-icon').textContent = state.currentWrite.icon || '✍️';
-  document.getElementById('write-prompt').innerHTML = (state.currentWrite.prompt || '').replace(/\n/g, '<br>');
-  document.getElementById('write-textarea').value = '';
-  document.getElementById('word-counter').textContent = '0 ord';
-  document.getElementById('example-area').classList.add('hidden');
-
-  const cl = document.getElementById('write-checklist');
-  cl.innerHTML = (state.currentWrite.checklist || []).map(c =>
-    `<div class="flex items-start gap-2 text-xs text-blue-700"><span class="text-blue-400 mt-0.5">•</span>${c}</div>`
-  ).join('');
+  const t = state.currentWrite;
+  document.getElementById('write-title').textContent = t.title;
+  document.getElementById('write-words').textContent = t.words || '';
+  document.getElementById('write-icon').textContent = t.icon || '✍️';
+  document.getElementById('write-prompt').innerHTML = (t.prompt || '').replace(/\n/g, '<br>');
+  // Requisitos de la tarea (guía, no la respuesta)
+  const reqLines = (t.criteria && t.criteria.length) ? t.criteria : (t.selfCheck || []);
+  document.getElementById('write-reqs').innerHTML = reqLines.map(r =>
+    `<div class="flex items-start gap-2 text-sm text-gray-600"><span class="text-swe-blue mt-0.5">•</span>${r}</div>`).join('');
+  // Restaura borrador local (localStorage, no ocupa base de datos)
+  const ta = document.getElementById('write-textarea');
+  ta.value = _loadWriteDraft(t.id) || '';
+  countWords();
+  document.getElementById('write-hint').classList.add('hidden');
+  document.getElementById('write-useful').classList.add('hidden');
+  const fb = document.getElementById('write-feedback'); fb.classList.add('hidden'); fb.innerHTML = '';
 }
 
 function randomWrite() {
@@ -1632,34 +1638,139 @@ function backToWriteList() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// ── Borrador local (por alumno+ejercicio) — NO se guarda en la base de datos ──
+function _writeDraftKey(id) { return 'scs_wdraft_' + state.level + '_' + id; }
+function _saveWriteDraft(id, txt) { try { localStorage.setItem(_writeDraftKey(id), txt || ''); } catch (e) {} }
+function _loadWriteDraft(id) { try { return localStorage.getItem(_writeDraftKey(id)) || ''; } catch (e) { return ''; } }
+
 function countWords() {
-  const txt = document.getElementById('write-textarea').value.trim();
+  const ta = document.getElementById('write-textarea');
+  const txt = (ta.value || '').trim();
   const words = txt ? txt.split(/\s+/).length : 0;
   document.getElementById('word-counter').textContent = `${words} ord`;
+  if (state.currentWrite) _saveWriteDraft(state.currentWrite.id, ta.value);
 }
 
-function showExample() {
-  const area = document.getElementById('example-area');
-  area.classList.remove('hidden');
-  document.getElementById('example-text').innerHTML = (state.currentWrite?.example || '').replace(/\n/g, '<br>');
-  const crit = document.getElementById('criteria-list');
-  crit.innerHTML = (state.currentWrite?.criteria || []).map(c =>
-    `<div class="flex items-start gap-2 text-xs text-green-700"><span>✔</span>${c}</div>`
-  ).join('');
-  area.scrollIntoView({ behavior: 'smooth' });
-  // Completó la actividad de escritura (escribió y comparó con el ejemplo).
+// ── Botones de ayuda ──
+function toggleHint() {
+  const el = document.getElementById('write-hint');
+  const hints = (state.currentWrite && state.currentWrite.hints) || [];
+  if (!hints.length) { el.innerHTML = 'No hay pistas para esta tarea.'; el.classList.remove('hidden'); return; }
+  if (el.classList.contains('hidden')) { el.classList.remove('hidden'); state.hintIndex = 0; }
+  else { state.hintIndex = (state.hintIndex + 1) % hints.length; }
+  el.innerHTML = '💡 ' + hints[state.hintIndex] + (hints.length > 1 ? ` <span class="text-[11px] text-amber-500">(${state.hintIndex + 1}/${hints.length} — toca para otra)</span>` : '');
+}
+function toggleUseful() {
+  const el = document.getElementById('write-useful');
+  if (!el.classList.contains('hidden')) { el.classList.add('hidden'); return; }
+  const words = (state.currentWrite && state.currentWrite.useful) || [];
+  el.innerHTML = '<div class="text-xs font-bold text-blue-700 mb-2">Palabras útiles (no es la respuesta)</div><div class="flex flex-wrap gap-2">' +
+    words.map(w => `<span class="bg-white border border-blue-200 text-blue-800 text-sm px-2.5 py-1 rounded-full">${w}</span>`).join('') + '</div>';
+  el.classList.remove('hidden');
+}
+
+// ── Comprobaciones OBJETIVAS (sin IA) ──
+function _wCount(t) { t = (t || '').trim(); return t ? t.split(/\s+/).length : 0; }
+function _wGreet(t) { return /(^|\W)(hej|hallå|hejsan|god\s?morgon|goddag|tjena|tja)\b/i.test(t || ''); }
+function _wClose(t) { return /(hälsningar|mvh|kram|vi ses|ha det bra|vänliga hälsningar|hej då)/i.test(t || ''); }
+function _wKey(t, k) { return (t || '').toLowerCase().includes(String(k).toLowerCase()); }
+function _writeChecks(task, text) {
+  const req = task.req || {}, n = _wCount(text), checks = [];
+  if (req.min != null || req.max != null) {
+    const okLen = (req.min == null || n >= req.min) && (req.max == null || n <= req.max);
+    const range = (req.min != null && req.max != null) ? (req.min + '–' + req.max) : (req.min != null ? ('mín. ' + req.min) : ('máx. ' + req.max));
+    checks.push({ label: `Extensión: ${range} palabras (llevas ${n})`, ok: okLen });
+  }
+  if (req.greeting) checks.push({ label: 'Empezar con un saludo (Hej…)', ok: _wGreet(text) });
+  if (req.closing) checks.push({ label: 'Terminar con una despedida (Hälsningar…)', ok: _wClose(text) });
+  if (req.question) checks.push({ label: 'Incluir una pregunta (con «?»)', ok: /\?/.test(text) });
+  (req.keywords || []).forEach(k => checks.push({ label: `Incluir la palabra «${k}»`, ok: _wKey(text, k) }));
+  return checks;
+}
+
+function submitWrite() {
+  const ta = document.getElementById('write-textarea');
+  const text = (ta.value || '').trim();
+  if (!text) { showToast('Escribe tu respuesta antes de enviar.', 'info'); ta.focus(); return; }
+  const t = state.currentWrite;
+  _saveWriteDraft(t.id, text);
+  const checks = _writeChecks(t, text);
+  const met = checks.filter(c => c.ok).length, total = checks.length;
+  const allOk = total === 0 ? true : met === total;
+  state.writeSubmitted = true;
+  // Guarda SOLO estado + puntuación objetiva (reutiliza user_progress, UPDATE del mismo registro).
   try {
-    if (typeof markCompleted === 'function' && state.currentWrite) {
-      const cid = state.currentWrite.id || state.writeIndex;
-      markCompleted('writing', state.level + ':write:' + cid, state.level);
+    if (typeof progressMark === 'function') {
+      progressMark('writing', state.level + ':write:' + t.id, {
+        status: allOk ? 'completed' : 'in_progress',
+        level: state.level,
+        progress_value: total ? Math.round(met / total * 100) : 100,
+        score: met, countAttempt: true
+      });
     }
   } catch (e) {}
+  _renderWriteFeedback(text, checks, allOk);
+}
+
+function _esc(s) { return String(s || '').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function _renderWriteFeedback(text, checks, allOk) {
+  const t = state.currentWrite;
+  const fb = document.getElementById('write-feedback');
+  const reqHtml = checks.map(c => `<div class="flex items-start gap-2 text-sm ${c.ok ? 'text-green-700' : 'text-gray-500'}"><span>${c.ok ? '✅' : '⬜'}</span><span>${c.label}</span></div>`).join('');
+  const selfHtml = (t.selfCheck || []).map(q => `<label class="flex items-start gap-2 text-sm text-gray-700 cursor-pointer"><input type="checkbox" class="mt-1 flex-shrink-0"><span>${q}</span></label>`).join('');
+  const banner = allOk
+    ? '<div class="bg-green-50 border border-green-200 text-green-800 rounded-xl p-3 text-sm font-bold">✅ Cumpliste los requisitos objetivos. ¡Tarea completada!</div>'
+    : '<div class="bg-amber-50 border border-amber-200 text-amber-800 rounded-xl p-3 text-sm font-semibold">Aún faltan requisitos. Revísalos, edita tu texto y vuelve a enviar.</div>';
+  fb.innerHTML = `
+    <div class="glass rounded-2xl p-6 shadow border border-blue-100 mb-4">
+      ${banner}
+      <div class="mt-4">
+        <div class="text-xs font-black text-gray-500 uppercase tracking-wide mb-1">Tu respuesta</div>
+        <div class="bg-gray-50 rounded-xl p-3 text-sm text-gray-700" style="white-space:pre-wrap">${_esc(text)}</div>
+      </div>
+      <div class="mt-4">
+        <div class="text-xs font-black text-gray-500 uppercase tracking-wide mb-1">Requisitos objetivos</div>
+        ${reqHtml}
+        <div class="text-[11px] text-gray-400 mt-1">Solo comprobamos elementos objetivos. La gramática la revisas tú abajo.</div>
+      </div>
+      ${(t.selfCheck && t.selfCheck.length) ? `<div class="mt-4">
+        <div class="text-xs font-black text-gray-500 uppercase tracking-wide mb-1">Revisa tu texto (autoevaluación)</div>
+        <div class="space-y-1.5">${selfHtml}</div>
+      </div>` : ''}
+      <div class="flex flex-wrap gap-2 mt-5">
+        <button onclick="editWrite()" class="flex-1 border-2 border-swe-blue text-swe-blue py-2.5 rounded-xl font-bold text-sm hover:bg-blue-50">✏️ Editar y reenviar</button>
+        <button onclick="compareExample()" class="flex-1 border border-gray-300 text-gray-600 py-2.5 rounded-xl font-bold text-sm hover:bg-gray-50">📄 Comparar con un ejemplo</button>
+      </div>
+      <div id="write-example" class="hidden mt-4"></div>
+      <button onclick="nextWrite()" class="w-full ${allOk ? 'bg-swe-blue text-white hover:bg-swe-dark' : 'bg-gray-200 text-gray-600'} py-3 rounded-xl font-bold text-sm mt-3">Siguiente tarea →</button>
+    </div>`;
+  fb.classList.remove('hidden');
+  fb.scrollIntoView({ behavior: 'smooth' });
+}
+
+function editWrite() {
+  const ta = document.getElementById('write-textarea');
+  document.getElementById('write-editor').scrollIntoView({ behavior: 'smooth' });
+  ta.focus();
+}
+
+// El ejemplo SOLO está disponible tras enviar (el botón vive en el panel de feedback).
+function compareExample() {
+  const t = state.currentWrite;
+  const el = document.getElementById('write-example');
+  el.innerHTML = `<div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+    <div class="text-xs font-bold text-blue-700 mb-1">Un ejemplo (hay muchas respuestas correctas)</div>
+    <div class="text-sm text-gray-700 leading-relaxed italic" style="white-space:pre-wrap">${_esc(t.example || '')}</div>
+  </div>`;
+  el.classList.remove('hidden');
+  el.scrollIntoView({ behavior: 'smooth' });
 }
 
 function clearWrite() {
-  document.getElementById('write-textarea').value = '';
+  const ta = document.getElementById('write-textarea'); ta.value = '';
   document.getElementById('word-counter').textContent = '0 ord';
-  document.getElementById('example-area').classList.add('hidden');
+  if (state.currentWrite) _saveWriteDraft(state.currentWrite.id, '');
+  const fb = document.getElementById('write-feedback'); fb.classList.add('hidden');
 }
 
 function nextWrite() {
