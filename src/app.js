@@ -5770,6 +5770,9 @@ async function initUnifiedProgress() {
   renderDashboardProgress();
   try { renderInicio(); } catch (e) {}
   try { showPaymentAlert(); } catch (e) {}
+  // La guía de bienvenida se decide AQUÍ (con el progreso ya cargado), para saber
+  // si esta persona ya la vio en su cuenta. Se muestra una sola vez por persona.
+  try { maybeShowOnboarding(); } catch (e) {}
 }
 
 // Modal de Juanita al entrar si hay pago fallido, cancelado o inactivo (una vez por sesión).
@@ -6094,7 +6097,12 @@ function _renderOnb() {
 }
 function onbNext() { if (_onbI < _ONB_SLIDES.length - 1) { _onbI++; _renderOnb(); } else { closeOnboarding(); _highlightFirstAction(); } }
 function onbPrev() { if (_onbI > 0) { _onbI--; _renderOnb(); } }
-function closeOnboarding() { const m = document.getElementById('onboarding-modal'); if (m) m.classList.add('hidden'); try { localStorage.setItem('scs_onboarding_seen', String(ONBOARDING_VERSION)); } catch (e) {} }
+function closeOnboarding() {
+  const m = document.getElementById('onboarding-modal'); if (m) m.classList.add('hidden');
+  try { localStorage.setItem('scs_onboarding_seen', '1'); } catch (e) {}
+  // Marca en la cuenta (cross-device): no volverá a aparecer en ningún dispositivo.
+  try { if (typeof progressMark === 'function') progressMark('meta', 'onboarding', { status: 'completed' }); } catch (e) {}
+}
 function _highlightFirstAction() {
   const btn = document.getElementById('dash-test-btn');
   if (!btn) return;
@@ -6106,10 +6114,19 @@ function maybeShowOnboarding() {
   // Solo DENTRO de la plataforma (con sesión de alumno), nunca en el landing.
   if (!window._sbSession) return;
   if (_onbScheduled) return;
-  try {
-    const seen = parseInt(localStorage.getItem('scs_onboarding_seen') || '0', 10) || 0;
-    if (seen < ONBOARDING_VERSION) { _onbScheduled = true; setTimeout(showOnboarding, 800); }
-  } catch (e) {}
+  // ¿Ya la vio en ESTE dispositivo?
+  let seenLocal = false;
+  try { seenLocal = !!localStorage.getItem('scs_onboarding_seen'); } catch (e) {}
+  // ¿Ya la vio en su CUENTA (en cualquier dispositivo)? Se guarda en user_progress (module_type='meta').
+  let seenDB = false;
+  try { seenDB = (typeof isCompleted === 'function') && isCompleted('meta', 'onboarding'); } catch (e) {}
+  if (seenLocal || seenDB) {
+    if (seenDB && !seenLocal) { try { localStorage.setItem('scs_onboarding_seen', '1'); } catch (e) {} }
+    return; // ya la vio → no mostrar nunca más
+  }
+  // Primera vez de esta persona → mostrar una sola vez.
+  _onbScheduled = true;
+  setTimeout(showOnboarding, 800);
 }
 
 function renderHomeDashboard() {
@@ -6117,7 +6134,6 @@ function renderHomeDashboard() {
   renderProfileWidget();
   renderDashboardProgress();
   renderInicio();
-  try { maybeShowOnboarding(); } catch (e) {}
   const ring = document.getElementById('dash-ring-fg');
   if (!ring) return;
   const { avance, last } = computeAvance();
