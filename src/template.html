@@ -1571,7 +1571,10 @@
   <div id="admin-panel" class="hidden max-w-4xl mx-auto px-4 py-6">
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-xl font-bold text-gray-800">Panel de administración</h2>
-      <button onclick="adminLogout()" class="text-sm text-gray-500 hover:text-red-500">Salir 🚪</button>
+      <div class="flex items-center gap-3">
+        <button onclick="goDashboardV2()" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-gradient-to-r from-swe-blue to-indigo-600 text-white shadow hover:opacity-90 transition-opacity">✨ Panel nuevo</button>
+        <button onclick="adminLogout()" class="text-sm text-gray-500 hover:text-red-500">Salir 🚪</button>
+      </div>
     </div>
 
     <!-- Tab navigation -->
@@ -1842,6 +1845,73 @@
 .status-badge-pending { background:#fef3c7; color:#92400e; }
 .status-badge-manual  { background:#ede9fe; color:#6d28d9; }
 </style>
+
+<!-- ═══════════════════════════════════════════════════════════
+     VIEW: ADMIN V2 — Dashboard profesional (menú lateral)
+     Aditivo: NO reemplaza al admin actual. Solo lee datos existentes.
+════════════════════════════════════════════════════════════ -->
+<style>
+  #view-admin-v2 { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; letter-spacing:-0.011em; color:#0f172a; }
+  #view-admin-v2 .av2-shadow { box-shadow:0 1px 2px rgba(16,24,40,.04), 0 1px 3px rgba(16,24,40,.06); }
+  #view-admin-v2 .av2-shadow-lg { box-shadow:0 4px 16px -4px rgba(16,24,40,.08), 0 2px 6px rgba(16,24,40,.04); }
+  #view-admin-v2 .av2-navitem { transition:background .15s, color .15s; }
+  #view-admin-v2 .av2-navitem[data-active="1"] { background:#eff4fb; color:#006AA7; }
+  #view-admin-v2 .av2-navitem[data-active="1"] .av2-ico { background:#006AA7; color:#fff; }
+  #view-admin-v2 .av2-grouplabel { font-size:10px; letter-spacing:.09em; text-transform:uppercase; color:#94a3b8; font-weight:700; }
+  #view-admin-v2 ::-webkit-scrollbar { width:8px; height:8px; }
+  #view-admin-v2 ::-webkit-scrollbar-thumb { background:#e2e8f0; border-radius:8px; }
+  #av2-overlay { transition:opacity .2s; }
+</style>
+<div id="view-admin-v2" class="view" style="background:#f8fafc; min-height:100vh;">
+  <div class="flex min-h-screen">
+    <!-- Overlay móvil -->
+    <div id="av2-overlay" onclick="av2CloseMenu()" class="hidden md:hidden fixed inset-0 z-30" style="background:rgba(15,23,42,.4)"></div>
+
+    <!-- Sidebar -->
+    <aside id="av2-sidebar" class="fixed md:sticky top-0 z-40 -translate-x-full md:translate-x-0 transition-transform duration-200 flex flex-col w-64 h-screen shrink-0 bg-white border-r border-gray-100">
+      <div class="px-5 pt-5 pb-4">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-swe-blue to-indigo-600 flex items-center justify-center text-white font-black text-sm shadow-sm">S</div>
+          <div class="min-w-0">
+            <div class="font-bold text-gray-900 text-sm leading-tight truncate">Sueco con Sophie</div>
+            <div class="text-[11px] text-gray-400">Administración</div>
+          </div>
+        </div>
+      </div>
+      <nav id="av2-nav" class="flex-1 overflow-y-auto px-3 pb-3 space-y-4 text-sm"></nav>
+      <div class="p-3 border-t border-gray-100">
+        <div class="flex items-center gap-2.5 px-2 py-2 rounded-xl">
+          <div id="av2-avatar" class="w-8 h-8 rounded-full bg-swe-blue/10 text-swe-blue flex items-center justify-center font-bold text-xs">A</div>
+          <div class="flex-1 min-w-0"><div id="av2-admin-name" class="text-xs font-semibold text-gray-700 truncate">Administrador</div><div class="text-[10px] text-gray-400">Sesión activa</div></div>
+        </div>
+        <div class="grid grid-cols-2 gap-1 mt-1">
+          <button onclick="goAdmin()" class="px-2 py-2 rounded-lg text-gray-500 hover:bg-gray-50 text-[11px] font-medium">↩︎ Clásico</button>
+          <button onclick="adminLogout()" class="px-2 py-2 rounded-lg text-gray-500 hover:bg-red-50 hover:text-red-500 text-[11px] font-medium">🚪 Salir</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="flex-1 min-w-0 flex flex-col">
+      <!-- Topbar -->
+      <header class="bg-white/90 backdrop-blur border-b border-gray-100 px-4 sm:px-8 py-3 flex items-center gap-3 sticky top-0 z-20">
+        <button onclick="av2OpenMenu()" class="md:hidden text-gray-500 text-xl leading-none w-8">☰</button>
+        <div class="flex-1 min-w-0 hidden sm:block">
+          <div class="relative max-w-sm">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300 text-sm">🔎</span>
+            <input id="av2-topsearch" onfocus="av2Nav('usuarios')" placeholder="Buscar alumno…" class="w-full pl-9 pr-3 py-2 rounded-xl bg-gray-50 border border-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-swe-blue/20 focus:bg-white transition" />
+          </div>
+        </div>
+        <div class="flex-1 sm:hidden"></div>
+        <button onclick="av2Refresh()" class="text-xs font-semibold px-3 py-2 rounded-xl bg-gray-50 text-gray-600 hover:bg-gray-100 transition-colors border border-gray-100">🔄 <span class="hidden sm:inline">Actualizar</span></button>
+      </header>
+      <!-- Content -->
+      <main id="av2-content" class="flex-1 px-4 sm:px-8 py-6 max-w-[1200px] w-full mx-auto">
+        <div class="text-center py-16 text-gray-400 text-sm">⏳ Cargando…</div>
+      </main>
+    </div>
+  </div>
+</div>
 
 <!-- ═══════════════════════════════════════════════════════════
      MODAL: Mi cuenta (foto / nombre / contraseña)

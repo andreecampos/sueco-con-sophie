@@ -3862,6 +3862,222 @@ function _buildStudentProgressHTML(rep, nivelLast) {
   return general + nivelBox + generalProg + modules + exams + logros + actividad + resumen;
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   DASHBOARD V2 — panel de administración profesional (menú lateral).
+   ADITIVO: convive con el admin clásico. Solo LEE datos existentes
+   (getStudents / edge functions ya existentes). Sin tablas nuevas.
+   ═══════════════════════════════════════════════════════════════════ */
+const AV2_NAV = [
+  { group: 'Principal', items: [
+    { id: 'resumen', icon: '📊', label: 'Resumen', sub: 'Vista general de tu escuela', on: true }
+  ] },
+  { group: 'Gestión', items: [
+    { id: 'usuarios', icon: '👥', label: 'Usuarios', sub: 'Alumnos, estado y progreso', on: true },
+    { id: 'grupos', icon: '🗂️', label: 'Grupos', sub: 'Próximamente', on: false },
+    { id: 'productos', icon: '💳', label: 'Productos y planes', sub: 'Próximamente', on: false }
+  ] },
+  { group: 'Plataforma', items: [
+    { id: 'contenido', icon: '📚', label: 'Contenido', sub: 'Próximamente', on: false },
+    { id: 'notis', icon: '🔔', label: 'Notificaciones', sub: 'Próximamente', on: false }
+  ] },
+  { group: 'Sistema', items: [
+    { id: 'ecosistema', icon: '🧩', label: 'Ecosistema', sub: 'Próximamente', on: false },
+    { id: 'ajustes', icon: '⚙️', label: 'Ajustes', sub: 'Próximamente', on: false }
+  ] }
+];
+function _av2Item(id) { for (const g of AV2_NAV) { const it = g.items.find(x => x.id === id); if (it) return it; } return null; }
+let _av2Section = 'resumen';
+let _av2Charts = {};
+
+function goDashboardV2() {
+  if (typeof isAdminUser === 'function' && !isAdminUser()) { if (typeof showToast === 'function') showToast('No tienes acceso de administrador.', 'error'); return; }
+  state.adminLoggedIn = true;
+  showView('admin-v2');
+  try { const e = (window._sbSession && window._sbSession.email) || ''; const ini = (e[0] || 'A').toUpperCase(); const av = document.getElementById('av2-avatar'); if (av) av.textContent = ini; const nm = document.getElementById('av2-admin-name'); if (nm && e) nm.textContent = e; } catch (e) {}
+  av2Nav(_av2Section || 'resumen');
+}
+function av2OpenMenu() { const s = document.getElementById('av2-sidebar'); const o = document.getElementById('av2-overlay'); if (s) s.classList.remove('-translate-x-full'); if (o) o.classList.remove('hidden'); }
+function av2CloseMenu() { const s = document.getElementById('av2-sidebar'); const o = document.getElementById('av2-overlay'); if (s && window.innerWidth < 768) s.classList.add('-translate-x-full'); if (o) o.classList.add('hidden'); }
+function _av2PaintNav() {
+  const html = AV2_NAV.map(g => {
+    const items = g.items.map(s => {
+      if (!s.on) return `<div class="av2-navitem flex items-center gap-3 px-2.5 py-2 rounded-xl text-gray-300 cursor-not-allowed select-none"><span class="av2-ico w-7 h-7 rounded-lg bg-gray-50 flex items-center justify-center text-sm">${s.icon}</span><span class="flex-1 font-medium">${s.label}</span><span class="text-[9px] font-bold bg-gray-100 text-gray-400 px-1.5 py-0.5 rounded-full">pronto</span></div>`;
+      const act = s.id === _av2Section ? '1' : '0';
+      return `<button onclick="av2Nav('${s.id}')" data-active="${act}" class="av2-navitem w-full flex items-center gap-3 px-2.5 py-2 rounded-xl font-medium text-gray-600 hover:bg-gray-50"><span class="av2-ico w-7 h-7 rounded-lg bg-gray-100 flex items-center justify-center text-sm">${s.icon}</span><span class="flex-1 text-left">${s.label}</span></button>`;
+    }).join('');
+    return `<div><div class="av2-grouplabel px-2.5 mb-1.5">${g.group}</div><div class="space-y-0.5">${items}</div></div>`;
+  }).join('');
+  const el = document.getElementById('av2-nav'); if (el) el.innerHTML = html;
+}
+function av2Nav(section) {
+  const meta = _av2Item(section);
+  if (!meta || !meta.on) return;
+  _av2Section = section;
+  _av2PaintNav();
+  av2CloseMenu();
+  if (section === 'resumen') renderAv2Resumen();
+  else if (section === 'usuarios') renderAv2Users();
+}
+function av2Refresh() {
+  _cachedStudents = null;
+  av2Nav(_av2Section);
+}
+
+// Métricas puras (misma lógica que el dashboard clásico), reutilizables.
+function dashMetrics(students, defaultPrice) {
+  students = students || [];
+  const isActive = s => s.status === 'active' || s.status === 'manual' || (!s.status && s.active);
+  const active = students.filter(isActive);
+  const price = s => s.price || defaultPrice;
+  const daysSince = s => s.lastLogin ? (Date.now() - new Date(s.lastLogin).getTime()) / 86400000 : Infinity;
+  return {
+    total: students.length,
+    active, cancelling: students.filter(s => s.status === 'cancelling'),
+    failed: students.filter(s => s.status === 'failed'),
+    cancelled: students.filter(s => s.status === 'cancelled'),
+    pending: students.filter(s => s.status === 'pending'),
+    revenueMonth: active.reduce((a, s) => a + price(s), 0),
+    revenueLost: students.filter(s => s.status === 'cancelled').reduce((a, s) => a + price(s), 0),
+    atRisk: active.filter(s => daysSince(s) >= 21),
+    inactive7: active.filter(s => daysSince(s) >= 7)
+  };
+}
+function _av2Sek(n) { return (Number(n) || 0).toLocaleString('sv-SE') + ' SEK'; }
+
+async function renderAv2Resumen() {
+  const c = document.getElementById('av2-content');
+  if (!c) return;
+  c.innerHTML = '<div class="text-center py-16 text-gray-400 text-sm">⏳ Cargando métricas…</div>';
+  const students = await getStudents();
+  if (_lastStudentsError) { c.innerHTML = '<div class="text-center py-16 text-sm text-red-500">No se pudieron cargar los datos. Recarga la sesión.</div>'; return; }
+  let cfg = {}; try { cfg = await getStripeConfig(); } catch (e) {}
+  const m = dashMetrics(students, (cfg && cfg.priceLegacy) || 339);
+  const now = new Date();
+  const _mn = now.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+  const monthName = _mn.charAt(0).toUpperCase() + _mn.slice(1);
+  const fullDate = now.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  const nombre = (() => { try { const e = (window._sbSession && window._sbSession.email) || ''; return e ? e.split('@')[0] : ''; } catch (e) { return ''; } })();
+  const attn = m.failed.length + m.pending.length + m.cancelling.length;
+  // Tarjeta de estadística premium: chip de icono + badge de período
+  const stat = (icon, chipBg, chipCol, badge, label, value, sub, valCol) => `
+    <div class="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 av2-shadow">
+      <div class="flex items-center justify-between mb-3">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center text-lg" style="background:${chipBg};color:${chipCol}">${icon}</div>
+        <span class="text-[10px] font-bold uppercase tracking-wider text-gray-300">${badge}</span>
+      </div>
+      <div class="text-[12px] font-medium text-gray-400 mb-0.5">${label}</div>
+      <div class="text-[26px] leading-none font-extrabold ${valCol || 'text-gray-900'}">${value}</div>
+      <div class="text-[11px] text-gray-400 mt-1.5">${sub}</div>
+    </div>`;
+  c.innerHTML = `
+    <div class="mb-6">
+      <h1 class="text-2xl sm:text-[28px] font-extrabold text-gray-900 tracking-tight">Bienvenido de vuelta 👋</h1>
+      <p class="text-sm text-gray-400 mt-1 capitalize">${fullDate}</p>
+    </div>
+
+    <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4 mb-4">
+      ${stat('💰', '#ecfdf5', '#059669', monthName, 'Ingresos del mes', _av2Sek(m.revenueMonth), m.active.length + ' alumnos activos', 'text-gray-900')}
+      ${stat('👥', '#eff4fb', '#006AA7', 'Total', 'Alumnos activos', m.active.length, 'de ' + m.total + ' registrados', 'text-gray-900')}
+      ${stat('⚠️', '#fef2f2', '#dc2626', 'Ahora', 'Requieren atención', attn, m.failed.length + ' fallidos · ' + m.cancelling.length + ' cancelando', attn > 0 ? 'text-red-600' : 'text-gray-900')}
+      ${stat('🚨', '#fff7ed', '#ea580c', '+21 días', 'En riesgo de fuga', m.atRisk.length, 'sin entrar a la plataforma', m.atRisk.length > 0 ? 'text-orange-600' : 'text-gray-900')}
+    </div>
+
+    <div class="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 av2-shadow mb-4">
+      <div class="flex items-center justify-between mb-2">
+        <div class="text-sm font-bold text-gray-800">Salud de la cartera</div>
+        <div class="text-xs text-gray-400">${m.active.length} activos de ${m.total}</div>
+      </div>
+      <div class="h-2.5 rounded-full bg-gray-100 overflow-hidden flex">
+        ${(() => { const t = Math.max(1, m.total); const seg = (n, col) => n ? `<div style="width:${(n / t * 100).toFixed(1)}%;background:${col}"></div>` : ''; return seg(m.active.length, '#22c55e') + seg(m.cancelling.length, '#f59e0b') + seg(m.failed.length, '#ef4444') + seg(m.pending.length, '#eab308') + seg(m.cancelled.length, '#cbd5e1'); })()}
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-4">
+      <div class="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 av2-shadow">
+        <div class="font-bold text-gray-800 text-sm mb-4">Estado de alumnos</div>
+        <div class="flex items-center gap-6"><canvas id="av2-status-chart" width="132" height="132" style="max-width:132px;flex-shrink:0"></canvas><div id="av2-status-legend" class="flex-1 space-y-2.5 text-sm"></div></div>
+      </div>
+      <div class="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 av2-shadow">
+        <div class="flex items-center justify-between mb-4"><div class="font-bold text-gray-800 text-sm">Requieren tu atención</div><span class="text-[11px] text-gray-300">toca para ver progreso</span></div>
+        <div id="av2-attention" class="space-y-1.5 text-sm -mx-1"></div>
+      </div>
+    </div>`;
+  // Gráfico de estado (dona)
+  const segs = [
+    { label: 'Activos', n: m.active.length, c: '#22c55e' },
+    { label: 'Cancelando', n: m.cancelling.length, c: '#f59e0b' },
+    { label: 'Fallidos', n: m.failed.length, c: '#ef4444' },
+    { label: 'Pendientes', n: m.pending.length, c: '#eab308' },
+    { label: 'Cancelados', n: m.cancelled.length, c: '#9ca3af' }
+  ].filter(s => s.n > 0);
+  try {
+    if (_av2Charts.status) { _av2Charts.status.destroy(); _av2Charts.status = null; }
+    const ctx = document.getElementById('av2-status-chart');
+    if (ctx && typeof Chart !== 'undefined') {
+      _av2Charts.status = new Chart(ctx, { type: 'doughnut', data: { labels: segs.map(s => s.label), datasets: [{ data: segs.map(s => s.n), backgroundColor: segs.map(s => s.c), borderWidth: 0 }] }, options: { cutout: '62%', plugins: { legend: { display: false } }, responsive: false } });
+    }
+  } catch (e) {}
+  const leg = document.getElementById('av2-status-legend');
+  if (leg) leg.innerHTML = segs.map(s => `<div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full" style="background:${s.c}"></span><span class="flex-1 text-gray-600">${s.label}</span><b class="text-gray-800">${s.n}</b></div>`).join('') || '<div class="text-gray-400">Sin datos.</div>';
+  // Atención: fallidos + cancelando + inactivos
+  const att = document.getElementById('av2-attention');
+  if (att) {
+    const rows = [];
+    m.failed.forEach(s => rows.push({ tag: 'Pago fallido', color: 'text-red-600 bg-red-50', s }));
+    m.cancelling.forEach(s => rows.push({ tag: 'Cancela pronto', color: 'text-orange-600 bg-orange-50', s }));
+    m.atRisk.slice(0, 8).forEach(s => rows.push({ tag: '+21 días sin entrar', color: 'text-amber-600 bg-amber-50', s }));
+    const seen = {};
+    const uniq = rows.filter(r => { if (seen[r.s.id + r.tag]) return false; seen[r.s.id + r.tag] = 1; return true; }).slice(0, 12);
+    att.innerHTML = uniq.length ? uniq.map(r => `
+      <button onclick="openStudentProgress('${r.s.id}','${(r.s.name || '').replace(/'/g, "\\'").replace(/</g, '')}')" class="w-full flex items-center gap-2 text-left px-3 py-2 rounded-xl hover:bg-gray-50 transition-colors">
+        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${r.color}">${r.tag}</span>
+        <span class="flex-1 truncate text-gray-700">${(r.s.name || r.s.email || '—')}</span>
+        <span class="text-gray-300">›</span>
+      </button>`).join('') : '<div class="text-gray-400 text-sm py-4 text-center">Todo en orden ✨</div>';
+  }
+}
+
+let _av2UserSearch = '';
+async function renderAv2Users() {
+  const c = document.getElementById('av2-content');
+  if (!c) return;
+  c.innerHTML = '<div class="text-center py-16 text-gray-400 text-sm">⏳ Cargando usuarios…</div>';
+  const students = await getStudents();
+  if (_lastStudentsError) { c.innerHTML = '<div class="text-center py-16 text-sm text-red-500">No se pudieron cargar los usuarios. Recarga la sesión.</div>'; return; }
+  c.innerHTML = `
+    <div class="mb-4 flex items-center gap-2">
+      <input id="av2-user-search" oninput="_av2FilterUsers(this.value)" value="${(_av2UserSearch || '').replace(/"/g, '&quot;')}" placeholder="🔎 Buscar por nombre o correo…" class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-swe-blue/30" />
+      <span class="text-xs text-gray-400 whitespace-nowrap">${students.length} usuarios</span>
+    </div>
+    <div id="av2-user-list" class="space-y-2"></div>`;
+  _av2PaintUsers();
+}
+function _av2FilterUsers(v) { _av2UserSearch = (v || '').toLowerCase().trim(); _av2PaintUsers(); }
+function _av2PaintUsers() {
+  const box = document.getElementById('av2-user-list');
+  if (!box) return;
+  const q = _av2UserSearch;
+  let list = (_cachedStudents || []);
+  if (q) list = list.filter(s => ((s.name || '') + ' ' + (s.email || '')).toLowerCase().includes(q));
+  const statusChip = (s) => {
+    const st = s.status || (s.active ? 'active' : 'cancelled');
+    const map = { active: ['Activo', 'bg-green-100 text-green-700'], manual: ['Manual', 'bg-violet-100 text-violet-700'], failed: ['Pago fallido', 'bg-red-100 text-red-700'], cancelling: ['Cancelando', 'bg-orange-100 text-orange-700'], cancelled: ['Cancelado', 'bg-gray-100 text-gray-500'], pending: ['Pendiente', 'bg-amber-100 text-amber-700'] };
+    const m = map[st] || [st, 'bg-gray-100 text-gray-500'];
+    return `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${m[1]}">${m[0]}</span>`;
+  };
+  const days = (s) => { if (!s.lastLogin) return '—'; const d = Math.floor((Date.now() - new Date(s.lastLogin).getTime()) / 86400000); return d === 0 ? 'hoy' : d + 'd'; };
+  box.innerHTML = list.length ? list.map(s => `
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-3 flex items-center gap-3">
+      <div class="w-9 h-9 rounded-full bg-swe-blue/10 text-swe-blue flex items-center justify-center font-black text-sm shrink-0">${((s.name || s.email || '?')[0] || '?').toUpperCase()}</div>
+      <div class="flex-1 min-w-0">
+        <div class="font-bold text-gray-800 text-sm truncate">${(s.name || '—')}</div>
+        <div class="text-xs text-gray-400 truncate">${(s.email || '')}</div>
+      </div>
+      <div class="hidden sm:flex flex-col items-end gap-1">${statusChip(s)}<span class="text-[11px] text-gray-400">último: ${days(s)}</span></div>
+      <button onclick="openStudentProgress('${s.id}','${(s.name || '').replace(/'/g, "\\'").replace(/</g, '')}')" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-cyan-50 text-cyan-700 hover:bg-cyan-100 border border-cyan-200 transition-colors shrink-0">📊 Progreso</button>
+    </div>`).join('') : '<div class="text-center py-12 text-gray-400 text-sm">Sin resultados.</div>';
+}
+
 async function renderStudents() {
   const container = document.getElementById('students-list');
   if (!container) return;
