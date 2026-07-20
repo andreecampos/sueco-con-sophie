@@ -96,7 +96,7 @@ window.addEventListener('load', () => {
 window.addEventListener('beforeunload', () => stopSpeech());
 
 // ── Navigation ───────────────────────────────────────────────
-const VIEW_URLS = { home: '/', login: '/', alumnos: '/alumnos', resenas: '/resenas' };
+const VIEW_URLS = { home: '/plataforma', login: '/alumnos', alumnos: '/', resenas: '/reseñas' };
 function showView(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   const v = document.getElementById('view-' + id);
@@ -2532,16 +2532,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
   if (new URLSearchParams(window.location.search).has('bienvenido')) { showView('welcome'); return; }
-  // Página pública de reseñas (no requiere iniciar sesión). Acepta /reseñas y /resenas.
+  // Rutas: "/" = landing de venta (público) · "/alumnos" = login · "/plataforma" = plataforma · "/reseñas" = reseñas
   const _rpath = (() => { try { return decodeURIComponent(window.location.pathname || ''); } catch (e) { return window.location.pathname || ''; } })();
+  // Página pública de reseñas (no requiere iniciar sesión). Acepta /reseñas y /resenas.
   if (/\/rese[nñ]as\/?$/i.test(_rpath) || hash === '#resenas' || hash === '#reseñas') {
     showView('resenas'); initResenasPage(); return;
   }
-  // Landing de venta (pública)
-  if (/\/alumnos\/?$/i.test(_rpath) || hash === '#alumnos') {
-    showView('alumnos'); initAlumnosPage(); return;
-  }
-  if (hash === '#admin' || /\/admin\/?$/i.test(window.location.pathname || '')) _wantAdmin = true;
+  if (hash === '#admin' || /\/admin\/?$/i.test(_rpath)) _wantAdmin = true;
+  const _isLoginPath = /\/alumnos\/?$/i.test(_rpath) || hash === '#login';
+  const _isPlatformPath = /\/plataforma\/?$/i.test(_rpath) || _wantAdmin;
 
   const { data: { session } } = await sb.auth.getSession();
   if (session) {
@@ -2552,6 +2551,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       window._sbSession = { email: session.user.email, id: session.user.id, name: session.user.user_metadata?.name || session.user.user_metadata?.full_name || (student ? student.name : (session.user.email || '')), active: student ? student.active : true, status: student ? student.status : 'active' };
       const adminBtn = document.getElementById('admin-btn-home');
       if (adminBtn) adminBtn.style.display = isAdminUser() ? '' : 'none';
+      // Sesión válida → siempre a la plataforma (aunque entre por "/" o "/alumnos")
       showView('home');
       renderHomeDashboard();
       initUnifiedProgress();
@@ -2560,8 +2560,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     await sb.auth.signOut();
   }
-  if (_wantAdmin) _adminLoginMode();
-  showView('login');
+  // Sin sesión válida:
+  if (_isLoginPath || _isPlatformPath) {
+    // "/alumnos" (login) o "/plataforma" sin sesión → pantalla de inicio de sesión
+    if (_wantAdmin) _adminLoginMode();
+    showView('login');
+    return;
+  }
+  // Raíz "/" o cualquier otra ruta pública → landing de venta
+  showView('alumnos'); initAlumnosPage();
 });
 
 // ── Forgot password ───────────────────────────────────────
@@ -2753,18 +2760,18 @@ function _renderLandingReviews() {
 }
 
 // Ir a la página de reseñas desde la landing (recuerda volver a la landing)
-function goResenasFromLanding() { showView('resenas'); initResenasPage(); try { history.replaceState(null, '', '/resenas'); } catch (e) {} }
-// Botón "‹ Volver" de la página de reseñas: alumno → plataforma; público → landing
+function goResenasFromLanding() { showView('resenas'); initResenasPage(); try { history.replaceState(null, '', '/reseñas'); } catch (e) {} }
+// Botón "‹ Volver" de la página de reseñas: alumno → plataforma; público → landing ("/")
 function resenasBack() {
   if (_resenaIsStudent) { goHome(); }
-  else { showView('alumnos'); initAlumnosPage(); try { history.replaceState(null, '', '/alumnos'); } catch (e) {} }
+  else { showView('alumnos'); initAlumnosPage(); try { history.replaceState(null, '', '/'); } catch (e) {} }
 }
 
 async function signInWithGoogle() {
   try {
     const { error } = await sb.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: window.location.origin + '/resenas' }
+      options: { redirectTo: window.location.origin + '/reseñas' }
     });
     if (error) showToast('No se pudo iniciar con Google: ' + error.message, 'error');
   } catch (e) { showToast('Error al iniciar con Google', 'error'); }
