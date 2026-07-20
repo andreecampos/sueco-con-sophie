@@ -657,6 +657,7 @@
             <span class="text-sm">🔔</span>
             <span id="notif-badge" class="hidden absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-red-500 text-white text-[10px] font-black flex items-center justify-center leading-none">0</span>
           </button>
+          <button onclick="showOnboarding()" class="inline-flex items-center gap-1 text-xs font-semibold text-swe-blue bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-full px-2.5 py-0.5 transition-colors" title="¿Cómo funciona?">❓ Guía</button>
         </div>
       </div>
       <div class="flex items-center gap-1.5 bg-white rounded-2xl px-3 py-1.5 shadow-sm border border-orange-100 flex-shrink-0">
@@ -2059,6 +2060,26 @@
     </div>
   </div>
 </div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MODAL: Guía de bienvenida (onboarding por pasos)
+════════════════════════════════════════════════════════════ -->
+<div id="onboarding-modal" class="hidden fixed inset-0 z-[92] flex items-center justify-center p-4" style="background:rgba(4,32,62,0.78); backdrop-filter:blur(3px);">
+  <div class="relative w-full max-w-md rounded-3xl shadow-2xl overflow-hidden bg-white" style="animation:fadeIn .2s ease;">
+    <div id="onb-body" class="text-center px-7 pt-9 pb-3"></div>
+    <div class="flex justify-center gap-1.5 pb-4" id="onb-dots"></div>
+    <div class="px-6 pb-6 flex items-center gap-2">
+      <button onclick="closeOnboarding()" class="text-xs text-gray-400 font-semibold px-2 py-2 hover:text-gray-600">Saltar</button>
+      <div class="flex-1"></div>
+      <button id="onb-prev" onclick="onbPrev()" class="hidden px-4 py-2.5 rounded-xl font-bold text-sm bg-gray-100 text-gray-600 hover:bg-gray-200">← Atrás</button>
+      <button id="onb-next" onclick="onbNext()" class="px-5 py-2.5 rounded-xl font-black text-sm bg-swe-blue text-white hover:bg-swe-dark">Siguiente →</button>
+    </div>
+  </div>
+</div>
+<style>
+  @keyframes onbPulse { 0%,100%{ box-shadow:0 0 0 0 rgba(254,204,2,0.7); } 50%{ box-shadow:0 0 0 12px rgba(254,204,2,0); } }
+  .onb-pulse { animation: onbPulse 1.2s ease-out infinite; border-radius:14px; }
+</style>
 
 <!-- ═══════════════════════════════════════════════════════════
      MODAL: Previsualización de una medalla (color + cómo ganarla)

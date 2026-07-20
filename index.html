@@ -657,6 +657,7 @@
             <span class="text-sm">🔔</span>
             <span id="notif-badge" class="hidden absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-red-500 text-white text-[10px] font-black flex items-center justify-center leading-none">0</span>
           </button>
+          <button onclick="showOnboarding()" class="inline-flex items-center gap-1 text-xs font-semibold text-swe-blue bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-full px-2.5 py-0.5 transition-colors" title="¿Cómo funciona?">❓ Guía</button>
         </div>
       </div>
       <div class="flex items-center gap-1.5 bg-white rounded-2xl px-3 py-1.5 shadow-sm border border-orange-100 flex-shrink-0">
@@ -2059,6 +2060,26 @@
     </div>
   </div>
 </div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MODAL: Guía de bienvenida (onboarding por pasos)
+════════════════════════════════════════════════════════════ -->
+<div id="onboarding-modal" class="hidden fixed inset-0 z-[92] flex items-center justify-center p-4" style="background:rgba(4,32,62,0.78); backdrop-filter:blur(3px);">
+  <div class="relative w-full max-w-md rounded-3xl shadow-2xl overflow-hidden bg-white" style="animation:fadeIn .2s ease;">
+    <div id="onb-body" class="text-center px-7 pt-9 pb-3"></div>
+    <div class="flex justify-center gap-1.5 pb-4" id="onb-dots"></div>
+    <div class="px-6 pb-6 flex items-center gap-2">
+      <button onclick="closeOnboarding()" class="text-xs text-gray-400 font-semibold px-2 py-2 hover:text-gray-600">Saltar</button>
+      <div class="flex-1"></div>
+      <button id="onb-prev" onclick="onbPrev()" class="hidden px-4 py-2.5 rounded-xl font-bold text-sm bg-gray-100 text-gray-600 hover:bg-gray-200">← Atrás</button>
+      <button id="onb-next" onclick="onbNext()" class="px-5 py-2.5 rounded-xl font-black text-sm bg-swe-blue text-white hover:bg-swe-dark">Siguiente →</button>
+    </div>
+  </div>
+</div>
+<style>
+  @keyframes onbPulse { 0%,100%{ box-shadow:0 0 0 0 rgba(254,204,2,0.7); } 50%{ box-shadow:0 0 0 12px rgba(254,204,2,0); } }
+  .onb-pulse { animation: onbPulse 1.2s ease-out infinite; border-radius:14px; }
+</style>
 
 <!-- ═══════════════════════════════════════════════════════════
      MODAL: Previsualización de una medalla (color + cómo ganarla)
@@ -23828,11 +23849,50 @@ function markNotifsRead() {
   renderNotifBadge(); closeNotifs();
 }
 
+/* ── GUÍA DE BIENVENIDA (onboarding por pasos) ──────────────────────
+   Se muestra automáticamente la 1ª vez (o al subir ONBOARDING_VERSION,
+   así también la ven los alumnos actuales tras la actualización).
+   Botón "❓ Guía" para repetirla cuando quieran.                       */
+const ONBOARDING_VERSION = 1;
+const _ONB_SLIDES = [
+  { icon: '👋', title: '¡Bienvenido/a a Sueco con Sophie!', text: 'Aquí aprendes sueco paso a paso. Te mostramos rapidito cómo funciona. Toca <b>«Siguiente»</b>.' },
+  { icon: '🎯', title: 'Empieza con tu prueba de nivel', text: 'Responde unas preguntas y te ubicamos en tu nivel: <b>A, B, C o D</b>. Así practicas justo lo que necesitas.' },
+  { icon: '📚', title: 'Todo está en «Aprender»', text: 'Ahí tienes: <b>Läsa</b> (leer), <b>Skriva</b> (escribir), <b>Tala</b> (hablar), <b>Hörförståelse</b> (escuchar), gramática y vocabulario.' },
+  { icon: '✍️', title: 'Practica y te corregimos', text: 'Lee, escribe o responde. Si algo está mal, te lo <b>explicamos</b> para que aprendas. Puedes repetir las veces que quieras.' },
+  { icon: '🏅', title: 'Gana tus medallas', text: 'Al dominar un nivel ganas tu medalla (<b>Bronce, Plata, Oro, Diamante</b>) y un certificado con tu nombre.' },
+  { icon: '💬', title: '¿Dudas? Estamos aquí', text: 'Usa <b>«¿Necesitas ayuda?»</b> y te respondemos. Puedes volver a ver esta guía con el botón <b>«❓ Guía»</b>. ¡A empezar! 🚀' }
+];
+let _onbI = 0;
+function showOnboarding() { _onbI = 0; _renderOnb(); const m = document.getElementById('onboarding-modal'); if (m) m.classList.remove('hidden'); }
+function _renderOnb() {
+  const s = _ONB_SLIDES[_onbI];
+  const body = document.getElementById('onb-body');
+  if (body) body.innerHTML = `<div class="text-6xl mb-3">${s.icon}</div><div class="font-black text-gray-800 text-xl mb-2">${s.title}</div><div class="text-gray-600 text-sm leading-relaxed">${s.text}</div>`;
+  const dots = document.getElementById('onb-dots');
+  if (dots) dots.innerHTML = _ONB_SLIDES.map((_, i) => `<span class="w-2 h-2 rounded-full ${i === _onbI ? 'bg-swe-blue' : 'bg-gray-300'}"></span>`).join('');
+  const prev = document.getElementById('onb-prev'); if (prev) prev.classList.toggle('hidden', _onbI === 0);
+  const next = document.getElementById('onb-next'); if (next) next.textContent = (_onbI === _ONB_SLIDES.length - 1) ? '🚀 ¡Empezar!' : 'Siguiente →';
+}
+function onbNext() { if (_onbI < _ONB_SLIDES.length - 1) { _onbI++; _renderOnb(); } else { closeOnboarding(); _highlightFirstAction(); } }
+function onbPrev() { if (_onbI > 0) { _onbI--; _renderOnb(); } }
+function closeOnboarding() { const m = document.getElementById('onboarding-modal'); if (m) m.classList.add('hidden'); try { localStorage.setItem('scs_onboarding_seen', String(ONBOARDING_VERSION)); } catch (e) {} }
+function _highlightFirstAction() {
+  const btn = document.getElementById('dash-test-btn');
+  if (!btn) return;
+  btn.classList.add('onb-pulse');
+  try { btn.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+  setTimeout(() => btn.classList.remove('onb-pulse'), 6000);
+}
+function maybeShowOnboarding() {
+  try { const seen = parseInt(localStorage.getItem('scs_onboarding_seen') || '0', 10) || 0; if (seen < ONBOARDING_VERSION) setTimeout(showOnboarding, 700); } catch (e) {}
+}
+
 function renderHomeDashboard() {
   renderPaymentBanner();
   renderProfileWidget();
   renderDashboardProgress();
   renderInicio();
+  try { maybeShowOnboarding(); } catch (e) {}
   const ring = document.getElementById('dash-ring-fg');
   if (!ring) return;
   const { avance, last } = computeAvance();
