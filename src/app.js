@@ -4381,8 +4381,8 @@ function showLoadingOverlay(message) {
 async function openEnrollLink() {
   const cfg = _stripeConfigCache || await getStripeConfig();
   if (cfg.link) {
-    // Redirección directa a Stripe (sin pantalla de carga que bloquee el proceso)
-    window.location.href = cfg.link;
+    // Abre el pago en una NUEVA pestaña (igual que el plan de 3 meses)
+    window.open(cfg.link, '_blank');
   } else {
     showToast('El link de pago aún no está configurado. Avisa a tu profesora.', 'info');
   }
