@@ -1847,6 +1847,52 @@
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════
+     VIEW: ADMIN LOGIN — pantalla de acceso profesional (/admin)
+════════════════════════════════════════════════════════════ -->
+<div id="view-adminlogin" class="view" style="min-height:100vh;background:#fff;">
+  <div class="flex min-h-screen">
+    <!-- Panel de marca (izquierda) -->
+    <div class="hidden md:flex md:w-1/2 lg:w-[55%] flex-col justify-between p-10 lg:p-14 text-white relative overflow-hidden" style="background:linear-gradient(150deg,#006AA7 0%,#004F7C 55%,#00243f 100%);">
+      <div class="absolute -right-16 -top-16 w-72 h-72 rounded-full" style="background:rgba(254,204,2,.10)"></div>
+      <div class="absolute -left-10 bottom-10 w-52 h-52 rounded-full" style="background:rgba(255,255,255,.05)"></div>
+      <div class="relative">
+        <div class="w-12 h-12 rounded-2xl bg-white/15 backdrop-blur flex items-center justify-center text-2xl">🇸🇪</div>
+      </div>
+      <div class="relative">
+        <h2 class="text-3xl lg:text-4xl font-extrabold leading-tight tracking-tight">Panel de administración<br>Sueco con Sophie</h2>
+        <p class="text-white/70 mt-4 text-sm lg:text-base max-w-md">Gestiona alumnos, ingresos, progreso y toda tu escuela de sueco desde un solo lugar.</p>
+        <ul class="mt-8 space-y-3 text-sm text-white/90">
+          <li class="flex items-center gap-3"><span class="text-swe-yellow">✓</span> Métricas del negocio en tiempo real</li>
+          <li class="flex items-center gap-3"><span class="text-swe-yellow">✓</span> Progreso individual de cada alumno</li>
+          <li class="flex items-center gap-3"><span class="text-swe-yellow">✓</span> Ingresos, suscripciones y pagos</li>
+          <li class="flex items-center gap-3"><span class="text-swe-yellow">✓</span> Preparado para crecer a miles de alumnos</li>
+        </ul>
+      </div>
+      <div class="relative text-white/40 text-xs">© Sueco con Sophie · Panel seguro</div>
+    </div>
+    <!-- Formulario (derecha) -->
+    <div class="flex-1 flex items-center justify-center p-6 sm:p-10" style="background:#f8fafc;">
+      <div class="w-full max-w-sm">
+        <div class="text-center mb-7">
+          <div class="w-14 h-14 rounded-2xl mx-auto mb-4 flex items-center justify-center text-white text-2xl shadow-lg" style="background:linear-gradient(135deg,#006AA7,#4f46e5);">S</div>
+          <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">Bienvenido de vuelta</h1>
+          <p class="text-sm text-gray-400 mt-1">Ingresa tus credenciales de administrador</p>
+        </div>
+        <div id="adm-error" class="hidden mb-4 text-sm rounded-xl px-4 py-3 text-center font-medium" style="background:#FEE2E2;color:#B91C1C;border:1px solid #FCA5A5;"></div>
+        <label class="block text-xs font-semibold text-gray-500 mb-1.5">Correo electrónico</label>
+        <input id="adm-email" type="email" autocomplete="username" placeholder="tu@correo.com" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-swe-blue/25 focus:border-swe-blue transition" />
+        <label class="block text-xs font-semibold text-gray-500 mb-1.5">Contraseña</label>
+        <input id="adm-password" type="password" autocomplete="current-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm mb-5 focus:outline-none focus:ring-2 focus:ring-swe-blue/25 focus:border-swe-blue transition" />
+        <button id="adm-btn" onclick="adminLogin()" class="w-full py-3 rounded-xl text-white font-bold text-sm shadow-md hover:opacity-95 transition" style="background:linear-gradient(135deg,#006AA7,#4f46e5);">Ingresar</button>
+        <div class="text-center mt-5">
+          <button onclick="showView('login')" class="text-xs text-gray-400 hover:text-gray-600 underline">Soy alumno, no administrador</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
      VIEW: ADMIN V2 — Dashboard profesional (menú lateral)
      Aditivo: NO reemplaza al admin actual. Solo lee datos existentes.
 ════════════════════════════════════════════════════════════ -->
@@ -17963,7 +18009,27 @@ window.addEventListener('load', () => {
 window.addEventListener('beforeunload', () => stopSpeech());
 
 // ── Navigation ───────────────────────────────────────────────
-const VIEW_URLS = { home: '/plataforma', login: '/alumnos', alumnos: '/', resenas: '/reseñas', 'admin-v2': '/admin' };
+const VIEW_URLS = { home: '/plataforma', login: '/alumnos', alumnos: '/', resenas: '/reseñas', 'admin-v2': '/admin', adminlogin: '/admin' };
+
+// Login del panel profesional (/admin) — self-contained, con su propio manejo de error.
+async function adminLogin() {
+  const email = (document.getElementById('adm-email')?.value || '').trim().toLowerCase();
+  const pass = (document.getElementById('adm-password')?.value || '').trim();
+  const err = document.getElementById('adm-error');
+  const btn = document.getElementById('adm-btn');
+  const showErr = m => { if (err) { err.textContent = m; err.classList.remove('hidden'); } if (btn) { btn.disabled = false; btn.textContent = 'Ingresar'; } };
+  if (!email || !pass) { showErr('Ingresa tu correo y contraseña.'); return; }
+  if (typeof ADMIN_EMAILS !== 'undefined' && !ADMIN_EMAILS.includes(email)) { showErr('Esta cuenta no tiene acceso de administrador.'); return; }
+  if (btn) { btn.disabled = true; btn.textContent = 'Verificando…'; }
+  try {
+    const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+    if (error) { showErr('Correo o contraseña incorrectos.'); return; }
+    window._sbSession = { email: data.user.email, id: data.user.id, name: data.user.user_metadata?.name || 'Admin', active: true, status: 'active' };
+    if (err) err.classList.add('hidden');
+    if (btn) { btn.disabled = false; btn.textContent = 'Ingresar'; }
+    goDashboardV2();
+  } catch (e) { showErr('No se pudo iniciar sesión. Reintenta.'); }
+}
 function showView(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   const v = document.getElementById('view-' + id);
@@ -20319,7 +20385,7 @@ async function loginStudent() {
   renderHomeDashboard();
   initUnifiedProgress();
   showToast(_isAdmin ? '¡Bienvenida! Tienes acceso de administrador 👋' : (blocked ? `Hej ${student.name}. Tu suscripción está inactiva.` : `¡Välkommen, ${student.name}! 🇸🇪`), 'success');
-  if (isAdminUser() && _wantAdmin) { _wantAdmin = false; goAdmin(); }
+  if (isAdminUser() && _wantAdmin) { _wantAdmin = false; goDashboardV2(); }
 }
 
 async function logoutStudent() {
@@ -20428,9 +20494,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     await sb.auth.signOut();
   }
   // Sin sesión válida:
+  if (_wantAdmin) {
+    // "/admin" sin sesión → pantalla de acceso profesional dedicada
+    showView('adminlogin');
+    return;
+  }
   if (_isLoginPath || _isPlatformPath) {
     // "/alumnos" (login) o "/plataforma" sin sesión → pantalla de inicio de sesión
-    if (_wantAdmin) _adminLoginMode();
     showView('login');
     return;
   }
@@ -21837,67 +21907,118 @@ function _av2RevenueSeries(students, defaultPrice, monthsBack) {
   return out;
 }
 
+// Métricas ampliadas — TODO calculado en vivo desde los datos reales de Supabase.
+function dashMetricsFull(students, price) {
+  const base = dashMetrics(students, price);
+  const now = new Date();
+  const mStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const wStart = new Date(now.getTime() - 7 * 864e5);
+  const priceOf = s => s.price || price;
+  const inMonth = d => d && new Date(d) >= mStart;
+  const newThisMonth = students.filter(s => inMonth(s.joinDate));
+  const newThisWeek = students.filter(s => s.joinDate && new Date(s.joinDate) >= wStart);
+  const cancelledThisMonth = students.filter(s => (s.status === 'cancelled' || s.status === 'cancelling') && (inMonth(s.cancelsAt) || (s.status === 'cancelled' && inMonth(s.lastPaymentDate))));
+  const activeCount = base.active.length;
+  const denom = activeCount + cancelledThisMonth.length;
+  const churn = denom > 0 ? (cancelledThisMonth.length / denom * 100) : 0;
+  const within = (d, days) => { if (!d) return false; const diff = (new Date(d) - now) / 864e5; return diff >= 0 && diff <= days; };
+  const next7 = base.active.filter(s => within(s.nextPaymentDate, 7));
+  const next30 = base.active.filter(s => within(s.nextPaymentDate, 30));
+  const todayStr = now.toISOString().slice(0, 10);
+  const revenueToday = students.filter(s => s.lastPaymentDate && String(s.lastPaymentDate).slice(0, 10) === todayStr).reduce((a, s) => a + priceOf(s), 0);
+  return {
+    ...base, newThisMonth, newThisWeek, cancelledThisMonth,
+    churn, retention: 100 - churn, arpu: activeCount ? base.revenueMonth / activeCount : 0, arr: base.revenueMonth * 12,
+    next7, next30, next7Sum: next7.reduce((a, s) => a + priceOf(s), 0), next30Sum: next30.reduce((a, s) => a + priceOf(s), 0),
+    revenueToday, trial: students.filter(s => s.status === 'trial'), invited: students.filter(s => s.status === 'invited' || s.status === 'guest'),
+    inactive14: base.active.filter(s => !s.lastLogin || (now - new Date(s.lastLogin)) / 864e5 >= 14)
+  };
+}
+let _av2UserFilter = 'all';
+function av2GoUsers(filter) { _av2UserFilter = filter || 'all'; av2Nav('usuarios'); }
+
 async function renderAv2Resumen() {
   const c = document.getElementById('av2-content');
   if (!c) return;
-  c.innerHTML = '<div class="text-center py-16 text-gray-400 text-sm">⏳ Cargando métricas…</div>';
+  c.innerHTML = '<div class="text-center py-16 text-gray-400 text-sm">⏳ Cargando métricas en vivo…</div>';
   const students = await getStudents();
   if (_lastStudentsError) { c.innerHTML = '<div class="text-center py-16 text-sm text-red-500">No se pudieron cargar los datos. Recarga la sesión.</div>'; return; }
   let cfg = {}; try { cfg = await getStripeConfig(); } catch (e) {}
-  const m = dashMetrics(students, (cfg && cfg.priceLegacy) || 339);
+  const price = (cfg && (cfg.priceNew || cfg.priceLegacy)) || 339;
+  const m = dashMetricsFull(students, price);
   const now = new Date();
-  const _mn = now.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
-  const monthName = _mn.charAt(0).toUpperCase() + _mn.slice(1);
   const fullDate = now.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-  const nombre = (() => { try { const e = (window._sbSession && window._sbSession.email) || ''; return e ? e.split('@')[0] : ''; } catch (e) { return ''; } })();
-  const attn = m.failed.length + m.pending.length + m.cancelling.length;
-  // Tarjeta de estadística premium: chip de icono + badge de período
-  const stat = (icon, chipBg, chipCol, badge, label, value, sub, valCol) => `
-    <div class="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 av2-shadow">
-      <div class="flex items-center justify-between mb-3">
-        <div class="w-9 h-9 rounded-xl flex items-center justify-center text-lg" style="background:${chipBg};color:${chipCol}">${icon}</div>
-        <span class="text-[10px] font-bold uppercase tracking-wider text-gray-300">${badge}</span>
-      </div>
-      <div class="text-[12px] font-medium text-gray-400 mb-0.5">${label}</div>
-      <div class="text-[26px] leading-none font-extrabold ${valCol || 'text-gray-900'}">${value}</div>
-      <div class="text-[11px] text-gray-400 mt-1.5">${sub}</div>
+  const hora = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+  // Serie MRR 24m → últimos 12 (actual) vs 12 previos (comparación punteada)
+  const s24 = _av2RevenueSeries(students, price, 24);
+  const cur = s24.slice(12), prev = s24.slice(0, 12);
+  const curVal = cur.length ? cur[cur.length - 1].value : 0;
+  const prevVal = prev.length ? prev[prev.length - 1].value : 0;
+  const delta = prevVal ? ((curVal - prevVal) / prevVal * 100) : 0;
+  const deltaStr = (delta >= 0 ? '+' : '') + delta.toFixed(1).replace('.', ',') + ' %';
+  // Alertas accionables (estilo Stripe) — todo real
+  const alerts = [
+    { c: '#ef4444', n: m.failed.length, t: 'pagos fallidos', f: 'failed' },
+    { c: '#f59e0b', n: m.inactive14.length, t: 'llevan +14 días sin entrar', f: 'inactive' },
+    { c: '#f97316', n: m.cancelledThisMonth.length, t: 'cancelan / cancelaron este mes', f: 'cancelling' },
+    { c: '#22c55e', n: m.newThisWeek.length, t: 'nuevos alumnos esta semana', f: 'new' },
+    { c: '#3b82f6', n: m.next7.length, t: 'con cobro en los próximos 7 días', f: 'next7' }
+  ];
+  const tile = (icon, chipBg, chipCol, label, value, sub) => `
+    <div class="bg-white rounded-2xl p-4 border border-gray-100 av2-shadow">
+      <div class="flex items-center gap-2 mb-2"><div class="w-7 h-7 rounded-lg flex items-center justify-center text-sm" style="background:${chipBg};color:${chipCol}">${icon}</div><div class="text-[11px] font-medium text-gray-400">${label}</div></div>
+      <div class="text-xl font-extrabold text-gray-900 leading-none">${value}</div>
+      <div class="text-[11px] text-gray-400 mt-1">${sub}</div>
     </div>`;
   c.innerHTML = `
-    <div class="mb-6">
-      <h1 class="text-2xl sm:text-[28px] font-extrabold text-gray-900 tracking-tight">Bienvenido de vuelta 👋</h1>
-      <p class="text-sm text-gray-400 mt-1 capitalize">${fullDate}</p>
-    </div>
-
-    <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4 mb-4">
-      ${stat('💰', '#ecfdf5', '#059669', monthName, 'Ingresos del mes', _av2Sek(m.revenueMonth), m.active.length + ' alumnos activos', 'text-gray-900')}
-      ${stat('👥', '#eff4fb', '#006AA7', 'Total', 'Alumnos activos', m.active.length, 'de ' + m.total + ' registrados', 'text-gray-900')}
-      ${stat('⚠️', '#fef2f2', '#dc2626', 'Ahora', 'Requieren atención', attn, m.failed.length + ' fallidos · ' + m.cancelling.length + ' cancelando', attn > 0 ? 'text-red-600' : 'text-gray-900')}
-      ${stat('🚨', '#fff7ed', '#ea580c', '+21 días', 'En riesgo de fuga', m.atRisk.length, 'sin entrar a la plataforma', m.atRisk.length > 0 ? 'text-orange-600' : 'text-gray-900')}
-    </div>
-
-    <div class="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 av2-shadow mb-4">
-      <div class="flex items-center justify-between mb-2">
-        <div class="text-sm font-bold text-gray-800">Salud de la cartera</div>
-        <div class="text-xs text-gray-400">${m.active.length} activos de ${m.total}</div>
+    <div class="flex items-end justify-between mb-5 flex-wrap gap-2">
+      <div>
+        <h1 class="text-2xl sm:text-[28px] font-extrabold text-gray-900 tracking-tight">Bienvenido de vuelta 👋</h1>
+        <p class="text-sm text-gray-400 mt-1 capitalize">${fullDate}</p>
       </div>
-      <div class="h-2.5 rounded-full bg-gray-100 overflow-hidden flex">
-        ${(() => { const t = Math.max(1, m.total); const seg = (n, col) => n ? `<div style="width:${(n / t * 100).toFixed(1)}%;background:${col}"></div>` : ''; return seg(m.active.length, '#22c55e') + seg(m.cancelling.length, '#f59e0b') + seg(m.failed.length, '#ef4444') + seg(m.pending.length, '#eab308') + seg(m.cancelled.length, '#cbd5e1'); })()}
+      <div class="text-[11px] text-gray-400">🟢 En vivo · actualizado ${hora}</div>
+    </div>
+
+    <!-- Requieren atención hoy -->
+    <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-4 sm:p-5 mb-4">
+      <div class="flex items-center gap-2 mb-3"><span class="w-2.5 h-2.5 rounded-full bg-green-500"></span><div class="text-sm font-bold text-gray-800">Requieren atención hoy</div></div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
+        ${alerts.map(a => `<button onclick="av2GoUsers('${a.f}')" class="flex items-center gap-3 text-left p-3 rounded-xl hover:bg-gray-50 border border-gray-50 transition-colors ${a.n === 0 ? 'opacity-45' : ''}">
+          <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:${a.c}"></span>
+          <span class="text-lg font-extrabold text-gray-900 tabular-nums">${a.n}</span>
+          <span class="text-xs text-gray-500 flex-1">${a.t}</span>
+          <span class="text-gray-300">›</span>
+        </button>`).join('')}
       </div>
     </div>
 
-    <div class="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 av2-shadow mb-4">
-      <div class="flex items-start justify-between mb-4 flex-wrap gap-2">
+    <!-- MRR (estilo Stripe: actual vs período anterior) -->
+    <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-4 sm:p-5 mb-4">
+      <div class="flex items-start justify-between mb-1">
         <div>
-          <div class="text-sm font-bold text-gray-800">Ingresos recurrentes</div>
-          <div class="text-[26px] leading-none font-extrabold text-gray-900 mt-1">${_av2Sek(m.revenueMonth)}<span class="text-sm font-medium text-gray-400"> / mes</span></div>
+          <div class="flex items-center gap-1.5 text-sm font-semibold text-gray-500">MRR <span class="text-gray-300" title="Ingreso recurrente mensual">ⓘ</span></div>
+          <div class="flex items-baseline gap-2 mt-1"><span class="text-[28px] font-extrabold text-gray-900 leading-none">${_av2Sek(m.revenueMonth)}</span><span class="text-sm font-bold ${delta >= 0 ? 'text-green-600' : 'text-red-500'}">${deltaStr}</span></div>
+          <div class="text-xs text-gray-400 mt-1">${_av2Sek(prevVal)} período anterior</div>
         </div>
-        <div class="text-right">
-          <div class="text-[11px] text-gray-400">ARPU (por alumno)</div>
-          <div class="text-sm font-bold text-gray-700">${_av2Sek(m.active.length ? Math.round(m.revenueMonth / m.active.length) : 0)}</div>
+        <div class="text-right hidden sm:block">
+          <div class="text-[11px] text-gray-400">ARR estimado</div>
+          <div class="text-sm font-bold text-gray-700">${_av2Sek(m.arr)}</div>
         </div>
       </div>
-      <canvas id="av2-revenue-chart" height="80"></canvas>
-      <div class="text-[11px] text-gray-400 mt-2">Estimado por alumnos activos y su fecha de alta · últimos 12 meses</div>
+      <div class="mt-2" style="height:190px"><canvas id="av2-revenue-chart"></canvas></div>
+      <div class="text-[11px] text-gray-400 mt-2">Calculado en vivo desde Supabase · últimos 12 meses vs. 12 anteriores</div>
+    </div>
+
+    <!-- Métricas del negocio (todas en vivo) -->
+    <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 mb-4">
+      ${tile('💰', '#ecfdf5', '#059669', 'Ingresos hoy', _av2Sek(m.revenueToday), 'pagos registrados hoy')}
+      ${tile('📅', '#eff6ff', '#2563eb', 'Próximo cobro 7 días', _av2Sek(m.next7Sum), m.next7.length + ' alumnos')}
+      ${tile('🗓️', '#eef2ff', '#4f46e5', 'Próximo cobro 30 días', _av2Sek(m.next30Sum), m.next30.length + ' alumnos')}
+      ${tile('👥', '#eff4fb', '#006AA7', 'Alumnos activos', m.active.length, 'de ' + m.total + ' registrados')}
+      ${tile('✨', '#f0fdf4', '#16a34a', 'Nuevos este mes', m.newThisMonth.length, m.newThisWeek.length + ' esta semana')}
+      ${tile('📉', '#fef2f2', '#dc2626', 'Cancelados este mes', m.cancelledThisMonth.length, 'churn ' + m.churn.toFixed(1).replace('.', ',') + ' %')}
+      ${tile('🔁', '#f5f3ff', '#7c3aed', 'Retención', m.retention.toFixed(1).replace('.', ',') + ' %', 'de la cartera')}
+      ${tile('🧮', '#fff7ed', '#ea580c', 'ARPU', _av2Sek(Math.round(m.arpu)), 'ingreso por alumno')}
     </div>
 
     <div class="grid lg:grid-cols-2 gap-4">
@@ -21906,7 +22027,7 @@ async function renderAv2Resumen() {
         <div class="flex items-center gap-6"><canvas id="av2-status-chart" width="132" height="132" style="max-width:132px;flex-shrink:0"></canvas><div id="av2-status-legend" class="flex-1 space-y-2.5 text-sm"></div></div>
       </div>
       <div class="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 av2-shadow">
-        <div class="flex items-center justify-between mb-4"><div class="font-bold text-gray-800 text-sm">Requieren tu atención</div><span class="text-[11px] text-gray-300">toca para ver progreso</span></div>
+        <div class="flex items-center justify-between mb-4"><div class="font-bold text-gray-800 text-sm">Alumnos a revisar</div><span class="text-[11px] text-gray-300">toca para ver progreso</span></div>
         <div id="av2-attention" class="space-y-1.5 text-sm -mx-1"></div>
       </div>
     </div>`;
@@ -21927,24 +22048,29 @@ async function renderAv2Resumen() {
   } catch (e) {}
   const leg = document.getElementById('av2-status-legend');
   if (leg) leg.innerHTML = segs.map(s => `<div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full" style="background:${s.c}"></span><span class="flex-1 text-gray-600">${s.label}</span><b class="text-gray-800">${s.n}</b></div>`).join('') || '<div class="text-gray-400">Sin datos.</div>';
-  // ── Gráfico de ingresos por mes (estilo Stripe: área con degradado) ──
+  // ── Gráfico MRR (estilo Stripe): actual (sólido, degradado) vs período anterior (punteado) ──
   try {
     if (_av2Charts.revenue) { _av2Charts.revenue.destroy(); _av2Charts.revenue = null; }
     const rctx = document.getElementById('av2-revenue-chart');
     if (rctx && typeof Chart !== 'undefined') {
-      const serie = _av2RevenueSeries(students, (cfg && cfg.priceLegacy) || (cfg && cfg.priceNew) || 339, 12);
       const g = rctx.getContext('2d');
-      const grad = g.createLinearGradient(0, 0, 0, 180);
-      grad.addColorStop(0, 'rgba(0,106,167,0.22)');
-      grad.addColorStop(1, 'rgba(0,106,167,0.00)');
+      const grad = g.createLinearGradient(0, 0, 0, 190);
+      grad.addColorStop(0, 'rgba(79,70,229,0.20)');
+      grad.addColorStop(1, 'rgba(79,70,229,0.00)');
       _av2Charts.revenue = new Chart(rctx, {
         type: 'line',
-        data: { labels: serie.map(s => s.label), datasets: [{ data: serie.map(s => s.value), borderColor: '#006AA7', borderWidth: 2.5, backgroundColor: grad, fill: true, tension: 0.4, pointRadius: 0, pointHoverRadius: 5, pointHoverBackgroundColor: '#006AA7', pointHoverBorderColor: '#fff', pointHoverBorderWidth: 2 }] },
+        data: {
+          labels: cur.map(s => s.label),
+          datasets: [
+            { label: 'Actual', data: cur.map(s => s.value), borderColor: '#4f46e5', borderWidth: 2.5, backgroundColor: grad, fill: true, tension: 0.35, pointRadius: 0, pointHoverRadius: 5, pointHoverBackgroundColor: '#4f46e5', pointHoverBorderColor: '#fff', pointHoverBorderWidth: 2, order: 1 },
+            { label: 'Período anterior', data: prev.map(s => s.value), borderColor: '#cbd5e1', borderWidth: 2, borderDash: [5, 5], fill: false, tension: 0.35, pointRadius: 0, pointHoverRadius: 4, order: 2 }
+          ]
+        },
         options: {
           responsive: true, maintainAspectRatio: false,
           interaction: { intersect: false, mode: 'index' },
-          plugins: { legend: { display: false }, tooltip: { backgroundColor: '#0f172a', padding: 10, cornerRadius: 10, displayColors: false, callbacks: { title: it => it[0].label, label: it => _av2Sek(it.raw) + ' · ' + serie[it.dataIndex].count + ' activos' } } },
-          scales: { y: { beginAtZero: true, border: { display: false }, grid: { color: '#f1f5f9' }, ticks: { maxTicksLimit: 5, font: { size: 10 }, color: '#94a3b8', callback: v => (v >= 1000 ? (v / 1000) + 'k' : v) } }, x: { border: { display: false }, grid: { display: false }, ticks: { font: { size: 10 }, color: '#94a3b8', maxRotation: 0, autoSkipPadding: 12 } } }
+          plugins: { legend: { display: false }, tooltip: { backgroundColor: '#0f172a', padding: 10, cornerRadius: 10, callbacks: { title: it => it[0].label, label: it => it.dataset.label + ': ' + _av2Sek(it.raw) } } },
+          scales: { y: { beginAtZero: false, border: { display: false }, grid: { color: '#f1f5f9' }, ticks: { maxTicksLimit: 5, font: { size: 10 }, color: '#94a3b8', callback: v => (v >= 1000 ? (Math.round(v / 100) / 10) + ' mil' : v) + ' SEK' } }, x: { border: { display: false }, grid: { display: false }, ticks: { font: { size: 10 }, color: '#94a3b8', maxRotation: 0, autoSkipPadding: 14 } } }
         }
       });
     }
@@ -21968,45 +22094,109 @@ async function renderAv2Resumen() {
 }
 
 let _av2UserSearch = '';
+let _av2Page = 0;
+const AV2_PAGE_SIZE = 50;
+const AV2_FILTERS = [
+  { id: 'all', label: 'Todos' },
+  { id: 'active', label: 'Activos' },
+  { id: 'failed', label: 'Pago fallido' },
+  { id: 'cancelling', label: 'Cancelando' },
+  { id: 'cancelled', label: 'Cancelados' },
+  { id: 'manual', label: 'Manuales' },
+  { id: 'next7', label: 'Próximo cobro (7d)' },
+  { id: 'inactive', label: 'Sin actividad (+14d)' },
+  { id: 'new', label: 'Nuevos (7d)' },
+  { id: 'recent', label: 'Últimos registrados' }
+];
+function _av2Match(s, f) {
+  const isActive = s.status === 'active' || s.status === 'manual' || (!s.status && s.active);
+  const daysLogin = s.lastLogin ? (Date.now() - new Date(s.lastLogin)) / 864e5 : Infinity;
+  const within = (d, days) => { if (!d) return false; const diff = (new Date(d) - Date.now()) / 864e5; return diff >= 0 && diff <= days; };
+  switch (f) {
+    case 'active': return isActive;
+    case 'failed': return s.status === 'failed';
+    case 'cancelling': return s.status === 'cancelling';
+    case 'cancelled': return s.status === 'cancelled';
+    case 'manual': return s.status === 'manual' || s.paymentMethod === 'manual';
+    case 'next7': return isActive && within(s.nextPaymentDate, 7);
+    case 'inactive': return isActive && daysLogin >= 14;
+    case 'new': return s.joinDate && (Date.now() - new Date(s.joinDate)) / 864e5 <= 7;
+    default: return true;
+  }
+}
 async function renderAv2Users() {
   const c = document.getElementById('av2-content');
   if (!c) return;
   c.innerHTML = '<div class="text-center py-16 text-gray-400 text-sm">⏳ Cargando usuarios…</div>';
   const students = await getStudents();
   if (_lastStudentsError) { c.innerHTML = '<div class="text-center py-16 text-sm text-red-500">No se pudieron cargar los usuarios. Recarga la sesión.</div>'; return; }
-  c.innerHTML = `
-    <div class="mb-4 flex items-center gap-2">
-      <input id="av2-user-search" oninput="_av2FilterUsers(this.value)" value="${(_av2UserSearch || '').replace(/"/g, '&quot;')}" placeholder="🔎 Buscar por nombre o correo…" class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-swe-blue/30" />
-      <span class="text-xs text-gray-400 whitespace-nowrap">${students.length} usuarios</span>
+  _av2Page = 0;
+  c.innerHTML = _av2Head('Usuarios', students.length + ' alumnos registrados') + `
+    <div class="mb-3">
+      <input id="av2-user-search" oninput="_av2FilterUsers(this.value)" value="${(_av2UserSearch || '').replace(/"/g, '&quot;')}" placeholder="🔎 Buscar por nombre, correo, teléfono o Stripe Customer ID…" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-swe-blue/25 focus:border-swe-blue transition" />
     </div>
-    <div id="av2-user-list" class="space-y-2"></div>`;
+    <div id="av2-filter-chips" class="flex flex-wrap gap-1.5 mb-4"></div>
+    <div id="av2-user-list" class="space-y-2"></div>
+    <div id="av2-pager" class="flex items-center justify-between mt-4"></div>`;
+  _av2PaintChips();
   _av2PaintUsers();
 }
-function _av2FilterUsers(v) { _av2UserSearch = (v || '').toLowerCase().trim(); _av2PaintUsers(); }
+function _av2PaintChips() {
+  const box = document.getElementById('av2-filter-chips'); if (!box) return;
+  box.innerHTML = AV2_FILTERS.map(f => {
+    const active = _av2UserFilter === f.id;
+    const cls = active ? 'bg-swe-blue text-white border-swe-blue' : 'bg-white text-gray-600 border-gray-200 hover:border-swe-blue';
+    return `<button onclick="_av2SetFilter('${f.id}')" class="text-xs font-semibold px-3 py-1.5 rounded-full border ${cls} transition-colors">${f.label}</button>`;
+  }).join('');
+}
+function _av2SetFilter(f) { _av2UserFilter = f; _av2Page = 0; _av2PaintChips(); _av2PaintUsers(); }
+function _av2FilterUsers(v) { _av2UserSearch = (v || '').toLowerCase().trim(); _av2Page = 0; _av2PaintUsers(); }
+function _av2FilteredList() {
+  const q = _av2UserSearch;
+  let list = (_cachedStudents || []).filter(s => _av2Match(s, _av2UserFilter));
+  if (q) list = list.filter(s => ((s.name || '') + ' ' + (s.email || '') + ' ' + (s.phone || s.telefono || '') + ' ' + (s.stripeCustomerId || '')).toLowerCase().includes(q));
+  if (_av2UserFilter === 'recent' || _av2UserFilter === 'new') list = list.slice().sort((a, b) => new Date(b.joinDate || 0) - new Date(a.joinDate || 0));
+  return list;
+}
 function _av2PaintUsers() {
   const box = document.getElementById('av2-user-list');
   if (!box) return;
-  const q = _av2UserSearch;
-  let list = (_cachedStudents || []);
-  if (q) list = list.filter(s => ((s.name || '') + ' ' + (s.email || '')).toLowerCase().includes(q));
+  const full = _av2FilteredList();
+  const pages = Math.max(1, Math.ceil(full.length / AV2_PAGE_SIZE));
+  if (_av2Page >= pages) _av2Page = pages - 1;
+  const list = full.slice(_av2Page * AV2_PAGE_SIZE, (_av2Page + 1) * AV2_PAGE_SIZE);
   const statusChip = (s) => {
     const st = s.status || (s.active ? 'active' : 'cancelled');
     const map = { active: ['Activo', 'bg-green-100 text-green-700'], manual: ['Manual', 'bg-violet-100 text-violet-700'], failed: ['Pago fallido', 'bg-red-100 text-red-700'], cancelling: ['Cancelando', 'bg-orange-100 text-orange-700'], cancelled: ['Cancelado', 'bg-gray-100 text-gray-500'], pending: ['Pendiente', 'bg-amber-100 text-amber-700'] };
-    const m = map[st] || [st, 'bg-gray-100 text-gray-500'];
-    return `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${m[1]}">${m[0]}</span>`;
+    const mm = map[st] || [st, 'bg-gray-100 text-gray-500'];
+    return `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${mm[1]}">${mm[0]}</span>`;
   };
-  const days = (s) => { if (!s.lastLogin) return '—'; const d = Math.floor((Date.now() - new Date(s.lastLogin).getTime()) / 86400000); return d === 0 ? 'hoy' : d + 'd'; };
+  const days = (s) => { if (!s.lastLogin) return 'nunca'; const d = Math.floor((Date.now() - new Date(s.lastLogin).getTime()) / 86400000); return d === 0 ? 'hoy' : d + 'd'; };
   box.innerHTML = list.length ? list.map(s => `
-    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-3 flex items-center gap-3">
+    <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-3 flex items-center gap-3">
       <div class="w-9 h-9 rounded-full bg-swe-blue/10 text-swe-blue flex items-center justify-center font-black text-sm shrink-0">${((s.name || s.email || '?')[0] || '?').toUpperCase()}</div>
       <div class="flex-1 min-w-0">
         <div class="font-bold text-gray-800 text-sm truncate">${(s.name || '—')}</div>
         <div class="text-xs text-gray-400 truncate">${(s.email || '')}</div>
       </div>
       <div class="hidden sm:flex flex-col items-end gap-1">${statusChip(s)}<span class="text-[11px] text-gray-400">último: ${days(s)}</span></div>
-      <button onclick="openStudentProgress('${s.id}','${(s.name || '').replace(/'/g, "\\'").replace(/</g, '')}')" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-cyan-50 text-cyan-700 hover:bg-cyan-100 border border-cyan-200 transition-colors shrink-0">📊 Progreso</button>
-    </div>`).join('') : '<div class="text-center py-12 text-gray-400 text-sm">Sin resultados.</div>';
+      <button onclick="openStudentProgress('${s.id}','${(s.name || '').replace(/'/g, "\\'").replace(/</g, '')}')" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-cyan-50 text-cyan-700 hover:bg-cyan-100 border border-cyan-200 transition-colors shrink-0">Ver ficha</button>
+    </div>`).join('') : '<div class="text-center py-12 text-gray-400 text-sm">Sin resultados con este filtro.</div>';
+  const pager = document.getElementById('av2-pager');
+  if (pager) {
+    if (full.length <= AV2_PAGE_SIZE) { pager.innerHTML = `<span class="text-xs text-gray-400">${full.length} alumno${full.length !== 1 ? 's' : ''}</span>`; }
+    else {
+      const from = _av2Page * AV2_PAGE_SIZE + 1, to = Math.min(full.length, (_av2Page + 1) * AV2_PAGE_SIZE);
+      pager.innerHTML = `
+        <span class="text-xs text-gray-400">${from}–${to} de ${full.length}</span>
+        <div class="flex gap-2">
+          <button onclick="_av2PageMove(-1)" ${_av2Page === 0 ? 'disabled' : ''} class="text-xs font-semibold px-3 py-1.5 rounded-xl border ${_av2Page === 0 ? 'text-gray-300 border-gray-100' : 'text-gray-600 border-gray-200 hover:border-swe-blue'}">← Anterior</button>
+          <button onclick="_av2PageMove(1)" ${_av2Page >= pages - 1 ? 'disabled' : ''} class="text-xs font-semibold px-3 py-1.5 rounded-xl border ${_av2Page >= pages - 1 ? 'text-gray-300 border-gray-100' : 'text-gray-600 border-gray-200 hover:border-swe-blue'}">Siguiente →</button>
+        </div>`;
+    }
+  }
 }
+function _av2PageMove(d) { _av2Page += d; _av2PaintUsers(); const el = document.getElementById('av2-content'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
 
 // ── Encabezado de sección reutilizable ──
 function _av2Head(title, sub) {
