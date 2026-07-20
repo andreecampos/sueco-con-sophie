@@ -10824,111 +10824,111 @@ const HORST_DATA = {
         "ttsScript": "Idag vill jag berätta om en situation som hände mig på jobbet för några månader sedan. Det började som en helt vanlig morgon. Jag kom lite tidigare än vanligt eftersom jag ville hinna förbereda mina lektioner. När jag öppnade min mejl såg jag ett meddelande från min chef. Jag läste det ganska snabbt eftersom jag hade mycket att göra. Jag fick uppfattningen att ett viktigt möte hade flyttats från fredag till torsdag klockan nio. Därför flyttade jag en lektion och ändrade hela min planering. När jag kom till mötesrummet var det nästan tomt. Efter några minuter kom min chef och frågade varför jag redan satt där. Då läste vi mejlet tillsammans och upptäckte att jag hade missförstått. Mötet hade egentligen flyttats från torsdag till fredag, inte tvärtom. Jag kände mig generad, men min chef log och sa att sådana misstag kan hända under stress. Sedan dess läser jag alltid viktiga mejl en extra gång.",
         "questions": [
           {
-            "text": "¿Por qué llegó Sophie más temprano de lo normal?",
+            "text": "Varför kom Sophie tidigare än vanligt till jobbet?",
             "options": [
-              "Para preparar sus clases",
-              "Para hablar con el jefe",
-              "Porque perdió el autobús",
-              "Para desayunar"
+              "För att förbereda sina lektioner",
+              "För att prata med chefen",
+              "För att hon missade bussen",
+              "För att äta frukost"
             ],
             "correct": 0,
             "explanation": "\"Jag kom lite tidigare... eftersom jag ville hinna förbereda mina lektioner\" = Llegué antes para preparar mis clases."
           },
           {
-            "text": "¿De quién era el correo que leyó?",
+            "text": "Vem var mejlet ifrån?",
             "options": [
-              "De su jefe",
-              "De un cliente",
-              "De un colega",
-              "De su familia"
+              "Från hennes chef",
+              "Från en kund",
+              "Från en kollega",
+              "Från hennes familj"
             ],
             "correct": 0,
             "explanation": "\"Ett meddelande från min chef\" = Un mensaje de mi jefe. \"Chef\" = jefe."
           },
           {
-            "text": "¿Cómo leyó el correo?",
+            "text": "Hur läste hon mejlet?",
             "options": [
-              "Rápido, porque tenía mucho que hacer",
-              "Con mucha calma",
-              "En voz alta",
-              "Dos veces"
+              "Snabbt, för hon hade mycket att göra",
+              "Väldigt lugnt",
+              "Högt",
+              "Två gånger"
             ],
             "correct": 0,
             "explanation": "\"Jag läste det ganska snabbt eftersom jag hade mycket att göra\" = Lo leí bastante rápido porque tenía mucho que hacer."
           },
           {
-            "text": "¿Qué creyó entender Sophie sobre la reunión?",
+            "text": "Vad trodde Sophie om mötet?",
             "options": [
-              "Que se movió del viernes al jueves a las 9",
-              "Que se canceló",
-              "Que era a las 10",
-              "Que era el lunes"
+              "Att det flyttades från fredag till torsdag klockan 9",
+              "Att det ställdes in",
+              "Att det var klockan 10",
+              "Att det var på måndag"
             ],
             "correct": 0,
             "explanation": "\"Ett möte hade flyttats från fredag till torsdag klockan nio\" = era lo que ella creyó entender."
           },
           {
-            "text": "¿Qué hizo tras leer el correo?",
+            "text": "Vad gjorde hon efter att ha läst mejlet?",
             "options": [
-              "Movió una clase y cambió su planificación",
-              "No hizo nada",
-              "Llamó al jefe",
-              "Se fue a casa"
+              "Flyttade en lektion och ändrade sin planering",
+              "Ingenting",
+              "Ringde chefen",
+              "Gick hem"
             ],
             "correct": 0,
             "explanation": "\"Jag flyttade en lektion och ändrade hela min planering\" = Moví una clase y cambié toda mi planificación."
           },
           {
-            "text": "¿Cómo estaba la sala de reuniones cuando llegó?",
+            "text": "Hur såg mötesrummet ut när hon kom?",
             "options": [
-              "Casi vacía",
-              "Llena de gente",
-              "Cerrada",
-              "En reforma"
+              "Nästan tomt",
+              "Fullt med folk",
+              "Låst",
+              "Under renovering"
             ],
             "correct": 0,
             "explanation": "\"Mötesrummet var nästan tomt\" = La sala estaba casi vacía. \"Tomt\" = vacío."
           },
           {
-            "text": "¿Qué le preguntó el jefe?",
+            "text": "Vad frågade chefen henne?",
             "options": [
-              "Por qué ya estaba sentada ahí",
-              "Si quería café",
-              "Dónde estaban los demás",
-              "Si estaba enferma"
+              "Varför hon redan satt där",
+              "Om hon ville ha kaffe",
+              "Var de andra var",
+              "Om hon var sjuk"
             ],
             "correct": 0,
             "explanation": "\"Min chef... frågade varför jag redan satt där\" = preguntó por qué ya estaba ahí sentada."
           },
           {
-            "text": "¿Cuál era la información correcta?",
+            "text": "Vilken var den rätta informationen?",
             "options": [
-              "La reunión se movió del jueves al viernes",
-              "Del viernes al jueves",
-              "Se canceló",
-              "Se adelantó una hora"
+              "Mötet flyttades från torsdag till fredag",
+              "Från fredag till torsdag",
+              "Det ställdes in",
+              "Det tidigarelades en timme"
             ],
             "correct": 0,
             "explanation": "\"Mötet hade flyttats från torsdag till fredag, inte tvärtom\" = del jueves al viernes, no al revés."
           },
           {
-            "text": "¿Cómo reaccionó el jefe ante el error?",
+            "text": "Hur reagerade chefen på misstaget?",
             "options": [
-              "Sonrió y dijo que pasa con el estrés",
-              "Se enojó",
-              "No dijo nada",
-              "La despidió"
+              "Log och sa att det händer när man är stressad",
+              "Blev arg",
+              "Sa ingenting",
+              "Gav henne sparken"
             ],
             "correct": 0,
             "explanation": "\"Min chef log och sa att sådana misstag kan hända under stress\" = sonrió y dijo que esos errores pasan bajo estrés."
           },
           {
-            "text": "¿Qué hace Sophie desde entonces?",
+            "text": "Vad gör Sophie sedan dess?",
             "options": [
-              "Lee los correos importantes una vez más",
-              "Ya no lee correos",
-              "Llega más tarde",
-              "Imprime todos los correos"
+              "Läser viktiga mejl en gång till",
+              "Läser inte mejl längre",
+              "Kommer senare",
+              "Skriver ut alla mejl"
             ],
             "correct": 0,
             "explanation": "\"Sedan dess läser jag alltid viktiga mejl en extra gång\" = desde entonces leo los correos importantes una vez más."
@@ -10946,111 +10946,111 @@ const HORST_DATA = {
         "ttsScript": "För några veckor sedan vaknade jag med ont i halsen och hade dessutom feber. Först tänkte jag att det skulle gå över av sig självt, men efter två dagar mådde jag fortfarande inte bättre. Därför ringde jag vårdcentralen. Det tog lång tid innan jag kom fram eftersom många andra också ringde. När jag äntligen fick prata med en sjuksköterska ställde hon flera frågor om mina symtom. Hon frågade hur länge jag hade varit sjuk, om jag hade hög feber och om jag hade svårt att andas. Efter samtalet rekommenderade hon mig att vila hemma, dricka mycket vatten och ta febernedsättande medicin vid behov. Hon förklarade också att jag skulle kontakta vården igen om symtomen blev värre.",
         "questions": [
           {
-            "text": "¿Con qué síntomas despertó Sophie?",
+            "text": "Med vilka symtom vaknade Sophie?",
             "options": [
-              "Dolor de garganta y fiebre",
-              "Dolor de cabeza y tos",
-              "Dolor de estómago",
-              "Mareos"
+              "Ont i halsen och feber",
+              "Huvudvärk och hosta",
+              "Ont i magen",
+              "Yrsel"
             ],
             "correct": 0,
             "explanation": "\"Ont i halsen och... feber\" = dolor de garganta y fiebre. \"Hals\" = garganta."
           },
           {
-            "text": "¿Qué pensó al principio?",
+            "text": "Vad trodde hon först?",
             "options": [
-              "Que se le pasaría solo",
-              "Que era grave",
-              "Que debía ir al hospital",
-              "Que era alergia"
+              "Att det skulle gå över av sig självt",
+              "Att det var allvarligt",
+              "Att hon måste åka till sjukhuset",
+              "Att det var allergi"
             ],
             "correct": 0,
             "explanation": "\"Det skulle gå över av sig självt\" = que se pasaría por sí solo."
           },
           {
-            "text": "¿Cuánto esperó antes de llamar?",
+            "text": "Hur länge väntade hon innan hon ringde?",
             "options": [
-              "Dos días",
-              "Una semana",
-              "Unas horas",
-              "Un mes"
+              "Två dagar",
+              "En vecka",
+              "Några timmar",
+              "En månad"
             ],
             "correct": 0,
             "explanation": "\"Efter två dagar mådde jag fortfarande inte bättre\" = tras dos días seguía sin mejorar."
           },
           {
-            "text": "¿A quién llamó Sophie?",
+            "text": "Vem ringde Sophie?",
             "options": [
-              "Al centro de salud (vårdcentralen)",
-              "A la farmacia",
-              "A su jefe",
-              "A una amiga"
+              "Vårdcentralen",
+              "Apoteket",
+              "Sin chef",
+              "En väninna"
             ],
             "correct": 0,
             "explanation": "\"Jag ringde vårdcentralen\" = Llamé al centro de salud."
           },
           {
-            "text": "¿Por qué tardó en comunicarse?",
+            "text": "Varför tog det tid att komma fram?",
             "options": [
-              "Muchos otros también llamaban",
-              "La línea estaba rota",
-              "Era de noche",
-              "No tenía saldo"
+              "Många andra ringde också",
+              "Linjen var trasig",
+              "Det var natt",
+              "Hon hade inget saldo"
             ],
             "correct": 0,
             "explanation": "\"Många andra också ringde\" = muchos otros también llamaban."
           },
           {
-            "text": "¿Con quién habló finalmente?",
+            "text": "Vem pratade hon med till slut?",
             "options": [
-              "Con una enfermera",
-              "Con un médico",
-              "Con una recepcionista",
-              "Con un robot"
+              "Med en sjuksköterska",
+              "Med en läkare",
+              "Med en receptionist",
+              "Med en robot"
             ],
             "correct": 0,
             "explanation": "\"Prata med en sjuksköterska\" = hablar con una enfermera. \"Sjuksköterska\" = enfermera."
           },
           {
-            "text": "¿Qué le preguntó la enfermera?",
+            "text": "Vad frågade sjuksköterskan?",
             "options": [
-              "Cuánto llevaba enferma y sus síntomas",
-              "Su dirección",
-              "Su trabajo",
-              "Su edad"
+              "Hur länge hon varit sjuk och om hennes symtom",
+              "Hennes adress",
+              "Hennes jobb",
+              "Hennes ålder"
             ],
             "correct": 0,
             "explanation": "\"Hur länge jag hade varit sjuk, om jag hade hög feber och svårt att andas\" = cuánto llevaba enferma, si tenía fiebre alta y dificultad para respirar."
           },
           {
-            "text": "¿Qué le recomendó hacer?",
+            "text": "Vad rekommenderade hon henne att göra?",
             "options": [
-              "Descansar, beber agua y tomar antifebril si hace falta",
-              "Ir al hospital ya",
-              "Hacer ejercicio",
-              "Tomar antibióticos"
+              "Vila, dricka vatten och ta febernedsättande vid behov",
+              "Åka till sjukhuset direkt",
+              "Träna",
+              "Ta antibiotika"
             ],
             "correct": 0,
             "explanation": "\"Vila hemma, dricka mycket vatten och ta febernedsättande medicin vid behov\" = descansar, beber mucha agua y tomar antifebril si es necesario."
           },
           {
-            "text": "¿Cuándo debía volver a contactar a la sanidad?",
+            "text": "När skulle hon kontakta vården igen?",
             "options": [
-              "Si los síntomas empeoraban",
-              "Al día siguiente siempre",
-              "Nunca más",
-              "En un mes"
+              "Om symtomen blev värre",
+              "Alltid nästa dag",
+              "Aldrig mer",
+              "Om en månad"
             ],
             "correct": 0,
             "explanation": "\"Kontakta vården igen om symtomen blev värre\" = contactar de nuevo si los síntomas empeoraban."
           },
           {
-            "text": "¿Qué aprendió Sophie de esta experiencia?",
+            "text": "Vad lärde sig Sophie av detta?",
             "options": [
-              "Lo importante de describir bien los síntomas",
-              "Que la sanidad es cara",
-              "Que no hay que llamar",
-              "Que es mejor automedicarse"
+              "Hur viktigt det är att beskriva symtomen väl",
+              "Att vården är dyr",
+              "Att man inte ska ringa",
+              "Att det är bättre att medicinera sig själv"
             ],
             "correct": 0,
             "explanation": "El audio destaca la importancia de describir con claridad los síntomas al buscar atención."
@@ -11068,111 +11068,111 @@ const HORST_DATA = {
         "ttsScript": "Förra månaden skulle jag resa till Göteborg för att träffa några vänner som jag inte hade sett på länge. Jag hade planerat resan i flera veckor och kom till stationen nästan trettio minuter innan tåget skulle avgå. Precis innan vi skulle åka hördes ett meddelande i högtalarna. Tåget var försenat på grund av ett signalfel längre fram på spåret. Först trodde jag att det bara skulle handla om några minuter, men förseningen blev nästan en timme. Jag ringde mina vänner och berättade vad som hade hänt. Som tur var hade de förståelse och ändrade våra planer. När jag väl kom fram kunde vi fortfarande äta middag tillsammans. Efter den resan planerar jag alltid med lite extra tid.",
         "questions": [
           {
-            "text": "¿A qué ciudad iba a viajar Sophie?",
+            "text": "Till vilken stad skulle Sophie resa?",
             "options": [
-              "A Gotemburgo",
-              "A Malmö",
-              "A Estocolmo",
-              "A Uppsala"
+              "Till Göteborg",
+              "Till Malmö",
+              "Till Stockholm",
+              "Till Uppsala"
             ],
             "correct": 0,
             "explanation": "\"Resa till Göteborg\" = viajar a Gotemburgo."
           },
           {
-            "text": "¿Para qué iba?",
+            "text": "Varför skulle hon dit?",
             "options": [
-              "Para ver a unos amigos",
-              "Por trabajo",
-              "A un examen",
-              "De compras"
+              "För att träffa några vänner",
+              "På grund av jobbet",
+              "Till ett prov",
+              "För att shoppa"
             ],
             "correct": 0,
             "explanation": "\"Träffa några vänner som jag inte hade sett på länge\" = ver a unos amigos que no veía hacía tiempo."
           },
           {
-            "text": "¿Con cuánta antelación llegó a la estación?",
+            "text": "Hur långt i förväg kom hon till stationen?",
             "options": [
-              "Casi 30 minutos antes",
-              "5 minutos antes",
-              "Una hora antes",
-              "Justo a tiempo"
+              "Nästan 30 minuter innan",
+              "5 minuter innan",
+              "En timme innan",
+              "Precis i tid"
             ],
             "correct": 0,
             "explanation": "\"Nästan trettio minuter innan tåget skulle avgå\" = casi 30 minutos antes de la salida."
           },
           {
-            "text": "¿Qué se escuchó por los altavoces?",
+            "text": "Vad hördes i högtalarna?",
             "options": [
-              "Que el tren estaba retrasado",
-              "Que el tren se canceló",
-              "Que había cambio de andén",
-              "Una oferta"
+              "Att tåget var försenat",
+              "Att tåget ställdes in",
+              "Att spåret byttes",
+              "Ett erbjudande"
             ],
             "correct": 0,
             "explanation": "\"Tåget var försenat\" = el tren estaba retrasado."
           },
           {
-            "text": "¿Cuál fue la causa del retraso?",
+            "text": "Vad var orsaken till förseningen?",
             "options": [
-              "Un fallo de señalización en la vía",
-              "Nieve",
-              "Una avería del motor",
-              "Falta de personal"
+              "Ett signalfel på spåret",
+              "Snö",
+              "Ett motorfel",
+              "Personalbrist"
             ],
             "correct": 0,
             "explanation": "\"På grund av ett signalfel längre fram på spåret\" = por un fallo de señalización más adelante en la vía."
           },
           {
-            "text": "¿Cuánto duró finalmente el retraso?",
+            "text": "Hur länge blev förseningen till slut?",
             "options": [
-              "Casi una hora",
-              "Unos minutos",
-              "Dos horas",
-              "Todo el día"
+              "Nästan en timme",
+              "Några minuter",
+              "Två timmar",
+              "Hela dagen"
             ],
             "correct": 0,
             "explanation": "\"Förseningen blev nästan en timme\" = el retraso fue de casi una hora."
           },
           {
-            "text": "¿Qué hizo Sophie al enterarse?",
+            "text": "Vad gjorde Sophie när hon fick veta det?",
             "options": [
-              "Llamó a sus amigos para avisar",
-              "Se bajó del tren",
-              "Pidió un reembolso",
-              "Se enojó con el personal"
+              "Ringde sina vänner för att berätta",
+              "Klev av tåget",
+              "Bad om återbetalning",
+              "Blev arg på personalen"
             ],
             "correct": 0,
             "explanation": "\"Jag ringde mina vänner och berättade vad som hade hänt\" = llamé a mis amigos y les conté lo que pasó."
           },
           {
-            "text": "¿Cómo reaccionaron sus amigos?",
+            "text": "Hur reagerade hennes vänner?",
             "options": [
-              "Con comprensión y cambiaron los planes",
-              "Se enojaron",
-              "Cancelaron todo",
-              "No contestaron"
+              "Med förståelse och ändrade planerna",
+              "Blev arga",
+              "Ställde in allt",
+              "Svarade inte"
             ],
             "correct": 0,
             "explanation": "\"De hade förståelse och ändrade våra planer\" = tuvieron comprensión y cambiaron los planes."
           },
           {
-            "text": "¿Qué pudieron hacer al final?",
+            "text": "Vad kunde de göra till slut?",
             "options": [
-              "Cenar juntos",
-              "Nada, ya era tarde",
-              "Ir al cine",
-              "Solo llamarse"
+              "Äta middag tillsammans",
+              "Ingenting, det var för sent",
+              "Gå på bio",
+              "Bara ringas"
             ],
             "correct": 0,
             "explanation": "\"Kunde vi fortfarande äta middag tillsammans\" = todavía pudieron cenar juntos."
           },
           {
-            "text": "¿Qué aprendió Sophie?",
+            "text": "Vad lärde sig Sophie?",
             "options": [
-              "A planear siempre con tiempo extra",
-              "A no viajar en tren",
-              "A llegar tarde",
-              "A no avisar a nadie"
+              "Att alltid planera med extra tid",
+              "Att inte resa med tåg",
+              "Att komma sent",
+              "Att inte meddela någon"
             ],
             "correct": 0,
             "explanation": "\"Planerar jag alltid med lite extra tid\" = siempre planeo con algo de tiempo extra."
@@ -11190,111 +11190,111 @@ const HORST_DATA = {
         "ttsScript": "Nyligen beställde jag en jacka från en webbutik eftersom min gamla hade blivit för liten. Innan jag gjorde beställningen läste jag informationen noggrant och jämförde storlekarna. Jag var därför ganska säker på att jag hade valt rätt. När paketet kom några dagar senare märkte jag direkt att något inte stämde. Jackan var betydligt mindre än jag hade förväntat mig, trots att etiketten visade rätt storlek. Jag kontaktade kundtjänst och förklarade situationen. Personen jag pratade med bad om ursäkt och skickade en retursedel samma dag. En vecka senare fick jag en ny jacka som passade perfekt. Den här händelsen lärde mig att det ibland är svårt att handla kläder på internet.",
         "questions": [
           {
-            "text": "¿Qué compró Sophie por internet?",
+            "text": "Vad köpte Sophie på internet?",
             "options": [
-              "Una chaqueta",
-              "Unos zapatos",
-              "Un teléfono",
-              "Un libro"
+              "En jacka",
+              "Ett par skor",
+              "En telefon",
+              "En bok"
             ],
             "correct": 0,
             "explanation": "\"Jag beställde en jacka\" = pedí una chaqueta. \"Jacka\" = chaqueta."
           },
           {
-            "text": "¿Por qué la compró?",
+            "text": "Varför köpte hon den?",
             "options": [
-              "Su chaqueta vieja le quedaba pequeña",
-              "Estaba de oferta",
-              "La suya se rompió",
-              "Se la pidió un amigo"
+              "Hennes gamla jacka var för liten",
+              "Den var på rea",
+              "Hennes gick sönder",
+              "En vän bad om den"
             ],
             "correct": 0,
             "explanation": "\"Min gamla hade blivit för liten\" = la vieja se le había quedado pequeña."
           },
           {
-            "text": "¿Qué hizo antes de comprar?",
+            "text": "Vad gjorde hon innan hon köpte?",
             "options": [
-              "Leyó la información y comparó tallas",
-              "Nada, compró rápido",
-              "Preguntó a una amiga",
-              "Fue a la tienda física"
+              "Läste informationen och jämförde storlekar",
+              "Inget, köpte snabbt",
+              "Frågade en väninna",
+              "Gick till butiken"
             ],
             "correct": 0,
             "explanation": "\"Läste jag informationen noggrant och jämförde storlekarna\" = leí la información con cuidado y comparé las tallas."
           },
           {
-            "text": "¿Qué notó al recibir el paquete?",
+            "text": "Vad märkte hon när hon fick paketet?",
             "options": [
-              "Que algo no cuadraba",
-              "Que era el color equivocado",
-              "Que faltaban piezas",
-              "Que estaba roto"
+              "Att något inte stämde",
+              "Att det var fel färg",
+              "Att delar saknades",
+              "Att den var trasig"
             ],
             "correct": 0,
             "explanation": "\"Något inte stämde\" = algo no estaba bien."
           },
           {
-            "text": "¿Cuál era el problema con la chaqueta?",
+            "text": "Vad var problemet med jackan?",
             "options": [
-              "Era mucho más pequeña de lo esperado",
-              "Era de otro color",
-              "Estaba sucia",
-              "Era muy grande"
+              "Den var mycket mindre än väntat",
+              "Den var i en annan färg",
+              "Den var smutsig",
+              "Den var för stor"
             ],
             "correct": 0,
             "explanation": "\"Jackan var betydligt mindre än jag hade förväntat mig\" = era bastante más pequeña de lo esperado."
           },
           {
-            "text": "¿Qué mostraba la etiqueta?",
+            "text": "Vad visade etiketten?",
             "options": [
-              "La talla correcta",
-              "Una talla equivocada",
-              "Nada",
-              "Otro producto"
+              "Rätt storlek",
+              "En felaktig storlek",
+              "Ingenting",
+              "En annan produkt"
             ],
             "correct": 0,
             "explanation": "\"Trots att etiketten visade rätt storlek\" = aunque la etiqueta mostraba la talla correcta."
           },
           {
-            "text": "¿Qué hizo Sophie?",
+            "text": "Vad gjorde Sophie?",
             "options": [
-              "Contactó al servicio de atención al cliente",
-              "Tiró la chaqueta",
-              "Se quedó con ella",
-              "La regaló"
+              "Kontaktade kundtjänsten",
+              "Slängde jackan",
+              "Behöll den",
+              "Gav bort den"
             ],
             "correct": 0,
             "explanation": "\"Jag kontaktade kundtjänst\" = contacté con atención al cliente."
           },
           {
-            "text": "¿Cómo respondió el servicio al cliente?",
+            "text": "Hur svarade kundtjänsten?",
             "options": [
-              "Se disculpó y envió una etiqueta de devolución",
-              "No respondió",
-              "Le negó el cambio",
-              "Le pidió pagar más"
+              "Bad om ursäkt och skickade en returetikett",
+              "Svarade inte",
+              "Nekade bytet",
+              "Bad henne betala mer"
             ],
             "correct": 0,
             "explanation": "\"Bad om ursäkt och skickade en retursedel samma dag\" = se disculpó y envió una etiqueta de devolución el mismo día."
           },
           {
-            "text": "¿Qué pasó una semana después?",
+            "text": "Vad hände en vecka senare?",
             "options": [
-              "Recibió una chaqueta nueva que le quedaba perfecta",
-              "No recibió nada",
-              "Le devolvieron el dinero",
-              "Recibió la misma chaqueta"
+              "Hon fick en ny jacka som passade perfekt",
+              "Hon fick ingenting",
+              "Hon fick pengarna tillbaka",
+              "Hon fick samma jacka"
             ],
             "correct": 0,
             "explanation": "\"Fick jag en ny jacka som passade perfekt\" = recibí una nueva que quedaba perfecta."
           },
           {
-            "text": "¿Qué aprendió de esta experiencia?",
+            "text": "Vad lärde hon sig av detta?",
             "options": [
-              "Que a veces es difícil comprar ropa por internet",
-              "Que nunca hay que comprar online",
-              "Que la ropa siempre falla",
-              "Que hay que comprar dos tallas"
+              "Att det ibland är svårt att köpa kläder på nätet",
+              "Att man aldrig ska handla online",
+              "Att kläder alltid blir fel",
+              "Att man ska köpa två storlekar"
             ],
             "correct": 0,
             "explanation": "\"Det ibland är svårt att handla kläder på internet\" = a veces es difícil comprar ropa por internet."
@@ -11312,111 +11312,111 @@ const HORST_DATA = {
         "ttsScript": "En kväll när jag kom hem från jobbet mötte jag min äldre granne i trapphuset. Hon hade flera tunga matkassar och såg trött ut. Jag frågade om hon ville ha hjälp att bära upp dem, och hon tackade ja direkt. Medan vi gick uppför trapporna började vi prata. Hon berättade att hon nyligen hade opererat sitt knä och därför hade svårt att bära tunga saker. Hon sa också att hon brukade få hjälp av sin son, men att han var bortrest just den veckan. När vi kom fram till hennes lägenhet tackade hon mig flera gånger. Hon sa att små saker som att få hjälp med matkassarna kunde göra stor skillnad i vardagen.",
         "questions": [
           {
-            "text": "¿A quién encontró Sophie en la escalera?",
+            "text": "Vem träffade Sophie i trappan?",
             "options": [
-              "A su vecina mayor",
-              "A su jefe",
-              "A un cartero",
-              "A una amiga"
+              "Sin äldre granne",
+              "Sin chef",
+              "En brevbärare",
+              "En väninna"
             ],
             "correct": 0,
             "explanation": "\"Min äldre granne i trapphuset\" = mi vecina mayor en la escalera. \"Granne\" = vecino/a."
           },
           {
-            "text": "¿Qué llevaba la vecina?",
+            "text": "Vad bar grannen på?",
             "options": [
-              "Varias bolsas pesadas de comida",
-              "Una maleta",
-              "Un perro",
-              "Nada"
+              "Flera tunga matkassar",
+              "En resväska",
+              "En hund",
+              "Ingenting"
             ],
             "correct": 0,
             "explanation": "\"Flera tunga matkassar\" = varias bolsas pesadas de comida."
           },
           {
-            "text": "¿Cómo se veía la vecina?",
+            "text": "Hur såg grannen ut?",
             "options": [
-              "Cansada",
-              "Contenta",
-              "Enojada",
-              "Con prisa"
+              "Trött",
+              "Glad",
+              "Arg",
+              "Stressad"
             ],
             "correct": 0,
             "explanation": "\"Såg trött ut\" = se veía cansada. \"Trött\" = cansado/a."
           },
           {
-            "text": "¿Qué le ofreció Sophie?",
+            "text": "Vad erbjöd Sophie henne?",
             "options": [
-              "Ayudarla a subir las bolsas",
-              "Comprarle comida",
-              "Llamar a su hijo",
-              "Acompañarla al médico"
+              "Att hjälpa henne bära upp kassarna",
+              "Att köpa mat åt henne",
+              "Att ringa hennes son",
+              "Att följa med till läkaren"
             ],
             "correct": 0,
             "explanation": "\"Om hon ville ha hjälp att bära upp dem\" = si quería ayuda para subirlas."
           },
           {
-            "text": "¿Aceptó la ayuda la vecina?",
+            "text": "Tackade grannen ja till hjälpen?",
             "options": [
-              "Sí, de inmediato",
-              "No",
-              "Solo un poco",
-              "Lo pensó mucho"
+              "Ja, direkt",
+              "Nej",
+              "Bara lite",
+              "Hon funderade länge"
             ],
             "correct": 0,
             "explanation": "\"Hon tackade ja direkt\" = aceptó enseguida."
           },
           {
-            "text": "¿Qué le había pasado a la vecina?",
+            "text": "Vad hade hänt grannen?",
             "options": [
-              "La habían operado de la rodilla",
-              "Se había caído",
-              "Estaba resfriada",
-              "Se mudaba"
+              "Hon hade opererat knät",
+              "Hon hade ramlat",
+              "Hon var förkyld",
+              "Hon skulle flytta"
             ],
             "correct": 0,
             "explanation": "\"Hon nyligen hade opererat sitt knä\" = la habían operado de la rodilla hacía poco. \"Knä\" = rodilla."
           },
           {
-            "text": "¿Quién solía ayudarla normalmente?",
+            "text": "Vem brukade hjälpa henne annars?",
             "options": [
-              "Su hijo",
-              "Su hermana",
-              "Una amiga",
-              "Nadie"
+              "Hennes son",
+              "Hennes syster",
+              "En väninna",
+              "Ingen"
             ],
             "correct": 0,
             "explanation": "\"Hon brukade få hjälp av sin son\" = solía recibir ayuda de su hijo."
           },
           {
-            "text": "¿Por qué no la ayudó esa persona esta vez?",
+            "text": "Varför hjälpte den personen henne inte den här gången?",
             "options": [
-              "Estaba de viaje esa semana",
-              "Estaba enfermo",
-              "Se habían peleado",
-              "No tenía tiempo"
+              "Hen var bortrest den veckan",
+              "Hen var sjuk",
+              "De hade bråkat",
+              "Hen hade inte tid"
             ],
             "correct": 0,
             "explanation": "\"Han var bortrest just den veckan\" = él estaba de viaje justo esa semana."
           },
           {
-            "text": "¿Cómo reaccionó la vecina al llegar a su piso?",
+            "text": "Hur reagerade grannen när hon kom till sin lägenhet?",
             "options": [
-              "Le dio las gracias varias veces",
-              "No dijo nada",
-              "Le pagó",
-              "Se despidió rápido"
+              "Tackade flera gånger",
+              "Sa ingenting",
+              "Betalade henne",
+              "Tog snabbt farväl"
             ],
             "correct": 0,
             "explanation": "\"Tackade hon mig flera gånger\" = me dio las gracias varias veces."
           },
           {
-            "text": "¿Qué reflexión sacó Sophie?",
+            "text": "Vilken reflektion gjorde Sophie?",
             "options": [
-              "Las cosas pequeñas pueden marcar una gran diferencia",
-              "Ayudar es una pérdida de tiempo",
-              "Los vecinos molestan",
-              "Es mejor no hablar con nadie"
+              "Små saker kan göra stor skillnad",
+              "Att hjälpa är slöseri med tid",
+              "Att grannar är jobbiga",
+              "Att det är bättre att inte prata med någon"
             ],
             "correct": 0,
             "explanation": "\"Små saker... kunde göra stor skillnad i vardagen\" = pequeñas cosas pueden marcar una gran diferencia en el día a día."
@@ -11434,111 +11434,111 @@ const HORST_DATA = {
         "ttsScript": "För några månader sedan fick jag ett erbjudande om ett nytt jobb. Lönen var högre än på mitt nuvarande arbete, men samtidigt låg arbetsplatsen nästan en timmes resa hemifrån. Jag funderade länge på vad som var viktigast för mig. Å ena sidan skulle jag tjäna mer pengar och få nya erfarenheter. Å andra sidan skulle jag behöva pendla flera timmar varje vecka och få mindre tid över till familj och vänner. Jag pratade med min familj och skrev till och med ner fördelar och nackdelar på ett papper. Efter flera dagars funderande bestämde jag mig för att tacka nej till erbjudandet. Idag känner jag att jag tog rätt beslut. Ibland är högre lön inte det viktigaste.",
         "questions": [
           {
-            "text": "¿Qué recibió Sophie hace unos meses?",
+            "text": "Vad fick Sophie för några månader sedan?",
             "options": [
-              "Una oferta de un nuevo trabajo",
-              "Un premio",
-              "Una herencia",
-              "Una multa"
+              "Ett erbjudande om ett nytt jobb",
+              "Ett pris",
+              "Ett arv",
+              "En böter"
             ],
             "correct": 0,
             "explanation": "\"Ett erbjudande om ett nytt jobb\" = una oferta de un nuevo trabajo."
           },
           {
-            "text": "¿Cómo era el salario del nuevo trabajo?",
+            "text": "Hur var lönen på det nya jobbet?",
             "options": [
-              "Más alto que el actual",
-              "Más bajo",
-              "Igual",
-              "No se dice"
+              "Högre än den nuvarande",
+              "Lägre",
+              "Samma",
+              "Det sägs inte"
             ],
             "correct": 0,
             "explanation": "\"Lönen var högre än på mitt nuvarande arbete\" = el salario era más alto que el del trabajo actual."
           },
           {
-            "text": "¿Cuál era la desventaja del nuevo trabajo?",
+            "text": "Vad var nackdelen med det nya jobbet?",
             "options": [
-              "Quedaba a casi una hora de viaje",
-              "Era aburrido",
-              "El jefe era malo",
-              "No tenía vacaciones"
+              "Det låg nästan en timmes resa bort",
+              "Det var tråkigt",
+              "Chefen var dålig",
+              "Det fanns ingen semester"
             ],
             "correct": 0,
             "explanation": "\"Nästan en timmes resa hemifrån\" = a casi una hora de viaje desde casa."
           },
           {
-            "text": "¿Qué ventajas veía en aceptarlo?",
+            "text": "Vilka fördelar såg hon med att tacka ja?",
             "options": [
-              "Ganar más dinero y nuevas experiencias",
-              "Trabajar menos horas",
-              "Estar más cerca de casa",
-              "Menos responsabilidad"
+              "Tjäna mer pengar och få nya erfarenheter",
+              "Jobba färre timmar",
+              "Vara närmare hemmet",
+              "Mindre ansvar"
             ],
             "correct": 0,
             "explanation": "\"Tjäna mer pengar och få nya erfarenheter\" = ganar más dinero y obtener nuevas experiencias."
           },
           {
-            "text": "¿Qué desventaja personal implicaba?",
+            "text": "Vilken personlig nackdel innebar det?",
             "options": [
-              "Menos tiempo para familia y amigos",
-              "Menos sueldo",
-              "Cambiar de ciudad",
-              "Aprender otro idioma"
+              "Mindre tid för familj och vänner",
+              "Lägre lön",
+              "Att byta stad",
+              "Att lära sig ett annat språk"
             ],
             "correct": 0,
             "explanation": "\"Mindre tid över till familj och vänner\" = menos tiempo para la familia y los amigos."
           },
           {
-            "text": "¿Con quién habló para decidir?",
+            "text": "Vem pratade hon med för att bestämma sig?",
             "options": [
-              "Con su familia",
-              "Con su jefe actual",
-              "Con un abogado",
-              "Con nadie"
+              "Med sin familj",
+              "Med sin nuvarande chef",
+              "Med en advokat",
+              "Med ingen"
             ],
             "correct": 0,
             "explanation": "\"Jag pratade med min familj\" = hablé con mi familia."
           },
           {
-            "text": "¿Qué escribió en un papel?",
+            "text": "Vad skrev hon på ett papper?",
             "options": [
-              "Ventajas y desventajas",
-              "Una carta",
-              "Su presupuesto",
-              "Una lista de compras"
+              "Fördelar och nackdelar",
+              "Ett brev",
+              "Sin budget",
+              "En inköpslista"
             ],
             "correct": 0,
             "explanation": "\"Skrev... ner fördelar och nackdelar på ett papper\" = anoté ventajas y desventajas en un papel."
           },
           {
-            "text": "¿Qué decidió finalmente?",
+            "text": "Vad bestämde hon sig för till slut?",
             "options": [
-              "Rechazar la oferta",
-              "Aceptar la oferta",
-              "Pedir más tiempo",
-              "Mudarse"
+              "Att tacka nej till erbjudandet",
+              "Att tacka ja till erbjudandet",
+              "Att be om mer tid",
+              "Att flytta"
             ],
             "correct": 0,
             "explanation": "\"Bestämde jag mig för att tacka nej till erbjudandet\" = decidí rechazar la oferta. \"Tacka nej\" = rechazar."
           },
           {
-            "text": "¿Cómo se siente hoy con su decisión?",
+            "text": "Hur känner hon sig idag med sitt beslut?",
             "options": [
-              "Que tomó la decisión correcta",
-              "Arrepentida",
-              "Confundida",
-              "Triste"
+              "Att hon tog rätt beslut",
+              "Ångerfull",
+              "Förvirrad",
+              "Ledsen"
             ],
             "correct": 0,
             "explanation": "\"Idag känner jag att jag tog rätt beslut\" = hoy siento que tomé la decisión correcta."
           },
           {
-            "text": "¿Cuál es la conclusión de Sophie?",
+            "text": "Vad är Sophies slutsats?",
             "options": [
-              "A veces un sueldo más alto no es lo más importante",
-              "El dinero es lo único importante",
-              "Nunca hay que cambiar de trabajo",
-              "Siempre hay que aceptar más sueldo"
+              "Ibland är en högre lön inte det viktigaste",
+              "Pengar är det enda viktiga",
+              "Man ska aldrig byta jobb",
+              "Man ska alltid tacka ja till mer lön"
             ],
             "correct": 0,
             "explanation": "\"Ibland är högre lön inte det viktigaste\" = a veces un salario más alto no es lo más importante."
@@ -11558,111 +11558,111 @@ const HORST_DATA = {
         "ttsScript": "Idag vill jag fundera över hur tekniken påverkar våra liv. Om någon hade frågat mig för tio år sedan hade jag sagt att teknisk utveckling nästan alltid är något positivt. Idag är jag inte lika säker. Å ena sidan gör tekniken vår vardag enklare. Vi kan arbeta hemifrån, betala räkningar på några sekunder och hålla kontakten med människor över hela världen. Å andra sidan märker jag att många har svårare att koppla av. Det känns nästan som om vi alltid måste vara tillgängliga. Många läser jobbmejl sent på kvällen eller jämför sig med andra på sociala medier, vilket kan skapa stress. Personligen försöker jag använda tekniken medvetet. Jag vill att den ska vara ett verktyg som hjälper mig, inte något som styr min vardag.",
         "questions": [
           {
-            "text": "¿Sobre qué reflexiona Sophie en este audio?",
+            "text": "Vad reflekterar Sophie över i det här ljudet?",
             "options": [
-              "Cómo la tecnología afecta nuestras vidas",
-              "Cómo ahorrar dinero",
-              "El clima",
-              "La política"
+              "Hur tekniken påverkar våra liv",
+              "Hur man sparar pengar",
+              "Klimatet",
+              "Politiken"
             ],
             "correct": 0,
             "explanation": "\"Hur tekniken påverkar våra liv\" = cómo la tecnología afecta nuestras vidas."
           },
           {
-            "text": "¿Qué habría dicho hace diez años?",
+            "text": "Vad skulle hon ha sagt för tio år sedan?",
             "options": [
-              "Que el desarrollo técnico casi siempre es positivo",
-              "Que la tecnología es mala",
-              "Que no le interesaba",
-              "Que era peligrosa"
+              "Att den tekniska utvecklingen nästan alltid är positiv",
+              "Att tekniken är dålig",
+              "Att den inte intresserade henne",
+              "Att den var farlig"
             ],
             "correct": 0,
             "explanation": "\"Teknisk utveckling nästan alltid är något positivt\" = el desarrollo técnico casi siempre es algo positivo."
           },
           {
-            "text": "¿Cómo se siente hoy respecto a esa idea?",
+            "text": "Hur känner hon idag inför den tanken?",
             "options": [
-              "Ya no está tan segura",
-              "Más convencida que nunca",
-              "Totalmente en contra",
-              "Le da igual"
+              "Hon är inte längre lika säker",
+              "Mer övertygad än någonsin",
+              "Helt emot",
+              "Det spelar ingen roll för henne"
             ],
             "correct": 0,
             "explanation": "\"Idag är jag inte lika säker\" = hoy no estoy tan segura."
           },
           {
-            "text": "Según Sophie, ¿qué facilita la tecnología?",
+            "text": "Vad underlättar tekniken enligt Sophie?",
             "options": [
-              "Trabajar desde casa y pagar cuentas rápido",
-              "Dormir mejor",
-              "Cocinar",
-              "Hacer deporte"
+              "Att jobba hemifrån och betala räkningar snabbt",
+              "Att sova bättre",
+              "Att laga mat",
+              "Att träna"
             ],
             "correct": 0,
             "explanation": "\"Arbeta hemifrån, betala räkningar på några sekunder\" = trabajar desde casa y pagar cuentas en segundos."
           },
           {
-            "text": "¿Qué permite además la tecnología?",
+            "text": "Vad möjliggör tekniken dessutom?",
             "options": [
-              "Mantener contacto con gente de todo el mundo",
-              "Viajar gratis",
-              "Aprender sin estudiar",
-              "Comer mejor"
+              "Att hålla kontakt med människor i hela världen",
+              "Att resa gratis",
+              "Att lära sig utan att studera",
+              "Att äta bättre"
             ],
             "correct": 0,
             "explanation": "\"Hålla kontakten med människor över hela världen\" = mantener el contacto con gente de todo el mundo."
           },
           {
-            "text": "¿Qué desventaja menciona?",
+            "text": "Vilken nackdel nämner hon?",
             "options": [
-              "A muchos les cuesta más desconectar",
-              "Que es muy cara",
-              "Que es difícil de usar",
-              "Que se rompe rápido"
+              "Många har svårare att koppla bort",
+              "Att den är väldigt dyr",
+              "Att den är svår att använda",
+              "Att den går sönder snabbt"
             ],
             "correct": 0,
             "explanation": "\"Många har svårare att koppla av\" = a muchos les cuesta más relajarse/desconectar."
           },
           {
-            "text": "¿Qué sensación describe sobre la disponibilidad?",
+            "text": "Vilken känsla beskriver hon om tillgänglighet?",
             "options": [
-              "Que siempre debemos estar disponibles",
-              "Que nadie contesta",
-              "Que hay poca conexión",
-              "Que todos descansan"
+              "Att vi alltid måste vara tillgängliga",
+              "Att ingen svarar",
+              "Att det finns dålig uppkoppling",
+              "Att alla vilar"
             ],
             "correct": 0,
             "explanation": "\"Vi alltid måste vara tillgängliga\" = siempre tenemos que estar disponibles."
           },
           {
-            "text": "¿Qué puede generar estrés según ella?",
+            "text": "Vad kan skapa stress enligt henne?",
             "options": [
-              "Leer correos de noche y compararse en redes sociales",
-              "Ver televisión",
-              "Caminar",
-              "Leer libros"
+              "Att läsa mejl på natten och jämföra sig på sociala medier",
+              "Att titta på tv",
+              "Att promenera",
+              "Att läsa böcker"
             ],
             "correct": 0,
             "explanation": "\"Läser jobbmejl sent... eller jämför sig med andra på sociala medier\" = leer correos de trabajo tarde o compararse en redes."
           },
           {
-            "text": "¿Cómo intenta usar la tecnología Sophie?",
+            "text": "Hur försöker Sophie använda tekniken?",
             "options": [
-              "De forma consciente",
-              "Sin límites",
-              "No la usa",
-              "Solo en el trabajo"
+              "På ett medvetet sätt",
+              "Utan gränser",
+              "Hon använder den inte",
+              "Bara på jobbet"
             ],
             "correct": 0,
             "explanation": "\"Använda tekniken medvetet\" = usar la tecnología de forma consciente."
           },
           {
-            "text": "¿Qué quiere que sea la tecnología para ella?",
+            "text": "Vad vill hon att tekniken ska vara för henne?",
             "options": [
-              "Una herramienta que la ayude, no algo que la controle",
-              "Su principal pasatiempo",
-              "Una fuente de ingresos",
-              "Algo que evitar del todo"
+              "Ett verktyg som hjälper henne, inte något som styr henne",
+              "Hennes främsta fritidsintresse",
+              "En inkomstkälla",
+              "Något att undvika helt"
             ],
             "correct": 0,
             "explanation": "\"Ett verktyg som hjälper mig, inte något som styr min vardag\" = una herramienta que ayuda, no algo que gobierna su día a día."
@@ -11680,111 +11680,111 @@ const HORST_DATA = {
         "ttsScript": "Integration är ett ord som används väldigt ofta, men jag tror att människor kan mena olika saker när de pratar om det. En del tycker att integration handlar om att lära sig språket så snabbt som möjligt. Andra menar att det viktigaste är att få ett arbete eller att känna sig delaktig i samhället. Enligt min erfarenhet handlar integration om flera saker samtidigt. Språket är viktigt, eftersom det gör det lättare att studera, arbeta och skapa relationer. Samtidigt räcker det inte att bara kunna svenska. Man behöver också förstå hur samhället fungerar. Dessutom tror jag att integration är ett gemensamt ansvar. Den som flyttar behöver vara nyfiken, men samhället behöver också skapa möjligheter.",
         "questions": [
           {
-            "text": "¿Qué dice Sophie sobre la palabra \"integración\"?",
+            "text": "Vad säger Sophie om ordet «integration»?",
             "options": [
-              "Que la gente puede entender cosas distintas por ella",
-              "Que ya no se usa",
-              "Que es fácil de definir",
-              "Que es negativa"
+              "Att folk kan mena olika saker med det",
+              "Att det inte används längre",
+              "Att det är lätt att definiera",
+              "Att det är negativt"
             ],
             "correct": 0,
             "explanation": "\"Människor kan mena olika saker när de pratar om det\" = la gente puede querer decir cosas distintas."
           },
           {
-            "text": "Para algunos, ¿de qué trata la integración?",
+            "text": "För vissa, vad handlar integration om?",
             "options": [
-              "De aprender el idioma lo más rápido posible",
-              "De ganar dinero",
-              "De viajar",
-              "De hacer amigos suecos"
+              "Att lära sig språket så snabbt som möjligt",
+              "Att tjäna pengar",
+              "Att resa",
+              "Att skaffa svenska vänner"
             ],
             "correct": 0,
             "explanation": "\"Lära sig språket så snabbt som möjligt\" = aprender el idioma lo más rápido posible."
           },
           {
-            "text": "Para otros, ¿qué es lo más importante?",
+            "text": "För andra, vad är det viktigaste?",
             "options": [
-              "Tener trabajo y sentirse parte de la sociedad",
-              "Tener casa propia",
-              "Aprender a cocinar",
-              "Conocer el país"
+              "Att ha ett jobb och känna sig som en del av samhället",
+              "Att äga en bostad",
+              "Att lära sig laga mat",
+              "Att lära känna landet"
             ],
             "correct": 0,
             "explanation": "\"Få ett arbete eller att känna sig delaktig i samhället\" = conseguir un trabajo o sentirse partícipe de la sociedad."
           },
           {
-            "text": "Según su experiencia, la integración es...",
+            "text": "Enligt hennes erfarenhet är integration...",
             "options": [
-              "Varias cosas al mismo tiempo",
-              "Solo el idioma",
-              "Solo el trabajo",
-              "Algo imposible"
+              "Flera saker samtidigt",
+              "Bara språket",
+              "Bara jobbet",
+              "Något omöjligt"
             ],
             "correct": 0,
             "explanation": "\"Integration... handlar om flera saker samtidigt\" = trata de varias cosas a la vez."
           },
           {
-            "text": "¿Por qué es importante el idioma?",
+            "text": "Varför är språket viktigt?",
             "options": [
-              "Facilita estudiar, trabajar y crear relaciones",
-              "Es obligatorio por ley",
-              "Da dinero",
-              "Es divertido"
+              "Det underlättar att studera, jobba och skapa relationer",
+              "Det är obligatoriskt enligt lag",
+              "Det ger pengar",
+              "Det är roligt"
             ],
             "correct": 0,
             "explanation": "\"Det gör det lättare att studera, arbeta och skapa relationer\" = facilita estudiar, trabajar y crear relaciones."
           },
           {
-            "text": "¿Basta con saber sueco, según Sophie?",
+            "text": "Räcker det med att kunna svenska, enligt Sophie?",
             "options": [
-              "No, no es suficiente",
-              "Sí, es lo único",
-              "No opina",
-              "Solo para trabajar"
+              "Nej, det räcker inte",
+              "Ja, det är det enda",
+              "Hon har ingen åsikt",
+              "Bara för att jobba"
             ],
             "correct": 0,
             "explanation": "\"Det räcker inte att bara kunna svenska\" = no basta con solo saber sueco."
           },
           {
-            "text": "¿Qué más se necesita entender?",
+            "text": "Vad mer behöver man förstå?",
             "options": [
-              "Cómo funciona la sociedad",
-              "La historia antigua",
-              "La geografía",
-              "El clima"
+              "Hur samhället fungerar",
+              "Den gamla historien",
+              "Geografin",
+              "Klimatet"
             ],
             "correct": 0,
             "explanation": "\"Förstå hur samhället fungerar\" = entender cómo funciona la sociedad."
           },
           {
-            "text": "¿De quién es la responsabilidad de integrarse?",
+            "text": "Vems ansvar är det att integreras?",
             "options": [
-              "Es una responsabilidad compartida",
-              "Solo del recién llegado",
-              "Solo del gobierno",
-              "De nadie"
+              "Det är ett delat ansvar",
+              "Bara den nyanländas",
+              "Bara statens",
+              "Ingens"
             ],
             "correct": 0,
             "explanation": "\"Integration är ett gemensamt ansvar\" = la integración es una responsabilidad conjunta."
           },
           {
-            "text": "¿Qué debe hacer quien llega a un país nuevo?",
+            "text": "Vad bör den som kommer till ett nytt land göra?",
             "options": [
-              "Ser curioso y querer aprender",
-              "Esperar ayuda",
-              "Quedarse aislado",
-              "Cambiar de país"
+              "Vara nyfiken och vilja lära sig",
+              "Vänta på hjälp",
+              "Hålla sig isolerad",
+              "Byta land"
             ],
             "correct": 0,
             "explanation": "\"Den som flyttar behöver vara nyfiken\" = quien se muda necesita ser curioso."
           },
           {
-            "text": "¿Qué debe hacer la sociedad?",
+            "text": "Vad bör samhället göra?",
             "options": [
-              "Crear oportunidades para participar",
-              "No hacer nada",
-              "Poner más reglas",
-              "Cerrar fronteras"
+              "Skapa möjligheter att delta",
+              "Ingenting",
+              "Sätta fler regler",
+              "Stänga gränserna"
             ],
             "correct": 0,
             "explanation": "\"Samhället behöver också skapa möjligheter\" = la sociedad también debe crear oportunidades."
@@ -11802,111 +11802,111 @@ const HORST_DATA = {
         "ttsScript": "Jag har märkt att många människor är rädda för att misslyckas. De väntar tills allt känns perfekt innan de vågar börja med något nytt. Tidigare tänkte jag på samma sätt. Om jag inte trodde att jag skulle lyckas direkt, valde jag ibland att inte försöka alls. Men med tiden har jag förstått att de flesta utvecklas just genom sina misstag. När vi misslyckas får vi ofta veta vad vi behöver förbättra. Om allting alltid gick bra skulle vi kanske aldrig behöva tänka på hur vi kan bli bättre. Det betyder inte att det känns roligt att göra fel. Tvärtom kan det vara frustrerande. Trots det tror jag att misslyckanden ofta är en viktig del av lärandet.",
         "questions": [
           {
-            "text": "¿Qué ha notado Sophie en muchas personas?",
+            "text": "Vad har Sophie märkt hos många människor?",
             "options": [
-              "Que tienen miedo de fracasar",
-              "Que trabajan demasiado",
-              "Que no estudian",
-              "Que viajan mucho"
+              "Att de är rädda för att misslyckas",
+              "Att de jobbar för mycket",
+              "Att de inte studerar",
+              "Att de reser mycket"
             ],
             "correct": 0,
             "explanation": "\"Många människor är rädda för att misslyckas\" = mucha gente tiene miedo de fracasar."
           },
           {
-            "text": "¿Qué esperan esas personas antes de empezar algo nuevo?",
+            "text": "Vad väntar de personerna på innan de börjar något nytt?",
             "options": [
-              "Que todo se sienta perfecto",
-              "Tener dinero",
-              "Cumplir años",
-              "Recibir permiso"
+              "Att allt ska kännas perfekt",
+              "Att ha pengar",
+              "Att fylla år",
+              "Att få tillstånd"
             ],
             "correct": 0,
             "explanation": "\"Väntar tills allt känns perfekt\" = esperan hasta que todo se sienta perfecto."
           },
           {
-            "text": "¿Cómo pensaba Sophie antes?",
+            "text": "Hur tänkte Sophie förr?",
             "options": [
-              "Igual que ellos",
-              "Al revés",
-              "No le importaba",
-              "Con más valentía"
+              "Precis som de",
+              "Tvärtom",
+              "Hon brydde sig inte",
+              "Med mer mod"
             ],
             "correct": 0,
             "explanation": "\"Tidigare tänkte jag på samma sätt\" = antes yo pensaba igual."
           },
           {
-            "text": "¿Qué hacía a veces si no creía que lograría algo?",
+            "text": "Vad gjorde hon ibland om hon inte trodde att hon skulle klara något?",
             "options": [
-              "No lo intentaba en absoluto",
-              "Lo intentaba igual",
-              "Pedía ayuda",
-              "Lo dejaba para después"
+              "Försökte inte alls",
+              "Försökte ändå",
+              "Bad om hjälp",
+              "Sköt upp det"
             ],
             "correct": 0,
             "explanation": "\"Valde jag ibland att inte försöka alls\" = a veces elegía no intentarlo siquiera."
           },
           {
-            "text": "¿Qué entendió con el tiempo?",
+            "text": "Vad förstod hon med tiden?",
             "options": [
-              "Que la mayoría se desarrolla gracias a sus errores",
-              "Que es mejor no arriesgar",
-              "Que el éxito es suerte",
-              "Que hay que ser perfecto"
+              "Att de flesta utvecklas tack vare sina misstag",
+              "Att det är bättre att inte ta risker",
+              "Att framgång är tur",
+              "Att man måste vara perfekt"
             ],
             "correct": 0,
             "explanation": "\"De flesta utvecklas just genom sina misstag\" = la mayoría se desarrolla precisamente a través de sus errores."
           },
           {
-            "text": "¿Qué nos da saber cuando fracasamos?",
+            "text": "Vad ger det oss att veta när vi misslyckas?",
             "options": [
-              "Saber qué necesitamos mejorar",
-              "Dinero",
-              "Vacaciones",
-              "Fama"
+              "Att veta vad vi behöver förbättra",
+              "Pengar",
+              "Semester",
+              "Berömmelse"
             ],
             "correct": 0,
             "explanation": "\"Får vi ofta veta vad vi behöver förbättra\" = a menudo descubrimos qué necesitamos mejorar."
           },
           {
-            "text": "Si todo saliera siempre bien, ¿qué pasaría?",
+            "text": "Om allt alltid gick bra, vad skulle hända?",
             "options": [
-              "Quizá nunca pensaríamos en cómo mejorar",
-              "Seríamos más felices",
-              "Ganaríamos más",
-              "Aprenderíamos más rápido"
+              "Vi skulle kanske aldrig tänka på hur vi kan bli bättre",
+              "Vi skulle bli lyckligare",
+              "Vi skulle tjäna mer",
+              "Vi skulle lära oss snabbare"
             ],
             "correct": 0,
             "explanation": "\"Skulle vi kanske aldrig behöva tänka på hur vi kan bli bättre\" = quizá nunca pensaríamos en cómo mejorar."
           },
           {
-            "text": "¿Dice Sophie que equivocarse es agradable?",
+            "text": "Säger Sophie att det är trevligt att misslyckas?",
             "options": [
-              "No, puede ser frustrante",
-              "Sí, es divertido",
-              "Le es indiferente",
-              "Es siempre fácil"
+              "Nej, det kan vara frustrerande",
+              "Ja, det är roligt",
+              "Det spelar ingen roll för henne",
+              "Det är alltid lätt"
             ],
             "correct": 0,
             "explanation": "\"Tvärtom kan det vara frustrerande\" = al contrario, puede ser frustrante."
           },
           {
-            "text": "¿Qué son los fracasos, según Sophie?",
+            "text": "Vad är misslyckanden enligt Sophie?",
             "options": [
-              "Una parte importante del aprendizaje",
-              "Algo que evitar siempre",
-              "Una pérdida de tiempo",
-              "Señal de debilidad"
+              "En viktig del av lärandet",
+              "Något man alltid ska undvika",
+              "Slöseri med tid",
+              "Ett tecken på svaghet"
             ],
             "correct": 0,
             "explanation": "\"Misslyckanden ofta är en viktig del av lärandet\" = los fracasos suelen ser una parte importante del aprendizaje."
           },
           {
-            "text": "¿Cuál es el mensaje central del audio?",
+            "text": "Vad är ljudets centrala budskap?",
             "options": [
-              "Hay que atreverse a fracasar para crecer",
-              "Nunca hay que fallar",
-              "El éxito es lo único que importa",
-              "Es mejor no intentar cosas nuevas"
+              "Man måste våga misslyckas för att växa",
+              "Man ska aldrig misslyckas",
+              "Framgång är det enda som räknas",
+              "Det är bättre att inte prova nya saker"
             ],
             "correct": 0,
             "explanation": "El título \"Att våga misslyckas\" y el contenido animan a atreverse a fallar para poder desarrollarse."
@@ -11924,111 +11924,111 @@ const HORST_DATA = {
         "ttsScript": "I dagens samhälle känns det ibland som om allting ska gå snabbare. Vi vill få svar direkt, leveranser samma dag och resultat så fort som möjligt. Samtidigt undrar jag om den här utvecklingen verkligen gör oss lyckligare. När allting går fort finns det en risk att vi aldrig känner oss riktigt nöjda. Så snart vi har uppnått ett mål börjar vi tänka på nästa. Jag tror att det ibland är viktigt att sakta ner och uppskatta det man redan har. Det kan handla om något så enkelt som att ta en promenad utan att titta på mobilen eller att äta middag utan att känna sig stressad. Naturligtvis behöver vi ibland arbeta effektivt, men jag tror inte att ett högt tempo alltid leder till ett bättre liv.",
         "questions": [
           {
-            "text": "¿Cómo siente Sophie la sociedad actual?",
+            "text": "Hur upplever Sophie dagens samhälle?",
             "options": [
-              "Como si todo tuviera que ir más rápido",
-              "Muy tranquila",
-              "Sin cambios",
-              "Aburrida"
+              "Som om allt måste gå snabbare",
+              "Väldigt lugnt",
+              "Utan förändringar",
+              "Tråkigt"
             ],
             "correct": 0,
             "explanation": "\"Allting ska gå snabbare\" = todo debe ir más rápido."
           },
           {
-            "text": "¿Qué queremos hoy, según ella?",
+            "text": "Vad vill vi ha idag, enligt henne?",
             "options": [
-              "Respuestas y entregas inmediatas",
-              "Más vacaciones",
-              "Menos trabajo",
-              "Más silencio"
+              "Svar och leveranser direkt",
+              "Mer semester",
+              "Mindre jobb",
+              "Mer tystnad"
             ],
             "correct": 0,
             "explanation": "\"Svar direkt, leveranser samma dag och resultat så fort som möjligt\" = respuestas inmediatas, entregas el mismo día y resultados rápidos."
           },
           {
-            "text": "¿Qué se pregunta Sophie?",
+            "text": "Vad frågar sig Sophie?",
             "options": [
-              "Si ese ritmo realmente nos hace más felices",
-              "Si es legal",
-              "Cuánto cuesta",
-              "Quién lo inventó"
+              "Om den takten verkligen gör oss lyckligare",
+              "Om det är lagligt",
+              "Vad det kostar",
+              "Vem som uppfann det"
             ],
             "correct": 0,
             "explanation": "\"Om den här utvecklingen verkligen gör oss lyckligare\" = si este desarrollo realmente nos hace más felices."
           },
           {
-            "text": "¿Qué riesgo hay cuando todo va rápido?",
+            "text": "Vilken risk finns när allt går snabbt?",
             "options": [
-              "Nunca sentirnos realmente satisfechos",
-              "Gastar más dinero",
-              "Dormir demasiado",
-              "Perder el trabajo"
+              "Att aldrig känna oss riktigt nöjda",
+              "Att spendera mer pengar",
+              "Att sova för mycket",
+              "Att förlora jobbet"
             ],
             "correct": 0,
             "explanation": "\"Att vi aldrig känner oss riktigt nöjda\" = que nunca nos sintamos realmente satisfechos."
           },
           {
-            "text": "¿Qué pasa apenas alcanzamos una meta?",
+            "text": "Vad händer så fort vi når ett mål?",
             "options": [
-              "Empezamos a pensar en la siguiente",
-              "Descansamos",
-              "Nos rendimos",
-              "Celebramos mucho"
+              "Vi börjar tänka på nästa",
+              "Vi vilar",
+              "Vi ger upp",
+              "Vi firar mycket"
             ],
             "correct": 0,
             "explanation": "\"Börjar vi tänka på nästa\" = empezamos a pensar en la siguiente."
           },
           {
-            "text": "¿Qué cree que a veces es importante?",
+            "text": "Vad tycker hon ibland är viktigt?",
             "options": [
-              "Frenar y apreciar lo que ya se tiene",
-              "Trabajar más",
-              "Comprar más",
-              "Competir más"
+              "Att sakta ner och uppskatta det man redan har",
+              "Att jobba mer",
+              "Att köpa mer",
+              "Att tävla mer"
             ],
             "correct": 0,
             "explanation": "\"Sakta ner och uppskatta det man redan har\" = frenar y apreciar lo que ya se tiene."
           },
           {
-            "text": "¿Qué ejemplo sencillo da?",
+            "text": "Vilket enkelt exempel ger hon?",
             "options": [
-              "Pasear sin mirar el móvil",
-              "Ir de compras",
-              "Ver la tele",
-              "Dormir una siesta"
+              "Att promenera utan att titta på mobilen",
+              "Att gå och handla",
+              "Att titta på tv",
+              "Att ta en tupplur"
             ],
             "correct": 0,
             "explanation": "\"Ta en promenad utan att titta på mobilen\" = dar un paseo sin mirar el móvil."
           },
           {
-            "text": "¿Qué otro ejemplo menciona?",
+            "text": "Vilket annat exempel nämner hon?",
             "options": [
-              "Cenar sin sentirse estresado",
-              "Correr por la mañana",
-              "Trabajar de noche",
-              "Estudiar más"
+              "Att äta middag utan att känna sig stressad",
+              "Att springa på morgonen",
+              "Att jobba på natten",
+              "Att studera mer"
             ],
             "correct": 0,
             "explanation": "\"Äta middag utan att känna sig stressad\" = cenar sin sentirse estresado."
           },
           {
-            "text": "¿Reconoce Sophie que a veces hay que ser eficiente?",
+            "text": "Erkänner Sophie att man ibland måste vara effektiv?",
             "options": [
-              "Sí, a veces hay que trabajar de forma eficiente",
-              "No, nunca",
-              "Solo los lunes",
-              "Solo en el trabajo"
+              "Ja, ibland måste man jobba effektivt",
+              "Nej, aldrig",
+              "Bara på måndagar",
+              "Bara på jobbet"
             ],
             "correct": 0,
             "explanation": "\"Ibland behöver vi arbeta effektivt\" = a veces necesitamos trabajar de forma eficiente."
           },
           {
-            "text": "¿Cuál es su conclusión?",
+            "text": "Vad är hennes slutsats?",
             "options": [
-              "Un ritmo alto no siempre lleva a una vida mejor",
-              "La prisa siempre es buena",
-              "Hay que ir siempre despacio",
-              "La eficiencia no sirve"
+              "En hög takt leder inte alltid till ett bättre liv",
+              "Att ha bråttom är alltid bra",
+              "Man ska alltid gå långsamt",
+              "Effektivitet är onödigt"
             ],
             "correct": 0,
             "explanation": "\"Ett högt tempo alltid leder till ett bättre liv\" (negado) = un ritmo alto no siempre lleva a una vida mejor."
@@ -12046,111 +12046,111 @@ const HORST_DATA = {
         "ttsScript": "För några år sedan trodde många att utbildning var något man gjorde när man var ung. Idag ser arbetsmarknaden helt annorlunda ut. Tekniken utvecklas snabbt och många yrken förändras eller försvinner. Samtidigt skapas nya arbeten som kräver andra kunskaper än tidigare. Därför tror jag att vi behöver fortsätta lära oss genom hela livet. Det behöver inte alltid innebära att man studerar på universitet. Man kan gå kortare kurser, läsa böcker eller utveckla nya färdigheter genom sitt arbete. Personligen tycker jag att det är inspirerande att lära mig nya saker. Varje gång jag förstår något som tidigare kändes svårt får jag större självförtroende.",
         "questions": [
           {
-            "text": "¿Qué se creía hace unos años sobre la educación?",
+            "text": "Vad trodde man för några år sedan om utbildning?",
             "options": [
-              "Que era algo que se hacía de joven",
-              "Que no servía",
-              "Que era solo para ricos",
-              "Que era obligatoria siempre"
+              "Att det var något man gjorde när man var ung",
+              "Att den inte var till nytta",
+              "Att den bara var för rika",
+              "Att den alltid var obligatorisk"
             ],
             "correct": 0,
             "explanation": "\"Utbildning var något man gjorde när man var ung\" = la educación era algo que se hacía de joven."
           },
           {
-            "text": "¿Cómo es el mercado laboral hoy?",
+            "text": "Hur är arbetsmarknaden idag?",
             "options": [
-              "Muy diferente",
-              "Igual que antes",
-              "Más pequeño",
-              "Sin cambios"
+              "Väldigt annorlunda",
+              "Likadan som förr",
+              "Mindre",
+              "Utan förändringar"
             ],
             "correct": 0,
             "explanation": "\"Arbetsmarknaden ser helt annorlunda ut\" = el mercado laboral se ve totalmente distinto."
           },
           {
-            "text": "¿Qué pasa con muchos oficios?",
+            "text": "Vad händer med många yrken?",
             "options": [
-              "Cambian o desaparecen",
-              "Se quedan igual",
-              "Ganan más",
-              "Se prohíben"
+              "De förändras eller försvinner",
+              "De förblir likadana",
+              "De tjänar mer",
+              "De förbjuds"
             ],
             "correct": 0,
             "explanation": "\"Många yrken förändras eller försvinner\" = muchos oficios cambian o desaparecen."
           },
           {
-            "text": "¿Qué ocurre al mismo tiempo?",
+            "text": "Vad sker samtidigt?",
             "options": [
-              "Surgen nuevos trabajos con otras exigencias",
-              "Todos se jubilan",
-              "Bajan los sueldos",
-              "Se cierran las empresas"
+              "Nya jobb uppstår med andra krav",
+              "Alla går i pension",
+              "Lönerna sjunker",
+              "Företagen stänger"
             ],
             "correct": 0,
             "explanation": "\"Skapas nya arbeten som kräver andra kunskaper\" = se crean nuevos empleos que exigen otros conocimientos."
           },
           {
-            "text": "¿Qué cree Sophie que necesitamos hacer?",
+            "text": "Vad tror Sophie att vi behöver göra?",
             "options": [
-              "Seguir aprendiendo toda la vida",
-              "Dejar de estudiar de adultos",
-              "Trabajar menos",
-              "Cambiar de país"
+              "Fortsätta lära oss hela livet",
+              "Sluta studera som vuxna",
+              "Jobba mindre",
+              "Byta land"
             ],
             "correct": 0,
             "explanation": "\"Vi behöver fortsätta lära oss genom hela livet\" = necesitamos seguir aprendiendo toda la vida."
           },
           {
-            "text": "¿Aprender significa siempre ir a la universidad?",
+            "text": "Betyder att lära sig alltid att gå på universitet?",
             "options": [
-              "No, no siempre",
-              "Sí, siempre",
-              "Solo de joven",
-              "Nunca"
+              "Nej, inte alltid",
+              "Ja, alltid",
+              "Bara som ung",
+              "Aldrig"
             ],
             "correct": 0,
             "explanation": "\"Det behöver inte alltid innebära att man studerar på universitet\" = no siempre implica estudiar en la universidad."
           },
           {
-            "text": "¿Qué alternativas menciona?",
+            "text": "Vilka alternativ nämner hon?",
             "options": [
-              "Cursos cortos, leer libros o desarrollar destrezas en el trabajo",
-              "Solo ver videos",
-              "Solo viajar",
-              "Solo escuchar radio"
+              "Korta kurser, läsa böcker eller utveckla färdigheter på jobbet",
+              "Bara titta på videor",
+              "Bara resa",
+              "Bara lyssna på radio"
             ],
             "correct": 0,
             "explanation": "\"Gå kortare kurser, läsa böcker eller utveckla nya färdigheter genom sitt arbete\" = cursos cortos, leer libros o desarrollar habilidades en el trabajo."
           },
           {
-            "text": "¿Cómo le resulta a Sophie aprender cosas nuevas?",
+            "text": "Hur känns det för Sophie att lära sig nya saker?",
             "options": [
-              "Inspirador",
-              "Aburrido",
-              "Innecesario",
-              "Estresante"
+              "Inspirerande",
+              "Tråkigt",
+              "Onödigt",
+              "Stressande"
             ],
             "correct": 0,
             "explanation": "\"Det är inspirerande att lära mig nya saker\" = es inspirador aprender cosas nuevas."
           },
           {
-            "text": "¿Qué obtiene al entender algo que antes le costaba?",
+            "text": "Vad får hon när hon förstår något som förr var svårt?",
             "options": [
-              "Más confianza en sí misma",
-              "Más dinero",
-              "Más tiempo libre",
-              "Un diploma"
+              "Mer självförtroende",
+              "Mer pengar",
+              "Mer fritid",
+              "Ett diplom"
             ],
             "correct": 0,
             "explanation": "\"Får jag större självförtroende\" = obtengo más confianza en mí misma."
           },
           {
-            "text": "¿Cuál es el tema central del audio?",
+            "text": "Vad är ljudets centrala tema?",
             "options": [
-              "El aprendizaje a lo largo de toda la vida",
-              "La jubilación",
-              "Los viajes",
-              "El ahorro"
+              "Livslångt lärande",
+              "Pensionen",
+              "Resor",
+              "Sparande"
             ],
             "correct": 0,
             "explanation": "El título \"Livslångt lärande\" significa \"aprendizaje permanente / de por vida\"."
@@ -12168,111 +12168,111 @@ const HORST_DATA = {
         "ttsScript": "När människor pratar om framgång handlar samtalet ofta om pengar, karriär eller status. Men jag är inte säker på att det räcker för att känna sig lycklig. Visst är ekonomi viktig. Den ger oss trygghet och möjlighet att göra många saker. Samtidigt har jag träffat människor som tjänar mycket pengar men ändå känner sig ensamma eller stressade. För mig handlar ett rikt liv om balans. Jag vill ha ett arbete som känns meningsfullt, tid för människor jag tycker om och möjlighet att utvecklas. Dessutom tror jag att uppskattning inte alltid kommer från stora händelser. Ibland kan de viktigaste stunderna vara de enklaste, som ett bra samtal eller en promenad i naturen. Ett rikt liv mäts inte i hur mycket vi äger, utan i hur vi väljer att leva.",
         "questions": [
           {
-            "text": "¿De qué suele tratar la conversación sobre el éxito?",
+            "text": "Vad brukar samtalet om framgång handla om?",
             "options": [
-              "De dinero, carrera o estatus",
-              "De salud",
-              "De viajes",
-              "De familia"
+              "Om pengar, karriär eller status",
+              "Om hälsa",
+              "Om resor",
+              "Om familj"
             ],
             "correct": 0,
             "explanation": "\"Pengar, karriär eller status\" = dinero, carrera o estatus."
           },
           {
-            "text": "¿Está Sophie segura de que eso basta para ser feliz?",
+            "text": "Är Sophie säker på att det räcker för att bli lycklig?",
             "options": [
-              "No está segura",
-              "Sí, está segura",
-              "Cree que sí siempre",
-              "No opina"
+              "Hon är inte säker",
+              "Ja, hon är säker",
+              "Hon tror alltid det",
+              "Hon har ingen åsikt"
             ],
             "correct": 0,
             "explanation": "\"Jag är inte säker på att det räcker för att känna sig lycklig\" = no estoy segura de que baste para sentirse feliz."
           },
           {
-            "text": "¿Reconoce que la economía es importante?",
+            "text": "Erkänner hon att ekonomin är viktig?",
             "options": [
-              "Sí, da seguridad y posibilidades",
-              "No, no importa",
-              "Solo para viajar",
-              "Solo para los jóvenes"
+              "Ja, den ger trygghet och möjligheter",
+              "Nej, den spelar ingen roll",
+              "Bara för att resa",
+              "Bara för unga"
             ],
             "correct": 0,
             "explanation": "\"Ekonomi... ger oss trygghet och möjlighet att göra många saker\" = la economía da seguridad y posibilidades."
           },
           {
-            "text": "¿A qué tipo de personas ha conocido?",
+            "text": "Vilken typ av människor har hon träffat?",
             "options": [
-              "Gente con mucho dinero pero sola o estresada",
-              "Gente pobre y feliz siempre",
-              "Gente sin trabajo",
-              "Gente famosa"
+              "Folk med mycket pengar men ensamma eller stressade",
+              "Folk som är fattiga och alltid lyckliga",
+              "Folk utan jobb",
+              "Kända personer"
             ],
             "correct": 0,
             "explanation": "\"Tjänar mycket pengar men ändå känner sig ensamma eller stressade\" = ganan mucho pero se sienten solos o estresados."
           },
           {
-            "text": "Para Sophie, ¿de qué trata una vida rica?",
+            "text": "För Sophie, vad handlar ett rikt liv om?",
             "options": [
-              "Del equilibrio",
-              "Del dinero",
-              "De la fama",
-              "Del poder"
+              "Om balans",
+              "Om pengar",
+              "Om berömmelse",
+              "Om makt"
             ],
             "correct": 0,
             "explanation": "\"Ett rikt liv om balans\" = una vida rica trata del equilibrio."
           },
           {
-            "text": "¿Qué tipo de trabajo quiere?",
+            "text": "Vilken typ av jobb vill hon ha?",
             "options": [
-              "Uno que se sienta significativo",
-              "Uno muy bien pagado",
-              "Uno sin esfuerzo",
-              "Uno lejano"
+              "Ett som känns meningsfullt",
+              "Ett väldigt välbetalt",
+              "Ett utan ansträngning",
+              "Ett långt bort"
             ],
             "correct": 0,
             "explanation": "\"Ett arbete som känns meningsfullt\" = un trabajo que se sienta significativo."
           },
           {
-            "text": "¿Qué más quiere en su vida?",
+            "text": "Vad mer vill hon ha i sitt liv?",
             "options": [
-              "Tiempo para las personas que quiere y poder desarrollarse",
-              "Un coche nuevo",
-              "Una casa grande",
-              "Más estatus"
+              "Tid för de människor hon älskar och att kunna utvecklas",
+              "En ny bil",
+              "Ett stort hus",
+              "Mer status"
             ],
             "correct": 0,
             "explanation": "\"Tid för människor jag tycker om och möjlighet att utvecklas\" = tiempo para las personas que quiere y posibilidad de desarrollarse."
           },
           {
-            "text": "¿De dónde viene la apreciación, según ella?",
+            "text": "Varifrån kommer uppskattningen, enligt henne?",
             "options": [
-              "No siempre de grandes acontecimientos",
-              "Solo de logros grandes",
-              "Solo del dinero",
-              "De la suerte"
+              "Inte alltid från stora händelser",
+              "Bara från stora prestationer",
+              "Bara från pengar",
+              "Från tur"
             ],
             "correct": 0,
             "explanation": "\"Uppskattning inte alltid kommer från stora händelser\" = la apreciación no siempre viene de grandes eventos."
           },
           {
-            "text": "¿Qué ejemplos de momentos importantes da?",
+            "text": "Vilka exempel på viktiga stunder ger hon?",
             "options": [
-              "Una buena conversación o un paseo por la naturaleza",
-              "Ganar la lotería",
-              "Comprar algo caro",
-              "Un ascenso"
+              "Ett bra samtal eller en promenad i naturen",
+              "Att vinna på lotto",
+              "Att köpa något dyrt",
+              "En befordran"
             ],
             "correct": 0,
             "explanation": "\"Ett bra samtal eller en promenad i naturen\" = una buena conversación o un paseo por la naturaleza."
           },
           {
-            "text": "¿Cómo se mide una vida rica, según Sophie?",
+            "text": "Hur mäts ett rikt liv, enligt Sophie?",
             "options": [
-              "Por cómo elegimos vivir, no por lo que poseemos",
-              "Por cuánto dinero tenemos",
-              "Por el tamaño de la casa",
-              "Por el trabajo"
+              "Efter hur vi väljer att leva, inte efter vad vi äger",
+              "Efter hur mycket pengar vi har",
+              "Efter husets storlek",
+              "Efter jobbet"
             ],
             "correct": 0,
             "explanation": "\"Ett rikt liv mäts inte i hur mycket vi äger, utan i hur vi väljer att leva\" = no se mide por lo que poseemos, sino por cómo elegimos vivir."
@@ -12598,29 +12598,31 @@ const LEVEL_TEST = {
       "nivel": "C",
       "skill": "hor",
       "type": "listen",
-      "audioKey": "b01",
+      "audioKey": "c01",
       "question": "En el audio, ¿qué fue lo primero que hizo Sophie al llegar a Suecia?",
       "options": [
-        "Registrarse en Skatteverket",
-        "Buscar trabajo",
-        "Comprar una casa"
+        "För att förbereda sina lektioner",
+        "För att hon missade bussen",
+        "För att äta frukost"
       ],
       "correct": 0,
-      "explanation": "«Det första jag gjorde var att registrera mig hos Skatteverket» = lo primero fue registrarme en Skatteverket (la agencia tributaria)."
+      "explanation": "«för att förbereda mina lektioner» = para preparar sus clases.",
+      "text": "Enligt ljudet, varför kom Sophie tidigare än vanligt till jobbet?"
     },
     {
       "nivel": "C",
       "skill": "hor",
       "type": "listen",
-      "audioKey": "b03",
+      "audioKey": "c02",
       "question": "Según el audio, ¿cómo practicaba sueco en casa?",
       "options": [
-        "Viendo TV con subtítulos",
-        "Leyendo el periódico",
-        "Escuchando la radio"
+        "Vårdcentralen",
+        "Apoteket",
+        "Sin chef"
       ],
       "correct": 0,
-      "explanation": "«titta på svenska tv-program med undertexter» = ver programas suecos con subtítulos."
+      "explanation": "«Jag ringde vårdcentralen» = llamé al centro de salud.",
+      "text": "Enligt ljudet, vem ringde Sophie när hon blev sjuk?"
     },
     {
       "nivel": "C",
@@ -12714,29 +12716,31 @@ const LEVEL_TEST = {
       "nivel": "D",
       "skill": "hor",
       "type": "listen",
-      "audioKey": "b05",
+      "audioKey": "d01",
       "question": "En el audio, ¿a qué número se llama para consejo médico en Suecia?",
       "options": [
-        "1177",
-        "112",
-        "90000"
+        "Hur tekniken påverkar våra liv",
+        "Hur man sparar pengar",
+        "Klimatet"
       ],
       "correct": 0,
-      "explanation": "«Man kan också ringa 1177 — det är sjukvårdsrådgivningen» = también puedes llamar al 1177, que es la línea de consejo sanitario."
+      "explanation": "«Hur tekniken påverkar våra liv» = cómo la tecnología afecta nuestras vidas.",
+      "text": "Vad reflekterar Sophie över i ljudet?"
     },
     {
       "nivel": "D",
       "skill": "hor",
       "type": "listen",
-      "audioKey": "b06",
+      "audioKey": "d02",
       "question": "Según el audio, ¿qué se come en Midsommar?",
       "options": [
-        "Arenque y fresas",
-        "Albóndigas y puré",
-        "Pizza"
+        "Integration",
+        "Ekonomi",
+        "Resor"
       ],
       "correct": 0,
-      "explanation": "«man dansar runt en majstång och äter sill och jordgubbar» = se baila alrededor del palo de mayo y se come arenque y fresas."
+      "explanation": "«integration» = integración; reflexiona sobre qué significa integrarse.",
+      "text": "Vad handlar Sophies resonemang om i ljudet?"
     },
     {
       "nivel": "D",
