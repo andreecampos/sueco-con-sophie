@@ -337,6 +337,31 @@ Deno.serve(async (req) => {
         return new Response(JSON.stringify({ url: portalSession.url }), { headers: corsHeaders })
       }
 
+      // Progreso completo de un alumno (solo lectura). El admin ve el MISMO
+      // estado que el alumno; se calcula en el cliente reutilizando la lógica.
+      case 'student_report': {
+        const { id } = data
+        if (!id) return new Response(JSON.stringify({ error: 'No id' }), { status: 400, headers: corsHeaders })
+        const [stu, up, exam, vocab, tala, medb, nivel] = await Promise.all([
+          sb.from('students').select('*').eq('id', id).single(),
+          sb.from('user_progress').select('*').eq('user_id', id),
+          sb.from('exam_progress').select('*').eq('user_id', id),
+          sb.from('vocabulary_progress').select('*').eq('user_id', id),
+          sb.from('tala_progress').select('*').eq('user_id', id),
+          sb.from('medborgarskap_progress').select('*').eq('user_id', id),
+          sb.from('nivel_resultados').select('*').eq('student_id', id).order('created_at', { ascending: false }).limit(5),
+        ])
+        return new Response(JSON.stringify({
+          student: stu.data || null,
+          user_progress: up.data || [],
+          exam_progress: exam.data || [],
+          vocabulary_progress: vocab.data || [],
+          tala_progress: tala.data || [],
+          medborgarskap_progress: medb.data || [],
+          nivel_resultados: nivel.data || [],
+        }), { headers: corsHeaders })
+      }
+
       default:
         return new Response(JSON.stringify({ error: 'Unknown action' }), {
           status: 400, headers: corsHeaders

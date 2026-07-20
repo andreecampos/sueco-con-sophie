@@ -2062,6 +2062,19 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════
+     MODAL: Progreso del alumno (vista de admin, solo lectura)
+════════════════════════════════════════════════════════════ -->
+<div id="sp-modal" class="hidden fixed inset-0 z-[95] flex items-start justify-center p-3 sm:p-6 overflow-y-auto" style="background:rgba(15,23,42,0.6); backdrop-filter:blur(2px);" onclick="if(event.target===this)closeStudentProgress()">
+  <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl my-4" style="animation:fadeIn .18s ease;">
+    <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100 sticky top-0 bg-white rounded-t-3xl">
+      <div class="font-black text-gray-800" id="sp-title">Progreso del alumno</div>
+      <button onclick="closeStudentProgress()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 flex items-center justify-center" aria-label="Cerrar">✕</button>
+    </div>
+    <div id="sp-body" class="px-5 py-4"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
      MODAL: Guía de bienvenida (onboarding por pasos)
 ════════════════════════════════════════════════════════════ -->
 <div id="onboarding-modal" class="hidden fixed inset-0 z-[92] flex items-center justify-center p-4" style="background:rgba(4,32,62,0.78); backdrop-filter:blur(3px);">

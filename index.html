@@ -2062,6 +2062,19 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════
+     MODAL: Progreso del alumno (vista de admin, solo lectura)
+════════════════════════════════════════════════════════════ -->
+<div id="sp-modal" class="hidden fixed inset-0 z-[95] flex items-start justify-center p-3 sm:p-6 overflow-y-auto" style="background:rgba(15,23,42,0.6); backdrop-filter:blur(2px);" onclick="if(event.target===this)closeStudentProgress()">
+  <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl my-4" style="animation:fadeIn .18s ease;">
+    <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100 sticky top-0 bg-white rounded-t-3xl">
+      <div class="font-black text-gray-800" id="sp-title">Progreso del alumno</div>
+      <button onclick="closeStudentProgress()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 flex items-center justify-center" aria-label="Cerrar">✕</button>
+    </div>
+    <div id="sp-body" class="px-5 py-4"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
      MODAL: Guía de bienvenida (onboarding por pasos)
 ════════════════════════════════════════════════════════════ -->
 <div id="onboarding-modal" class="hidden fixed inset-0 z-[92] flex items-center justify-center p-4" style="background:rgba(4,32,62,0.78); backdrop-filter:blur(3px);">
@@ -21417,6 +21430,235 @@ async function deleteStudent(id) {
   renderStudents();
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   PROGRESO DEL ALUMNO (vista admin) — REUTILIZA la misma lógica y datos
+   que ve el estudiante. NO crea cálculos nuevos ni tablas nuevas.
+   Técnica: "swap" temporal de los globales de progreso por los del
+   alumno consultado (vía edge function student_report, service key),
+   se computa con las funciones existentes y se restauran los globales.
+   ═══════════════════════════════════════════════════════════════════ */
+let _spOpen = false;
+function closeStudentProgress() {
+  _spOpen = false;
+  const m = document.getElementById('sp-modal');
+  if (m) m.classList.add('hidden');
+}
+function _spEsc(s) { return (typeof escHtml === 'function') ? escHtml(s) : String(s == null ? '' : s); }
+function _spTs(r) { return r ? (Date.parse(r.updated_at || r.completed_at || r.started_at || r.created_at || 0) || 0) : 0; }
+function _spMaxTs(arr) { let mx = 0; (arr || []).forEach(r => { const t = _spTs(r); if (t > mx) mx = t; }); return mx; }
+function _spDate(ts) { if (!ts) return '—'; try { return new Date(ts).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return '—'; } }
+function _spPct(p) { return (typeof fmtPct === 'function') ? fmtPct(p) : (Math.round(p || 0) + ' %'); }
+
+async function openStudentProgress(id, name) {
+  _spOpen = true;
+  const modal = document.getElementById('sp-modal');
+  const body = document.getElementById('sp-body');
+  const title = document.getElementById('sp-title');
+  if (title) title.textContent = 'Progreso — ' + (name || 'alumno');
+  if (body) body.innerHTML = '<div class="text-center py-12 text-gray-400 text-sm">⏳ Cargando el estado del alumno…</div>';
+  if (modal) modal.classList.remove('hidden');
+
+  const rep = await adminOps('student_report', { id });
+  if (!_spOpen) return; // el admin cerró mientras cargaba
+  if (!rep || rep.error) {
+    if (body) body.innerHTML = '<div class="text-center py-10 text-sm text-red-500">No se pudo cargar el progreso' + (rep && rep.error ? ' (' + _spEsc(rep.error) + ')' : '') + '. Reintenta.</div>';
+    return;
+  }
+
+  // ── SWAP: guardamos los globales del admin y ponemos los del alumno ──
+  const _bak = {
+    UP: UNIFIED_PROGRESS, VOCAB: vocabProgressMap, TALA: talaProgressMap,
+    EXAM: examProgressMap, MEDB: medbProgressMap, ASSIGNED: _assignedDB,
+    getLast: (typeof getLastNivel === 'function') ? getLastNivel : null,
+    gramAll: (typeof _gramMasterAll === 'function') ? _gramMasterAll : null
+  };
+  let html = '';
+  try {
+    // user_progress → clave "module_type|content_id" (misma que usa la plataforma)
+    const up = {};
+    (rep.user_progress || []).forEach(r => { up[r.module_type + '|' + r.content_id] = r; });
+    UNIFIED_PROGRESS = up;
+    const vmap = {}; (rep.vocabulary_progress || []).forEach(r => { vmap[r.vocabulary_id] = r; }); vocabProgressMap = vmap;
+    const tmap = {}; (rep.tala_progress || []).forEach(r => { tmap[r.situation_id] = r; }); talaProgressMap = tmap;
+    const emap = {}; (rep.exam_progress || []).forEach(r => { emap[r.level] = r; }); examProgressMap = emap;
+    const mmap = {}; (rep.medborgarskap_progress || []).forEach(r => { mmap[r.module_id] = r; }); medbProgressMap = mmap;
+
+    // Prueba de nivel (nivel_resultados) — nivel asignado del alumno
+    const nr = (rep.nivel_resultados || [])[0] || null;
+    let nivelLast = null;
+    if (nr) {
+      const pct = nr.total ? Math.round((nr.puntaje / nr.total) * 100) : (nr.pct || 0);
+      nivelLast = { nivel: nr.nivel, pct, puntaje: nr.puntaje, total: nr.total, ts: Date.parse(nr.created_at) || 0, raw: nr };
+    }
+    _assignedDB = null;
+    if (nivelLast && typeof setAssignedLevelDB === 'function') setAssignedLevelDB(nivelLast.nivel);
+    // Neutralizamos lecturas locales del ADMIN (para no contaminar la vista)
+    getLastNivel = function () { return nivelLast; };
+    if (_bak.gramAll) _gramMasterAll = function () { return {}; };
+
+    html = _buildStudentProgressHTML(rep, nivelLast);
+  } catch (e) {
+    html = '<div class="text-center py-10 text-sm text-red-500">Error al calcular el progreso: ' + _spEsc(e.message || e) + '</div>';
+  } finally {
+    // ── Restauramos SIEMPRE los globales del admin ──
+    UNIFIED_PROGRESS = _bak.UP; vocabProgressMap = _bak.VOCAB; talaProgressMap = _bak.TALA;
+    examProgressMap = _bak.EXAM; medbProgressMap = _bak.MEDB; _assignedDB = _bak.ASSIGNED;
+    if (_bak.getLast) getLastNivel = _bak.getLast;
+    if (_bak.gramAll) _gramMasterAll = _bak.gramAll;
+  }
+  if (_spOpen && body) body.innerHTML = html;
+}
+
+function _spModuleActLabel(mt) {
+  return ({ theory: 'Completó una teoría', grammar: 'Practicó gramática', reading: 'Completó una lectura (Läsa)', writing: 'Completó escritura (Skriva)', listening: 'Completó comprensión auditiva (Hörförståelse)', achievement: 'Desbloqueó un logro' })[mt] || 'Actividad';
+}
+
+function _buildStudentProgressHTML(rep, nivelLast) {
+  const stu = rep.student || {};
+  const LL = (typeof LEVEL_LABEL !== 'undefined') ? LEVEL_LABEL : {};
+  const lvlName = (lv) => (lv && LL[lv]) ? (lv + ' · ' + LL[lv]) : (lv || '—');
+
+  // ── 1) Información general ──
+  const created = _spDate(Date.parse(stu.created_at));
+  const lastLogin = stu.last_login ? new Date(stu.last_login) : null;
+  const daysInactive = lastLogin ? Math.floor((Date.now() - lastLogin.getTime()) / 86400000) : null;
+  const status = stu.status || (stu.active ? 'active' : 'cancelled');
+  const statusLbl = ({ active: '✅ Activo', failed: '⚠️ Pago fallido', cancelled: '❌ Cancelado', pending: '⏳ Pendiente', manual: '💵 Manual', inactive: '⛔ Inactivo' })[status] || status;
+  // última actividad global (de todas las fuentes de progreso)
+  let lastActTs = 0, lastActLabel = '—';
+  const bump = (ts, label) => { if (ts > lastActTs) { lastActTs = ts; lastActLabel = label; } };
+  (rep.user_progress || []).forEach(r => bump(_spTs(r), _spModuleActLabel(r.module_type)));
+  (rep.tala_progress || []).forEach(r => bump(_spTs(r), 'Conversación (Tala)'));
+  (rep.vocabulary_progress || []).forEach(r => bump(_spTs(r), 'Vocabulario (Vokabulär)'));
+  (rep.exam_progress || []).forEach(r => bump(_spTs(r), 'Examen final'));
+  (rep.medborgarskap_progress || []).forEach(r => bump(_spTs(r), 'Medborgarskap'));
+  const general = `
+    <div class="bg-gray-50 rounded-2xl p-4 mb-4">
+      <div class="font-black text-gray-800 text-sm mb-2">🪪 Información general</div>
+      <div class="grid grid-cols-2 gap-y-2 gap-x-4 text-sm">
+        <div><span class="text-gray-400">Registro:</span> <b>${created}</b></div>
+        <div><span class="text-gray-400">Último acceso:</span> <b>${lastLogin ? _spDate(lastLogin.getTime()) : 'Nunca'}</b></div>
+        <div><span class="text-gray-400">Días sin entrar:</span> <b class="${daysInactive != null && daysInactive >= 12 ? 'text-red-500' : ''}">${daysInactive == null ? '—' : daysInactive}</b></div>
+        <div><span class="text-gray-400">Estado:</span> <b>${statusLbl}</b></div>
+        <div class="col-span-2"><span class="text-gray-400">Última actividad:</span> <b>${_spEsc(lastActLabel)}</b>${lastActTs ? (' · ' + _spDate(lastActTs)) : ''}</div>
+      </div>
+    </div>`;
+
+  // ── 2) Prueba de nivel ──
+  const nivelBox = nivelLast
+    ? `<div class="mb-4"><div class="font-black text-gray-800 text-sm mb-1">🎯 Prueba de nivel</div>
+        <div class="bg-blue-50 border border-blue-100 rounded-2xl p-3 text-sm text-gray-700">
+          Nivel asignado: <b>${lvlName(String(nivelLast.nivel || '').toUpperCase()[0])}</b> · Resultado: <b>${_spPct(nivelLast.pct)}</b>${nivelLast.total ? (' (' + nivelLast.puntaje + '/' + nivelLast.total + ')') : ''} · <span class="text-gray-400">${_spDate(nivelLast.ts)}</span>
+        </div></div>`
+    : `<div class="mb-4"><div class="font-black text-gray-800 text-sm mb-1">🎯 Prueba de nivel</div>
+        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3 text-sm text-amber-800 font-semibold">Pendiente — aún no la ha realizado.</div></div>`;
+
+  // ── 3) Progreso general (mismo % que ve el alumno) ──
+  const ov = (typeof overallProgress === 'function') ? overallProgress() : { pct: 0 };
+  const curLevel = (typeof assignedLevel === 'function') ? assignedLevel() : 'A';
+  const order = (typeof SFI_LEVELS !== 'undefined') ? SFI_LEVELS : ['A', 'B', 'C', 'D'];
+  const ci = order.indexOf(curLevel);
+  const prevLevel = ci > 0 ? order[ci - 1] : null;
+  const nextLevel = ci >= 0 && ci < order.length - 1 ? order[ci + 1] : null;
+  const generalProg = `
+    <div class="mb-4"><div class="font-black text-gray-800 text-sm mb-2">📈 Progreso general</div>
+      <div class="bg-white border border-gray-100 rounded-2xl p-3 shadow-sm">
+        <div class="flex items-center gap-2 mb-2"><div class="flex-1 h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-swe-blue rounded-full" style="width:${Math.round(ov.pct || 0)}%"></div></div><span class="text-sm font-black text-swe-blue">${_spPct(ov.pct)}</span></div>
+        <div class="text-xs text-gray-500 flex flex-wrap gap-x-4 gap-y-1">
+          <span>Nivel actual: <b class="text-gray-700">${lvlName(curLevel)}</b></span>
+          <span>Anterior: <b class="text-gray-700">${prevLevel ? lvlName(prevLevel) : '—'}</b></span>
+          <span>Próximo: <b class="text-gray-700">${nextLevel ? lvlName(nextLevel) : '—'}</b></span>
+        </div>
+      </div></div>`;
+
+  // ── 4) Módulos (mismas métricas que la plataforma) ──
+  const upByMod = {};
+  (rep.user_progress || []).forEach(r => { const t = _spTs(r); if (!upByMod[r.module_type] || t > upByMod[r.module_type]) upByMod[r.module_type] = t; });
+  const mp = (k) => (typeof moduleProgress === 'function') ? moduleProgress(k) : { done: 0, total: 0, pct: 0 };
+  const skillAgg = (kind) => { let d = 0, t = 0; order.forEach(lv => { const p = (typeof skillProgress === 'function') ? skillProgress(kind, lv) : { done: 0, total: 0 }; d += p.done; t += p.total; }); return { done: d, total: t, pct: (typeof pctClamp === 'function' ? pctClamp(d, t) : (t ? Math.round(d / t * 100) : 0)) }; };
+  const mods = [
+    { label: 'Gramática', icon: '📐', p: mp('grammar'), last: upByMod['grammar'] || 0 },
+    { label: 'Teoría', icon: '📖', p: mp('theory'), last: upByMod['theory'] || 0 },
+    { label: 'Läsa (lectura)', icon: '📗', p: skillAgg('reading'), last: upByMod['reading'] || 0 },
+    { label: 'Skriva (escritura)', icon: '✍️', p: skillAgg('writing'), last: upByMod['writing'] || 0 },
+    { label: 'Tala (conversación)', icon: '🗣️', p: mp('tala'), last: _spMaxTs(rep.tala_progress) },
+    { label: 'Hörförståelse', icon: '🎧', p: mp('listening'), last: upByMod['listening'] || 0 },
+    { label: 'Vokabulär', icon: '📚', p: mp('vocabulary'), last: _spMaxTs(rep.vocabulary_progress) },
+    { label: 'Medborgarskap', icon: '🏛️', p: (typeof medbProgress === 'function' ? medbProgress() : { done: 0, total: 0, pct: 0 }), last: _spMaxTs(rep.medborgarskap_progress) }
+  ];
+  const modsHtml = mods.map(m => `
+    <div class="flex items-center gap-3 bg-white border border-gray-100 rounded-xl p-2.5 text-sm">
+      <span class="text-lg w-6 text-center">${m.icon}</span>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center justify-between"><span class="font-bold text-gray-700">${m.label}</span><span class="text-xs font-black text-swe-blue">${_spPct(m.p.pct)}</span></div>
+        <div class="h-1.5 bg-gray-200 rounded-full overflow-hidden mt-1"><div class="h-full bg-swe-blue rounded-full" style="width:${Math.round(m.p.pct || 0)}%"></div></div>
+        <div class="text-[11px] text-gray-400 mt-0.5">${Math.round(m.p.done)}/${m.p.total} ejercicios · última: ${m.last ? _spDate(m.last) : '—'}</div>
+      </div>
+    </div>`).join('');
+  const modules = `<div class="mb-4"><div class="font-black text-gray-800 text-sm mb-2">📚 Módulos</div><div class="space-y-2">${modsHtml}</div></div>`;
+
+  // ── 5) Exámenes finales ──
+  const examHtml = order.map(lv => {
+    const ex = (typeof examStatus === 'function') ? examStatus(lv) : { passes: 0, required: 4, medal: false, bestScore: 0 };
+    return `<div class="flex items-center justify-between bg-white border border-gray-100 rounded-xl p-2.5 text-sm">
+        <span class="font-bold text-gray-700">Examen SFI ${lv}</span>
+        <span class="text-xs text-gray-500">Mejor nota: <b>${_spPct(ex.bestScore || 0)}</b> · Aprobados: <b>${ex.passes}/${ex.required}</b> · ${ex.medal ? '<span class="text-green-600 font-bold">✅ Aprobado (medalla)</span>' : '<span class="text-gray-400">sin medalla</span>'}</span>
+      </div>`;
+  }).join('');
+  const exams = `<div class="mb-4"><div class="font-black text-gray-800 text-sm mb-2">🏆 Exámenes finales</div><div class="space-y-2">${examHtml}</div></div>`;
+
+  // ── 6) Logros ──
+  const medalsGot = order.filter(lv => (typeof medalEarned === 'function') && medalEarned(lv));
+  const medalsCount = medalsGot.length;
+  const medalNames = medalsGot.map(lv => (typeof MEDAL_META !== 'undefined' && MEDAL_META[lv]) ? ('🏅 ' + MEDAL_META[lv].label) : lv).join(' · ');
+  const wordsMastered = (rep.vocabulary_progress || []).filter(r => r.status === 'mastered').length;
+  let lastAch = 0; (rep.user_progress || []).forEach(r => { if (r.module_type === 'achievement') { const t = _spTs(r); if (t > lastAch) lastAch = t; } });
+  const achPct = Math.round(medalsCount / order.length * 100);
+  const logros = `<div class="mb-4"><div class="font-black text-gray-800 text-sm mb-2">🏅 Logros</div>
+      <div class="bg-white border border-gray-100 rounded-2xl p-3 text-sm">
+        <div class="flex items-center gap-2 mb-1"><div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-yellow-400 rounded-full" style="width:${achPct}%"></div></div><span class="text-xs font-black text-yellow-600">${achPct}%</span></div>
+        <div class="text-xs text-gray-600">Medallas: <b>${medalsCount}/${order.length}</b>${medalNames ? (' (' + medalNames + ')') : ''} · Palabras dominadas: <b>${wordsMastered}</b> · Último logro: ${lastAch ? _spDate(lastAch) : '—'}</div>
+      </div></div>`;
+
+  // ── 7) Actividad reciente (línea temporal) ──
+  const acts = [];
+  (rep.user_progress || []).forEach(r => { if (r.status === 'completed' && r.module_type !== 'meta' && r.module_type !== 'achievement') acts.push({ ts: _spTs(r), label: _spModuleActLabel(r.module_type) }); });
+  (rep.tala_progress || []).forEach(r => { if (r.completed) acts.push({ ts: _spTs(r), label: 'Terminó una conversación (Tala)' }); });
+  (rep.vocabulary_progress || []).forEach(r => { if (r.status === 'mastered') acts.push({ ts: _spTs(r), label: 'Dominó vocabulario' }); });
+  (rep.exam_progress || []).forEach(r => { if ((r.passes_count || 0) > 0) acts.push({ ts: _spTs(r), label: 'Aprobó el examen SFI ' + r.level }); });
+  (rep.medborgarskap_progress || []).forEach(r => { if (r.completed) acts.push({ ts: _spTs(r), label: 'Completó un módulo de Medborgarskap' }); });
+  if (nivelLast) acts.push({ ts: nivelLast.ts, label: 'Realizó la prueba de nivel' });
+  acts.sort((a, b) => b.ts - a.ts);
+  const actHtml = acts.slice(0, 8).map(a => `<div class="flex items-center gap-2 text-sm text-gray-600"><span class="text-swe-blue">•</span><span class="flex-1">${a.label}</span><span class="text-[11px] text-gray-400">${a.ts ? _spDate(a.ts) : ''}</span></div>`).join('') || '<div class="text-sm text-gray-400">Sin actividad registrada aún.</div>';
+  const actividad = `<div class="mb-4"><div class="font-black text-gray-800 text-sm mb-2">🕒 Actividad reciente</div><div class="space-y-1.5">${actHtml}</div></div>`;
+
+  // ── 8) Resumen automático (SOLO reglas y datos existentes, sin IA) ──
+  const summary = [];
+  if (!nivelLast) summary.push('Aún no ha realizado la prueba de nivel.');
+  else summary.push('Nivel actual: <b>' + lvlName(curLevel) + '</b>.');
+  summary.push('Ha completado el <b>' + _spPct(ov.pct) + '</b> de los módulos disponibles de su nivel.');
+  if (daysInactive != null) {
+    if (daysInactive >= 12) summary.push('⚠️ Lleva <b>' + daysInactive + ' días</b> sin entrar.');
+    else if (daysInactive >= 4) summary.push('Lleva <b>' + daysInactive + ' días</b> sin entrar.');
+    else summary.push('Ha entrado recientemente (hace ' + daysInactive + (daysInactive === 1 ? ' día' : ' días') + ').');
+  }
+  const withT = mods.filter(m => m.p.total > 0);
+  if (withT.length) {
+    const weak = withT.reduce((a, b) => (a.p.pct <= b.p.pct ? a : b));
+    if (weak.p.pct < 50) summary.push('Tiene dificultades en <b>' + weak.label + '</b> (' + _spPct(weak.p.pct) + ').');
+    const strong = withT.filter(m => m.p.pct >= 100).map(m => m.label);
+    if (strong.length) summary.push('Ha dominado: <b>' + strong.join(', ') + '</b>.');
+  }
+  if (typeof levelProgress === 'function' && typeof medalEarned === 'function') {
+    const lp = levelProgress(curLevel);
+    if (medalEarned(curLevel) && nextLevel) summary.push('Ya obtuvo la medalla de SFI ' + curLevel + '; puede avanzar a SFI ' + nextLevel + '.');
+    else if (!medalEarned(curLevel) && (lp.pct || 0) >= 80) summary.push('Está <b>listo/a para presentar el examen de SFI ' + curLevel + '</b>.');
+  }
+  const resumen = `<div class="bg-cyan-50 border border-cyan-200 rounded-2xl p-4 mb-1"><div class="font-black text-cyan-800 text-sm mb-1">🧭 Resumen</div><ul class="text-sm text-cyan-900 space-y-1">${summary.map(s => '<li>• ' + s + '</li>').join('')}</ul><div class="text-[10px] text-cyan-500 mt-2">Generado automáticamente a partir de reglas y de los datos existentes del alumno (sin IA).</div></div>`;
+
+  return general + nivelBox + generalProg + modules + exams + logros + actividad + resumen;
+}
+
 async function renderStudents() {
   const container = document.getElementById('students-list');
   if (!container) return;
@@ -21553,6 +21795,10 @@ function paintStudents() {
         <button onclick="resetStudentDevices('${s.id}')"
           class="py-1.5 px-3 rounded-xl text-xs font-semibold bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-200 transition-colors">
           🔄 Dispositivos
+        </button>
+        <button onclick="openStudentProgress('${s.id}', '${(s.name || '').replace(/'/g, "\\'").replace(/</g, '')}')"
+          class="py-1.5 px-3 rounded-xl text-xs font-semibold bg-cyan-50 text-cyan-700 hover:bg-cyan-100 border border-cyan-200 transition-colors">
+          📊 Progreso
         </button>
         <button onclick="deleteStudent('${s.id}')"
           class="py-1.5 px-3 rounded-xl text-xs font-semibold bg-gray-50 text-gray-400 hover:bg-red-50 hover:text-red-500 border border-gray-200 transition-colors">
