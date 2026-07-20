@@ -17963,7 +17963,7 @@ window.addEventListener('load', () => {
 window.addEventListener('beforeunload', () => stopSpeech());
 
 // ── Navigation ───────────────────────────────────────────────
-const VIEW_URLS = { home: '/plataforma', login: '/alumnos', alumnos: '/', resenas: '/reseñas' };
+const VIEW_URLS = { home: '/plataforma', login: '/alumnos', alumnos: '/', resenas: '/reseñas', 'admin-v2': '/admin' };
 function showView(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   const v = document.getElementById('view-' + id);
@@ -20422,7 +20422,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       showView('home');
       renderHomeDashboard();
       initUnifiedProgress();
-      if (_wantAdmin && isAdminUser()) { _wantAdmin = false; goAdmin(); }
+      if (_wantAdmin && isAdminUser()) { _wantAdmin = false; goDashboardV2(); }
       return;
     }
     await sb.auth.signOut();
@@ -21740,16 +21740,16 @@ const AV2_NAV = [
   ] },
   { group: 'Gestión', items: [
     { id: 'usuarios', icon: '👥', label: 'Usuarios', sub: 'Alumnos, estado y progreso', on: true },
-    { id: 'grupos', icon: '🗂️', label: 'Grupos', sub: 'Próximamente', on: false },
-    { id: 'productos', icon: '💳', label: 'Productos y planes', sub: 'Próximamente', on: false }
+    { id: 'grupos', icon: '🗂️', label: 'Grupos', sub: 'Clases y cohortes', on: true },
+    { id: 'productos', icon: '💳', label: 'Productos y planes', sub: 'Precios y suscripción', on: true }
   ] },
   { group: 'Plataforma', items: [
-    { id: 'contenido', icon: '📚', label: 'Contenido', sub: 'Próximamente', on: false },
-    { id: 'notis', icon: '🔔', label: 'Notificaciones', sub: 'Próximamente', on: false }
+    { id: 'contenido', icon: '📚', label: 'Contenido', sub: 'Módulos y niveles', on: true },
+    { id: 'notis', icon: '🔔', label: 'Notificaciones', sub: 'Avisos a alumnos', on: true }
   ] },
   { group: 'Sistema', items: [
-    { id: 'ecosistema', icon: '🧩', label: 'Ecosistema', sub: 'Próximamente', on: false },
-    { id: 'ajustes', icon: '⚙️', label: 'Ajustes', sub: 'Próximamente', on: false }
+    { id: 'ecosistema', icon: '🧩', label: 'Ecosistema', sub: 'Servicios y arquitectura', on: true },
+    { id: 'ajustes', icon: '⚙️', label: 'Ajustes', sub: 'Configuración y admins', on: true }
   ] }
 ];
 function _av2Item(id) { for (const g of AV2_NAV) { const it = g.items.find(x => x.id === id); if (it) return it; } return null; }
@@ -21784,6 +21784,12 @@ function av2Nav(section) {
   av2CloseMenu();
   if (section === 'resumen') renderAv2Resumen();
   else if (section === 'usuarios') renderAv2Users();
+  else if (section === 'grupos') renderAv2Grupos();
+  else if (section === 'productos') renderAv2Productos();
+  else if (section === 'contenido') renderAv2Contenido();
+  else if (section === 'notis') renderAv2Notis();
+  else if (section === 'ecosistema') renderAv2Ecosistema();
+  else if (section === 'ajustes') renderAv2Ajustes();
 }
 function av2Refresh() {
   _cachedStudents = null;
@@ -21810,6 +21816,26 @@ function dashMetrics(students, defaultPrice) {
   };
 }
 function _av2Sek(n) { return (Number(n) || 0).toLocaleString('sv-SE') + ' SEK'; }
+
+// Serie de ingresos por mes (misma lógica que el panel clásico: alumnos activos
+// que se unieron antes/durante cada mes × precio). Devuelve N meses hacia atrás.
+function _av2RevenueSeries(students, defaultPrice, monthsBack) {
+  monthsBack = monthsBack || 12;
+  const now = new Date();
+  const out = [];
+  for (let i = monthsBack - 1; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const endOfMonth = new Date(d.getFullYear(), d.getMonth() + 1, 0, 23, 59, 59);
+    const count = (students || []).filter(s => {
+      if (!s.joinDate) return false;
+      const joined = new Date(s.joinDate);
+      const statusOk = s.status === 'active' || s.status === 'manual' || (!s.status && s.active);
+      return joined <= endOfMonth && statusOk;
+    }).length;
+    out.push({ label: d.toLocaleDateString('es-ES', { month: 'short', year: '2-digit' }), value: count * defaultPrice, count });
+  }
+  return out;
+}
 
 async function renderAv2Resumen() {
   const c = document.getElementById('av2-content');
@@ -21859,6 +21885,21 @@ async function renderAv2Resumen() {
       </div>
     </div>
 
+    <div class="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 av2-shadow mb-4">
+      <div class="flex items-start justify-between mb-4 flex-wrap gap-2">
+        <div>
+          <div class="text-sm font-bold text-gray-800">Ingresos recurrentes</div>
+          <div class="text-[26px] leading-none font-extrabold text-gray-900 mt-1">${_av2Sek(m.revenueMonth)}<span class="text-sm font-medium text-gray-400"> / mes</span></div>
+        </div>
+        <div class="text-right">
+          <div class="text-[11px] text-gray-400">ARPU (por alumno)</div>
+          <div class="text-sm font-bold text-gray-700">${_av2Sek(m.active.length ? Math.round(m.revenueMonth / m.active.length) : 0)}</div>
+        </div>
+      </div>
+      <canvas id="av2-revenue-chart" height="80"></canvas>
+      <div class="text-[11px] text-gray-400 mt-2">Estimado por alumnos activos y su fecha de alta · últimos 12 meses</div>
+    </div>
+
     <div class="grid lg:grid-cols-2 gap-4">
       <div class="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 av2-shadow">
         <div class="font-bold text-gray-800 text-sm mb-4">Estado de alumnos</div>
@@ -21886,6 +21927,28 @@ async function renderAv2Resumen() {
   } catch (e) {}
   const leg = document.getElementById('av2-status-legend');
   if (leg) leg.innerHTML = segs.map(s => `<div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full" style="background:${s.c}"></span><span class="flex-1 text-gray-600">${s.label}</span><b class="text-gray-800">${s.n}</b></div>`).join('') || '<div class="text-gray-400">Sin datos.</div>';
+  // ── Gráfico de ingresos por mes (estilo Stripe: área con degradado) ──
+  try {
+    if (_av2Charts.revenue) { _av2Charts.revenue.destroy(); _av2Charts.revenue = null; }
+    const rctx = document.getElementById('av2-revenue-chart');
+    if (rctx && typeof Chart !== 'undefined') {
+      const serie = _av2RevenueSeries(students, (cfg && cfg.priceLegacy) || (cfg && cfg.priceNew) || 339, 12);
+      const g = rctx.getContext('2d');
+      const grad = g.createLinearGradient(0, 0, 0, 180);
+      grad.addColorStop(0, 'rgba(0,106,167,0.22)');
+      grad.addColorStop(1, 'rgba(0,106,167,0.00)');
+      _av2Charts.revenue = new Chart(rctx, {
+        type: 'line',
+        data: { labels: serie.map(s => s.label), datasets: [{ data: serie.map(s => s.value), borderColor: '#006AA7', borderWidth: 2.5, backgroundColor: grad, fill: true, tension: 0.4, pointRadius: 0, pointHoverRadius: 5, pointHoverBackgroundColor: '#006AA7', pointHoverBorderColor: '#fff', pointHoverBorderWidth: 2 }] },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          interaction: { intersect: false, mode: 'index' },
+          plugins: { legend: { display: false }, tooltip: { backgroundColor: '#0f172a', padding: 10, cornerRadius: 10, displayColors: false, callbacks: { title: it => it[0].label, label: it => _av2Sek(it.raw) + ' · ' + serie[it.dataIndex].count + ' activos' } } },
+          scales: { y: { beginAtZero: true, border: { display: false }, grid: { color: '#f1f5f9' }, ticks: { maxTicksLimit: 5, font: { size: 10 }, color: '#94a3b8', callback: v => (v >= 1000 ? (v / 1000) + 'k' : v) } }, x: { border: { display: false }, grid: { display: false }, ticks: { font: { size: 10 }, color: '#94a3b8', maxRotation: 0, autoSkipPadding: 12 } } }
+        }
+      });
+    }
+  } catch (e) {}
   // Atención: fallidos + cancelando + inactivos
   const att = document.getElementById('av2-attention');
   if (att) {
@@ -21943,6 +22006,188 @@ function _av2PaintUsers() {
       <div class="hidden sm:flex flex-col items-end gap-1">${statusChip(s)}<span class="text-[11px] text-gray-400">último: ${days(s)}</span></div>
       <button onclick="openStudentProgress('${s.id}','${(s.name || '').replace(/'/g, "\\'").replace(/</g, '')}')" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-cyan-50 text-cyan-700 hover:bg-cyan-100 border border-cyan-200 transition-colors shrink-0">📊 Progreso</button>
     </div>`).join('') : '<div class="text-center py-12 text-gray-400 text-sm">Sin resultados.</div>';
+}
+
+// ── Encabezado de sección reutilizable ──
+function _av2Head(title, sub) {
+  return `<div class="mb-5"><h1 class="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight">${title}</h1>${sub ? `<p class="text-sm text-gray-400 mt-1">${sub}</p>` : ''}</div>`;
+}
+function _av2Note(txt) {
+  return `<div class="mt-4 flex items-start gap-2 text-xs text-gray-500 bg-gray-50 border border-gray-100 rounded-xl p-3"><span>ℹ️</span><span>${txt}</span></div>`;
+}
+
+// ═══ GRUPOS ═══ (reutiliza el campo 'grupo' de cada alumno)
+async function renderAv2Grupos() {
+  const c = document.getElementById('av2-content'); if (!c) return;
+  c.innerHTML = '<div class="text-center py-16 text-gray-400 text-sm">⏳ Cargando…</div>';
+  const students = await getStudents();
+  if (_lastStudentsError) { c.innerHTML = '<div class="text-center py-16 text-sm text-red-500">No se pudieron cargar los datos.</div>'; return; }
+  const isActive = s => s.status === 'active' || s.status === 'manual' || (!s.status && s.active);
+  const names = (typeof GRUPOS !== 'undefined' ? GRUPOS.slice() : []);
+  const groups = names.map(g => ({ name: g, list: students.filter(s => s.grupo === g) }));
+  groups.push({ name: 'Sin grupo', list: students.filter(s => !s.grupo), none: true });
+  const cards = groups.map(g => {
+    const act = g.list.filter(isActive).length;
+    const color = g.none ? '#94a3b8' : '#006AA7';
+    return `<div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-4 sm:p-5">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2.5"><div class="w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-sm" style="background:${color}">${g.none ? '∅' : (g.name.match(/\\d+/) || ['·'])[0]}</div><div class="font-bold text-gray-800 text-sm">${g.name}</div></div>
+        <span class="text-xs font-semibold text-gray-400">${g.list.length} alumno${g.list.length !== 1 ? 's' : ''}</span>
+      </div>
+      <div class="flex gap-2 mb-3 text-xs"><span class="px-2 py-0.5 rounded-full bg-green-50 text-green-700 font-semibold">${act} activos</span><span class="px-2 py-0.5 rounded-full bg-gray-50 text-gray-500 font-semibold">${g.list.length - act} inactivos</span></div>
+      <div class="space-y-1 max-h-52 overflow-y-auto -mx-1">
+        ${g.list.slice(0, 30).map(s => `<button onclick="openStudentProgress('${s.id}','${(s.name || '').replace(/'/g, "\\'").replace(/</g, '')}')" class="w-full flex items-center gap-2 text-left px-2 py-1.5 rounded-lg hover:bg-gray-50 text-sm"><span class="w-6 h-6 rounded-full bg-swe-blue/10 text-swe-blue flex items-center justify-center text-[10px] font-bold shrink-0">${((s.name || s.email || '?')[0] || '?').toUpperCase()}</span><span class="flex-1 truncate text-gray-700">${s.name || s.email || '—'}</span><span class="text-gray-300">›</span></button>`).join('') || '<div class="text-xs text-gray-400 px-2 py-3">Sin alumnos.</div>'}
+      </div>
+    </div>`;
+  }).join('');
+  c.innerHTML = _av2Head('Grupos', 'Clases y cohortes de tu escuela') +
+    `<div class="grid sm:grid-cols-2 gap-4">${cards}</div>` +
+    _av2Note('Los grupos se toman del campo <b>grupo</b> de cada alumno. Crear/renombrar grupos desde el panel llegará con la próxima migración; hoy se asignan al editar cada alumno.');
+}
+
+// ═══ PRODUCTOS Y PLANES ═══ (reutiliza la config de Stripe + desglose por precio)
+async function renderAv2Productos() {
+  const c = document.getElementById('av2-content'); if (!c) return;
+  c.innerHTML = '<div class="text-center py-16 text-gray-400 text-sm">⏳ Cargando…</div>';
+  const students = await getStudents();
+  let cfg = {}; try { cfg = await getStripeConfig(); } catch (e) {}
+  const price = cfg.priceNew || cfg.priceLegacy || 339;
+  const isActive = s => s.status === 'active' || s.status === 'manual' || (!s.status && s.active);
+  const active = (students || []).filter(isActive);
+  // Desglose por precio real
+  const byPrice = {};
+  active.forEach(s => { const p = s.price || price; (byPrice[p] = byPrice[p] || []).push(s); });
+  const rows = Object.keys(byPrice).map(Number).sort((a, b) => a - b).map(p => {
+    const n = byPrice[p].length;
+    return `<div class="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0">
+      <div class="flex items-center gap-2"><span class="text-sm font-semibold text-gray-700">${p} SEK<span class="text-gray-400 font-normal">/mes</span></span><span class="text-xs text-gray-400">× ${n}</span></div>
+      <span class="text-sm font-bold text-gray-900">${_av2Sek(n * p)}</span></div>`;
+  }).join('') || '<div class="text-sm text-gray-400 py-3">Sin alumnos activos.</div>';
+  const link = cfg.link || '';
+  c.innerHTML = _av2Head('Productos y planes', 'Suscripción y precios actuales') + `
+    <div class="grid lg:grid-cols-2 gap-4">
+      <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-5">
+        <div class="flex items-center justify-between mb-1"><div class="text-sm font-bold text-gray-800">Plan actual</div><span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-50 text-green-700">ACTIVO</span></div>
+        <div class="text-[32px] font-extrabold text-gray-900 leading-none mt-2">${price} <span class="text-base font-medium text-gray-400">SEK/mes</span></div>
+        <div class="text-xs text-gray-400 mt-1">Acceso completo a la plataforma SFI (A–D)</div>
+        ${link ? `<div class="mt-4 text-xs"><span class="text-gray-400">Link de pago:</span> <a href="${link}" target="_blank" class="text-swe-blue font-semibold break-all hover:underline">${link}</a></div>` : ''}
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-5">
+        <div class="text-sm font-bold text-gray-800 mb-2">Ingresos por precio (activos)</div>
+        ${rows}
+      </div>
+    </div>` +
+    _av2Note('Precios y link se editan hoy en <b>Ajustes → Configuración de Stripe</b>. Crear múltiples productos/planes con su propio Price ID llegará con la migración de la Fase 1 (tabla <b>products</b>).');
+}
+
+// ═══ CONTENIDO ═══ (inventario real desde el contenido cargado)
+async function renderAv2Contenido() {
+  const c = document.getElementById('av2-content'); if (!c) return;
+  const mi = (typeof moduleItems === 'function') ? moduleItems : () => [];
+  const lv = (typeof SFI_LEVELS !== 'undefined') ? SFI_LEVELS : ['A', 'B', 'C', 'D'];
+  const byLevel = (key) => lv.map(l => mi(key).filter(it => it.level === l).length);
+  const skillTotal = (kind) => lv.map(l => { try { const p = skillProgress(kind, l); return p.total; } catch (e) { return 0; } });
+  const medbN = (typeof _medbActive === 'function') ? _medbActive().length : 0;
+  const rows = [
+    { icon: '📖', label: 'Teoría', per: byLevel('theory') },
+    { icon: '📐', label: 'Gramática', per: byLevel('grammar') },
+    { icon: '📗', label: 'Läsa (lectura)', per: skillTotal('reading') },
+    { icon: '✍️', label: 'Skriva (escritura)', per: skillTotal('writing') },
+    { icon: '🎧', label: 'Hörförståelse', per: byLevel('listening') },
+    { icon: '🗣️', label: 'Tala', per: byLevel('tala') },
+    { icon: '📚', label: 'Vokabulär', per: byLevel('vocabulary') }
+  ];
+  const total = (arr) => arr.reduce((a, b) => a + b, 0);
+  const grand = rows.reduce((a, r) => a + total(r.per), 0) + medbN;
+  const head = `<div class="grid grid-cols-6 gap-2 px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-gray-400"><div class="col-span-2">Módulo</div>${lv.map(l => `<div class="text-center">SFI ${l}</div>`).join('')}</div>`;
+  const body = rows.map(r => `<div class="grid grid-cols-6 gap-2 px-3 py-2.5 items-center bg-white rounded-xl border border-gray-50 text-sm">
+      <div class="col-span-2 flex items-center gap-2"><span>${r.icon}</span><span class="font-semibold text-gray-700">${r.label}</span><span class="text-[11px] text-gray-300">(${total(r.per)})</span></div>
+      ${r.per.map(n => `<div class="text-center ${n ? 'text-gray-700 font-semibold' : 'text-gray-300'}">${n || '·'}</div>`).join('')}
+    </div>`).join('');
+  c.innerHTML = _av2Head('Contenido', grand + ' ejercicios activos en la plataforma') +
+    `<div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-3 sm:p-4">${head}<div class="space-y-1.5">${body}</div>
+      <div class="grid grid-cols-6 gap-2 px-3 pt-3 mt-2 border-t border-gray-100 text-sm"><div class="col-span-2 font-bold text-gray-800">Total por nivel</div>${lv.map((l, i) => `<div class="text-center font-bold text-swe-blue">${rows.reduce((a, r) => a + r.per[i], 0)}</div>`).join('')}</div>
+    </div>
+    <div class="grid sm:grid-cols-2 gap-4 mt-4">
+      <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-4 flex items-center gap-3"><span class="text-2xl">🏛️</span><div><div class="font-bold text-gray-800 text-sm">Medborgarskap</div><div class="text-xs text-gray-400">${medbN} módulos activos</div></div></div>
+      <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-4 flex items-center gap-3"><span class="text-2xl">🏆</span><div><div class="font-bold text-gray-800 text-sm">Exámenes finales</div><div class="text-xs text-gray-400">${lv.length} niveles (SFI ${lv.join(', ')})</div></div></div>
+    </div>` +
+    _av2Note('Inventario en vivo del contenido cargado. Editar contenido se hace hoy en el <b>panel clásico</b> (pestañas por módulo). El editor visual dentro de este panel llegará en una fase posterior.');
+}
+
+// ═══ NOTIFICACIONES ═══
+async function renderAv2Notis() {
+  const c = document.getElementById('av2-content'); if (!c) return;
+  const autos = [
+    { icon: '📊', t: 'Prueba de nivel disponible', d: 'Se avisa al alumno cuando pasa una semana y puede repetir la prueba.' },
+    { icon: '🎉', t: 'Logro / medalla desbloqueada', d: 'Al aprobar un examen o completar un hito.' },
+    { icon: '⏰', t: 'Recordatorio de racha', d: 'Para mantener el hábito de estudio diario.' }
+  ];
+  c.innerHTML = _av2Head('Notificaciones', 'Avisos que reciben los alumnos') + `
+    <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-5 mb-4">
+      <div class="text-sm font-bold text-gray-800 mb-3">Automáticas (activas hoy)</div>
+      <div class="space-y-2">${autos.map(a => `<div class="flex items-start gap-3 p-2.5 rounded-xl bg-gray-50"><span class="text-lg">${a.icon}</span><div><div class="font-semibold text-gray-700 text-sm">${a.t}</div><div class="text-xs text-gray-400">${a.d}</div></div></div>`).join('')}</div>
+    </div>
+    <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-5 opacity-90">
+      <div class="flex items-center justify-between mb-3"><div class="text-sm font-bold text-gray-800">Enviar aviso manual</div><span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700">requiere migración</span></div>
+      <input disabled placeholder="Título del aviso" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm mb-2 bg-gray-50 text-gray-400" />
+      <textarea disabled placeholder="Mensaje para los alumnos…" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm bg-gray-50 text-gray-400" rows="3"></textarea>
+      <button disabled class="mt-3 px-4 py-2 rounded-xl bg-gray-200 text-gray-400 text-sm font-semibold cursor-not-allowed">Enviar (pronto)</button>
+    </div>` +
+    _av2Note('Hoy las notificaciones son automáticas y por dispositivo. El envío manual a alumnos/grupos necesita la tabla <b>notifications</b> (migración Fase 1); te paso el SQL cuando lo activemos.');
+}
+
+// ═══ ECOSISTEMA ═══ (servicios y arquitectura — solo nombres, nunca claves)
+async function renderAv2Ecosistema() {
+  const c = document.getElementById('av2-content'); if (!c) return;
+  const svc = [
+    { i: '🟢', n: 'Supabase', d: 'Auth, base de datos (PostgreSQL), storage y edge functions.' },
+    { i: '💳', n: 'Stripe', d: 'Cobros y suscripciones (Payment Links + webhook).' },
+    { i: '☁️', n: 'Cloudflare Pages', d: 'Hosting del sitio, deploy automático desde GitHub (main).' },
+    { i: '🐙', n: 'GitHub', d: 'Código y control de versiones.' },
+    { i: '✉️', n: 'Resend', d: 'Envío de correos (acceso, soporte).' },
+    { i: '🔑', n: 'Google OAuth', d: 'Inicio de sesión con Google.' }
+  ];
+  const tables = ['students', 'user_progress', 'exam_progress', 'vocabulary_progress', 'tala_progress', 'medborgarskap_progress', 'nivel_resultados', 'reviews', 'config', 'avatars'];
+  const envServer = ['SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY', 'STRIPE_SECRET_KEY', 'STRIPE_WEBHOOK_SECRET', 'RESEND_API_KEY', 'ADMIN_EMAILS', 'SUPPORT_EMAIL'];
+  c.innerHTML = _av2Head('Ecosistema', 'Servicios y arquitectura de la plataforma') + `
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
+      ${svc.map(s => `<div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-4"><div class="flex items-center gap-2 mb-1"><span class="text-lg">${s.i}</span><span class="font-bold text-gray-800 text-sm">${s.n}</span></div><div class="text-xs text-gray-400 leading-snug">${s.d}</div></div>`).join('')}
+    </div>
+    <div class="grid lg:grid-cols-2 gap-4">
+      <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-5">
+        <div class="text-sm font-bold text-gray-800 mb-3">🗄️ Tablas principales</div>
+        <div class="flex flex-wrap gap-1.5">${tables.map(t => `<span class="text-xs font-mono px-2 py-1 rounded-lg bg-gray-50 text-gray-600 border border-gray-100">${t}</span>`).join('')}</div>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-5">
+        <div class="text-sm font-bold text-gray-800 mb-3">🔐 Variables de entorno <span class="text-[10px] font-normal text-gray-400">(solo nombres)</span></div>
+        <div class="flex flex-wrap gap-1.5">${envServer.map(e => `<span class="text-xs font-mono px-2 py-1 rounded-lg bg-gray-50 text-gray-600 border border-gray-100">${e}</span>`).join('')}</div>
+        <div class="text-[11px] text-gray-400 mt-3">⚠️ Nunca se muestran los valores. Las claves viven solo en la configuración de las funciones.</div>
+      </div>
+    </div>`;
+}
+
+// ═══ AJUSTES ═══
+async function renderAv2Ajustes() {
+  const c = document.getElementById('av2-content'); if (!c) return;
+  let cfg = {}; try { cfg = await getStripeConfig(); } catch (e) {}
+  const admins = (typeof ADMIN_EMAILS !== 'undefined') ? ADMIN_EMAILS : [];
+  c.innerHTML = _av2Head('Ajustes', 'Configuración y administradores') + `
+    <div class="grid lg:grid-cols-2 gap-4">
+      <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-5">
+        <div class="text-sm font-bold text-gray-800 mb-3">💳 Configuración de Stripe</div>
+        <div class="text-sm space-y-2">
+          <div class="flex items-center justify-between"><span class="text-gray-400">Precio actual</span><b class="text-gray-800">${cfg.priceNew || cfg.priceLegacy || 339} SEK/mes</b></div>
+          <div><span class="text-gray-400">Link de pago:</span> ${cfg.link ? `<a href="${cfg.link}" target="_blank" class="text-swe-blue font-semibold break-all hover:underline">${cfg.link}</a>` : '<span class="text-gray-300">— sin configurar</span>'}</div>
+        </div>
+        <button onclick="goAdmin()" class="mt-4 text-xs font-semibold px-3 py-2 rounded-xl bg-swe-blue text-white hover:bg-swe-dark transition-colors">Editar en panel clásico →</button>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-5">
+        <div class="text-sm font-bold text-gray-800 mb-3">👤 Administradores</div>
+        <div class="space-y-1.5">${admins.length ? admins.map(e => `<div class="flex items-center gap-2 text-sm"><span class="w-7 h-7 rounded-full bg-swe-blue/10 text-swe-blue flex items-center justify-center text-xs font-bold">${(e[0] || 'A').toUpperCase()}</span><span class="text-gray-700">${e}</span></div>`).join('') : '<div class="text-sm text-gray-400">—</div>'}</div>
+      </div>
+    </div>` +
+    _av2Note('Edición avanzada de ajustes (admins, grupos, plantillas) llegará con la Fase 1. Los cambios de Stripe se hacen hoy con seguridad desde el panel clásico.');
 }
 
 async function renderStudents() {
