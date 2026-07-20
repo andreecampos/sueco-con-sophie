@@ -6069,15 +6069,18 @@ function markNotifsRead() {
    Se muestra automáticamente la 1ª vez (o al subir ONBOARDING_VERSION,
    así también la ven los alumnos actuales tras la actualización).
    Botón "❓ Guía" para repetirla cuando quieran.                       */
-const ONBOARDING_VERSION = 1;
+const ONBOARDING_VERSION = 2;
 const _ONB_SLIDES = [
   { icon: '👋', title: '¡Bienvenido/a a Sueco con Sophie!', text: 'Aquí aprendes sueco paso a paso. Te mostramos rapidito cómo funciona. Toca <b>«Siguiente»</b>.' },
   { icon: '🎯', title: 'Empieza con tu prueba de nivel', text: 'Responde unas preguntas y te ubicamos en tu nivel: <b>A, B, C o D</b>. Así practicas justo lo que necesitas.' },
   { icon: '📚', title: 'Todo está en «Aprender»', text: 'Ahí tienes: <b>Läsa</b> (leer), <b>Skriva</b> (escribir), <b>Tala</b> (hablar), <b>Hörförståelse</b> (escuchar), gramática y vocabulario.' },
   { icon: '✍️', title: 'Practica y te corregimos', text: 'Lee, escribe o responde. Si algo está mal, te lo <b>explicamos</b> para que aprendas. Puedes repetir las veces que quieras.' },
+  { icon: '📈', title: 'Tu progreso se guarda solo', text: 'Cada actividad que completas sube tu <b>porcentaje de avance</b>. Se guarda en tu cuenta, así que <b>no lo pierdes</b> aunque cambies de teléfono o computadora.' },
+  { icon: '🦌', title: 'Tu alce crece contigo', text: 'Arriba verás un <b>alce</b>: mientras más practicas y aciertas, evoluciona de <b>bebé a rey 👑</b>. Es tu compañero de avance — ¡hazlo crecer!' },
   { icon: '🏅', title: 'Gana tus medallas', text: 'Al dominar un nivel ganas tu medalla (<b>Bronce, Plata, Oro, Diamante</b>) y un certificado con tu nombre.' },
   { icon: '💬', title: '¿Dudas? Estamos aquí', text: 'Usa <b>«¿Necesitas ayuda?»</b> y te respondemos. Puedes volver a ver esta guía con el botón <b>«❓ Guía»</b>. ¡A empezar! 🚀' }
 ];
+let _onbScheduled = false;
 let _onbI = 0;
 function showOnboarding() { _onbI = 0; _renderOnb(); const m = document.getElementById('onboarding-modal'); if (m) m.classList.remove('hidden'); }
 function _renderOnb() {
@@ -6100,7 +6103,13 @@ function _highlightFirstAction() {
   setTimeout(() => btn.classList.remove('onb-pulse'), 6000);
 }
 function maybeShowOnboarding() {
-  try { const seen = parseInt(localStorage.getItem('scs_onboarding_seen') || '0', 10) || 0; if (seen < ONBOARDING_VERSION) setTimeout(showOnboarding, 700); } catch (e) {}
+  // Solo DENTRO de la plataforma (con sesión de alumno), nunca en el landing.
+  if (!window._sbSession) return;
+  if (_onbScheduled) return;
+  try {
+    const seen = parseInt(localStorage.getItem('scs_onboarding_seen') || '0', 10) || 0;
+    if (seen < ONBOARDING_VERSION) { _onbScheduled = true; setTimeout(showOnboarding, 800); }
+  } catch (e) {}
 }
 
 function renderHomeDashboard() {
