@@ -657,7 +657,6 @@
             <span class="text-sm">🔔</span>
             <span id="notif-badge" class="hidden absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-red-500 text-white text-[10px] font-black flex items-center justify-center leading-none">0</span>
           </button>
-          <button onclick="showOnboarding()" class="inline-flex items-center gap-1 text-xs font-semibold text-swe-blue bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-full px-2.5 py-0.5 transition-colors" title="¿Cómo funciona?">❓ Guía</button>
         </div>
       </div>
       <div class="flex items-center gap-1.5 bg-white rounded-2xl px-3 py-1.5 shadow-sm border border-orange-100 flex-shrink-0">
@@ -21726,6 +21725,7 @@ function _av2FichaHeader(stu) {
       <div class="flex flex-wrap gap-2">
         <button onclick="resendAccess('${id}')" class="${btn} bg-green-50 text-green-700 border-green-200 hover:bg-green-100">📧 Reenviar acceso</button>
         <button onclick="changeStudentEmail('${id}')" class="${btn} bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100">✏️ Cambiar correo</button>
+        <button onclick="editPayerEmail('${id}')" class="${btn} bg-teal-50 text-teal-700 border-teal-200 hover:bg-teal-100">💳 Correo pagador</button>
         <button onclick="setStudentPassword('${id}')" class="${btn} bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100">🔑 Contraseña</button>
         <button onclick="resetStudentDevices('${id}')" class="${btn} bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100">📱 Dispositivos</button>
         <button onclick="av2DeleteStudent('${id}')" class="${btn} bg-gray-50 text-gray-400 border-gray-200 hover:text-red-500 hover:border-red-200">🗑️ Eliminar</button>
@@ -25147,11 +25147,11 @@ const _ONB_SLIDES = [
   { icon: '👋', title: '¡Bienvenido/a a Sueco con Sophie!', text: 'Aquí aprendes sueco paso a paso. Te mostramos rapidito cómo funciona. Toca <b>«Siguiente»</b>.' },
   { icon: '🎯', title: 'Empieza con tu prueba de nivel', text: 'Responde unas preguntas y te ubicamos en tu nivel: <b>A, B, C o D</b>. Así practicas justo lo que necesitas.' },
   { icon: '📚', title: 'Todo está en «Aprender»', text: 'Ahí tienes: <b>Läsa</b> (leer), <b>Skriva</b> (escribir), <b>Tala</b> (hablar), <b>Hörförståelse</b> (escuchar), gramática y vocabulario.' },
-  { icon: '✍️', title: 'Practica y te corregimos', text: 'Lee, escribe o responde. Si algo está mal, te lo <b>explicamos</b> para que aprendas. Puedes repetir las veces que quieras.' },
+  { icon: '✍️', title: 'Practica y te corregimos', text: 'Lee, escribe o responde. Puedes repetir las veces que quieras.' },
   { icon: '📈', title: 'Tu progreso se guarda solo', text: 'Cada actividad que completas sube tu <b>porcentaje de avance</b>. Se guarda en tu cuenta, así que <b>no lo pierdes</b> aunque cambies de teléfono o computadora.' },
   { icon: '🦌', title: 'Tu alce crece contigo', text: 'Arriba verás un <b>alce</b>: mientras más practicas y aciertas, evoluciona de <b>bebé a rey 👑</b>. Es tu compañero de avance — ¡hazlo crecer!' },
   { icon: '🏅', title: 'Gana tus medallas', text: 'Al dominar un nivel ganas tu medalla (<b>Bronce, Plata, Oro, Diamante</b>) y un certificado con tu nombre.' },
-  { icon: '💬', title: '¿Dudas? Estamos aquí', text: 'Usa <b>«¿Necesitas ayuda?»</b> y te respondemos. Puedes volver a ver esta guía con el botón <b>«❓ Guía»</b>. ¡A empezar! 🚀' }
+  { icon: '💬', title: '¿Dudas? Estamos aquí', text: 'Usa <b>«¿Necesitas ayuda?»</b> y te respondemos cuando lo necesites. ¡A empezar! 🚀' }
 ];
 let _onbScheduled = false;
 let _onbI = 0;
