@@ -1884,6 +1884,8 @@
         <label class="block text-xs font-semibold text-gray-500 mb-1.5">Contraseña</label>
         <input id="adm-password" type="password" autocomplete="current-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm mb-5 focus:outline-none focus:ring-2 focus:ring-swe-blue/25 focus:border-swe-blue transition" />
         <button id="adm-btn" onclick="adminLogin()" class="w-full py-3 rounded-xl text-white font-bold text-sm shadow-md hover:opacity-95 transition" style="background:linear-gradient(135deg,#006AA7,#4f46e5);">Ingresar</button>
+        <div class="flex items-center gap-3 my-4"><div class="flex-1 h-px bg-gray-200"></div><span class="text-[11px] text-gray-400">o</span><div class="flex-1 h-px bg-gray-200"></div></div>
+        <button onclick="adminGoogleLogin()" class="w-full py-3 rounded-xl border border-gray-200 bg-white text-gray-700 font-semibold text-sm hover:bg-gray-50 transition flex items-center justify-center gap-2"><span>🔵</span> Continuar con Google</button>
         <div class="text-center mt-5">
           <button onclick="showView('login')" class="text-xs text-gray-400 hover:text-gray-600 underline">Soy alumno, no administrador</button>
         </div>

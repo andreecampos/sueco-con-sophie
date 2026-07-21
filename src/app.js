@@ -117,6 +117,10 @@ async function adminLogin() {
     goDashboardV2();
   } catch (e) { showErr('No se pudo iniciar sesión. Reintenta.'); }
 }
+async function adminGoogleLogin() {
+  try { await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin + '/admin' } }); }
+  catch (e) { const err = document.getElementById('adm-error'); if (err) { err.textContent = 'No se pudo iniciar con Google.'; err.classList.remove('hidden'); } }
+}
 function showView(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   const v = document.getElementById('view-' + id);
@@ -3964,6 +3968,7 @@ const AV2_NAV = [
   ] },
   { group: 'Plataforma', items: [
     { id: 'contenido', icon: '📚', label: 'Contenido', sub: 'Módulos y niveles', on: true },
+    { id: 'resenas', icon: '⭐', label: 'Reseñas', sub: 'Aprobar reseñas de alumnos', on: true },
     { id: 'notis', icon: '🔔', label: 'Notificaciones', sub: 'Avisos a alumnos', on: true }
   ] },
   { group: 'Sistema', items: [
@@ -4015,6 +4020,7 @@ function av2Nav(section) {
   else if (section === 'grupos') renderAv2Grupos();
   else if (section === 'productos') renderAv2Productos();
   else if (section === 'contenido') renderAv2Contenido();
+  else if (section === 'resenas') renderAv2Resenas();
   else if (section === 'notis') renderAv2Notis();
   else if (section === 'ecosistema') renderAv2Ecosistema();
   else if (section === 'ajustes') renderAv2Ajustes();
@@ -4489,6 +4495,61 @@ async function renderAv2Contenido() {
       <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-4 flex items-center gap-3"><span class="text-2xl">🏆</span><div><div class="font-bold text-gray-800 text-sm">Exámenes finales</div><div class="text-xs text-gray-400">${lv.length} niveles (SFI ${lv.join(', ')})</div></div></div>
     </div>` +
     _av2Note('Inventario en vivo del contenido cargado. Editar contenido se hace hoy en el <b>panel clásico</b> (pestañas por módulo). El editor visual dentro de este panel llegará en una fase posterior.');
+}
+
+// ═══ RESEÑAS ═══ (aprobar / ocultar / eliminar — reutiliza acciones existentes)
+let _av2Reviews = [];
+async function renderAv2Resenas() {
+  const c = document.getElementById('av2-content'); if (!c) return;
+  c.innerHTML = '<div class="text-center py-16 text-gray-400 text-sm">⏳ Cargando reseñas…</div>';
+  const result = await adminOps('list_reviews');
+  if (result.error) { c.innerHTML = '<div class="text-center py-16 text-sm text-red-500">No se pudieron cargar las reseñas.</div>'; return; }
+  _av2Reviews = result.reviews || [];
+  _av2PaintResenas();
+}
+let _av2RevFilter = 'pending';
+function _av2SetRevFilter(f) { _av2RevFilter = f; _av2PaintResenas(); }
+function _av2PaintResenas() {
+  const c = document.getElementById('av2-content'); if (!c) return;
+  const esc = (typeof escHtml === 'function') ? escHtml : (x => String(x == null ? '' : x));
+  const r = _av2Reviews;
+  const pend = r.filter(x => x.status === 'pending').length, appr = r.filter(x => x.status === 'approved').length, hid = r.filter(x => x.status === 'hidden').length;
+  const stars = n => '★★★★★☆☆☆☆☆'.slice(5 - (Number(n) || 0), 10 - (Number(n) || 0));
+  const chips = [['pending', '⏳ Pendientes', pend], ['approved', '✔ Publicadas', appr], ['hidden', '🚫 Ocultas', hid], ['all', 'Todas', r.length]];
+  const list = _av2RevFilter === 'all' ? r : r.filter(x => x.status === _av2RevFilter);
+  const cards = list.map(rv => {
+    const badge = rv.status === 'approved' ? '<span class="text-emerald-600 font-semibold">✔ Publicada</span>' : rv.status === 'hidden' ? '<span class="text-gray-400">🚫 Oculta</span>' : '<span class="text-amber-600 font-semibold">⏳ Pendiente</span>';
+    return `<div class="bg-white rounded-2xl p-4 border border-gray-100 av2-shadow">
+      <div class="flex items-start justify-between gap-2 mb-2">
+        <div><div class="font-bold text-gray-800 text-sm">${esc(rv.name || '—')}</div><div class="text-amber-400 text-sm">${stars(rv.rating)}</div></div>
+        <div class="text-[11px]">${badge}</div>
+      </div>
+      <p class="text-gray-700 text-sm mb-2">${esc(rv.comment || '')}</p>
+      <div class="flex gap-2 flex-wrap">
+        ${rv.status !== 'approved' ? `<button onclick="av2ModReview('${rv.id}','approved')" class="py-1.5 px-3 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-600 border border-emerald-200 hover:bg-emerald-100">✔ Aprobar</button>` : ''}
+        ${rv.status !== 'hidden' ? `<button onclick="av2ModReview('${rv.id}','hidden')" class="py-1.5 px-3 rounded-xl text-xs font-semibold bg-gray-50 text-gray-500 border border-gray-200 hover:bg-gray-100">🚫 Ocultar</button>` : ''}
+        <button onclick="av2DelReview('${rv.id}')" class="py-1.5 px-3 rounded-xl text-xs font-semibold bg-gray-50 text-gray-400 hover:text-red-500 border border-gray-200">🗑️</button>
+      </div>
+    </div>`;
+  }).join('') || '<div class="text-center py-12 text-gray-400 text-sm">Sin reseñas en esta vista.</div>';
+  c.innerHTML = _av2Head('Reseñas', 'Aprueba las reseñas de tus alumnos para mostrarlas en la landing') +
+    `<div class="flex flex-wrap gap-1.5 mb-4">${chips.map(ch => `<button onclick="_av2SetRevFilter('${ch[0]}')" class="text-xs font-semibold px-3 py-1.5 rounded-full border ${_av2RevFilter === ch[0] ? 'bg-swe-blue text-white border-swe-blue' : 'bg-white text-gray-600 border-gray-200 hover:border-swe-blue'}">${ch[1]} (${ch[2]})</button>`).join('')}</div>
+     <div class="space-y-2">${cards}</div>`;
+}
+async function av2ModReview(id, status) {
+  const result = await adminOps('moderate_review', { id, status });
+  if (result.error) { showToast('Error: ' + result.error, 'error'); return; }
+  const rv = _av2Reviews.find(x => x.id === id); if (rv) rv.status = status;
+  _av2PaintResenas();
+  showToast(status === 'approved' ? '✔ Reseña publicada' : 'Reseña actualizada', 'success');
+}
+async function av2DelReview(id) {
+  if (!confirm('¿Eliminar esta reseña? No se puede deshacer.')) return;
+  const result = await adminOps('delete_review', { id });
+  if (result.error) { showToast('Error: ' + result.error, 'error'); return; }
+  _av2Reviews = _av2Reviews.filter(x => x.id !== id);
+  _av2PaintResenas();
+  showToast('Reseña eliminada', 'info');
 }
 
 // ═══ NOTIFICACIONES ═══
