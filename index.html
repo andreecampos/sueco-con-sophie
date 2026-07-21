@@ -24698,7 +24698,9 @@ async function initUnifiedProgress() {
   // La guía de bienvenida se decide AQUÍ (con el progreso ya cargado), para saber
   // si esta persona ya la vio en su cuenta. Se muestra una sola vez por persona.
   try { maybeShowOnboarding(); } catch (e) {}
-  try { maybeShowAnnounce(); } catch (e) {}
+  // Aviso de actualización desactivado en este lanzamiento (la guía de onboarding
+  // ya cumple como bienvenida única). Se reactivará desde el CMS de notificaciones.
+  // try { maybeShowAnnounce(); } catch (e) {}
 }
 
 // Modal de Juanita al entrar si hay pago fallido, cancelado o inactivo (una vez por sesión).
