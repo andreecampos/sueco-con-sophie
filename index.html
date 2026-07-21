@@ -21693,10 +21693,18 @@ async function av2DeleteStudent(id) {
   if (_av2Section === 'usuarios') renderAv2Users();
 }
 // Cabecera de ficha: cuenta + pagos/suscripción + acciones (reutiliza funciones clásicas).
+// Avatar con foto real (storage) y fallback a iniciales si no existe.
+function _av2Avatar(id, name, cls) {
+  const ini = ((name || '?')[0] || '?').toUpperCase();
+  const base = (typeof SUPABASE_URL !== 'undefined' ? SUPABASE_URL : '');
+  const url = base + '/storage/v1/object/public/avatars/' + id + '/avatar.jpg';
+  return `<div class="${cls} rounded-full bg-swe-blue/10 text-swe-blue flex items-center justify-center font-black overflow-hidden shrink-0 relative"><span>${ini}</span><img src="${url}" alt="" class="absolute inset-0 w-full h-full object-cover" onerror="this.remove()" referrerpolicy="no-referrer"></div>`;
+}
 function _av2FichaHeader(stu) {
   if (!stu || !stu.id) return '';
   const id = stu.id;
   const esc = (typeof escHtml === 'function') ? escHtml : (x => String(x == null ? '' : x));
+  const nameJs = (stu.name || '').replace(/'/g, "\\'").replace(/</g, '');
   const status = stu.status || (stu.active ? 'active' : 'cancelled');
   const chip = ({ active: ['✅ Activo', 'bg-green-100 text-green-700'], manual: ['💵 Manual', 'bg-violet-100 text-violet-700'], failed: ['⚠️ Pago fallido', 'bg-red-100 text-red-700'], cancelling: ['🔶 Cancelando', 'bg-orange-100 text-orange-700'], cancelled: ['❌ Cancelado', 'bg-gray-100 text-gray-500'], pending: ['⏳ Pendiente', 'bg-amber-100 text-amber-700'] })[status] || [status, 'bg-gray-100 text-gray-500'];
   const statusOpts = ['active', 'manual', 'pending', 'failed', 'cancelling', 'cancelled'].map(v => `<option value="${v}" ${v === status ? 'selected' : ''}>${({ active: 'Activo', manual: 'Manual', pending: 'Pendiente', failed: 'Pago fallido', cancelling: 'Cancelando', cancelled: 'Cancelado' })[v]}</option>`).join('');
@@ -21707,24 +21715,26 @@ function _av2FichaHeader(stu) {
   const dev = (stu.device_keys || []).length;
   const dt = (d) => d ? _spDate(Date.parse(d)) : '—';
   const btn = 'text-xs font-semibold px-3 py-1.5 rounded-xl border transition-colors';
+  const row = (ic, label, val, cls) => `<div class="flex items-center gap-2 min-w-0"><span class="w-5 text-center">${ic}</span><span class="text-gray-400">${label}:</span> <b class="truncate ${cls || 'text-gray-700'}">${val}</b></div>`;
   return `
     <div class="bg-white border border-gray-100 rounded-2xl p-4 mb-4 av2-shadow">
-      <div class="flex items-center gap-3 mb-3">
-        <div class="w-11 h-11 rounded-full bg-swe-blue/10 text-swe-blue flex items-center justify-center font-black">${((stu.name || stu.email || '?')[0] || '?').toUpperCase()}</div>
-        <div class="flex-1 min-w-0"><div class="font-black text-gray-800 truncate">${esc(stu.name || '—')}</div><div class="text-xs text-gray-400 truncate">${esc(stu.email || '')}</div></div>
+      <div class="flex items-center gap-3 mb-4">
+        ${_av2Avatar(id, stu.name || stu.email, 'w-12 h-12 text-lg')}
+        <div class="flex-1 min-w-0"><div class="font-black text-gray-800 truncate">${esc(stu.name || '—')}</div><div class="text-xs text-gray-400 truncate">✉️ ${esc(stu.email || '')}</div></div>
         <span class="text-[10px] font-bold px-2 py-1 rounded-full ${chip[1]}">${chip[0]}</span>
       </div>
-      <!-- Pagos y suscripción -->
-      <div class="grid grid-cols-2 gap-y-1.5 gap-x-4 text-sm bg-gray-50 rounded-xl p-3 mb-3">
-        <div><span class="text-gray-400">Precio:</span> <b>${stu.price != null ? stu.price + ' SEK/mes' : '—'}</b></div>
-        <div><span class="text-gray-400">Forma de pago:</span> <b>${esc(stu.payment_method || '—')}</b></div>
-        <div><span class="text-gray-400">Próximo cobro:</span> <b>${dt(stu.next_payment_date)}</b></div>
-        <div><span class="text-gray-400">Último pago:</span> <b>${dt(stu.last_payment_date)}</b></div>
-        <div><span class="text-gray-400">Alta:</span> <b>${dt(stu.join_date || stu.created_at)}</b></div>
-        <div><span class="text-gray-400">Dispositivos:</span> <b>${dev}/${maxDev}</b></div>
-        ${stu.stripe_customer_id ? `<div class="col-span-2 truncate"><span class="text-gray-400">Stripe ID:</span> <b class="font-mono text-[11px]">${esc(stu.stripe_customer_id)}</b></div>` : ''}
-        ${stu.payer_email ? `<div class="col-span-2 truncate"><span class="text-gray-400">Paga:</span> <b>${esc(stu.payer_email)}</b></div>` : ''}
-        ${link ? `<div class="col-span-2 truncate"><span class="text-gray-400">Payment Link:</span> <a href="${link}" target="_blank" class="text-swe-blue font-semibold hover:underline">${link}</a></div>` : ''}
+      <!-- Cuenta -->
+      <div class="text-[11px] font-bold uppercase tracking-wide text-gray-400 mb-1.5">💳 Pagos y suscripción</div>
+      <div class="grid sm:grid-cols-2 gap-y-1.5 gap-x-4 text-sm bg-gray-50 rounded-xl p-3 mb-3">
+        ${row('💰', 'Precio', stu.price != null ? stu.price + ' SEK/mes' : '—')}
+        ${row('🏦', 'Forma de pago', esc(stu.payment_method || '—'))}
+        ${row('📅', 'Próximo cobro', dt(stu.next_payment_date), 'text-gray-800')}
+        ${row('✅', 'Último pago', dt(stu.last_payment_date))}
+        ${row('🗓️', 'Alta', dt(stu.join_date || stu.created_at))}
+        ${row('📱', 'Dispositivos', dev + '/' + maxDev)}
+        ${row('💳', 'Correo pagador', stu.payer_email ? esc(stu.payer_email) : '<span class="text-gray-300 font-normal">— sin registrar</span>')}
+        ${stu.stripe_customer_id ? `<div class="flex items-center gap-2 min-w-0"><span class="w-5 text-center">🆔</span><span class="text-gray-400">Stripe:</span> <b class="font-mono text-[11px] truncate">${esc(stu.stripe_customer_id)}</b></div>` : ''}
+        ${link ? `<div class="sm:col-span-2 flex items-center gap-2 min-w-0"><span class="w-5 text-center">🔗</span><span class="text-gray-400">Payment Link:</span> <a href="${link}" target="_blank" class="text-swe-blue font-semibold hover:underline truncate">${link}</a></div>` : ''}
       </div>
       <!-- Estado + grupo -->
       <div class="flex flex-wrap items-center gap-2 mb-3">
@@ -21738,9 +21748,24 @@ function _av2FichaHeader(stu) {
         <button onclick="editPayerEmail('${id}')" class="${btn} bg-teal-50 text-teal-700 border-teal-200 hover:bg-teal-100">💳 Correo pagador</button>
         <button onclick="setStudentPassword('${id}')" class="${btn} bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100">🔑 Contraseña</button>
         <button onclick="resetStudentDevices('${id}')" class="${btn} bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100">📱 Dispositivos</button>
+        <button onclick="av2NotifyStudent('${id}','${nameJs}')" class="${btn} bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200 hover:bg-fuchsia-100">🔔 Notificar</button>
         <button onclick="av2DeleteStudent('${id}')" class="${btn} bg-gray-50 text-gray-400 border-gray-200 hover:text-red-500 hover:border-red-200">🗑️ Eliminar</button>
       </div>
     </div>`;
+}
+// Notificación individual a un alumno (guardada en config.student_notifs; el alumno la ve 1 vez).
+async function av2NotifyStudent(id, name) {
+  const title = prompt('Título del aviso para ' + (name || 'este alumno') + ':', '');
+  if (title === null) return;
+  const body = prompt('Mensaje:', '');
+  if (body === null) return;
+  if (!title.trim() && !body.trim()) { showToast('Escribe un título o mensaje', 'error'); return; }
+  const raw = await _av2RawConfig();
+  const map = raw.student_notifs || {};
+  map[id] = { id: 'sn' + Date.now().toString(36), emoji: '🔔', title: title.trim(), body: body.trim() };
+  const r = await _av2SaveRawConfig({ student_notifs: map });
+  if (r && r.error) { showToast('Error: ' + r.error, 'error'); return; }
+  showToast('🔔 Aviso enviado a ' + (name || 'el alumno') + ' (lo verá al entrar)', 'success');
 }
 
 function _buildStudentProgressHTML(rep, nivelLast) {
@@ -22200,16 +22225,16 @@ let _av2UserSearch = '';
 let _av2Page = 0;
 const AV2_PAGE_SIZE = 50;
 const AV2_FILTERS = [
-  { id: 'all', label: 'Todos' },
-  { id: 'active', label: 'Activos' },
-  { id: 'failed', label: 'Pago fallido' },
-  { id: 'cancelling', label: 'Cancelando' },
-  { id: 'cancelled', label: 'Cancelados' },
-  { id: 'manual', label: 'Manuales' },
-  { id: 'next7', label: 'Próximo cobro (7d)' },
-  { id: 'inactive', label: 'Sin actividad (+14d)' },
-  { id: 'new', label: 'Nuevos (7d)' },
-  { id: 'recent', label: 'Últimos registrados' }
+  { id: 'all', label: 'Todos', icon: '👥', color: '#006AA7' },
+  { id: 'active', label: 'Activos', icon: '✅', color: '#16a34a' },
+  { id: 'failed', label: 'Pago fallido', icon: '⚠️', color: '#dc2626' },
+  { id: 'cancelling', label: 'Cancelando', icon: '🔶', color: '#ea580c' },
+  { id: 'cancelled', label: 'Cancelados', icon: '❌', color: '#6b7280' },
+  { id: 'manual', label: 'Manuales', icon: '💵', color: '#7c3aed' },
+  { id: 'next7', label: 'Cobro (7d)', icon: '📅', color: '#2563eb' },
+  { id: 'inactive', label: 'Sin actividad', icon: '💤', color: '#d97706' },
+  { id: 'new', label: 'Nuevos (7d)', icon: '✨', color: '#0891b2' },
+  { id: 'recent', label: 'Recientes', icon: '🕒', color: '#0d9488' }
 ];
 function _av2Match(s, f) {
   const isActive = s.status === 'active' || s.status === 'manual' || (!s.status && s.active);
@@ -22234,7 +22259,19 @@ async function renderAv2Users() {
   const students = await getStudents();
   if (_lastStudentsError) { c.innerHTML = '<div class="text-center py-16 text-sm text-red-500">No se pudieron cargar los usuarios. Recarga la sesión.</div>'; return; }
   _av2Page = 0;
+  let cfg = {}; try { cfg = await getStripeConfig(); } catch (e) {}
+  const m = dashMetricsFull(students, (cfg && (cfg.priceNew || cfg.priceLegacy)) || 339);
+  const sum = (icon, bg, col, label, value) => `<div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-3 flex items-center gap-2.5">
+      <div class="w-9 h-9 rounded-xl flex items-center justify-center text-lg" style="background:${bg};color:${col}">${icon}</div>
+      <div><div class="text-lg font-extrabold text-gray-900 leading-none">${value}</div><div class="text-[11px] text-gray-400 mt-0.5">${label}</div></div>
+    </div>`;
   c.innerHTML = _av2Head('Usuarios', students.length + ' alumnos registrados') + `
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+      ${sum('✅', '#f0fdf4', '#16a34a', 'Activos', m.active.length)}
+      ${sum('✨', '#ecfeff', '#0891b2', 'Nuevos (7 días)', m.newThisWeek.length)}
+      ${sum('💤', '#fffbeb', '#d97706', 'Sin actividad +14d', m.inactive14.length)}
+      ${sum('📅', '#eff6ff', '#2563eb', 'Cobro próx. 7 días', m.next7.length)}
+    </div>
     <div class="mb-3 flex justify-end">
       <button onclick="document.getElementById('av2-add-form').classList.toggle('hidden')" class="text-xs font-bold px-3 py-2 rounded-xl bg-swe-blue text-white hover:bg-swe-dark transition-colors">+ Agregar alumno</button>
     </div>
@@ -22260,10 +22297,12 @@ async function renderAv2Users() {
 }
 function _av2PaintChips() {
   const box = document.getElementById('av2-filter-chips'); if (!box) return;
+  const list = _cachedStudents || [];
   box.innerHTML = AV2_FILTERS.map(f => {
     const active = _av2UserFilter === f.id;
-    const cls = active ? 'bg-swe-blue text-white border-swe-blue' : 'bg-white text-gray-600 border-gray-200 hover:border-swe-blue';
-    return `<button onclick="_av2SetFilter('${f.id}')" class="text-xs font-semibold px-3 py-1.5 rounded-full border ${cls} transition-colors">${f.label}</button>`;
+    const n = list.filter(s => _av2Match(s, f.id)).length;
+    const style = active ? `background:${f.color};border-color:${f.color};color:#fff` : `border-color:${f.color}33;color:${f.color}`;
+    return `<button onclick="_av2SetFilter('${f.id}')" class="text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors flex items-center gap-1.5 ${active ? '' : 'bg-white hover:bg-gray-50'}" style="${style}"><span>${f.icon}</span>${f.label}<span class="opacity-70">${n}</span></button>`;
   }).join('');
 }
 function _av2SetFilter(f) { _av2UserFilter = f; _av2Page = 0; _av2PaintChips(); _av2PaintUsers(); }
@@ -22291,7 +22330,7 @@ function _av2PaintUsers() {
   const days = (s) => { if (!s.lastLogin) return 'nunca'; const d = Math.floor((Date.now() - new Date(s.lastLogin).getTime()) / 86400000); return d === 0 ? 'hoy' : d + 'd'; };
   box.innerHTML = list.length ? list.map(s => `
     <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-3 flex items-center gap-3">
-      <div class="w-9 h-9 rounded-full bg-swe-blue/10 text-swe-blue flex items-center justify-center font-black text-sm shrink-0">${((s.name || s.email || '?')[0] || '?').toUpperCase()}</div>
+      ${_av2Avatar(s.id, s.name || s.email, 'w-9 h-9 text-sm')}
       <div class="flex-1 min-w-0">
         <div class="font-bold text-gray-800 text-sm truncate">${(s.name || '—')}</div>
         <div class="text-xs text-gray-400 truncate">${(s.email || '')}</div>
@@ -22396,30 +22435,43 @@ async function renderAv2Productos() {
   const price = cfg.priceNew || cfg.priceLegacy || 339;
   const isActive = s => s.status === 'active' || s.status === 'manual' || (!s.status && s.active);
   const active = (students || []).filter(isActive);
-  // Desglose por precio real
+  const esc = (typeof escHtml === 'function') ? escHtml : (x => String(x == null ? '' : x));
+  const dt = (d) => d ? _spDate(Date.parse(d)) : '—';
+  // Desglose por precio real (clicable → alumnos que pagan ese precio)
   const byPrice = {};
   active.forEach(s => { const p = s.price || price; (byPrice[p] = byPrice[p] || []).push(s); });
-  const rows = Object.keys(byPrice).map(Number).sort((a, b) => a - b).map(p => {
-    const n = byPrice[p].length;
-    return `<div class="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0">
-      <div class="flex items-center gap-2"><span class="text-sm font-semibold text-gray-700">${p} SEK<span class="text-gray-400 font-normal">/mes</span></span><span class="text-xs text-gray-400">× ${n}</span></div>
-      <span class="text-sm font-bold text-gray-900">${_av2Sek(n * p)}</span></div>`;
+  const palette = ['#006AA7', '#7c3aed', '#059669', '#ea580c', '#db2777', '#0891b2'];
+  const rows = Object.keys(byPrice).map(Number).sort((a, b) => a - b).map((p, i) => {
+    const list = byPrice[p]; const n = list.length; const col = palette[i % palette.length];
+    const members = list.map(s => `<div class="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-gray-50 text-sm">
+        ${_av2Avatar(s.id, s.name || s.email, 'w-6 h-6 text-[10px]')}
+        <button onclick="openStudentProgress('${s.id}','${(s.name || '').replace(/'/g, "\\'").replace(/</g, '')}')" class="flex-1 min-w-0 text-left truncate text-gray-700 hover:text-swe-blue">${esc(s.name || s.email || '—')}</button>
+        <span class="text-[11px] text-gray-400 shrink-0">📅 ${dt(s.nextPaymentDate)}</span>
+        <span class="text-[11px] text-gray-300 shrink-0 hidden sm:inline">✅ ${dt(s.lastPaymentDate)}</span>
+      </div>`).join('');
+    return `<div class="border border-gray-100 rounded-xl overflow-hidden">
+      <button onclick="const b=this.nextElementSibling;b.classList.toggle('hidden');this.querySelector('.av2-caret').textContent=b.classList.contains('hidden')?'▸':'▾'" class="w-full flex items-center justify-between gap-2 p-3 hover:bg-gray-50 transition-colors">
+        <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full" style="background:${col}"></span><span class="text-sm font-bold text-gray-800">${p} SEK<span class="text-gray-400 font-normal">/mes</span></span><span class="text-xs text-gray-400">× ${n} alumno${n !== 1 ? 's' : ''}</span></span>
+        <span class="flex items-center gap-2"><b class="text-sm text-gray-900">${_av2Sek(n * p)}</b><span class="av2-caret text-gray-400">▸</span></span>
+      </button>
+      <div class="hidden border-t border-gray-50 p-2 bg-gray-50/50 space-y-0.5 max-h-64 overflow-y-auto">${members}</div>
+    </div>`;
   }).join('') || '<div class="text-sm text-gray-400 py-3">Sin alumnos activos.</div>';
   const link = cfg.link || '';
-  c.innerHTML = _av2Head('Productos y planes', 'Suscripción y precios actuales') + `
-    <div class="grid lg:grid-cols-2 gap-4">
+  c.innerHTML = _av2Head('Productos y planes', 'Suscripción y precios · toca un precio para ver quién lo paga') + `
+    <div class="grid lg:grid-cols-2 gap-4 items-start">
       <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-5">
         <div class="flex items-center justify-between mb-1"><div class="text-sm font-bold text-gray-800">Plan actual</div><span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-50 text-green-700">ACTIVO</span></div>
         <div class="text-[32px] font-extrabold text-gray-900 leading-none mt-2">${price} <span class="text-base font-medium text-gray-400">SEK/mes</span></div>
         <div class="text-xs text-gray-400 mt-1">Acceso completo a la plataforma SFI (A–D)</div>
-        ${link ? `<div class="mt-4 text-xs"><span class="text-gray-400">Link de pago:</span> <a href="${link}" target="_blank" class="text-swe-blue font-semibold break-all hover:underline">${link}</a></div>` : ''}
+        ${link ? `<div class="mt-4 text-xs"><span class="text-gray-400">🔗 Link de pago:</span> <a href="${link}" target="_blank" class="text-swe-blue font-semibold break-all hover:underline">${link}</a></div>` : ''}
       </div>
       <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-5">
-        <div class="text-sm font-bold text-gray-800 mb-2">Ingresos por precio (activos)</div>
-        ${rows}
+        <div class="text-sm font-bold text-gray-800 mb-3">💵 Ingresos por precio (activos)</div>
+        <div class="space-y-2">${rows}</div>
       </div>
     </div>` +
-    _av2Note('Precios y link se editan hoy en <b>Ajustes → Configuración de Stripe</b>. Crear múltiples productos/planes con su propio Price ID llegará con la migración de la Fase 1 (tabla <b>products</b>).');
+    _av2Note('Precios y link se editan en <b>Ajustes</b>. Crear múltiples productos con su propio Price ID llegará con la migración (tabla <b>products</b>).');
 }
 
 // ═══ CONTENIDO ═══ (inventario real desde el contenido cargado)
@@ -23440,11 +23492,12 @@ async function getStripeConfig() {
         priceNew: parseInt(cfg.price_new || '339'),
         announce: cfg.announce_active || null,
         groupsMeta: cfg.groups_meta || {},
+        studentNotifs: cfg.student_notifs || {},
       };
     }
   } catch(e) {
     console.error('getStripeConfig error:', e);
-    _stripeConfigCache = { link: '', priceNew: 339, announce: null, groupsMeta: {} };
+    _stripeConfigCache = { link: '', priceNew: 339, announce: null, groupsMeta: {}, studentNotifs: {} };
   }
   return _stripeConfigCache;
 }
@@ -25247,7 +25300,13 @@ let _activeAnnId = null;
 async function maybeShowAnnounce() {
   if (!window._sbSession) return;
   let ann = null;
-  try { const cfg = await getStripeConfig(); ann = cfg && cfg.announce; } catch (e) {}
+  try {
+    const cfg = await getStripeConfig();
+    // Prioridad: notificación individual para ESTE alumno; si no, el aviso global.
+    const myId = window._sbSession.id;
+    const perStudent = cfg && cfg.studentNotifs && myId ? cfg.studentNotifs[myId] : null;
+    ann = perStudent || (cfg && cfg.announce);
+  } catch (e) {}
   if (!ann || !ann.id || ann.active === false) return;  // no hay aviso activo
   const key = 'ann_' + ann.id;
   let seenLocal = false, seenDB = false;
