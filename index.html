@@ -20465,7 +20465,9 @@ async function manageSubscription() {
     if (result.url) {
       window.location.href = result.url;
     } else {
-      showToast('No se pudo abrir el portal. Contacta a Sophie.', 'error');
+      // Diagnóstico: registrar y mostrar el mensaje real de Stripe
+      console.error('create_portal_session →', 'status', res.status, '| error:', result.error, '| code:', result.stripe_code, '| type:', result.stripe_type);
+      showToast('Portal Stripe: ' + (result.error || 'error desconocido'), 'error');
     }
   } catch(e) {
     console.error('manageSubscription error:', e);

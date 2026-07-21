@@ -330,11 +330,21 @@ Deno.serve(async (req) => {
             status: 400, headers: corsHeaders
           })
         }
-        const portalSession = await stripe.billingPortal.sessions.create({
-          customer: customer_id,
-          return_url: return_url || 'https://app.suecoconsophie.com',
-        })
-        return new Response(JSON.stringify({ url: portalSession.url }), { headers: corsHeaders })
+        try {
+          const portalSession = await stripe.billingPortal.sessions.create({
+            customer: customer_id,
+            return_url: return_url || 'https://app.suecoconsophie.com',
+          })
+          return new Response(JSON.stringify({ url: portalSession.url }), { headers: corsHeaders })
+        } catch (se) {
+          // Registrar el mensaje COMPLETO de Stripe para diagnóstico
+          console.error('create_portal_session Stripe error:', se?.type, se?.code, se?.statusCode, se?.message, se?.raw?.message)
+          return new Response(JSON.stringify({
+            error: se?.message || 'stripe_error',
+            stripe_code: se?.code || null,
+            stripe_type: se?.type || null,
+          }), { status: 200, headers: corsHeaders })
+        }
       }
 
       // Progreso completo de un alumno (solo lectura). El admin ve el MISMO
