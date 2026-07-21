@@ -20504,11 +20504,18 @@ document.addEventListener('DOMContentLoaded', async () => {
       window._sbSession = { email: session.user.email, id: session.user.id, name: session.user.user_metadata?.name || session.user.user_metadata?.full_name || (student ? student.name : (session.user.email || '')), active: student ? student.active : true, status: student ? student.status : 'active' };
       const adminBtn = document.getElementById('admin-btn-home');
       if (adminBtn) adminBtn.style.display = isAdminUser() ? '' : 'none';
-      // Sesión válida → siempre a la plataforma (aunque entre por "/" o "/alumnos")
-      showView('home');
-      renderHomeDashboard();
-      initUnifiedProgress();
-      if (_wantAdmin && isAdminUser()) { _wantAdmin = false; goDashboardV2(); }
+      // "/admin" → dashboard profesional
+      if (_wantAdmin && isAdminUser()) { _wantAdmin = false; goDashboardV2(); return; }
+      // "/plataforma" o "/alumnos" → plataforma del alumno
+      if (_isPlatformPath || _isLoginPath) {
+        showView('home');
+        renderHomeDashboard();
+        initUnifiedProgress();
+        return;
+      }
+      // Raíz "/" u otra ruta pública → mostrar la landing AUNQUE haya sesión
+      showView('alumnos');
+      initAlumnosPage();
       return;
     }
     await sb.auth.signOut();
@@ -21138,7 +21145,7 @@ async function sendResetEmail() {
   // Respaldo: si por algo falla la función, intenta el método nativo de Supabase.
   if (!ok) {
     try {
-      const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: 'https://app.suecoconsophie.com' });
+      const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: 'https://suecoconsophie.com' });
       ok = !error;
     } catch (e) { ok = false; }
   }
