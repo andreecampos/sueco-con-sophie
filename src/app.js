@@ -3688,7 +3688,11 @@ async function openStudentProgress(id, name) {
   const rep = await adminOps('student_report', { id });
   if (!_spOpen) return; // el admin cerró mientras cargaba
   if (!rep || rep.error) {
-    if (body) body.innerHTML = '<div class="text-center py-10 text-sm text-red-500">No se pudo cargar el progreso' + (rep && rep.error ? ' (' + _spEsc(rep.error) + ')' : '') + '. Reintenta.</div>';
+    // Sin el edge desplegado igual mostramos la ficha (cuenta + acciones) desde datos cacheados.
+    const cs = (_cachedStudents || []).find(x => x.id === id);
+    const stuFallback = cs ? { id: cs.id, name: cs.name, email: cs.email, status: cs.status, active: cs.active, price: cs.price, payment_method: cs.paymentMethod, stripe_customer_id: cs.stripeCustomerId, next_payment_date: cs.nextPaymentDate, last_payment_date: cs.lastPaymentDate, join_date: cs.joinDate, created_at: cs.createdAt, device_keys: cs.deviceKeys, grupo: cs.grupo, payer_email: cs.payerEmail } : null;
+    if (body) body.innerHTML = (stuFallback ? _av2FichaHeader(stuFallback) : '') +
+      '<div class="text-center py-6 text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-2xl">El <b>progreso detallado</b> requiere desplegar la edge function <b>admin-ops</b> (acción student_report).' + (rep && rep.error ? '<br><span class="text-xs text-amber-600">' + _spEsc(rep.error) + '</span>' : '') + '</div>';
     return;
   }
 
@@ -3738,6 +3742,64 @@ async function openStudentProgress(id, name) {
 
 function _spModuleActLabel(mt) {
   return ({ theory: 'Completó una teoría', grammar: 'Practicó gramática', reading: 'Completó una lectura (Läsa)', writing: 'Completó escritura (Skriva)', listening: 'Completó comprensión auditiva (Hörförståelse)', achievement: 'Desbloqueó un logro' })[mt] || 'Actividad';
+}
+
+// Cierra el modal, elimina y refresca (usa la función clásica).
+async function av2DeleteStudent(id) {
+  if (!confirm('¿Eliminar este alumno definitivamente? Esta acción no se puede deshacer.')) return;
+  await deleteStudent(id);
+  try { closeStudentProgress(); } catch (e) {}
+  _cachedStudents = null;
+  if (_av2Section === 'usuarios') renderAv2Users();
+}
+// Cabecera de ficha: cuenta + pagos/suscripción + acciones (reutiliza funciones clásicas).
+function _av2FichaHeader(stu) {
+  if (!stu || !stu.id) return '';
+  const id = stu.id;
+  const esc = (typeof escHtml === 'function') ? escHtml : (x => String(x == null ? '' : x));
+  const status = stu.status || (stu.active ? 'active' : 'cancelled');
+  const chip = ({ active: ['✅ Activo', 'bg-green-100 text-green-700'], manual: ['💵 Manual', 'bg-violet-100 text-violet-700'], failed: ['⚠️ Pago fallido', 'bg-red-100 text-red-700'], cancelling: ['🔶 Cancelando', 'bg-orange-100 text-orange-700'], cancelled: ['❌ Cancelado', 'bg-gray-100 text-gray-500'], pending: ['⏳ Pendiente', 'bg-amber-100 text-amber-700'] })[status] || [status, 'bg-gray-100 text-gray-500'];
+  const statusOpts = ['active', 'manual', 'pending', 'failed', 'cancelling', 'cancelled'].map(v => `<option value="${v}" ${v === status ? 'selected' : ''}>${({ active: 'Activo', manual: 'Manual', pending: 'Pendiente', failed: 'Pago fallido', cancelling: 'Cancelando', cancelled: 'Cancelado' })[v]}</option>`).join('');
+  const grupos = (typeof GRUPOS !== 'undefined') ? GRUPOS : [];
+  const groupOpts = ['<option value="">— Sin grupo —</option>'].concat(grupos.map(g => `<option value="${esc(g)}" ${stu.grupo === g ? 'selected' : ''}>${esc(g)}</option>`)).join('');
+  const link = (typeof _stripeConfigCache !== 'undefined' && _stripeConfigCache && _stripeConfigCache.link) || '';
+  const maxDev = (typeof MAX_DEVICES !== 'undefined') ? MAX_DEVICES : 2;
+  const dev = (stu.device_keys || []).length;
+  const dt = (d) => d ? _spDate(Date.parse(d)) : '—';
+  const btn = 'text-xs font-semibold px-3 py-1.5 rounded-xl border transition-colors';
+  return `
+    <div class="bg-white border border-gray-100 rounded-2xl p-4 mb-4 av2-shadow">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-11 h-11 rounded-full bg-swe-blue/10 text-swe-blue flex items-center justify-center font-black">${((stu.name || stu.email || '?')[0] || '?').toUpperCase()}</div>
+        <div class="flex-1 min-w-0"><div class="font-black text-gray-800 truncate">${esc(stu.name || '—')}</div><div class="text-xs text-gray-400 truncate">${esc(stu.email || '')}</div></div>
+        <span class="text-[10px] font-bold px-2 py-1 rounded-full ${chip[1]}">${chip[0]}</span>
+      </div>
+      <!-- Pagos y suscripción -->
+      <div class="grid grid-cols-2 gap-y-1.5 gap-x-4 text-sm bg-gray-50 rounded-xl p-3 mb-3">
+        <div><span class="text-gray-400">Precio:</span> <b>${stu.price != null ? stu.price + ' SEK/mes' : '—'}</b></div>
+        <div><span class="text-gray-400">Forma de pago:</span> <b>${esc(stu.payment_method || '—')}</b></div>
+        <div><span class="text-gray-400">Próximo cobro:</span> <b>${dt(stu.next_payment_date)}</b></div>
+        <div><span class="text-gray-400">Último pago:</span> <b>${dt(stu.last_payment_date)}</b></div>
+        <div><span class="text-gray-400">Alta:</span> <b>${dt(stu.join_date || stu.created_at)}</b></div>
+        <div><span class="text-gray-400">Dispositivos:</span> <b>${dev}/${maxDev}</b></div>
+        ${stu.stripe_customer_id ? `<div class="col-span-2 truncate"><span class="text-gray-400">Stripe ID:</span> <b class="font-mono text-[11px]">${esc(stu.stripe_customer_id)}</b></div>` : ''}
+        ${stu.payer_email ? `<div class="col-span-2 truncate"><span class="text-gray-400">Paga:</span> <b>${esc(stu.payer_email)}</b></div>` : ''}
+        ${link ? `<div class="col-span-2 truncate"><span class="text-gray-400">Payment Link:</span> <a href="${link}" target="_blank" class="text-swe-blue font-semibold hover:underline">${link}</a></div>` : ''}
+      </div>
+      <!-- Estado + grupo -->
+      <div class="flex flex-wrap items-center gap-2 mb-3">
+        <select onchange="updateStudentStatus('${id}', this.value)" class="text-xs font-semibold px-2.5 py-1.5 rounded-xl border border-gray-200 bg-white">${statusOpts}</select>
+        <select onchange="updateStudentGroup('${id}', this.value)" class="text-xs font-semibold px-2.5 py-1.5 rounded-xl border border-gray-200 bg-white">${groupOpts}</select>
+      </div>
+      <!-- Acciones -->
+      <div class="flex flex-wrap gap-2">
+        <button onclick="resendAccess('${id}')" class="${btn} bg-green-50 text-green-700 border-green-200 hover:bg-green-100">📧 Reenviar acceso</button>
+        <button onclick="changeStudentEmail('${id}')" class="${btn} bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100">✏️ Cambiar correo</button>
+        <button onclick="setStudentPassword('${id}')" class="${btn} bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100">🔑 Contraseña</button>
+        <button onclick="resetStudentDevices('${id}')" class="${btn} bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100">📱 Dispositivos</button>
+        <button onclick="av2DeleteStudent('${id}')" class="${btn} bg-gray-50 text-gray-400 border-gray-200 hover:text-red-500 hover:border-red-200">🗑️ Eliminar</button>
+      </div>
+    </div>`;
 }
 
 function _buildStudentProgressHTML(rep, nivelLast) {
@@ -3883,7 +3945,7 @@ function _buildStudentProgressHTML(rep, nivelLast) {
   }
   const resumen = `<div class="bg-cyan-50 border border-cyan-200 rounded-2xl p-4 mb-1"><div class="font-black text-cyan-800 text-sm mb-1">🧭 Resumen</div><ul class="text-sm text-cyan-900 space-y-1">${summary.map(s => '<li>• ' + s + '</li>').join('')}</ul><div class="text-[10px] text-cyan-500 mt-2">Generado automáticamente a partir de reglas y de los datos existentes del alumno (sin IA).</div></div>`;
 
-  return general + nivelBox + generalProg + modules + exams + logros + actividad + resumen;
+  return _av2FichaHeader(stu) + general + nivelBox + generalProg + modules + exams + logros + actividad + resumen;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -3913,8 +3975,17 @@ function _av2Item(id) { for (const g of AV2_NAV) { const it = g.items.find(x => 
 let _av2Section = 'resumen';
 let _av2Charts = {};
 
-function goDashboardV2() {
-  if (typeof isAdminUser === 'function' && !isAdminUser()) { if (typeof showToast === 'function') showToast('No tienes acceso de administrador.', 'error'); return; }
+async function goDashboardV2() {
+  // Robustez: evita falsos "no admin" por carrera de sesión — reconfirma con la sesión viva.
+  if (!isAdminUser()) {
+    try {
+      const { data: { session } } = await sb.auth.getSession();
+      if (session && typeof ADMIN_EMAILS !== 'undefined' && ADMIN_EMAILS.includes((session.user.email || '').toLowerCase())) {
+        window._sbSession = window._sbSession || { email: session.user.email, id: session.user.id, name: 'Admin', active: true, status: 'active' };
+      }
+    } catch (e) {}
+  }
+  if (!isAdminUser()) { showView('adminlogin'); return; }
   state.adminLoggedIn = true;
   showView('admin-v2');
   try { const e = (window._sbSession && window._sbSession.email) || ''; const ini = (e[0] || 'A').toUpperCase(); const av = document.getElementById('av2-avatar'); if (av) av.textContent = ini; const nm = document.getElementById('av2-admin-name'); if (nm && e) nm.textContent = e; } catch (e) {}
@@ -4219,6 +4290,20 @@ async function renderAv2Users() {
   if (_lastStudentsError) { c.innerHTML = '<div class="text-center py-16 text-sm text-red-500">No se pudieron cargar los usuarios. Recarga la sesión.</div>'; return; }
   _av2Page = 0;
   c.innerHTML = _av2Head('Usuarios', students.length + ' alumnos registrados') + `
+    <div class="mb-3 flex justify-end">
+      <button onclick="document.getElementById('av2-add-form').classList.toggle('hidden')" class="text-xs font-bold px-3 py-2 rounded-xl bg-swe-blue text-white hover:bg-swe-dark transition-colors">+ Agregar alumno</button>
+    </div>
+    <div id="av2-add-form" class="hidden bg-white border border-gray-100 rounded-2xl p-4 sm:p-5 av2-shadow mb-4">
+      <div class="grid sm:grid-cols-2 gap-3">
+        <div><label class="block text-xs font-semibold text-gray-500 mb-1">Nombre completo *</label><input id="av2-s-name" placeholder="María García" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm" /></div>
+        <div><label class="block text-xs font-semibold text-gray-500 mb-1">Correo electrónico *</label><input id="av2-s-email" type="email" placeholder="maria@correo.com" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm" /></div>
+        <div><label class="block text-xs font-semibold text-gray-500 mb-1">Contraseña *</label><input id="av2-s-password" placeholder="Mínimo 6 caracteres" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm" /></div>
+        <div><label class="block text-xs font-semibold text-gray-500 mb-1">Precio (SEK/mes)</label><input id="av2-s-price" type="number" placeholder="339" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm" /></div>
+        <div><label class="block text-xs font-semibold text-gray-500 mb-1">Forma de pago</label><select id="av2-s-paymethod" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm bg-white"><option value="manual">💵 Manual / Efectivo</option><option value="stripe">💳 Stripe</option></select></div>
+        <div><label class="block text-xs font-semibold text-gray-500 mb-1">Estado</label><select id="av2-s-status" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm bg-white"><option value="active">✅ Activo</option><option value="manual">💵 Manual</option><option value="pending">⏳ Pendiente</option></select></div>
+      </div>
+      <button id="av2-s-btn" onclick="av2AddStudent()" class="mt-4 w-full py-2.5 rounded-xl bg-swe-blue text-white font-bold text-sm hover:bg-swe-dark transition-colors">+ Agregar alumno</button>
+    </div>
     <div class="mb-3">
       <input id="av2-user-search" oninput="_av2FilterUsers(this.value)" value="${(_av2UserSearch || '').replace(/"/g, '&quot;')}" placeholder="🔎 Buscar por nombre, correo, teléfono o Stripe Customer ID…" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-swe-blue/25 focus:border-swe-blue transition" />
     </div>
@@ -4284,6 +4369,20 @@ function _av2PaintUsers() {
   }
 }
 function _av2PageMove(d) { _av2Page += d; _av2PaintUsers(); const el = document.getElementById('av2-content'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+async function av2AddStudent() {
+  const val = id => (document.getElementById(id)?.value || '').trim();
+  const name = val('av2-s-name'), email = val('av2-s-email').toLowerCase(), password = val('av2-s-password');
+  if (!name || !email || !password) { showToast('Nombre, correo y contraseña son obligatorios', 'error'); return; }
+  if (password.length < 6) { showToast('La contraseña debe tener al menos 6 caracteres', 'error'); return; }
+  const btn = document.getElementById('av2-s-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Guardando…'; }
+  const result = await adminOps('create_student', { name, email, studentPassword: password, status: val('av2-s-status') || 'active', price: parseInt(val('av2-s-price') || '0') || 0, paymentMethod: val('av2-s-paymethod') || 'manual' });
+  if (btn) { btn.disabled = false; btn.textContent = '+ Agregar alumno'; }
+  if (result.error) { showToast('Error: ' + result.error, 'error'); return; }
+  showToast('✅ Alumno "' + name + '" agregado', 'success');
+  _cachedStudents = null;
+  renderAv2Users();
+}
 
 // ── Encabezado de sección reutilizable ──
 function _av2Head(title, sub) {
@@ -6611,6 +6710,7 @@ async function initUnifiedProgress() {
   // La guía de bienvenida se decide AQUÍ (con el progreso ya cargado), para saber
   // si esta persona ya la vio en su cuenta. Se muestra una sola vez por persona.
   try { maybeShowOnboarding(); } catch (e) {}
+  try { maybeShowAnnounce(); } catch (e) {}
 }
 
 // Modal de Juanita al entrar si hay pago fallido, cancelado o inactivo (una vez por sesión).
@@ -6948,6 +7048,25 @@ function _highlightFirstAction() {
   try { btn.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
   setTimeout(() => btn.classList.remove('onb-pulse'), 6000);
 }
+// Aviso de actualización — una sola vez por alumno (localStorage + DB cross-device).
+// Solo a usuarios EXISTENTES (que ya vieron el onboarding); los nuevos no lo necesitan.
+const _ANNOUNCE_ID = 'announce_2026_07';
+function maybeShowAnnounce() {
+  if (!window._sbSession) return;
+  let seenLocal = false, seenDB = false, onbSeen = false;
+  try { seenLocal = !!localStorage.getItem('scs_' + _ANNOUNCE_ID); } catch (e) {}
+  try { seenDB = (typeof isCompleted === 'function') && isCompleted('meta', _ANNOUNCE_ID); } catch (e) {}
+  try { onbSeen = !!localStorage.getItem('scs_onboarding_seen') || ((typeof isCompleted === 'function') && isCompleted('meta', 'onboarding')); } catch (e) {}
+  if (seenLocal || seenDB) return;      // ya lo vio → nunca más
+  if (!onbSeen) return;                  // usuario nuevo (verá onboarding) → no mostrar aviso
+  setTimeout(() => { const m = document.getElementById('announce-modal'); if (m) m.classList.remove('hidden'); }, 1000);
+}
+function closeAnnounce() {
+  const m = document.getElementById('announce-modal'); if (m) m.classList.add('hidden');
+  try { localStorage.setItem('scs_' + _ANNOUNCE_ID, '1'); } catch (e) {}
+  try { if (typeof progressMark === 'function') progressMark('meta', _ANNOUNCE_ID, { status: 'completed' }); } catch (e) {}
+}
+
 function maybeShowOnboarding() {
   // Solo DENTRO de la plataforma (con sesión de alumno), nunca en el landing.
   if (!window._sbSession) return;
