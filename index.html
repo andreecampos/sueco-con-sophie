@@ -2197,9 +2197,9 @@
 ════════════════════════════════════════════════════════════ -->
 <div id="announce-modal" class="hidden fixed inset-0 z-[97] flex items-center justify-center p-4" style="background:rgba(4,32,62,0.72); backdrop-filter:blur(3px);">
   <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl p-6 text-center" style="animation:fadeIn .25s ease;">
-    <div class="text-5xl mb-3">🎉</div>
-    <h3 class="text-lg font-black text-gray-900 mb-2">Mejoramos la plataforma</h3>
-    <p class="text-sm text-gray-500 mb-5 leading-relaxed">Mañana verás una versión renovada. Cualquier consulta o duda, puedes contactarnos.</p>
+    <div id="ann-emoji" class="text-5xl mb-3">🎉</div>
+    <h3 id="ann-title" class="text-lg font-black text-gray-900 mb-2">Mejoramos la plataforma</h3>
+    <p id="ann-body" class="text-sm text-gray-500 mb-5 leading-relaxed">Cualquier consulta o duda, puedes contactarnos.</p>
     <button onclick="closeAnnounce()" class="w-full py-3 rounded-xl bg-swe-blue text-white font-bold text-sm hover:bg-swe-dark transition-colors">Entendido</button>
   </div>
 </div>
@@ -22325,33 +22325,54 @@ function _av2Note(txt) {
   return `<div class="mt-4 flex items-start gap-2 text-xs text-gray-500 bg-gray-50 border border-gray-100 rounded-xl p-3"><span>ℹ️</span><span>${txt}</span></div>`;
 }
 
-// ═══ GRUPOS ═══ (reutiliza el campo 'grupo' de cada alumno)
+// ═══ GRUPOS ═══ editables (metadatos en config: nivel, hora, Zoom, descripción)
+let _av2GroupsMeta = {};
 async function renderAv2Grupos() {
   const c = document.getElementById('av2-content'); if (!c) return;
   c.innerHTML = '<div class="text-center py-16 text-gray-400 text-sm">⏳ Cargando…</div>';
   const students = await getStudents();
   if (_lastStudentsError) { c.innerHTML = '<div class="text-center py-16 text-sm text-red-500">No se pudieron cargar los datos.</div>'; return; }
+  const cfg = await _av2RawConfig();
+  _av2GroupsMeta = cfg.groups_meta || {};
+  const esc = (typeof escHtml === 'function') ? escHtml : (x => String(x == null ? '' : x));
   const isActive = s => s.status === 'active' || s.status === 'manual' || (!s.status && s.active);
   const names = (typeof GRUPOS !== 'undefined' ? GRUPOS.slice() : []);
   const groups = names.map(g => ({ name: g, list: students.filter(s => s.grupo === g) }));
   groups.push({ name: 'Sin grupo', list: students.filter(s => !s.grupo), none: true });
-  const cards = groups.map(g => {
+  const inp = (gi, field, ph, val) => `<input id="grp-${gi}-${field}" placeholder="${ph}" value="${esc(val || '').replace(/"/g, '&quot;')}" class="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs" />`;
+  const cards = groups.map((g, gi) => {
     const act = g.list.filter(isActive).length;
+    const meta = _av2GroupsMeta[g.name] || {};
     const color = g.none ? '#94a3b8' : '#006AA7';
+    const editable = !g.none;
     return `<div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-4 sm:p-5">
       <div class="flex items-center justify-between mb-3">
-        <div class="flex items-center gap-2.5"><div class="w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-sm" style="background:${color}">${g.none ? '∅' : (g.name.match(/\\d+/) || ['·'])[0]}</div><div class="font-bold text-gray-800 text-sm">${g.name}</div></div>
-        <span class="text-xs font-semibold text-gray-400">${g.list.length} alumno${g.list.length !== 1 ? 's' : ''}</span>
+        <div class="flex items-center gap-2.5"><div class="w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-sm" style="background:${color}">${g.none ? '∅' : (g.name.match(/\\d+/) || ['·'])[0]}</div><div><div class="font-bold text-gray-800 text-sm">${esc(g.name)}</div>${meta.hora || meta.level ? `<div class="text-[11px] text-gray-400">${esc(meta.level || '')}${meta.level && meta.hora ? ' · ' : ''}${esc(meta.hora || '')}</div>` : ''}</div></div>
+        <span class="text-xs font-semibold text-gray-400">${g.list.length}</span>
       </div>
-      <div class="flex gap-2 mb-3 text-xs"><span class="px-2 py-0.5 rounded-full bg-green-50 text-green-700 font-semibold">${act} activos</span><span class="px-2 py-0.5 rounded-full bg-gray-50 text-gray-500 font-semibold">${g.list.length - act} inactivos</span></div>
-      <div class="space-y-1 max-h-52 overflow-y-auto -mx-1">
-        ${g.list.slice(0, 30).map(s => `<button onclick="openStudentProgress('${s.id}','${(s.name || '').replace(/'/g, "\\'").replace(/</g, '')}')" class="w-full flex items-center gap-2 text-left px-2 py-1.5 rounded-lg hover:bg-gray-50 text-sm"><span class="w-6 h-6 rounded-full bg-swe-blue/10 text-swe-blue flex items-center justify-center text-[10px] font-bold shrink-0">${((s.name || s.email || '?')[0] || '?').toUpperCase()}</span><span class="flex-1 truncate text-gray-700">${s.name || s.email || '—'}</span><span class="text-gray-300">›</span></button>`).join('') || '<div class="text-xs text-gray-400 px-2 py-3">Sin alumnos.</div>'}
+      <div class="flex gap-2 mb-3 text-xs"><span class="px-2 py-0.5 rounded-full bg-green-50 text-green-700 font-semibold">${act} activos</span><span class="px-2 py-0.5 rounded-full bg-gray-50 text-gray-500 font-semibold">${g.list.length - act} inactivos</span>${meta.zoom ? `<a href="${esc(meta.zoom)}" target="_blank" class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 font-semibold hover:bg-blue-100">🔗 Zoom</a>` : ''}</div>
+      ${editable ? `<div class="grid grid-cols-2 gap-2 mb-2">${inp(gi, 'level', 'Nivel (ej. SFI B)', meta.level)}${inp(gi, 'hora', 'Hora (ej. Lun 18:00)', meta.hora)}</div>
+        ${inp(gi, 'zoom', 'Link de Zoom (opcional)', meta.zoom)}
+        <textarea id="grp-${gi}-desc" placeholder="Descripción (opcional)" rows="2" class="w-full mt-2 px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs">${esc(meta.desc || '')}</textarea>
+        <button onclick="av2SaveGroup(${gi}, '${g.name.replace(/'/g, "\\'")}')" class="mt-2 w-full py-1.5 rounded-lg bg-swe-blue text-white text-xs font-bold hover:bg-swe-dark transition-colors">Guardar</button>` : ''}
+      <div class="space-y-1 max-h-40 overflow-y-auto -mx-1 mt-2 border-t border-gray-50 pt-2">
+        ${g.list.slice(0, 30).map(s => `<button onclick="openStudentProgress('${s.id}','${(s.name || '').replace(/'/g, "\\'").replace(/</g, '')}')" class="w-full flex items-center gap-2 text-left px-2 py-1.5 rounded-lg hover:bg-gray-50 text-sm"><span class="w-6 h-6 rounded-full bg-swe-blue/10 text-swe-blue flex items-center justify-center text-[10px] font-bold shrink-0">${((s.name || s.email || '?')[0] || '?').toUpperCase()}</span><span class="flex-1 truncate text-gray-700">${esc(s.name || s.email || '—')}</span><span class="text-gray-300">›</span></button>`).join('') || '<div class="text-xs text-gray-400 px-2 py-2">Sin alumnos.</div>'}
       </div>
     </div>`;
   }).join('');
-  c.innerHTML = _av2Head('Grupos', 'Clases y cohortes de tu escuela') +
+  c.innerHTML = _av2Head('Grupos', 'Clases y cohortes — nivel, horario y link de Zoom') +
     `<div class="grid sm:grid-cols-2 gap-4">${cards}</div>` +
-    _av2Note('Los grupos se toman del campo <b>grupo</b> de cada alumno. Crear/renombrar grupos desde el panel llegará con la próxima migración; hoy se asignan al editar cada alumno.');
+    _av2Note('La <b>pertenencia</b> a un grupo se asigna en la ficha de cada alumno. Aquí editas los <b>datos del grupo</b> (nivel, hora, Zoom, descripción), guardados de forma segura sin migración.');
+}
+async function av2SaveGroup(gi, name) {
+  const g = id => (document.getElementById('grp-' + gi + '-' + id)?.value || '').trim();
+  const meta = Object.assign({}, _av2GroupsMeta);
+  meta[name] = { level: g('level'), hora: g('hora'), zoom: g('zoom'), desc: g('desc') };
+  const r = await _av2SaveRawConfig({ groups_meta: meta });
+  if (r && r.error) { showToast('Error al guardar: ' + r.error, 'error'); return; }
+  _av2GroupsMeta = meta;
+  showToast('✅ Grupo "' + name + '" actualizado', 'success');
+  renderAv2Grupos();
 }
 
 // ═══ PRODUCTOS Y PLANES ═══ (reutiliza la config de Stripe + desglose por precio)
@@ -22479,26 +22500,135 @@ async function av2DelReview(id) {
   showToast('Reseña eliminada', 'info');
 }
 
-// ═══ NOTIFICACIONES ═══
+// ═══ NOTIFICACIONES (CMS) ═══ — crear/editar/preview/activar avisos (vía config, sin migración)
+let _av2Notis = { drafts: [], active: null };
+let _av2Editing = null; // id del borrador en edición (o null = nuevo)
 async function renderAv2Notis() {
   const c = document.getElementById('av2-content'); if (!c) return;
+  c.innerHTML = '<div class="text-center py-16 text-gray-400 text-sm">⏳ Cargando…</div>';
+  const cfg = await _av2RawConfig();
+  _av2Notis = { drafts: Array.isArray(cfg.announce_drafts) ? cfg.announce_drafts : [], active: cfg.announce_active || null };
+  _av2Editing = null;
+  _av2PaintNotis();
+}
+function _av2NotiForm() {
+  const ed = _av2Editing ? _av2Notis.drafts.find(d => d.id === _av2Editing) : null;
+  return { emoji: ed ? ed.emoji : '🎉', title: ed ? ed.title : '', body: ed ? ed.body : '' };
+}
+function _av2PaintNotis() {
+  const c = document.getElementById('av2-content'); if (!c) return;
+  const esc = (typeof escHtml === 'function') ? escHtml : (x => String(x == null ? '' : x));
+  const f = _av2NotiForm();
+  const act = _av2Notis.active;
   const autos = [
-    { icon: '📊', t: 'Prueba de nivel disponible', d: 'Se avisa al alumno cuando pasa una semana y puede repetir la prueba.' },
+    { icon: '📊', t: 'Prueba de nivel disponible', d: 'Cuando pasa una semana y puede repetir la prueba.' },
     { icon: '🎉', t: 'Logro / medalla desbloqueada', d: 'Al aprobar un examen o completar un hito.' },
     { icon: '⏰', t: 'Recordatorio de racha', d: 'Para mantener el hábito de estudio diario.' }
   ];
-  c.innerHTML = _av2Head('Notificaciones', 'Avisos que reciben los alumnos') + `
+  const draftCard = d => `<div class="flex items-center gap-3 bg-white border border-gray-100 rounded-xl p-3">
+      <span class="text-xl">${esc(d.emoji || '🎉')}</span>
+      <div class="flex-1 min-w-0"><div class="font-semibold text-gray-800 text-sm truncate">${esc(d.title || '(sin título)')}</div><div class="text-xs text-gray-400 truncate">${esc(d.body || '')}</div></div>
+      <div class="flex gap-1.5 shrink-0">
+        <button onclick="av2EditDraft('${d.id}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-gray-50 text-gray-600 border border-gray-200 hover:bg-gray-100">Editar</button>
+        <button onclick="av2ActivateDraft('${d.id}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-green-50 text-green-700 border border-green-200 hover:bg-green-100">Enviar</button>
+        <button onclick="av2DeleteDraft('${d.id}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-gray-50 text-gray-400 border border-gray-200 hover:text-red-500">🗑️</button>
+      </div>
+    </div>`;
+  c.innerHTML = _av2Head('Notificaciones', 'Crea, previsualiza y envía avisos a tus alumnos') + `
+    ${act ? `<div class="bg-green-50 border border-green-200 rounded-2xl p-4 mb-4 flex items-center gap-3">
+      <span class="text-xl">${esc(act.emoji || '🎉')}</span>
+      <div class="flex-1 min-w-0"><div class="text-xs font-bold text-green-700 uppercase tracking-wide">Aviso activo (se muestra 1 vez por alumno)</div><div class="font-semibold text-gray-800 text-sm">${esc(act.title || '')}</div><div class="text-xs text-gray-500">${esc(act.body || '')}</div></div>
+      <button onclick="av2DeactivateAnn()" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-white text-gray-600 border border-gray-200 hover:bg-gray-50 shrink-0">Desactivar</button>
+    </div>` : ''}
+
+    <div class="grid lg:grid-cols-2 gap-4 mb-4">
+      <!-- Composer -->
+      <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-5">
+        <div class="text-sm font-bold text-gray-800 mb-3">${_av2Editing ? 'Editar aviso' : 'Nuevo aviso'}</div>
+        <div class="flex gap-2 mb-2">
+          <input id="nt-emoji" oninput="_av2NotiLive()" value="${esc(f.emoji)}" maxlength="2" class="w-14 px-3 py-2 rounded-xl border border-gray-200 text-center text-lg" />
+          <input id="nt-title" oninput="_av2NotiLive()" value="${esc(f.title).replace(/"/g, '&quot;')}" placeholder="Título del aviso" class="flex-1 px-3 py-2 rounded-xl border border-gray-200 text-sm" />
+        </div>
+        <textarea id="nt-body" oninput="_av2NotiLive()" placeholder="Mensaje para los alumnos…" rows="4" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm">${esc(f.body)}</textarea>
+        <div class="flex gap-2 mt-3">
+          <button onclick="av2SaveDraft()" class="flex-1 py-2.5 rounded-xl bg-swe-blue text-white font-bold text-sm hover:bg-swe-dark transition-colors">💾 Guardar borrador</button>
+          ${_av2Editing ? `<button onclick="av2NewDraft()" class="px-3 py-2.5 rounded-xl bg-gray-50 text-gray-500 border border-gray-200 text-sm">Nuevo</button>` : ''}
+        </div>
+      </div>
+      <!-- Preview en vivo -->
+      <div class="bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl border border-gray-100 p-5 flex flex-col items-center justify-center">
+        <div class="text-[11px] font-bold text-gray-400 uppercase tracking-wide mb-3">Vista previa</div>
+        <div class="bg-white w-full max-w-[240px] rounded-2xl shadow-lg p-5 text-center">
+          <div id="nt-pv-emoji" class="text-4xl mb-2">${esc(f.emoji)}</div>
+          <div id="nt-pv-title" class="text-base font-black text-gray-900 mb-1">${esc(f.title) || 'Título del aviso'}</div>
+          <div id="nt-pv-body" class="text-xs text-gray-500 mb-4 leading-relaxed">${esc(f.body) || 'Aquí verá tu mensaje el alumno.'}</div>
+          <div class="w-full py-2 rounded-lg bg-swe-blue text-white text-xs font-bold">Entendido</div>
+        </div>
+      </div>
+    </div>
+
     <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-5 mb-4">
+      <div class="text-sm font-bold text-gray-800 mb-3">Borradores guardados</div>
+      <div class="space-y-2">${_av2Notis.drafts.length ? _av2Notis.drafts.map(draftCard).join('') : '<div class="text-sm text-gray-400 py-2">Aún no hay borradores. Crea uno arriba.</div>'}</div>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-5">
       <div class="text-sm font-bold text-gray-800 mb-3">Automáticas (activas hoy)</div>
       <div class="space-y-2">${autos.map(a => `<div class="flex items-start gap-3 p-2.5 rounded-xl bg-gray-50"><span class="text-lg">${a.icon}</span><div><div class="font-semibold text-gray-700 text-sm">${a.t}</div><div class="text-xs text-gray-400">${a.d}</div></div></div>`).join('')}</div>
-    </div>
-    <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-5 opacity-90">
-      <div class="flex items-center justify-between mb-3"><div class="text-sm font-bold text-gray-800">Enviar aviso manual</div><span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700">requiere migración</span></div>
-      <input disabled placeholder="Título del aviso" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm mb-2 bg-gray-50 text-gray-400" />
-      <textarea disabled placeholder="Mensaje para los alumnos…" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm bg-gray-50 text-gray-400" rows="3"></textarea>
-      <button disabled class="mt-3 px-4 py-2 rounded-xl bg-gray-200 text-gray-400 text-sm font-semibold cursor-not-allowed">Enviar (pronto)</button>
     </div>` +
-    _av2Note('Hoy las notificaciones son automáticas y por dispositivo. El envío manual a alumnos/grupos necesita la tabla <b>notifications</b> (migración Fase 1); te paso el SQL cuando lo activemos.');
+    _av2Note('El aviso se muestra como un modal, <b>una sola vez por alumno</b>, al entrar a la plataforma. Guarda un borrador hoy y pulsa <b>Enviar</b> cuando quieras activarlo. Envío por grupo/segmento llegará con la migración.');
+}
+function _av2NotiLive() {
+  const g = id => (document.getElementById(id)?.value || '');
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  set('nt-pv-emoji', g('nt-emoji') || '🎉');
+  set('nt-pv-title', g('nt-title') || 'Título del aviso');
+  set('nt-pv-body', g('nt-body') || 'Aquí verá tu mensaje el alumno.');
+}
+function av2NewDraft() { _av2Editing = null; _av2PaintNotis(); }
+function av2EditDraft(id) { _av2Editing = id; _av2PaintNotis(); }
+async function av2SaveDraft() {
+  const emoji = (document.getElementById('nt-emoji')?.value || '🎉').trim() || '🎉';
+  const title = (document.getElementById('nt-title')?.value || '').trim();
+  const body = (document.getElementById('nt-body')?.value || '').trim();
+  if (!title && !body) { showToast('Escribe al menos un título o mensaje', 'error'); return; }
+  const drafts = _av2Notis.drafts.slice();
+  if (_av2Editing) {
+    const i = drafts.findIndex(d => d.id === _av2Editing);
+    if (i >= 0) drafts[i] = { ...drafts[i], emoji, title, body };
+  } else {
+    drafts.unshift({ id: Date.now().toString(36), emoji, title, body, created_at: new Date().toISOString() });
+  }
+  const r = await _av2SaveRawConfig({ announce_drafts: drafts });
+  if (r && r.error) { showToast('Error al guardar: ' + r.error, 'error'); return; }
+  _av2Notis.drafts = drafts; _av2Editing = null;
+  showToast('💾 Borrador guardado', 'success');
+  _av2PaintNotis();
+}
+async function av2DeleteDraft(id) {
+  if (!confirm('¿Eliminar este borrador?')) return;
+  const drafts = _av2Notis.drafts.filter(d => d.id !== id);
+  const r = await _av2SaveRawConfig({ announce_drafts: drafts });
+  if (r && r.error) { showToast('Error: ' + r.error, 'error'); return; }
+  _av2Notis.drafts = drafts; if (_av2Editing === id) _av2Editing = null;
+  _av2PaintNotis();
+}
+async function av2ActivateDraft(id) {
+  const d = _av2Notis.drafts.find(x => x.id === id); if (!d) return;
+  if (!confirm('¿Enviar este aviso? Todos los alumnos lo verán una vez al entrar.')) return;
+  const active = { id: 'a' + Date.now().toString(36), emoji: d.emoji, title: d.title, body: d.body, active: true, activated_at: new Date().toISOString() };
+  const r = await _av2SaveRawConfig({ announce_active: active });
+  if (r && r.error) { showToast('Error: ' + r.error, 'error'); return; }
+  _av2Notis.active = active;
+  showToast('📢 Aviso activado — los alumnos lo verán al entrar', 'success');
+  _av2PaintNotis();
+}
+async function av2DeactivateAnn() {
+  const r = await _av2SaveRawConfig({ announce_active: null });
+  if (r && r.error) { showToast('Error: ' + r.error, 'error'); return; }
+  _av2Notis.active = null;
+  showToast('Aviso desactivado', 'info');
+  _av2PaintNotis();
 }
 
 // ═══ ECOSISTEMA ═══ (servicios y arquitectura — solo nombres, nunca claves)
@@ -23247,25 +23377,38 @@ async function getStripeConfig() {
       _stripeConfigCache = {
         link:     cfg.stripe_link || '',
         priceNew: parseInt(cfg.price_new || '339'),
+        announce: cfg.announce_active || null,
+        groupsMeta: cfg.groups_meta || {},
       };
     }
   } catch(e) {
     console.error('getStripeConfig error:', e);
-    _stripeConfigCache = { link: '', priceNew: 339 };
+    _stripeConfigCache = { link: '', priceNew: 339, announce: null, groupsMeta: {} };
   }
   return _stripeConfigCache;
+}
+
+// ── Config helpers (merge-safe): leen el objeto completo y solo cambian lo indicado ──
+async function _av2RawConfig() {
+  try { const r = await adminOps('get_config'); let v = (r && r.config) || {}; if (typeof v === 'string') { try { v = JSON.parse(v); } catch (e) { v = {}; } } return v || {}; }
+  catch (e) { return {}; }
+}
+async function _av2SaveRawConfig(patch) {
+  const raw = await _av2RawConfig();
+  const merged = Object.assign({}, raw, patch || {});
+  const result = await adminOps('save_config', { config: merged });
+  _stripeConfigCache = null; // fuerza relectura fresca
+  return result;
 }
 
 async function saveStripeConfig() {
   const link     = (document.getElementById('cfg-stripe-link')?.value || '').trim();
   const priceNew = parseInt(document.getElementById('cfg-price-new')?.value || '0') || 339;
 
-  const result = await adminOps('save_config', {
-    config: { stripe_link: link, price_new: String(priceNew) }
-  });
+  const result = await _av2SaveRawConfig({ stripe_link: link, price_new: String(priceNew) });
   if (result.error) { showToast('Error al guardar: ' + result.error, 'error'); return; }
 
-  _stripeConfigCache = { link, priceNew };
+  _stripeConfigCache = null;
 
   const preview = document.getElementById('cfg-price-preview');
   if (preview) preview.textContent = priceNew + ' SEK/mes';
@@ -24698,9 +24841,8 @@ async function initUnifiedProgress() {
   // La guía de bienvenida se decide AQUÍ (con el progreso ya cargado), para saber
   // si esta persona ya la vio en su cuenta. Se muestra una sola vez por persona.
   try { maybeShowOnboarding(); } catch (e) {}
-  // Aviso de actualización desactivado en este lanzamiento (la guía de onboarding
-  // ya cumple como bienvenida única). Se reactivará desde el CMS de notificaciones.
-  // try { maybeShowAnnounce(); } catch (e) {}
+  // Aviso dinámico: solo se muestra si el admin activó uno desde el CMS de Notificaciones.
+  try { maybeShowAnnounce(); } catch (e) {}
 }
 
 // Modal de Juanita al entrar si hay pago fallido, cancelado o inactivo (una vez por sesión).
@@ -25038,23 +25180,32 @@ function _highlightFirstAction() {
   try { btn.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
   setTimeout(() => btn.classList.remove('onb-pulse'), 6000);
 }
-// Aviso de actualización — una sola vez por alumno (localStorage + DB cross-device).
-// Solo a usuarios EXISTENTES (que ya vieron el onboarding); los nuevos no lo necesitan.
-const _ANNOUNCE_ID = 'announce_2026_07';
-function maybeShowAnnounce() {
+// Aviso de actualización DINÁMICO — el admin lo define en el CMS de Notificaciones.
+// Se muestra una sola vez por alumno y por id de aviso (localStorage + DB cross-device).
+let _activeAnnId = null;
+async function maybeShowAnnounce() {
   if (!window._sbSession) return;
-  let seenLocal = false, seenDB = false, onbSeen = false;
-  try { seenLocal = !!localStorage.getItem('scs_' + _ANNOUNCE_ID); } catch (e) {}
-  try { seenDB = (typeof isCompleted === 'function') && isCompleted('meta', _ANNOUNCE_ID); } catch (e) {}
-  try { onbSeen = !!localStorage.getItem('scs_onboarding_seen') || ((typeof isCompleted === 'function') && isCompleted('meta', 'onboarding')); } catch (e) {}
+  let ann = null;
+  try { const cfg = await getStripeConfig(); ann = cfg && cfg.announce; } catch (e) {}
+  if (!ann || !ann.id || ann.active === false) return;  // no hay aviso activo
+  const key = 'ann_' + ann.id;
+  let seenLocal = false, seenDB = false;
+  try { seenLocal = !!localStorage.getItem('scs_' + key); } catch (e) {}
+  try { seenDB = (typeof isCompleted === 'function') && isCompleted('meta', key); } catch (e) {}
   if (seenLocal || seenDB) return;      // ya lo vio → nunca más
-  if (!onbSeen) return;                  // usuario nuevo (verá onboarding) → no mostrar aviso
+  _activeAnnId = ann.id;
+  const setTxt = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  setTxt('ann-emoji', ann.emoji || '🎉');
+  setTxt('ann-title', ann.title || 'Aviso');
+  setTxt('ann-body', ann.body || '');
   setTimeout(() => { const m = document.getElementById('announce-modal'); if (m) m.classList.remove('hidden'); }, 1000);
 }
 function closeAnnounce() {
   const m = document.getElementById('announce-modal'); if (m) m.classList.add('hidden');
-  try { localStorage.setItem('scs_' + _ANNOUNCE_ID, '1'); } catch (e) {}
-  try { if (typeof progressMark === 'function') progressMark('meta', _ANNOUNCE_ID, { status: 'completed' }); } catch (e) {}
+  if (!_activeAnnId) return;
+  const key = 'ann_' + _activeAnnId;
+  try { localStorage.setItem('scs_' + key, '1'); } catch (e) {}
+  try { if (typeof progressMark === 'function') progressMark('meta', key, { status: 'completed' }); } catch (e) {}
 }
 
 function maybeShowOnboarding() {
