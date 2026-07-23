@@ -12599,7 +12599,7 @@ const LEVEL_TEST = {
       "skill": "hor",
       "type": "listen",
       "audioKey": "c01",
-      "question": "En el audio, ¿qué fue lo primero que hizo Sophie al llegar a Suecia?",
+      "question": "En el audio, ¿por qué llegó Sophie más temprano al trabajo ese día?",
       "options": [
         "För att förbereda sina lektioner",
         "För att hon missade bussen",
@@ -12614,7 +12614,7 @@ const LEVEL_TEST = {
       "skill": "hor",
       "type": "listen",
       "audioKey": "c02",
-      "question": "Según el audio, ¿cómo practicaba sueco en casa?",
+      "question": "En el audio, ¿a dónde llamó Sophie cuando se sintió enferma?",
       "options": [
         "Vårdcentralen",
         "Apoteket",
@@ -12717,7 +12717,7 @@ const LEVEL_TEST = {
       "skill": "hor",
       "type": "listen",
       "audioKey": "d01",
-      "question": "En el audio, ¿a qué número se llama para consejo médico en Suecia?",
+      "question": "En el audio, ¿sobre qué reflexiona Sophie?",
       "options": [
         "Hur tekniken påverkar våra liv",
         "Hur man sparar pengar",
@@ -12732,7 +12732,7 @@ const LEVEL_TEST = {
       "skill": "hor",
       "type": "listen",
       "audioKey": "d02",
-      "question": "Según el audio, ¿qué se come en Midsommar?",
+      "question": "En el audio, ¿cuál es el tema principal del que habla Sophie?",
       "options": [
         "Integration",
         "Ekonomi",
