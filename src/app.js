@@ -4139,6 +4139,40 @@ function dashMetricsFull(students, price) {
 let _av2UserFilter = 'all';
 function av2GoUsers(filter) { _av2UserFilter = filter || 'all'; av2Nav('usuarios'); }
 
+// Ingresos por mes, año actual vs año anterior (nuevos ingresos recurrentes por mes de alta).
+const _AV2_MONTHS = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+const _AV2_MONTHS_LONG = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+function _av2YearlyRevenue(students, price) {
+  const now = new Date(); const curY = now.getFullYear(); const curM = now.getMonth();
+  const yr = (y) => { const a = new Array(12).fill(0); (students || []).forEach(s => { if (!s.joinDate) return; const d = new Date(s.joinDate); if (d.getFullYear() === y) a[d.getMonth()] += (s.price || price); }); return a; };
+  const cur = yr(curY), prev = yr(curY - 1);
+  const sum = a => a.reduce((x, y) => x + y, 0);
+  const curToDate = cur.slice(0, curM + 1).reduce((x, y) => x + y, 0);
+  const prevToDate = prev.slice(0, curM + 1).reduce((x, y) => x + y, 0);
+  const yoy = prevToDate > 0 ? ((curToDate - prevToDate) / prevToDate * 100) : (curToDate > 0 ? 100 : 0);
+  return { curY, cur, prev, total: sum(cur), prevTotal: sum(prev), yoy };
+}
+function _av2RevTable(rev) {
+  const rows = _AV2_MONTHS_LONG.map((mn, i) => `<tr class="border-b border-gray-50">
+      <td class="py-2 px-3 text-gray-700">${mn}</td>
+      <td class="py-2 px-3 text-right text-gray-500 tabular-nums">${_av2Sek(rev.prev[i])}</td>
+      <td class="py-2 px-3 text-right font-semibold text-gray-800 tabular-nums">${_av2Sek(rev.cur[i])}</td>
+    </tr>`).join('');
+  return `<table class="w-full text-sm min-w-[420px]">
+      <thead><tr class="text-[11px] uppercase tracking-wide text-gray-400 border-b border-gray-100">
+        <th class="py-2 px-3 text-left font-bold">Mes</th>
+        <th class="py-2 px-3 text-right font-bold">${rev.curY - 1}</th>
+        <th class="py-2 px-3 text-right font-bold">${rev.curY}</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+      <tfoot><tr class="border-t-2 border-gray-100 font-black text-gray-900">
+        <td class="py-2 px-3">Total</td>
+        <td class="py-2 px-3 text-right tabular-nums">${_av2Sek(rev.prevTotal)}</td>
+        <td class="py-2 px-3 text-right tabular-nums">${_av2Sek(rev.total)}</td>
+      </tr></tfoot>
+    </table>`;
+}
+
 async function renderAv2Resumen() {
   const c = document.getElementById('av2-content');
   if (!c) return;
@@ -4152,12 +4186,7 @@ async function renderAv2Resumen() {
   const fullDate = now.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   const hora = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
   // Serie MRR 24m → últimos 12 (actual) vs 12 previos (comparación punteada)
-  const s24 = _av2RevenueSeries(students, price, 24);
-  const cur = s24.slice(12), prev = s24.slice(0, 12);
-  const curVal = cur.length ? cur[cur.length - 1].value : 0;
-  const prevVal = prev.length ? prev[prev.length - 1].value : 0;
-  const delta = prevVal ? ((curVal - prevVal) / prevVal * 100) : 0;
-  const deltaStr = (delta >= 0 ? '+' : '') + delta.toFixed(1).replace('.', ',') + ' %';
+  const rev = _av2YearlyRevenue(students, price); // ingresos por mes: año actual vs anterior
   // Alertas accionables (estilo Stripe) — todo real
   const alerts = [
     { c: '#ef4444', n: m.failed.length, t: 'pagos fallidos', f: 'failed' },
@@ -4194,21 +4223,25 @@ async function renderAv2Resumen() {
       </div>
     </div>
 
-    <!-- MRR (estilo Stripe: actual vs período anterior) -->
+    <!-- Ingresos por mes (año vs año, estilo FareHarbor) -->
     <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-4 sm:p-5 mb-4">
-      <div class="flex items-start justify-between mb-1">
+      <div class="flex items-start justify-between flex-wrap gap-2 mb-3">
         <div>
-          <div class="flex items-center gap-1.5 text-sm font-semibold text-gray-500">MRR <span class="text-gray-300" title="Ingreso recurrente mensual">ⓘ</span></div>
-          <div class="flex items-baseline gap-2 mt-1"><span class="text-[28px] font-extrabold text-gray-900 leading-none">${_av2Sek(m.revenueMonth)}</span><span class="text-sm font-bold ${delta >= 0 ? 'text-green-600' : 'text-red-500'}">${deltaStr}</span></div>
-          <div class="text-xs text-gray-400 mt-1">${_av2Sek(prevVal)} período anterior</div>
+          <div class="text-sm font-semibold text-gray-500">Ingresos ${rev.curY}</div>
+          <div class="flex items-center flex-wrap gap-2 mt-1">
+            <span class="text-[28px] font-extrabold text-gray-900 leading-none">${_av2Sek(rev.total)}</span>
+            <span class="text-xs font-bold px-2 py-1 rounded-lg ${rev.yoy >= 0 ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-500'}">${rev.yoy >= 0 ? '↗' : '↘'} ${Math.abs(rev.yoy).toFixed(1).replace('.', ',')}% vs. mismo período ${rev.curY - 1}</span>
+          </div>
+          <div class="text-[11px] text-gray-400 mt-1">Nuevos ingresos recurrentes por mes · MRR actual ${_av2Sek(m.revenueMonth)} · ARR ${_av2Sek(m.arr)}</div>
         </div>
-        <div class="text-right hidden sm:block">
-          <div class="text-[11px] text-gray-400">ARR estimado</div>
-          <div class="text-sm font-bold text-gray-700">${_av2Sek(m.arr)}</div>
-        </div>
+        <button onclick="document.getElementById('av2-rev-details').classList.toggle('hidden')" class="text-xs font-semibold text-swe-blue hover:underline shrink-0">Ver detalles ▾</button>
       </div>
-      <div class="mt-2" style="height:190px"><canvas id="av2-revenue-chart"></canvas></div>
-      <div class="text-[11px] text-gray-400 mt-2">Calculado en vivo desde Supabase · últimos 12 meses vs. 12 anteriores</div>
+      <div class="overflow-x-auto -mx-1 px-1"><div style="min-width:600px;height:240px"><canvas id="av2-revenue-chart"></canvas></div></div>
+      <div class="flex items-center justify-center gap-5 mt-3 text-xs text-gray-500">
+        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full" style="background:#2563eb"></span>${rev.curY - 1}</span>
+        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full" style="background:#db2777"></span>${rev.curY}</span>
+      </div>
+      <div id="av2-rev-details" class="hidden mt-4 overflow-x-auto">${_av2RevTable(rev)}</div>
     </div>
 
     <!-- Métricas del negocio (todas en vivo) -->
@@ -4250,29 +4283,25 @@ async function renderAv2Resumen() {
   } catch (e) {}
   const leg = document.getElementById('av2-status-legend');
   if (leg) leg.innerHTML = segs.map(s => `<div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full" style="background:${s.c}"></span><span class="flex-1 text-gray-600">${s.label}</span><b class="text-gray-800">${s.n}</b></div>`).join('') || '<div class="text-gray-400">Sin datos.</div>';
-  // ── Gráfico MRR (estilo Stripe): actual (sólido, degradado) vs período anterior (punteado) ──
+  // ── Gráfico de ingresos por mes (barras agrupadas: año anterior vs actual, estilo FareHarbor) ──
   try {
     if (_av2Charts.revenue) { _av2Charts.revenue.destroy(); _av2Charts.revenue = null; }
     const rctx = document.getElementById('av2-revenue-chart');
     if (rctx && typeof Chart !== 'undefined') {
-      const g = rctx.getContext('2d');
-      const grad = g.createLinearGradient(0, 0, 0, 190);
-      grad.addColorStop(0, 'rgba(79,70,229,0.20)');
-      grad.addColorStop(1, 'rgba(79,70,229,0.00)');
       _av2Charts.revenue = new Chart(rctx, {
-        type: 'line',
+        type: 'bar',
         data: {
-          labels: cur.map(s => s.label),
+          labels: _AV2_MONTHS,
           datasets: [
-            { label: 'Actual', data: cur.map(s => s.value), borderColor: '#4f46e5', borderWidth: 2.5, backgroundColor: grad, fill: true, tension: 0.35, pointRadius: 0, pointHoverRadius: 5, pointHoverBackgroundColor: '#4f46e5', pointHoverBorderColor: '#fff', pointHoverBorderWidth: 2, order: 1 },
-            { label: 'Período anterior', data: prev.map(s => s.value), borderColor: '#cbd5e1', borderWidth: 2, borderDash: [5, 5], fill: false, tension: 0.35, pointRadius: 0, pointHoverRadius: 4, order: 2 }
+            { label: String(rev.curY - 1), data: rev.prev, backgroundColor: '#2563eb', borderRadius: 4, maxBarThickness: 22 },
+            { label: String(rev.curY), data: rev.cur, backgroundColor: '#db2777', borderRadius: 4, maxBarThickness: 22 }
           ]
         },
         options: {
           responsive: true, maintainAspectRatio: false,
           interaction: { intersect: false, mode: 'index' },
-          plugins: { legend: { display: false }, tooltip: { backgroundColor: '#0f172a', padding: 10, cornerRadius: 10, callbacks: { title: it => it[0].label, label: it => it.dataset.label + ': ' + _av2Sek(it.raw) } } },
-          scales: { y: { beginAtZero: false, border: { display: false }, grid: { color: '#f1f5f9' }, ticks: { maxTicksLimit: 5, font: { size: 10 }, color: '#94a3b8', callback: v => (v >= 1000 ? (Math.round(v / 100) / 10) + ' mil' : v) + ' SEK' } }, x: { border: { display: false }, grid: { display: false }, ticks: { font: { size: 10 }, color: '#94a3b8', maxRotation: 0, autoSkipPadding: 14 } } }
+          plugins: { legend: { display: false }, tooltip: { backgroundColor: '#0f172a', padding: 10, cornerRadius: 10, callbacks: { title: it => _AV2_MONTHS_LONG[it[0].dataIndex], label: it => it.dataset.label + ': ' + _av2Sek(it.raw) } } },
+          scales: { y: { beginAtZero: true, border: { display: false }, grid: { color: '#f1f5f9' }, ticks: { maxTicksLimit: 5, font: { size: 10 }, color: '#94a3b8', callback: v => (v >= 1000 ? (Math.round(v / 100) / 10) + ' mil' : v) } }, x: { border: { display: false }, grid: { display: false }, ticks: { font: { size: 11 }, color: '#64748b' } } }
         }
       });
     }
