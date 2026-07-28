@@ -21945,6 +21945,18 @@ async function goDashboardV2() {
     } catch (e) {}
   }
   if (!isAdminUser()) { showView('adminlogin'); return; }
+  // ── Verificación en el SERVIDOR (no confiar solo en window._sbSession) ──
+  // get_config es una acción admin-gated: si el token real no es admin, la edge
+  // function responde 401 y expulsamos. Editar window en la consola NO basta.
+  try {
+    const chk = await adminOps('get_config');
+    if (!chk || chk.error) {
+      if (typeof showToast === 'function') showToast('No tienes acceso de administrador.', 'error');
+      try { window._sbSession = null; } catch (e) {}
+      showView('adminlogin');
+      return;
+    }
+  } catch (e) { showView('adminlogin'); return; }
   state.adminLoggedIn = true;
   showView('admin-v2');
   try { const e = (window._sbSession && window._sbSession.email) || ''; const ini = (e[0] || 'A').toUpperCase(); const av = document.getElementById('av2-avatar'); if (av) av.textContent = ini; const nm = document.getElementById('av2-admin-name'); if (nm && e) nm.textContent = e; } catch (e) {}
