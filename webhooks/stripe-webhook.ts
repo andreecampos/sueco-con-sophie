@@ -191,7 +191,7 @@ Deno.serve(async (req) => {
         const { data: linkData } = await sb.auth.admin.generateLink({
           type: 'recovery',
           email,
-          options: { redirectTo: 'https://app.suecoconsophie.com' },
+          options: { redirectTo: 'https://suecoconsophie.com/alumnos' },
         })
         const actionLink = linkData?.properties?.action_link
         if (actionLink) await sendWelcomeEmail(email, actionLink)

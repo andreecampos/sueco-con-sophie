@@ -2744,9 +2744,54 @@ function openStartModal() { const b = document.getElementById('precios-box'); if
 function closeStartModal() {}
 
 // ── Landing /alumnos: precio mensual dinámico + reseñas reales ──
+// ── Testimonios en video (carrusel) — añade más IDs de YouTube aquí ──
+const TESTI_VIDEOS = ['DTjvtkb_BMM', '0YSHeVmUYWs', 'J0F4I8byc7c'];
+function initTestimonios() {
+  const track = document.getElementById('testi-track');
+  const dots = document.getElementById('testi-dots');
+  if (!track) return;
+  track.innerHTML = TESTI_VIDEOS.map((id, i) => `
+    <div class="testi-card">
+      <div class="testi-video" data-yt="${id}" onclick="testiPlay('${id}', this)">
+        <img src="https://img.youtube.com/vi/${id}/hqdefault.jpg" alt="Testimonio ${i + 1}" loading="lazy">
+        <div class="testi-play"><span><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span></div>
+      </div>
+    </div>`).join('');
+  if (dots) {
+    dots.innerHTML = TESTI_VIDEOS.map((_, i) => `<button type="button" class="testi-dot${i === 0 ? ' active' : ''}" onclick="testiGoTo(${i})" aria-label="Video ${i + 1}"></button>`).join('');
+    track.onscroll = () => {
+      const cards = track.querySelectorAll('.testi-card');
+      if (!cards.length) return;
+      const cw = cards[0].offsetWidth + 16;
+      const idx = Math.round(track.scrollLeft / cw);
+      dots.querySelectorAll('.testi-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+    };
+  }
+}
+function testiPlay(id, el) {
+  el.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1" allow="accelerated-motion; autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+  el.style.cursor = 'default';
+  el.onclick = null;
+}
+function testiScroll(dir) {
+  const track = document.getElementById('testi-track');
+  if (!track) return;
+  const card = track.querySelector('.testi-card');
+  const cw = card ? card.offsetWidth + 16 : track.clientWidth;
+  track.scrollBy({ left: dir * cw, behavior: 'smooth' });
+}
+function testiGoTo(i) {
+  const track = document.getElementById('testi-track');
+  if (!track) return;
+  const card = track.querySelector('.testi-card');
+  const cw = card ? card.offsetWidth + 16 : 0;
+  track.scrollTo({ left: i * cw, behavior: 'smooth' });
+}
+
 async function initAlumnosPage() {
   _selectedPlan = '3m';
   _renderPlanSelection();
+  try { initTestimonios(); } catch (e) {}
   try {
     const cfg = _stripeConfigCache || await getStripeConfig();
     const p = (cfg && cfg.priceNew) || 399;

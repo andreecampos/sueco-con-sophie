@@ -290,6 +290,37 @@
     <img src="https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/logosophie.jpg" alt="Sueco con Sophie — Tu coach de sueco para latinos" style="width:100%; display:block; border-radius:14px;" onerror="this.style.display='none'">
   </div>
 
+  <!-- ═══ TESTIMONIOS EN VIDEO (carrusel responsive) ═══ -->
+  <style>
+    .testi-track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:2px 2px 6px;}
+    .testi-track::-webkit-scrollbar{display:none;}
+    .testi-card{flex:0 0 100%;scroll-snap-align:center;}
+    @media(min-width:768px){.testi-card{flex:0 0 calc(50% - 8px);}}
+    @media(min-width:1024px){.testi-card{flex:0 0 calc(33.333% - 11px);}}
+    .testi-video{position:relative;aspect-ratio:16/9;border-radius:18px;overflow:hidden;background:#000;box-shadow:0 6px 22px rgba(0,42,84,.14);cursor:pointer;border:1px solid #e5edf5;}
+    .testi-video img{width:100%;height:100%;object-fit:cover;display:block;}
+    .testi-video iframe{width:100%;height:100%;border:0;display:block;}
+    .testi-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,42,84,.05),rgba(0,42,84,.28));transition:background .2s;}
+    .testi-video:hover .testi-play{background:linear-gradient(180deg,rgba(0,42,84,.08),rgba(0,42,84,.38));}
+    .testi-play span{width:62px;height:62px;border-radius:50%;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.28);}
+    .testi-play span svg{width:26px;height:26px;margin-left:3px;fill:#006AA7;}
+    .testi-arrow{width:38px;height:38px;border-radius:50%;background:#fff;border:1px solid #dbe6f0;color:#006AA7;font-size:20px;line-height:1;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,42,84,.08);transition:background .15s;}
+    .testi-arrow:hover{background:#eff6fc;}
+    .testi-dot{width:8px;height:8px;border-radius:50%;background:#cbd8e6;transition:all .2s;cursor:pointer;border:0;padding:0;}
+    .testi-dot.active{background:#006AA7;width:22px;border-radius:99px;}
+  </style>
+  <section class="max-w-5xl mx-auto px-4 mt-6">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="font-black text-gray-800 text-lg flex items-center gap-2">🎬 TESTIMONIOS</h2>
+      <div class="flex gap-2">
+        <button type="button" onclick="testiScroll(-1)" aria-label="Anterior" class="testi-arrow">‹</button>
+        <button type="button" onclick="testiScroll(1)" aria-label="Siguiente" class="testi-arrow">›</button>
+      </div>
+    </div>
+    <div id="testi-track" class="testi-track"></div>
+    <div id="testi-dots" class="flex justify-center gap-2 mt-3"></div>
+  </section>
+
   <!-- CUERPO: móvil 1 columna (orden con order-*), PC 2 columnas -->
   <div class="max-w-5xl mx-auto px-4 mt-6 flex flex-col gap-8 lg:grid lg:grid-cols-2 lg:gap-x-6 lg:gap-y-0 lg:items-start">
 
@@ -20661,9 +20692,54 @@ function openStartModal() { const b = document.getElementById('precios-box'); if
 function closeStartModal() {}
 
 // ── Landing /alumnos: precio mensual dinámico + reseñas reales ──
+// ── Testimonios en video (carrusel) — añade más IDs de YouTube aquí ──
+const TESTI_VIDEOS = ['DTjvtkb_BMM', '0YSHeVmUYWs', 'J0F4I8byc7c'];
+function initTestimonios() {
+  const track = document.getElementById('testi-track');
+  const dots = document.getElementById('testi-dots');
+  if (!track) return;
+  track.innerHTML = TESTI_VIDEOS.map((id, i) => `
+    <div class="testi-card">
+      <div class="testi-video" data-yt="${id}" onclick="testiPlay('${id}', this)">
+        <img src="https://img.youtube.com/vi/${id}/hqdefault.jpg" alt="Testimonio ${i + 1}" loading="lazy">
+        <div class="testi-play"><span><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span></div>
+      </div>
+    </div>`).join('');
+  if (dots) {
+    dots.innerHTML = TESTI_VIDEOS.map((_, i) => `<button type="button" class="testi-dot${i === 0 ? ' active' : ''}" onclick="testiGoTo(${i})" aria-label="Video ${i + 1}"></button>`).join('');
+    track.onscroll = () => {
+      const cards = track.querySelectorAll('.testi-card');
+      if (!cards.length) return;
+      const cw = cards[0].offsetWidth + 16;
+      const idx = Math.round(track.scrollLeft / cw);
+      dots.querySelectorAll('.testi-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+    };
+  }
+}
+function testiPlay(id, el) {
+  el.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1" allow="accelerated-motion; autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+  el.style.cursor = 'default';
+  el.onclick = null;
+}
+function testiScroll(dir) {
+  const track = document.getElementById('testi-track');
+  if (!track) return;
+  const card = track.querySelector('.testi-card');
+  const cw = card ? card.offsetWidth + 16 : track.clientWidth;
+  track.scrollBy({ left: dir * cw, behavior: 'smooth' });
+}
+function testiGoTo(i) {
+  const track = document.getElementById('testi-track');
+  if (!track) return;
+  const card = track.querySelector('.testi-card');
+  const cw = card ? card.offsetWidth + 16 : 0;
+  track.scrollTo({ left: i * cw, behavior: 'smooth' });
+}
+
 async function initAlumnosPage() {
   _selectedPlan = '3m';
   _renderPlanSelection();
+  try { initTestimonios(); } catch (e) {}
   try {
     const cfg = _stripeConfigCache || await getStripeConfig();
     const p = (cfg && cfg.priceNew) || 399;

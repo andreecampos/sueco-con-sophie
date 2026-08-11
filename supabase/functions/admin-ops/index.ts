@@ -173,7 +173,7 @@ Deno.serve(async (req) => {
           const { data: linkData } = await sb.auth.admin.generateLink({
             type: 'recovery',
             email,
-            options: { redirectTo: 'https://app.suecoconsophie.com' }
+            options: { redirectTo: 'https://suecoconsophie.com/alumnos' }
           })
           const actionLink = linkData?.properties?.action_link
           if (actionLink) await sendAccessEmail(email, actionLink)
@@ -195,7 +195,7 @@ Deno.serve(async (req) => {
         const { data: linkData, error: linkErr } = await sb.auth.admin.generateLink({
           type: 'recovery',
           email: targetEmail,
-          options: { redirectTo: 'https://app.suecoconsophie.com' }
+          options: { redirectTo: 'https://suecoconsophie.com/alumnos' }
         })
         if (linkErr) throw linkErr
         const actionLink = linkData?.properties?.action_link || ''
@@ -216,7 +216,7 @@ Deno.serve(async (req) => {
         if (dbErr) throw dbErr
         // Generar link de acceso para el nuevo correo y (si se puede) enviarlo
         const { data: linkData } = await sb.auth.admin.generateLink({
-          type: 'recovery', email, options: { redirectTo: 'https://app.suecoconsophie.com' }
+          type: 'recovery', email, options: { redirectTo: 'https://suecoconsophie.com/alumnos' }
         })
         const actionLink = linkData?.properties?.action_link || ''
         const sent = await sendAccessEmail(email, actionLink)
@@ -333,7 +333,7 @@ Deno.serve(async (req) => {
         try {
           const portalSession = await stripe.billingPortal.sessions.create({
             customer: customer_id,
-            return_url: return_url || 'https://app.suecoconsophie.com',
+            return_url: return_url || 'https://suecoconsophie.com',
           })
           return new Response(JSON.stringify({ url: portalSession.url }), { headers: corsHeaders })
         } catch (se) {
