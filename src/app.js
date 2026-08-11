@@ -2767,6 +2767,12 @@ function initTestimonios() {
       dots.querySelectorAll('.testi-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
     };
   }
+  // Empujoncito inicial (solo móvil): se asoma el siguiente y vuelve, para indicar que se desliza.
+  try {
+    if (window.innerWidth < 768 && TESTI_VIDEOS.length > 1) {
+      setTimeout(() => { track.scrollTo({ left: 42, behavior: 'smooth' }); setTimeout(() => track.scrollTo({ left: 0, behavior: 'smooth' }), 650); }, 900);
+    }
+  } catch (e) {}
 }
 function testiPlay(id, el) {
   el.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1" allow="accelerated-motion; autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
