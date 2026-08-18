@@ -105,7 +105,7 @@ Deno.serve(async (req) => {
       }
 
       case 'create_student': {
-        const { name, email, studentPassword, status, price, paymentMethod } = data
+        const { name, email, studentPassword, status, price, paymentMethod, phone, grupo } = data
         // Crear usuario en Supabase Auth
         const { data: user, error: authErr } = await sb.auth.admin.createUser({
           email,
@@ -123,6 +123,8 @@ Deno.serve(async (req) => {
           status,
           price: Number(price) || 250,
           payment_method: paymentMethod || 'manual',
+          ...(phone ? { phone } : {}),
+          ...(grupo ? { grupo } : {}),
           created_at: new Date().toISOString(),
         })
         if (dbErr) throw dbErr

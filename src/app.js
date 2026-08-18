@@ -2386,6 +2386,7 @@ async function getStudents() {
     cancelsAt: s.cancels_at || null,
     level: s.level || null,
     grupo: s.grupo || null,
+    phone: s.phone || null,
     lastPaymentDate: s.last_payment_date || null,
     payerEmail: s.payer_email || null,
   }));
@@ -3840,13 +3841,17 @@ function _av2FichaHeader(stu) {
   const dev = (stu.device_keys || []).length;
   const dt = (d) => d ? _spDate(Date.parse(d)) : '—';
   const btn = 'text-xs font-semibold px-3 py-1.5 rounded-xl border transition-colors';
+  // Nivel SFI (de la prueba de nivel, adjuntado en la lista)
+  const cs = (_cachedStudents || []).find(x => x.id === id);
+  const lvl = (cs && cs.level) ? String(cs.level).toUpperCase()[0] : '';
+  const lvlChip = lvl ? `<span class="text-[10px] font-bold px-2 py-1 rounded-full" style="background:${({ A: '#dcfce7', B: '#dbeafe', C: '#ffedd5', D: '#f3e8ff' })[lvl] || '#f1f5f9'};color:${({ A: '#15803d', B: '#1d4ed8', C: '#c2410c', D: '#7e22ce' })[lvl] || '#475569'}">SFI ${lvl}</span>` : '<span class="text-[10px] font-semibold px-2 py-1 rounded-full bg-gray-100 text-gray-400">sin nivel</span>';
   const row = (ic, label, val, cls) => `<div class="flex items-center gap-2 min-w-0"><span class="w-5 text-center">${ic}</span><span class="text-gray-400">${label}:</span> <b class="truncate ${cls || 'text-gray-700'}">${val}</b></div>`;
   return `
     <div class="bg-white border border-gray-100 rounded-2xl p-4 mb-4 av2-shadow">
       <div class="flex items-center gap-3 mb-4">
         ${_av2Avatar(id, stu.name || stu.email, 'w-12 h-12 text-lg')}
         <div class="flex-1 min-w-0"><div class="font-black text-gray-800 truncate">${esc(stu.name || '—')}</div><div class="text-xs text-gray-400 truncate">✉️ ${esc(stu.email || '')}</div></div>
-        <span class="text-[10px] font-bold px-2 py-1 rounded-full ${chip[1]}">${chip[0]}</span>
+        <div class="flex flex-col items-end gap-1">${lvlChip}<span class="text-[10px] font-bold px-2 py-1 rounded-full ${chip[1]}">${chip[0]}</span></div>
       </div>
       <!-- Cuenta -->
       <div class="text-[11px] font-bold uppercase tracking-wide text-gray-400 mb-1.5">💳 Pagos y suscripción</div>
@@ -3857,6 +3862,7 @@ function _av2FichaHeader(stu) {
         ${row('✅', 'Último pago', dt(stu.last_payment_date))}
         ${row('🗓️', 'Alta', dt(stu.join_date || stu.created_at))}
         ${row('📱', 'Dispositivos', dev + '/' + maxDev)}
+        ${row('📱', 'Teléfono', stu.phone ? esc(stu.phone) : '<span class="text-gray-300 font-normal">— sin registrar</span>')}
         ${row('💳', 'Correo pagador', stu.payer_email ? esc(stu.payer_email) : '<span class="text-gray-300 font-normal">— sin registrar</span>')}
         ${stu.stripe_customer_id ? `<div class="flex items-center gap-2 min-w-0"><span class="w-5 text-center">🆔</span><span class="text-gray-400">Stripe:</span> <b class="font-mono text-[11px] truncate">${esc(stu.stripe_customer_id)}</b></div>` : ''}
         ${link ? `<div class="sm:col-span-2 flex items-center gap-2 min-w-0"><span class="w-5 text-center">🔗</span><span class="text-gray-400">Payment Link:</span> <a href="${link}" target="_blank" class="text-swe-blue font-semibold hover:underline truncate">${link}</a></div>` : ''}
@@ -3870,6 +3876,7 @@ function _av2FichaHeader(stu) {
       <div class="flex flex-wrap gap-2">
         <button onclick="resendAccess('${id}')" class="${btn} bg-green-50 text-green-700 border-green-200 hover:bg-green-100">📧 Reenviar acceso</button>
         <button onclick="changeStudentEmail('${id}')" class="${btn} bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100">✏️ Cambiar correo</button>
+        <button onclick="av2EditPhone('${id}')" class="${btn} bg-lime-50 text-lime-700 border-lime-200 hover:bg-lime-100">📱 Teléfono</button>
         <button onclick="editPayerEmail('${id}')" class="${btn} bg-teal-50 text-teal-700 border-teal-200 hover:bg-teal-100">💳 Correo pagador</button>
         <button onclick="setStudentPassword('${id}')" class="${btn} bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100">🔑 Contraseña</button>
         <button onclick="resetStudentDevices('${id}')" class="${btn} bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100">📱 Dispositivos</button>
@@ -3877,6 +3884,18 @@ function _av2FichaHeader(stu) {
         <button onclick="av2DeleteStudent('${id}')" class="${btn} bg-gray-50 text-gray-400 border-gray-200 hover:text-red-500 hover:border-red-200">🗑️ Eliminar</button>
       </div>
     </div>`;
+}
+// Registrar/editar el teléfono (WhatsApp) del alumno.
+async function av2EditPhone(id) {
+  const s = (_cachedStudents || []).find(x => x.id === id);
+  const val = prompt('📱 Teléfono / WhatsApp de ' + (s?.name || 'este alumno') + ' (déjalo vacío para quitar):', s?.phone || '');
+  if (val === null) return;
+  const phone = val.trim();
+  const r = await adminOps('update_student', { id, fields: { phone: phone || null } });
+  if (r && r.error) { showToast('Error: ' + r.error + ' (¿aplicaste la migración con la columna phone?)', 'error'); return; }
+  if (s) s.phone = phone || null;
+  showToast(phone ? '📱 Teléfono guardado' : 'Teléfono quitado', 'success');
+  if (_spOpen) openStudentProgress(id, s?.name || '');
 }
 // Notificación individual a un alumno (guardada en config.student_notifs; el alumno la ve 1 vez).
 async function av2NotifyStudent(id, name) {
@@ -4446,6 +4465,7 @@ async function renderAv2Users() {
         <div><label class="block text-xs font-semibold text-gray-500 mb-1">Nombre completo *</label><input id="av2-s-name" placeholder="María García" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm" /></div>
         <div><label class="block text-xs font-semibold text-gray-500 mb-1">Correo electrónico *</label><input id="av2-s-email" type="email" placeholder="maria@correo.com" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm" /></div>
         <div><label class="block text-xs font-semibold text-gray-500 mb-1">Contraseña *</label><input id="av2-s-password" placeholder="Mínimo 6 caracteres" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm" /></div>
+        <div><label class="block text-xs font-semibold text-gray-500 mb-1">📱 Teléfono (WhatsApp)</label><input id="av2-s-phone" type="tel" placeholder="+46 70 123 45 67" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm" /></div>
         <div><label class="block text-xs font-semibold text-gray-500 mb-1">Precio (SEK/mes)</label><input id="av2-s-price" type="number" placeholder="339" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm" /></div>
         <div><label class="block text-xs font-semibold text-gray-500 mb-1">Forma de pago</label><select id="av2-s-paymethod" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm bg-white"><option value="manual">💵 Manual / Efectivo</option><option value="stripe">💳 Stripe</option></select></div>
         <div><label class="block text-xs font-semibold text-gray-500 mb-1">Estado</label><select id="av2-s-status" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm bg-white"><option value="active">✅ Activo</option><option value="manual">💵 Manual</option><option value="pending">⏳ Pendiente</option></select></div>
@@ -4455,10 +4475,12 @@ async function renderAv2Users() {
     <div class="mb-3">
       <input id="av2-user-search" oninput="_av2FilterUsers(this.value)" value="${(_av2UserSearch || '').replace(/"/g, '&quot;')}" placeholder="🔎 Buscar por nombre, correo, teléfono o Stripe Customer ID…" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-swe-blue/25 focus:border-swe-blue transition" />
     </div>
-    <div id="av2-filter-chips" class="flex flex-wrap gap-1.5 mb-4"></div>
+    <div id="av2-filter-chips" class="flex flex-wrap gap-1.5 mb-2"></div>
+    <div id="av2-level-chips" class="flex flex-wrap gap-1.5 mb-4"></div>
     <div id="av2-user-list" class="space-y-2"></div>
     <div id="av2-pager" class="flex items-center justify-between mt-4"></div>`;
   _av2PaintChips();
+  _av2PaintLevelChips();
   _av2PaintUsers();
 }
 function _av2PaintChips() {
@@ -4472,10 +4494,25 @@ function _av2PaintChips() {
   }).join('');
 }
 function _av2SetFilter(f) { _av2UserFilter = f; _av2Page = 0; _av2PaintChips(); _av2PaintUsers(); }
+let _av2LevelFilter = 'all';
+function _av2SetLevel(l) { _av2LevelFilter = l; _av2Page = 0; _av2PaintLevelChips(); _av2PaintUsers(); }
+function _av2PaintLevelChips() {
+  const box = document.getElementById('av2-level-chips'); if (!box) return;
+  const list = _cachedStudents || [];
+  const opts = [['all', 'Todos'], ['A', 'SFI A'], ['B', 'SFI B'], ['C', 'SFI C'], ['D', 'SFI D'], ['none', 'Sin nivel']];
+  const cnt = (l) => l === 'all' ? list.length : l === 'none' ? list.filter(s => !s.level).length : list.filter(s => String(s.level || '').toUpperCase()[0] === l).length;
+  const col = { A: '#16a34a', B: '#2563eb', C: '#ea580c', D: '#7e22ce', all: '#006AA7', none: '#94a3b8' };
+  box.innerHTML = '<span class="text-[11px] font-bold text-gray-400 self-center mr-1">Nivel:</span>' + opts.map(o => {
+    const active = _av2LevelFilter === o[0];
+    const c = col[o[0]];
+    return `<button onclick="_av2SetLevel('${o[0]}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-full border transition-colors flex items-center gap-1 ${active ? '' : 'bg-white hover:bg-gray-50'}" style="${active ? `background:${c};border-color:${c};color:#fff` : `border-color:${c}33;color:${c}`}">${o[1]}<span class="opacity-70">${cnt(o[0])}</span></button>`;
+  }).join('');
+}
 function _av2FilterUsers(v) { _av2UserSearch = (v || '').toLowerCase().trim(); _av2Page = 0; _av2PaintUsers(); }
 function _av2FilteredList() {
   const q = _av2UserSearch;
   let list = (_cachedStudents || []).filter(s => _av2Match(s, _av2UserFilter));
+  if (_av2LevelFilter !== 'all') list = list.filter(s => _av2LevelFilter === 'none' ? !s.level : String(s.level || '').toUpperCase()[0] === _av2LevelFilter);
   if (q) list = list.filter(s => ((s.name || '') + ' ' + (s.email || '') + ' ' + (s.phone || s.telefono || '') + ' ' + (s.stripeCustomerId || '')).toLowerCase().includes(q));
   if (_av2UserFilter === 'recent' || _av2UserFilter === 'new') list = list.slice().sort((a, b) => new Date(b.joinDate || 0) - new Date(a.joinDate || 0));
   return list;
@@ -4498,8 +4535,8 @@ function _av2PaintUsers() {
     <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-3 flex items-center gap-3">
       ${_av2Avatar(s.id, s.name || s.email, 'w-9 h-9 text-sm')}
       <div class="flex-1 min-w-0">
-        <div class="font-bold text-gray-800 text-sm truncate">${escHtml(s.name || '—')}</div>
-        <div class="text-xs text-gray-400 truncate">${escHtml(s.email || '')}</div>
+        <div class="font-bold text-gray-800 text-sm truncate flex items-center gap-1.5">${escHtml(s.name || '—')}${s.level ? `<span class="text-[9px] font-bold px-1.5 py-0.5 rounded" style="background:${({ A: '#dcfce7', B: '#dbeafe', C: '#ffedd5', D: '#f3e8ff' })[String(s.level).toUpperCase()[0]] || '#f1f5f9'};color:${({ A: '#15803d', B: '#1d4ed8', C: '#c2410c', D: '#7e22ce' })[String(s.level).toUpperCase()[0]] || '#475569'}">${String(s.level).toUpperCase()[0]}</span>` : ''}</div>
+        <div class="text-xs text-gray-400 truncate">${escHtml(s.email || '')}${s.phone ? ' · 📱 ' + escHtml(s.phone) : ''}</div>
       </div>
       <div class="hidden sm:flex flex-col items-end gap-1">${statusChip(s)}<span class="text-[11px] text-gray-400">último: ${days(s)}</span></div>
       <button onclick="openStudentProgress('${s.id}','${(s.name || '').replace(/'/g, "\\'").replace(/</g, '')}')" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-cyan-50 text-cyan-700 hover:bg-cyan-100 border border-cyan-200 transition-colors shrink-0">Ver ficha</button>
@@ -4526,7 +4563,7 @@ async function av2AddStudent() {
   if (password.length < 6) { showToast('La contraseña debe tener al menos 6 caracteres', 'error'); return; }
   const btn = document.getElementById('av2-s-btn');
   if (btn) { btn.disabled = true; btn.textContent = 'Guardando…'; }
-  const result = await adminOps('create_student', { name, email, studentPassword: password, status: val('av2-s-status') || 'active', price: parseInt(val('av2-s-price') || '0') || 0, paymentMethod: val('av2-s-paymethod') || 'manual' });
+  const result = await adminOps('create_student', { name, email, studentPassword: password, status: val('av2-s-status') || 'active', price: parseInt(val('av2-s-price') || '0') || 0, paymentMethod: val('av2-s-paymethod') || 'manual', phone: val('av2-s-phone') || null });
   if (btn) { btn.disabled = false; btn.textContent = '+ Agregar alumno'; }
   if (result.error) { showToast('Error: ' + result.error, 'error'); return; }
   showToast('✅ Alumno "' + name + '" agregado', 'success');
