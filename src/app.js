@@ -4075,6 +4075,7 @@ const AV2_NAV = [
   ] },
   { group: 'Plataforma', items: [
     { id: 'contenido', icon: '📚', label: 'Contenido', sub: 'Módulos y niveles', on: true },
+    { id: 'simulacros', icon: '📝', label: 'Simulacros SFI', sub: 'Prov dirigidos por el profesor', on: true },
     { id: 'resenas', icon: '⭐', label: 'Reseñas', sub: 'Aprobar reseñas de alumnos', on: true },
     { id: 'notis', icon: '🔔', label: 'Notificaciones', sub: 'Avisos a alumnos', on: true }
   ] },
@@ -4140,6 +4141,7 @@ function av2Nav(section) {
   else if (section === 'cobros') renderAv2Cobros();
   else if (section === 'productos') renderAv2Productos();
   else if (section === 'contenido') renderAv2Contenido();
+  else if (section === 'simulacros') renderAv2Simulacros();
   else if (section === 'resenas') renderAv2Resenas();
   else if (section === 'notis') renderAv2Notis();
   else if (section === 'ecosistema') renderAv2Ecosistema();
@@ -4937,6 +4939,173 @@ async function av2RegisterCash(id) {
 async function av2SetNextPay(id, val) {
   await setNextPaymentDate(id, val);
   if (_av2Section === 'cobros') renderAv2Cobros();
+}
+
+// ═══ SIMULACROS SFI (solo admin, dirigido por el profesor) ═══
+let _simState = null;
+function _simEsc(s) { const e = (typeof escHtml === 'function') ? escHtml : (x => String(x == null ? '' : x)); return e(s).replace(/\n/g, '<br>'); }
+function renderAv2Simulacros() {
+  const c = document.getElementById('av2-content'); if (!c) return;
+  _simState = null;
+  const S = (typeof SIMULACROS !== 'undefined') ? SIMULACROS : { A: [], B: [], C: [], D: [] };
+  const levelName = { A: 'SFI A', B: 'SFI B', C: 'SFI C', D: 'SFI D' };
+  const cardsFor = (lv) => (S[lv] || []).map(sim => `
+    <button onclick="av2OpenSim('${lv}','${sim.id}')" class="w-full text-left bg-white rounded-2xl border border-gray-100 av2-shadow p-4 hover:border-swe-blue transition-colors">
+      <div class="flex items-center justify-between gap-2">
+        <div class="font-bold text-gray-800 text-sm">${_simEsc(sim.title)}</div>
+        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${sim.official ? 'bg-blue-50 text-blue-700' : 'bg-amber-50 text-amber-700'}">${sim.official ? 'Nationella prov' : 'Preparación'}</span>
+      </div>
+      <div class="text-xs text-gray-400 mt-1">${_simEsc(sim.subtitle || '')}</div>
+      <div class="text-[11px] text-gray-400 mt-2">⏱️ ${_simEsc(sim.durationHint || '')} · ${(sim.sections || []).length} secciones</div>
+    </button>`).join('') || '<div class="text-sm text-gray-400 py-3">Aún no hay simulacros de este nivel (próximamente).</div>';
+  c.innerHTML = _av2Head('Simulacros SFI', 'Prov dirigidos por el profesor · solo administradores') +
+    ['A', 'B', 'C', 'D'].map(lv => `<div class="mb-5"><div class="text-[11px] font-bold uppercase tracking-wide text-gray-400 mb-2">${levelName[lv]}</div><div class="space-y-2">${cardsFor(lv)}</div></div>`).join('') +
+    _av2Note('Estos simulacros son <b>originales</b>, inspirados en la estructura pública de Skolverket. <b>No</b> son pruebas oficiales. No se guardan datos de alumnos: la sesión es temporal y dirigida por el profesor.');
+}
+function av2OpenSim(level, id) {
+  const S = (typeof SIMULACROS !== 'undefined') ? SIMULACROS : {};
+  const sim = (S[level] || []).find(x => x.id === id);
+  if (!sim) return;
+  _simState = { sim, revealed: false, answers: {} };
+  _av2RenderSim();
+}
+function av2SimReveal() { if (_simState) { _simState.revealed = true; _av2RenderSim(); } }
+function av2SimHide() { if (_simState) { _simState.revealed = false; _av2RenderSim(); } }
+function av2SimPick(qid, i) { if (!_simState || _simState.revealed) return; _simState.answers[qid] = i; _av2RenderSim(); }
+function _av2RenderSim() {
+  const c = document.getElementById('av2-content'); if (!c || !_simState) return;
+  const { sim, revealed, answers } = _simState;
+  const skillMeta = { lasa: ['📖', 'Läsa'], hora: ['🎧', 'Höra'], skriva: ['✍️', 'Skriva'], tala: ['🗣️', 'Tala'] };
+  let html = `
+    <button onclick="renderAv2Simulacros()" class="text-sm text-swe-blue font-semibold mb-3">← Volver a la lista</button>
+    <div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-4 sm:p-5 mb-4">
+      <div class="flex items-start justify-between gap-2 flex-wrap">
+        <div><h1 class="text-xl font-extrabold text-gray-900">${_simEsc(sim.title)}</h1><div class="text-sm text-gray-400 mt-1">${_simEsc(sim.subtitle || '')}</div></div>
+        <span class="text-[10px] font-bold px-2 py-1 rounded-full ${sim.official ? 'bg-blue-50 text-blue-700' : 'bg-amber-50 text-amber-700'}">${sim.official ? 'Nationella prov (simulacro)' : 'Preparación'}</span>
+      </div>
+      <div class="mt-3 flex items-center gap-2 flex-wrap">
+        ${revealed
+      ? `<span class="text-xs font-bold px-3 py-1.5 rounded-xl bg-green-50 text-green-700">✅ Modo solución</span>
+           <button onclick="av2SimHide()" class="text-xs font-semibold px-3 py-1.5 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50">Volver a modo prueba</button>
+           <button onclick="av2SimResults()" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-swe-blue text-white hover:bg-swe-dark">📊 Resultados de la sesión</button>`
+      : `<span class="text-xs font-bold px-3 py-1.5 rounded-xl bg-gray-100 text-gray-600">🧪 Modo prueba</span>
+           <button onclick="av2SimReveal()" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-swe-blue text-white hover:bg-swe-dark">Ver respuestas y explicación</button>`}
+      </div>
+      <div class="mt-2 text-[11px] text-amber-600">⚠️ ${_simEsc(sim.note || '')}</div>
+    </div>`;
+
+  (sim.sections || []).forEach((sec, si) => {
+    const meta = skillMeta[sec.skill] || ['•', sec.label];
+    html += `<div class="bg-white rounded-2xl border border-gray-100 av2-shadow p-4 sm:p-5 mb-4">
+      <div class="font-black text-gray-800 mb-1">${meta[0]} ${_simEsc(sec.label)}</div>
+      ${sec.instructions ? `<div class="text-xs text-gray-400 mb-3">${_simEsc(sec.instructions)}</div>` : ''}`;
+
+    // Läsa / Höra
+    (sec.blocks || []).forEach((b, bi) => {
+      if (b.kind === 'text') {
+        html += `<div class="bg-gray-50 rounded-xl p-3 mb-3"><div class="text-xs font-bold text-gray-500 mb-1">${_simEsc(b.title || '')}</div><div class="text-sm text-gray-700 leading-relaxed">${_simEsc(b.body || '')}</div></div>`;
+      } else if (b.kind === 'audio') {
+        html += `<div class="bg-gray-50 rounded-xl p-3 mb-3"><div class="text-xs font-bold text-gray-500 mb-1">🎧 ${_simEsc(b.title || '')}</div>`;
+        if (b.audioKey) html += `<div class="text-xs text-gray-400">Audio: ${_simEsc(b.audioKey)}</div>`;
+        else html += `<div class="text-[11px] text-amber-600 mb-1">Audio pendiente de grabar (voz de Sophie). El profesor puede leer el guion.</div>`;
+        // El guion solo se muestra en modo solución (el alumno NO lo ve en modo prueba)
+        if (revealed) html += `<div class="text-sm text-gray-700 leading-relaxed mt-1 border-t border-gray-200 pt-2"><b>Guion:</b><br>${_simEsc(b.script || '')}</div>`;
+        html += `</div>`;
+      }
+      (b.questions || []).forEach((q, qi) => {
+        const qid = si + '-' + bi + '-' + qi;
+        html += `<div class="mb-3 pl-1">
+          <div class="text-sm font-semibold text-gray-800">${qi + 1}. ${_simEsc(q.q)} <span class="text-[10px] font-normal text-gray-300">(${q.points || 1} p · ${q.difficulty || ''})</span></div>`;
+        if (q.type === 'mc') {
+          (q.options || []).forEach((opt, oi) => {
+            const picked = answers[qid] === oi;
+            let cls = 'border-gray-200 hover:bg-gray-50';
+            if (revealed) { if (oi === q.correct) cls = 'border-green-400 bg-green-50'; else if (picked) cls = 'border-red-300 bg-red-50'; }
+            else if (picked) cls = 'border-swe-blue bg-blue-50';
+            html += `<button onclick="av2SimPick('${qid}',${oi})" class="w-full text-left text-sm px-3 py-2 rounded-xl border mt-1.5 transition-colors ${cls}">${revealed && oi === q.correct ? '✅ ' : ''}${_simEsc(opt)}</button>`;
+          });
+        } else if (q.type === 'open') {
+          html += `<div class="text-xs text-gray-400 mt-1">Respuesta abierta — la valora el profesor.</div>`;
+        } else if (q.type === 'match') {
+          html += `<div class="text-xs text-gray-400 mt-1">Actividad de emparejar (matching) en clase.</div>`;
+        }
+        if (revealed && q.sol) {
+          html += `<div class="mt-2 bg-green-50 border border-green-100 rounded-xl p-3 text-sm">
+            ${q.type === 'open' && q.answer ? `<div>🎯 <b>Respuesta modelo:</b> ${_simEsc(q.answer)}</div>` : ''}
+            ${q.type === 'match' && q.pairs ? `<div>🔗 <b>Pares:</b> ${q.pairs.map(p => _simEsc(p[0]) + ' = ' + _simEsc(p[1])).join(' · ')}</div>` : ''}
+            ${q.sol.es ? `<div>📖 ${_simEsc(q.sol.es)}</div>` : ''}
+            ${q.sol.sv ? `<div class="text-gray-600">🇸🇪 ${_simEsc(q.sol.sv)}</div>` : ''}
+            ${q.sol.evidence ? `<div class="text-gray-500 text-xs mt-1">📍 Evidencia: ${_simEsc(q.sol.evidence)}</div>` : ''}
+            ${q.sol.learn ? `<div class="text-gray-500 text-xs">💡 ${_simEsc(q.sol.learn)}</div>` : ''}
+            ${q.competencia ? `<div class="text-gray-400 text-[11px] mt-1">Competencia: ${_simEsc(q.competencia)}</div>` : ''}
+          </div>`;
+        }
+        html += `</div>`;
+      });
+    });
+
+    // Skriva
+    if (sec.tasks) sec.tasks.forEach((t, ti) => {
+      html += `<div class="bg-gray-50 rounded-xl p-3 mb-2"><div class="text-sm font-semibold text-gray-800">📝 ${_simEsc(t.prompt)}</div></div>`;
+      if (revealed) {
+        html += `<div class="bg-indigo-50 border border-indigo-100 rounded-xl p-3 text-sm space-y-1.5 mb-2">
+          <div class="font-bold text-indigo-800">Guía del profesor</div>
+          ${t.objetivo ? `<div>🎯 <b>Objetivo:</b> ${_simEsc(t.objetivo)}</div>` : ''}
+          ${t.mustInclude ? `<div>✅ <b>Debe incluir:</b> ${t.mustInclude.map(_simEsc).join(' · ')}</div>` : ''}
+          ${t.criterios ? `<div>📋 <b>Criterios:</b> ${t.criterios.map(_simEsc).join(' · ')}</div>` : ''}
+          ${t.errores ? `<div>⚠️ <b>Errores frecuentes:</b> ${t.errores.map(_simEsc).join(' · ')}</div>` : ''}
+          ${t.ejemplo ? `<div>💬 <b>Ejemplo:</b><br><span class="text-gray-700">${_simEsc(t.ejemplo)}</span></div>` : ''}
+          ${t.nota ? `<div class="text-gray-500 text-xs">🧭 ${_simEsc(t.nota)}</div>` : ''}
+        </div>
+        <div class="text-xs text-gray-500 bg-white border border-gray-200 rounded-xl p-2">Valoración del profesor: marca criterios cumplidos y pon una nota manual (esta destreza no se corrige automáticamente).</div>`;
+      }
+    });
+
+    // Tala
+    if (sec.guide) {
+      const g = sec.guide;
+      html += `<div class="bg-gray-50 rounded-xl p-3 mb-2 text-sm text-gray-700">${_simEsc(g.situacion || '')}</div>`;
+      if (revealed) {
+        html += `<div class="bg-indigo-50 border border-indigo-100 rounded-xl p-3 text-sm space-y-1.5">
+          <div class="font-bold text-indigo-800">Guía privada del profesor</div>
+          ${g.preguntas ? `<div>❓ <b>Preguntas:</b> ${g.preguntas.map(_simEsc).join(' · ')}</div>` : ''}
+          ${g.preguntasExtra ? `<div>➕ <b>Extra:</b> ${g.preguntasExtra.map(_simEsc).join(' · ')}</div>` : ''}
+          ${g.criterios ? `<div>📋 <b>Criterios:</b> ${g.criterios.map(_simEsc).join(' · ')}</div>` : ''}
+          ${g.ejemplos ? `<div>💬 <b>Ejemplos:</b> ${g.ejemplos.map(_simEsc).join(' · ')}</div>` : ''}
+          ${g.errores ? `<div>⚠️ <b>Errores frecuentes:</b> ${g.errores.map(_simEsc).join(' · ')}</div>` : ''}
+          ${g.puedeHacer ? `<div class="text-gray-500 text-xs">🎓 ${_simEsc(g.puedeHacer)}</div>` : ''}
+        </div>`;
+      }
+    }
+    html += `</div>`;
+  });
+  c.innerHTML = html;
+  window.scrollTo(0, 0);
+}
+function av2SimResults() {
+  if (!_simState) return;
+  const { sim, answers } = _simState;
+  const bySkill = {};
+  (sim.sections || []).forEach((sec, si) => {
+    (sec.blocks || []).forEach((b, bi) => (b.questions || []).forEach((q, qi) => {
+      if (q.type !== 'mc') return;
+      const k = sec.skill; bySkill[k] = bySkill[k] || { ok: 0, tot: 0 };
+      bySkill[k].tot++;
+      if (answers[si + '-' + bi + '-' + qi] === q.correct) bySkill[k].ok++;
+    }));
+  });
+  const nm = { lasa: '📖 Läsa', hora: '🎧 Höra', skriva: '✍️ Skriva', tala: '🗣️ Tala' };
+  let rows = '';
+  ['lasa', 'hora'].forEach(k => { if (bySkill[k]) { const p = Math.round(bySkill[k].ok / bySkill[k].tot * 100); rows += `<div class="flex justify-between py-1"><span>${nm[k]}</span><b>${bySkill[k].ok}/${bySkill[k].tot} · ${p}%</b></div>`; } });
+  const hasWrite = (sim.sections || []).some(s => s.skill === 'skriva');
+  const hasTala = (sim.sections || []).some(s => s.skill === 'tala');
+  if (hasWrite) rows += `<div class="flex justify-between py-1"><span>✍️ Skriva</span><b class="text-gray-400">evaluación del profesor</b></div>`;
+  if (hasTala) rows += `<div class="flex justify-between py-1"><span>🗣️ Tala</span><b class="text-gray-400">evaluación del profesor</b></div>`;
+  const modal = document.getElementById('sp-modal'); const body = document.getElementById('sp-body'); const title = document.getElementById('sp-title');
+  if (title) title.textContent = 'Resultados de la sesión';
+  if (body) body.innerHTML = `<div class="text-sm">${rows || '<div class="text-gray-400">Marca respuestas de opción múltiple para ver el %.</div>'}
+    <div class="mt-3 text-[11px] text-gray-400 border-t border-gray-100 pt-2">Resultado del <b>simulacro</b> (auto, solo opción múltiple). NO equivale al resultado oficial del Nationella prov. Skriva y Tala las evalúa el profesor.</div></div>`;
+  if (modal) modal.classList.remove('hidden');
 }
 
 // ═══ ECOSISTEMA ═══ (servicios y arquitectura — solo nombres, nunca claves)
