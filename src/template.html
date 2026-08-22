@@ -2205,6 +2205,25 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════
+     MODAL PANTALLA COMPLETA: Simulacro SFI (tapa el panel en clase por Zoom)
+════════════════════════════════════════════════════════════ -->
+<div id="sim-modal" class="hidden fixed inset-0 z-[99] bg-white flex flex-col">
+  <header class="flex items-center gap-3 px-4 sm:px-6 py-3 border-b border-gray-200 bg-white shrink-0">
+    <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-swe-blue to-indigo-600 flex items-center justify-center text-white font-black text-sm shrink-0">S</div>
+    <div class="flex-1 min-w-0"><div id="sim-title" class="font-black text-gray-900 truncate text-sm sm:text-base">Simulacro</div><div id="sim-sub" class="text-[11px] text-gray-400 truncate"></div></div>
+    <div id="sim-timer" class="hidden text-sm font-bold px-3 py-1.5 rounded-xl bg-gray-100 text-gray-700 tabular-nums">40:00</div>
+    <button onclick="av2SimClose()" class="text-sm font-semibold px-3 py-1.5 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 shrink-0">✕ Cerrar</button>
+  </header>
+  <main id="sim-body" class="flex-1 overflow-y-auto"><div class="max-w-3xl w-full mx-auto px-4 sm:px-6 py-5" id="sim-inner"></div></main>
+  <div id="sim-results" class="hidden absolute inset-0 bg-black/40 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-5 shadow-2xl">
+      <div class="flex items-center justify-between mb-3"><div class="font-black text-gray-900">📊 Resultados de la sesión</div><button onclick="document.getElementById('sim-results').classList.add('hidden')" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500">✕</button></div>
+      <div id="sim-results-body" class="text-sm"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
      MODAL: Progreso del alumno (vista de admin, solo lectura)
 ════════════════════════════════════════════════════════════ -->
 <div id="sp-modal" class="hidden fixed inset-0 z-[95] flex items-start justify-center p-3 sm:p-6 overflow-y-auto" style="background:rgba(15,23,42,0.6); backdrop-filter:blur(2px);" onclick="if(event.target===this)closeStudentProgress()">

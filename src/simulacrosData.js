@@ -18,6 +18,7 @@ const SIMULACROS = {
       title: 'Preparación SFI A – Prov 1',
       subtitle: '¿El alumno está construyendo las bases para avanzar a SFI B?',
       durationHint: 'Aprox. 40–60 min (sesión guiada)',
+      durationMin: 45,
       note: 'SFI A no tiene Nationellt prov oficial. Esto es una preparación original, no una prueba de Skolverket.',
       sections: [
         {
@@ -132,6 +133,7 @@ const SIMULACROS = {
       title: 'Simulacro Nationella prov SFI B – 1',
       subtitle: 'Estructura por delprov (Höra A, Läsa A, Höra B, Läsa B) + Skriva + Tala',
       durationHint: 'Sesión seria por delprov (Skolverket no publica una duración exacta)',
+      durationMin: 60,
       note: 'Simulacro ORIGINAL inspirado en la estructura pública. NO es una prueba oficial de Skolverket.',
       sections: [
         {
