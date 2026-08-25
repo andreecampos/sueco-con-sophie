@@ -6827,7 +6827,15 @@ async function finishNivelTest() {
   try { localStorage.setItem('scs_nivel_last', JSON.stringify({ nivel: r.nivel, pct: Math.round(r.correct / (r.total||1) * 100), skills: { las: pctOf(r.skills.las), hor: pctOf(r.skills.hor), skriv: pctOf(r.skills.skriv), tala: pctOf(r.skills.tala) }, ts: Date.now() })); } catch (e) {}
   // Cross-device: guarda el resultado en user_progress (RLS confiable) para que el
   // nivel siga al alumno en cualquier dispositivo, sin depender de nivel_resultados.
-  try { if (typeof progressMark === 'function' && window._sbSession && window._sbSession.id) progressMark('meta', 'nivel_last', { status: 'completed', level: r.nivel, progress_value: Math.round(r.correct / (r.total || 1) * 100) }); } catch (e) {}
+  try {
+    if (typeof progressMark === 'function' && window._sbSession && window._sbSession.id) {
+      progressMark('meta', 'nivel_last', { status: 'completed', level: r.nivel, progress_value: Math.round(r.correct / (r.total || 1) * 100) });
+      // Desglose por destreza (Läsa/Höra/Skriva/Tala) en filas meta separadas, para
+      // que las barras "En qué enfocarte" se reconstruyan igual en cualquier dispositivo.
+      const _sk = { las: pctOf(r.skills.las), hor: pctOf(r.skills.hor), skriv: pctOf(r.skills.skriv), tala: pctOf(r.skills.tala) };
+      ['las', 'hor', 'skriv', 'tala'].forEach(k => progressMark('meta', 'nivel_skill_' + k, { status: 'completed', progress_value: _sk[k] || 0 }));
+    }
+  } catch (e) {}
   showView('nivel-result');
 
   // Insignia de nivel
@@ -7136,6 +7144,21 @@ async function initUnifiedProgress() {
     if ((state.stats.correct || 0) > 0 && typeof saveStats === 'function') saveStats();
     if (typeof updateStats === 'function') updateStats();
   } catch (e) {}
+  // Cross-device: sincroniza la racha (fila meta|streak). Toma la más alta entre este
+  // dispositivo y la nube, para que el alumno vea la misma racha en celular y PC.
+  try {
+    const row = (typeof UNIFIED_PROGRESS !== 'undefined') ? UNIFIED_PROGRESS['meta|streak'] : null;
+    let local = null; try { local = JSON.parse(localStorage.getItem('sc_streak') || 'null'); } catch (e) {}
+    const cloudCount = row ? (row.progress_value || 0) : 0;
+    const localCount = (local && local.count) ? local.count : 0;
+    const best = Math.max(cloudCount, localCount);
+    if (best > 0) {
+      const t = new Date().toISOString().slice(0, 10);
+      const last = (local && local.last) ? local.last : t;
+      try { localStorage.setItem('sc_streak', JSON.stringify({ count: best, last })); } catch (e) {}
+      if (best > cloudCount && typeof progressMark === 'function') progressMark('meta', 'streak', { status: 'in_progress', progress_value: best });
+    }
+  } catch (e) {}
   renderDashboardProgress();
   try { renderInicio(); } catch (e) {}
   try { renderHomeDashboard(); } catch (e) {} // recomputa el anillo de avance con datos ya sincronizados
@@ -7181,19 +7204,33 @@ async function loadAssignedLevelFromDB() {
   const getLocal = () => { try { return JSON.parse(localStorage.getItem('scs_nivel_last') || 'null'); } catch (e) { return null; } };
   // La prueba de nivel se sincroniza vía user_progress (meta|nivel_last). La tabla
   // nivel_resultados NO existe, así que no se consulta.
-  const meta = (typeof UNIFIED_PROGRESS !== 'undefined') ? UNIFIED_PROGRESS['meta|nivel_last'] : null;
-  // 1) La nube tiene el nivel → reconstruir el caché local en este dispositivo.
+  const U = (typeof UNIFIED_PROGRESS !== 'undefined') ? UNIFIED_PROGRESS : {};
+  const meta = U['meta|nivel_last'];
+  const SK = ['las', 'hor', 'skriv', 'tala'];
+  // Lee el desglose por destreza guardado en la nube (filas meta|nivel_skill_*).
+  const cloudSkills = () => { const o = {}; let any = false; SK.forEach(k => { const row = U['meta|nivel_skill_' + k]; if (row && row.progress_value != null) { o[k] = row.progress_value; any = true; } }); return any ? o : null; };
+  // 1) La nube tiene el nivel → reconstruir SIEMPRE el caché local (nivel + destrezas),
+  //    para que las barras se pinten aunque ya exista un caché viejo con destrezas vacías.
   if (meta && meta.level) {
     setAssignedLevelDB(meta.level);
-    const l = getLocal();
-    if (!l || l.pct == null) { try { localStorage.setItem('scs_nivel_last', JSON.stringify({ nivel: meta.level, pct: meta.progress_value || 0, skills: {}, ts: Date.parse(meta.updated_at) || Date.now() })); } catch (e) {} }
+    const l = getLocal() || {};
+    const cs = cloudSkills();
+    // Destreza = valor de la nube si existe; si no, el local. Nunca deja 0 si hay dato.
+    const skills = {};
+    SK.forEach(k => { const c = cs && cs[k] != null ? cs[k] : null; const loc = l.skills && l.skills[k] != null ? l.skills[k] : null; if (c != null || loc != null) skills[k] = Math.max(c || 0, loc || 0); });
+    const rebuilt = { nivel: meta.level, pct: Math.max(l.pct || 0, meta.progress_value || 0), skills, ts: l.ts || Date.parse(meta.updated_at) || Date.now() };
+    try { localStorage.setItem('scs_nivel_last', JSON.stringify(rebuilt)); } catch (e) {}
     return;
   }
   // 2) Backfill: este dispositivo tiene el nivel en localStorage pero la nube no →
-  //    se sube para que sincronice a los demás dispositivos (alumnos antiguos).
+  //    se sube el nivel Y el desglose por destreza para sincronizar a los demás dispositivos.
   const l = getLocal();
   if (l && l.nivel && typeof progressMark === 'function') {
-    try { setAssignedLevelDB(l.nivel); await progressMark('meta', 'nivel_last', { status: 'completed', level: l.nivel, progress_value: l.pct || 0 }); } catch (e) {}
+    try {
+      setAssignedLevelDB(l.nivel);
+      await progressMark('meta', 'nivel_last', { status: 'completed', level: l.nivel, progress_value: l.pct || 0 });
+      if (l.skills) SK.forEach(k => { if (l.skills[k] != null) progressMark('meta', 'nivel_skill_' + k, { status: 'completed', progress_value: l.skills[k] || 0 }); });
+    } catch (e) {}
   }
 }
 
