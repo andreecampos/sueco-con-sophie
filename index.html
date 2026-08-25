@@ -25310,6 +25310,9 @@ async function finishNivelTest() {
   stopNivelAudio();
   const r = computeNivel();
   try { localStorage.setItem('scs_nivel_last', JSON.stringify({ nivel: r.nivel, pct: Math.round(r.correct / (r.total||1) * 100), skills: { las: pctOf(r.skills.las), hor: pctOf(r.skills.hor), skriv: pctOf(r.skills.skriv), tala: pctOf(r.skills.tala) }, ts: Date.now() })); } catch (e) {}
+  // Cross-device: guarda el resultado en user_progress (RLS confiable) para que el
+  // nivel siga al alumno en cualquier dispositivo, sin depender de nivel_resultados.
+  try { if (typeof progressMark === 'function' && window._sbSession && window._sbSession.id) progressMark('meta', 'nivel_last', { status: 'completed', level: r.nivel, progress_value: Math.round(r.correct / (r.total || 1) * 100) }); } catch (e) {}
   showView('nivel-result');
 
   // Insignia de nivel
@@ -25658,23 +25661,28 @@ function renewFromAlert() { closePaymentAlert(); reactivarSuscripcion(); }
 // Lee el nivel más reciente de la prueba desde Supabase (robusto entre dispositivos).
 async function loadAssignedLevelFromDB() {
   const s = window._sbSession;
-  if (!s || !s.id || typeof sb === 'undefined' || typeof setAssignedLevelDB !== 'function') return;
+  if (!s || !s.id || typeof setAssignedLevelDB !== 'function') return;
+  const hasLocal = () => { try { const l = JSON.parse(localStorage.getItem('scs_nivel_last') || 'null'); return l && l.pct != null; } catch (e) { return false; } };
+  // 1) PRIORIDAD: reconstruir desde user_progress (meta|nivel_last) — su RLS sí deja leer al alumno.
+  try {
+    const meta = (typeof UNIFIED_PROGRESS !== 'undefined') ? UNIFIED_PROGRESS['meta|nivel_last'] : null;
+    if (meta && meta.level) {
+      setAssignedLevelDB(meta.level);
+      if (!hasLocal()) { try { localStorage.setItem('scs_nivel_last', JSON.stringify({ nivel: meta.level, pct: meta.progress_value || 0, skills: {}, ts: Date.parse(meta.updated_at) || Date.now() })); } catch (e) {} }
+    }
+  } catch (e) {}
+  // 2) RESPALDO: nivel_resultados (para alumnos que hicieron la prueba antes de este fix).
+  if (typeof sb === 'undefined') return;
   try {
     const { data } = await sb.from('nivel_resultados').select('*').eq('student_id', s.id).order('created_at', { ascending: false }).limit(1);
     const r = data && data[0];
     if (r && r.nivel) {
       setAssignedLevelDB(r.nivel);
-      // Cross-device: si este dispositivo no tiene el resultado en localStorage, lo cacheamos
-      // desde la BD para que getLastNivel() (y el anillo de avance) funcionen en cualquier PC.
-      try {
-        let local = null; try { local = JSON.parse(localStorage.getItem('scs_nivel_last') || 'null'); } catch (e) {}
-        if (!local || !local.pct) {
-          const total = r.total || 1;
-          const pct = r.pct != null ? r.pct : Math.round((r.puntaje || r.correct || 0) / total * 100);
-          const skills = { las: r.las || 0, hor: r.hor || 0, skriv: r.skriv || 0, tala: r.tala || 0 };
-          localStorage.setItem('scs_nivel_last', JSON.stringify({ nivel: r.nivel, pct: pct, skills: skills, ts: Date.parse(r.created_at) || Date.now() }));
-        }
-      } catch (e) {}
+      if (!hasLocal()) {
+        const total = r.total || 1;
+        const pct = r.pct != null ? r.pct : Math.round((r.puntaje || r.correct || 0) / total * 100);
+        try { localStorage.setItem('scs_nivel_last', JSON.stringify({ nivel: r.nivel, pct: pct, skills: { las: r.las || 0, hor: r.hor || 0, skriv: r.skriv || 0, tala: r.tala || 0 }, ts: Date.parse(r.created_at) || Date.now() })); } catch (e) {}
+      }
     }
   } catch (e) {}
 }
