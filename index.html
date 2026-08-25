@@ -25611,14 +25611,15 @@ async function initUnifiedProgress() {
   try { await loadAssignedLevelFromDB(); } catch (e) {}
   // Cross-device: restaura las estadísticas de práctica desde Supabase (fila meta|stats).
   try {
+    if (!state.stats) state.stats = { sessions: 0, correct: 0, streak: 0 };
     const row = (typeof UNIFIED_PROGRESS !== 'undefined') ? UNIFIED_PROGRESS['meta|stats'] : null;
     if (row) {
-      if (!state.stats) state.stats = { sessions: 0, correct: 0, streak: 0 };
       state.stats.correct = Math.max(state.stats.correct || 0, row.score || 0);
       state.stats.sessions = Math.max(state.stats.sessions || 0, row.progress_value || 0);
-      try { localStorage.setItem('scs_stats', JSON.stringify(state.stats)); } catch (e) {}
-      if (typeof updateStats === 'function') updateStats();
     }
+    // Sube el máximo a la nube (protege el progreso del dispositivo) y actualiza el display.
+    if ((state.stats.correct || 0) > 0 && typeof saveStats === 'function') saveStats();
+    if (typeof updateStats === 'function') updateStats();
   } catch (e) {}
   renderDashboardProgress();
   try { renderInicio(); } catch (e) {}
@@ -25662,29 +25663,23 @@ function renewFromAlert() { closePaymentAlert(); reactivarSuscripcion(); }
 async function loadAssignedLevelFromDB() {
   const s = window._sbSession;
   if (!s || !s.id || typeof setAssignedLevelDB !== 'function') return;
-  const hasLocal = () => { try { const l = JSON.parse(localStorage.getItem('scs_nivel_last') || 'null'); return l && l.pct != null; } catch (e) { return false; } };
-  // 1) PRIORIDAD: reconstruir desde user_progress (meta|nivel_last) — su RLS sí deja leer al alumno.
-  try {
-    const meta = (typeof UNIFIED_PROGRESS !== 'undefined') ? UNIFIED_PROGRESS['meta|nivel_last'] : null;
-    if (meta && meta.level) {
-      setAssignedLevelDB(meta.level);
-      if (!hasLocal()) { try { localStorage.setItem('scs_nivel_last', JSON.stringify({ nivel: meta.level, pct: meta.progress_value || 0, skills: {}, ts: Date.parse(meta.updated_at) || Date.now() })); } catch (e) {} }
-    }
-  } catch (e) {}
-  // 2) RESPALDO: nivel_resultados (para alumnos que hicieron la prueba antes de este fix).
-  if (typeof sb === 'undefined') return;
-  try {
-    const { data } = await sb.from('nivel_resultados').select('*').eq('student_id', s.id).order('created_at', { ascending: false }).limit(1);
-    const r = data && data[0];
-    if (r && r.nivel) {
-      setAssignedLevelDB(r.nivel);
-      if (!hasLocal()) {
-        const total = r.total || 1;
-        const pct = r.pct != null ? r.pct : Math.round((r.puntaje || r.correct || 0) / total * 100);
-        try { localStorage.setItem('scs_nivel_last', JSON.stringify({ nivel: r.nivel, pct: pct, skills: { las: r.las || 0, hor: r.hor || 0, skriv: r.skriv || 0, tala: r.tala || 0 }, ts: Date.parse(r.created_at) || Date.now() })); } catch (e) {}
-      }
-    }
-  } catch (e) {}
+  const getLocal = () => { try { return JSON.parse(localStorage.getItem('scs_nivel_last') || 'null'); } catch (e) { return null; } };
+  // La prueba de nivel se sincroniza vía user_progress (meta|nivel_last). La tabla
+  // nivel_resultados NO existe, así que no se consulta.
+  const meta = (typeof UNIFIED_PROGRESS !== 'undefined') ? UNIFIED_PROGRESS['meta|nivel_last'] : null;
+  // 1) La nube tiene el nivel → reconstruir el caché local en este dispositivo.
+  if (meta && meta.level) {
+    setAssignedLevelDB(meta.level);
+    const l = getLocal();
+    if (!l || l.pct == null) { try { localStorage.setItem('scs_nivel_last', JSON.stringify({ nivel: meta.level, pct: meta.progress_value || 0, skills: {}, ts: Date.parse(meta.updated_at) || Date.now() })); } catch (e) {} }
+    return;
+  }
+  // 2) Backfill: este dispositivo tiene el nivel en localStorage pero la nube no →
+  //    se sube para que sincronice a los demás dispositivos (alumnos antiguos).
+  const l = getLocal();
+  if (l && l.nivel && typeof progressMark === 'function') {
+    try { setAssignedLevelDB(l.nivel); await progressMark('meta', 'nivel_last', { status: 'completed', level: l.nivel, progress_value: l.pct || 0 }); } catch (e) {}
+  }
 }
 
 // Pinta porcentajes del dashboard desde el sistema unificado (usa la caché ya cargada).
