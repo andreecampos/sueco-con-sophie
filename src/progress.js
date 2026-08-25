@@ -405,6 +405,24 @@ async function backfillLocalProgress() {
       }
     }
   } catch (e) {}
+  // Gramática: sc_gram_master { topicId: [preguntasDominadas...] } → sube a la nube el % local
+  try {
+    const gm = (typeof _gramMasterAll === 'function') ? _gramMasterAll() : {};
+    for (const tid in gm) {
+      const set = gm[tid];
+      if (!set || !set.length) continue;
+      const topic = (typeof GRAMMAR_DATA !== 'undefined' && GRAMMAR_DATA.topics)
+        ? GRAMMAR_DATA.topics.find(t => t.id === tid) : null;
+      const total = topic && topic.questions ? topic.questions.length : 0;
+      if (!total) continue;
+      const pct = (typeof pctClamp === 'function') ? pctClamp(set.length, total) : Math.min(100, set.length / total * 100);
+      const row = UNIFIED_PROGRESS['grammar|' + tid];
+      const cloudPct = row ? (row.progress_value || 0) : 0;
+      if (pct > cloudPct) {
+        await progressMark('grammar', tid, { status: pct >= 100 ? 'completed' : 'in_progress', level: topic.level || null, progress_value: pct });
+      }
+    }
+  } catch (e) {}
 }
 
 /* ── Helpers de render reutilizables (HTML string; sin frameworks) ──── */
