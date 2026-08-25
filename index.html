@@ -20217,6 +20217,12 @@ function loadStats() {
 
 function saveStats() {
   localStorage.setItem('scs_stats', JSON.stringify(state.stats));
+  // Cross-device: guarda también en Supabase (fila meta) para que el avance siga al alumno.
+  try {
+    if (typeof progressMark === 'function' && window._sbSession && window._sbSession.id) {
+      progressMark('meta', 'stats', { status: 'in_progress', score: state.stats.correct || 0, progress_value: state.stats.sessions || 0 });
+    }
+  } catch (e) {}
 }
 
 function updateStats() {
@@ -25600,8 +25606,20 @@ async function initUnifiedProgress() {
   try { if (typeof loadExamProgress === 'function') await loadExamProgress(); } catch (e) {}
   try { if (typeof loadMedborgarProgress === 'function') await loadMedborgarProgress(); } catch (e) {}
   try { await loadAssignedLevelFromDB(); } catch (e) {}
+  // Cross-device: restaura las estadísticas de práctica desde Supabase (fila meta|stats).
+  try {
+    const row = (typeof UNIFIED_PROGRESS !== 'undefined') ? UNIFIED_PROGRESS['meta|stats'] : null;
+    if (row) {
+      if (!state.stats) state.stats = { sessions: 0, correct: 0, streak: 0 };
+      state.stats.correct = Math.max(state.stats.correct || 0, row.score || 0);
+      state.stats.sessions = Math.max(state.stats.sessions || 0, row.progress_value || 0);
+      try { localStorage.setItem('scs_stats', JSON.stringify(state.stats)); } catch (e) {}
+      if (typeof updateStats === 'function') updateStats();
+    }
+  } catch (e) {}
   renderDashboardProgress();
   try { renderInicio(); } catch (e) {}
+  try { renderHomeDashboard(); } catch (e) {} // recomputa el anillo de avance con datos ya sincronizados
   try { showPaymentAlert(); } catch (e) {}
   // La guía de bienvenida se decide AQUÍ (con el progreso ya cargado), para saber
   // si esta persona ya la vio en su cuenta. Se muestra una sola vez por persona.
@@ -25642,8 +25660,22 @@ async function loadAssignedLevelFromDB() {
   const s = window._sbSession;
   if (!s || !s.id || typeof sb === 'undefined' || typeof setAssignedLevelDB !== 'function') return;
   try {
-    const { data } = await sb.from('nivel_resultados').select('nivel, created_at').eq('student_id', s.id).order('created_at', { ascending: false }).limit(1);
-    if (data && data[0] && data[0].nivel) setAssignedLevelDB(data[0].nivel);
+    const { data } = await sb.from('nivel_resultados').select('*').eq('student_id', s.id).order('created_at', { ascending: false }).limit(1);
+    const r = data && data[0];
+    if (r && r.nivel) {
+      setAssignedLevelDB(r.nivel);
+      // Cross-device: si este dispositivo no tiene el resultado en localStorage, lo cacheamos
+      // desde la BD para que getLastNivel() (y el anillo de avance) funcionen en cualquier PC.
+      try {
+        let local = null; try { local = JSON.parse(localStorage.getItem('scs_nivel_last') || 'null'); } catch (e) {}
+        if (!local || !local.pct) {
+          const total = r.total || 1;
+          const pct = r.pct != null ? r.pct : Math.round((r.puntaje || r.correct || 0) / total * 100);
+          const skills = { las: r.las || 0, hor: r.hor || 0, skriv: r.skriv || 0, tala: r.tala || 0 };
+          localStorage.setItem('scs_nivel_last', JSON.stringify({ nivel: r.nivel, pct: pct, skills: skills, ts: Date.parse(r.created_at) || Date.now() }));
+        }
+      } catch (e) {}
+    }
   } catch (e) {}
 }
 
