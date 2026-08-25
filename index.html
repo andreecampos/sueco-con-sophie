@@ -25114,19 +25114,29 @@ async function initUnifiedProgress() {
     if ((state.stats.correct || 0) > 0 && typeof saveStats === 'function') saveStats();
     if (typeof updateStats === 'function') updateStats();
   } catch (e) {}
-  // Cross-device: sincroniza la racha (fila meta|streak). Toma la más alta entre este
-  // dispositivo y la nube, para que el alumno vea la misma racha en celular y PC.
+  // Cross-device: sincroniza la racha (fila meta|streak). Guarda el conteo (progress_value)
+  // y la fecha del último día de estudio (score = YYYYMMDD). Solo considera rachas "vivas"
+  // (último día = hoy o ayer) para no inflar ni reiniciar incorrectamente. getStudyStreak()
+  // hace el ajuste final (extiende si es ayer, mantiene si es hoy).
   try {
-    const row = (typeof UNIFIED_PROGRESS !== 'undefined') ? UNIFIED_PROGRESS['meta|streak'] : null;
+    const _di = d => d ? parseInt(String(d).replace(/-/g, ''), 10) : 0;
+    const today = new Date().toISOString().slice(0, 10);
+    const yest = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
+    const alive = d => d === today || d === yest;
     let local = null; try { local = JSON.parse(localStorage.getItem('sc_streak') || 'null'); } catch (e) {}
+    const row = (typeof UNIFIED_PROGRESS !== 'undefined') ? UNIFIED_PROGRESS['meta|streak'] : null;
     const cloudCount = row ? (row.progress_value || 0) : 0;
-    const localCount = (local && local.count) ? local.count : 0;
-    const best = Math.max(cloudCount, localCount);
-    if (best > 0) {
-      const t = new Date().toISOString().slice(0, 10);
-      const last = (local && local.last) ? local.last : t;
-      try { localStorage.setItem('sc_streak', JSON.stringify({ count: best, last })); } catch (e) {}
-      if (best > cloudCount && typeof progressMark === 'function') progressMark('meta', 'streak', { status: 'in_progress', progress_value: best });
+    const cloudDateInt = row && row.score ? row.score : 0;
+    const cloudDateStr = cloudDateInt ? `${String(cloudDateInt).slice(0, 4)}-${String(cloudDateInt).slice(4, 6)}-${String(cloudDateInt).slice(6, 8)}` : null;
+    const cands = [];
+    if (local && local.count && alive(local.last)) cands.push({ count: local.count, last: local.last });
+    if (cloudCount && cloudDateStr && alive(cloudDateStr)) cands.push({ count: cloudCount, last: cloudDateStr });
+    if (cands.length) {
+      const best = cands.sort((a, b) => (b.count - a.count) || (_di(b.last) - _di(a.last)))[0];
+      try { localStorage.setItem('sc_streak', JSON.stringify(best)); } catch (e) {}
+      if ((best.count > cloudCount || _di(best.last) > cloudDateInt) && typeof progressMark === 'function') {
+        progressMark('meta', 'streak', { status: 'in_progress', progress_value: best.count, score: _di(best.last) });
+      }
     }
   } catch (e) {}
   renderDashboardProgress();
@@ -25246,12 +25256,16 @@ function getStudyStreak() {
   try {
     const t = new Date().toISOString().slice(0, 10);
     let s = null; try { s = JSON.parse(localStorage.getItem('sc_streak') || 'null'); } catch (e) {}
-    if (!s || !s.last) s = { count: 1, last: t };
+    let changed = false;
+    if (!s || !s.last) { s = { count: 1, last: t }; changed = true; }
     else if (s.last !== t) {
       const y = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
       s = { count: s.last === y ? (s.count || 1) + 1 : 1, last: t };
+      changed = true;
     }
     localStorage.setItem('sc_streak', JSON.stringify(s));
+    // Cross-device: cuando la racha cambia (una vez al día), súbela a la nube.
+    if (changed) { try { if (typeof progressMark === 'function' && window._sbSession && window._sbSession.id) progressMark('meta', 'streak', { status: 'in_progress', progress_value: s.count, score: parseInt(t.replace(/-/g, ''), 10) }); } catch (e) {} }
     return s.count || 1;
   } catch (e) { return 1; }
 }
