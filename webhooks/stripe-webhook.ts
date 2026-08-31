@@ -117,6 +117,35 @@ Deno.serve(async (req) => {
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object as Stripe.Checkout.Session
 
+      // ── Filtro de producto: SOLO crear alumno si el pago es del curso "Vamos Svenska".
+      //    Evita que pagos de OTROS productos (p. ej. un link de hosting web) creen un
+      //    alumno y le envíen el correo de acceso por error.
+      //    Configura en las variables de entorno de la función (una u otra, separadas por coma):
+      //      COURSE_PRODUCT_IDS = prod_xxx           (recomendado: el producto del curso)
+      //      COURSE_PRICE_IDS   = price_xxx,price_yyy (los precios del curso)
+      const allowProducts = (Deno.env.get('COURSE_PRODUCT_IDS') || '').split(',').map(s => s.trim()).filter(Boolean)
+      const allowPrices   = (Deno.env.get('COURSE_PRICE_IDS')   || '').split(',').map(s => s.trim()).filter(Boolean)
+      if (allowProducts.length || allowPrices.length) {
+        let isCourse = false
+        try {
+          const li = await stripe.checkout.sessions.listLineItems(session.id, { limit: 100, expand: ['data.price.product'] })
+          for (const item of (li.data || [])) {
+            const priceId = (item.price?.id) || ''
+            const prod = item.price?.product as any
+            const productId = typeof prod === 'string' ? prod : (prod?.id || '')
+            if ((priceId && allowPrices.includes(priceId)) || (productId && allowProducts.includes(productId))) { isCourse = true; break }
+          }
+        } catch (e) {
+          console.error('No se pudieron leer los line items del checkout:', (e as any)?.message)
+        }
+        if (!isCourse) {
+          console.log('Pago IGNORADO — no es del curso Vamos Svenska. session:', session.id)
+          return new Response(JSON.stringify({ ok: true, ignored: 'not_course_product' }), { status: 200 })
+        }
+      } else {
+        console.warn('⚠️ COURSE_PRODUCT_IDS / COURSE_PRICE_IDS NO configurados: se procesan TODOS los pagos. Configúralos para no crear alumnos por pagos ajenos (hosting, etc.).')
+      }
+
       // El correo del ALUMNO puede venir en un campo personalizado del checkout
       // (para cuando alguien paga por otra persona: pareja, mamá, etc.).
       // Así, un mismo pagador puede comprar varias suscripciones para correos distintos.
