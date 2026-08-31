@@ -123,8 +123,16 @@ Deno.serve(async (req) => {
       //    Configura en las variables de entorno de la función (una u otra, separadas por coma):
       //      COURSE_PRODUCT_IDS = prod_xxx           (recomendado: el producto del curso)
       //      COURSE_PRICE_IDS   = price_xxx,price_yyy (los precios del curso)
+      // Precios del curso "Vamos Svenska" (por defecto). Puedes añadir más vía la variable
+      // de entorno COURSE_PRICE_IDS (se suman a estos). Si creas un precio nuevo en Stripe,
+      // agrégalo aquí o en esa variable.
+      const DEFAULT_COURSE_PRICES = [
+        'price_1TqSjdFwjkCNpHaAduKUfEiw', // 399 SEK / mes
+        'price_1TrFu1FwjkCNpHaA2lsxbHZB', // 339 SEK / mes
+        'price_1TuE0zFwjkCNpHaA0HMakdcc', // 357 x3 meses (1071 SEK)
+      ]
       const allowProducts = (Deno.env.get('COURSE_PRODUCT_IDS') || '').split(',').map(s => s.trim()).filter(Boolean)
-      const allowPrices   = (Deno.env.get('COURSE_PRICE_IDS')   || '').split(',').map(s => s.trim()).filter(Boolean)
+      const allowPrices   = [...DEFAULT_COURSE_PRICES, ...(Deno.env.get('COURSE_PRICE_IDS') || '').split(',').map(s => s.trim()).filter(Boolean)]
       if (allowProducts.length || allowPrices.length) {
         let isCourse = false
         try {
