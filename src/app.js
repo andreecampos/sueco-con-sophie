@@ -2392,6 +2392,7 @@ async function getStudents() {
     cancelsAt: s.cancels_at || null,
     level: s.level || null,
     grupo: s.grupo || null,
+    phone: s.phone || null,
     lastPaymentDate: s.last_payment_date || null,
     payerEmail: s.payer_email || null,
   }));
@@ -3846,13 +3847,17 @@ function _av2FichaHeader(stu) {
   const dev = (stu.device_keys || []).length;
   const dt = (d) => d ? _spDate(Date.parse(d)) : '—';
   const btn = 'text-xs font-semibold px-3 py-1.5 rounded-xl border transition-colors';
+  // Nivel SFI (de la prueba de nivel, adjuntado en la lista)
+  const cs = (_cachedStudents || []).find(x => x.id === id);
+  const lvl = (cs && cs.level) ? String(cs.level).toUpperCase()[0] : '';
+  const lvlChip = lvl ? `<span class="text-[10px] font-bold px-2 py-1 rounded-full" style="background:${({ A: '#dcfce7', B: '#dbeafe', C: '#ffedd5', D: '#f3e8ff' })[lvl] || '#f1f5f9'};color:${({ A: '#15803d', B: '#1d4ed8', C: '#c2410c', D: '#7e22ce' })[lvl] || '#475569'}">SFI ${lvl}</span>` : '<span class="text-[10px] font-semibold px-2 py-1 rounded-full bg-gray-100 text-gray-400">sin nivel</span>';
   const row = (ic, label, val, cls) => `<div class="flex items-center gap-2 min-w-0"><span class="w-5 text-center">${ic}</span><span class="text-gray-400">${label}:</span> <b class="truncate ${cls || 'text-gray-700'}">${val}</b></div>`;
   return `
     <div class="bg-white border border-gray-100 rounded-2xl p-4 mb-4 av2-shadow">
       <div class="flex items-center gap-3 mb-4">
         ${_av2Avatar(id, stu.name || stu.email, 'w-12 h-12 text-lg')}
         <div class="flex-1 min-w-0"><div class="font-black text-gray-800 truncate">${esc(stu.name || '—')}</div><div class="text-xs text-gray-400 truncate">✉️ ${esc(stu.email || '')}</div></div>
-        <span class="text-[10px] font-bold px-2 py-1 rounded-full ${chip[1]}">${chip[0]}</span>
+        <div class="flex flex-col items-end gap-1">${lvlChip}<span class="text-[10px] font-bold px-2 py-1 rounded-full ${chip[1]}">${chip[0]}</span></div>
       </div>
       <!-- Cuenta -->
       <div class="text-[11px] font-bold uppercase tracking-wide text-gray-400 mb-1.5">💳 Pagos y suscripción</div>
@@ -3863,6 +3868,7 @@ function _av2FichaHeader(stu) {
         ${row('✅', 'Último pago', dt(stu.last_payment_date))}
         ${row('🗓️', 'Alta', dt(stu.join_date || stu.created_at))}
         ${row('📱', 'Dispositivos', dev + '/' + maxDev)}
+        ${row('📱', 'Teléfono', stu.phone ? esc(stu.phone) : '<span class="text-gray-300 font-normal">— sin registrar</span>')}
         ${row('💳', 'Correo pagador', stu.payer_email ? esc(stu.payer_email) : '<span class="text-gray-300 font-normal">— sin registrar</span>')}
         ${stu.stripe_customer_id ? `<div class="flex items-center gap-2 min-w-0"><span class="w-5 text-center">🆔</span><span class="text-gray-400">Stripe:</span> <b class="font-mono text-[11px] truncate">${esc(stu.stripe_customer_id)}</b></div>` : ''}
         ${link ? `<div class="sm:col-span-2 flex items-center gap-2 min-w-0"><span class="w-5 text-center">🔗</span><span class="text-gray-400">Payment Link:</span> <a href="${link}" target="_blank" class="text-swe-blue font-semibold hover:underline truncate">${link}</a></div>` : ''}
@@ -3876,6 +3882,7 @@ function _av2FichaHeader(stu) {
       <div class="flex flex-wrap gap-2">
         <button onclick="resendAccess('${id}')" class="${btn} bg-green-50 text-green-700 border-green-200 hover:bg-green-100">📧 Reenviar acceso</button>
         <button onclick="changeStudentEmail('${id}')" class="${btn} bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100">✏️ Cambiar correo</button>
+        <button onclick="av2EditPhone('${id}')" class="${btn} bg-lime-50 text-lime-700 border-lime-200 hover:bg-lime-100">📱 Teléfono</button>
         <button onclick="editPayerEmail('${id}')" class="${btn} bg-teal-50 text-teal-700 border-teal-200 hover:bg-teal-100">💳 Correo pagador</button>
         <button onclick="setStudentPassword('${id}')" class="${btn} bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100">🔑 Contraseña</button>
         <button onclick="resetStudentDevices('${id}')" class="${btn} bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100">📱 Dispositivos</button>
@@ -3883,6 +3890,18 @@ function _av2FichaHeader(stu) {
         <button onclick="av2DeleteStudent('${id}')" class="${btn} bg-gray-50 text-gray-400 border-gray-200 hover:text-red-500 hover:border-red-200">🗑️ Eliminar</button>
       </div>
     </div>`;
+}
+// Registrar/editar el teléfono (WhatsApp) del alumno.
+async function av2EditPhone(id) {
+  const s = (_cachedStudents || []).find(x => x.id === id);
+  const val = prompt('📱 Teléfono / WhatsApp de ' + (s?.name || 'este alumno') + ' (déjalo vacío para quitar):', s?.phone || '');
+  if (val === null) return;
+  const phone = val.trim();
+  const r = await adminOps('update_student', { id, fields: { phone: phone || null } });
+  if (r && r.error) { showToast('Error: ' + r.error + ' (¿aplicaste la migración con la columna phone?)', 'error'); return; }
+  if (s) s.phone = phone || null;
+  showToast(phone ? '📱 Teléfono guardado' : 'Teléfono quitado', 'success');
+  if (_spOpen) openStudentProgress(id, s?.name || '');
 }
 // Notificación individual a un alumno (guardada en config.student_notifs; el alumno la ve 1 vez).
 async function av2NotifyStudent(id, name) {
