@@ -314,13 +314,13 @@
       <label for="scsNavT" class="scs-nav-burger" aria-label="Abrir menú"><span></span><span></span><span></span></label>
       <div class="scs-nav-menu">
         <a href="#inicio">Inicio</a>
-        <a href="#precios-box">Membresía</a>
-        <a href="#plataforma">Plataforma</a>
+        <a onclick="showView('membresia')" style="cursor:pointer">Membresía</a>
+        <a onclick="showView('plataforma')" style="cursor:pointer">Plataforma</a>
         <a href="#nosotros">Sobre nosotros</a>
         <a href="#atencion">Atención al cliente</a>
         <div class="scs-nav-btns">
           <button type="button" onclick="showView('login')" class="scs-btn-ghost">Iniciar sesión</button>
-          <a href="#precios-box" class="scs-btn-yellow">Regístrate aquí</a>
+          <a onclick="showView('membresia')" style="cursor:pointer" class="scs-btn-yellow">Regístrate aquí</a>
         </div>
       </div>
     </div>
@@ -516,10 +516,6 @@
 
   <!-- ═══ SECCIONES (placeholder — se llenan después) ═══ -->
   <div class="max-w-5xl mx-auto px-3 pb-2 space-y-5">
-    <section id="plataforma" class="bg-white rounded-2xl p-6 shadow border border-gray-100">
-      <h2 class="text-xl font-black text-gray-800 mb-2">Qué incluye tu plataforma</h2>
-      <p class="text-sm text-gray-600 leading-relaxed">Clases en vivo con Sophie, práctica ilimitada por módulos (gramática, comprensión, escritura, vocabulario), prueba de nivel, simulacros del examen nacional y material de estudio. <span class="text-gray-400">(Sección en construcción — pronto agregamos el detalle y videos.)</span></p>
-    </section>
     <section id="nosotros" class="bg-white rounded-2xl p-6 shadow border border-gray-100">
       <h2 class="text-xl font-black text-gray-800 mb-2">Sobre nosotros</h2>
       <p class="text-sm text-gray-600 leading-relaxed">Somos Andree y Sophie. Sophie es sueca nativa y enseña el idioma de forma cercana y práctica; Andree hace posible que hispanohablantes de todo el mundo aprendan sueco con acompañamiento real. <span class="text-gray-400">(Texto provisional — luego lo escribes a tu gusto.)</span></p>
@@ -533,6 +529,98 @@
 
   <!-- BOTÓN FLOTANTE WHATSAPP -->
   <a href="https://wa.me/46769184251?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20las%20clases%20de%20sueco" target="_blank" rel="noopener" style="position:fixed; bottom:20px; right:20px; z-index:50; background:#25D366; width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 6px 20px rgba(0,0,0,0.25); text-decoration:none;" title="Escríbenos por WhatsApp"><svg viewBox="0 0 24 24" width="30" height="30" fill="#fff"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg></a>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     VIEW: MEMBRESÍA (pública) — precios en su propia página
+════════════════════════════════════════════════════════════ -->
+<div id="view-membresia" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <nav class="scs-nav">
+    <div class="scs-nav-in">
+      <input type="checkbox" id="scsNavT_m" class="scs-nav-cbx">
+      <label for="scsNavT_m" class="scs-nav-burger" aria-label="Abrir menú"><span></span><span></span><span></span></label>
+      <div class="scs-nav-menu">
+        <a onclick="landingGo('inicio')" style="cursor:pointer">Inicio</a>
+        <a onclick="showView('membresia')" style="cursor:pointer">Membresía</a>
+        <a onclick="showView('plataforma')" style="cursor:pointer">Plataforma</a>
+        <a onclick="landingGo('nosotros')" style="cursor:pointer">Sobre nosotros</a>
+        <a onclick="landingGo('atencion')" style="cursor:pointer">Atención al cliente</a>
+        <div class="scs-nav-btns">
+          <button type="button" onclick="showView('login')" class="scs-btn-ghost">Iniciar sesión</button>
+          <a onclick="showView('membresia')" style="cursor:pointer" class="scs-btn-yellow">Regístrate aquí</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="max-w-md mx-auto px-4 py-8">
+    <h1 class="text-2xl font-black text-gray-800 text-center mb-1">Elige tu membresía</h1>
+    <p class="text-center text-sm text-gray-500 mb-6">Precios simples y transparentes. Cancela cuando quieras.</p>
+    <div class="rounded-2xl p-5 text-white shadow-lg" style="background:linear-gradient(160deg,#0a4d84,#00335A);">
+      <div class="mb-1"><div class="font-black text-base leading-tight">PRECIOS SIMPLES, SIN COMPROMISOS</div></div>
+      <p class="text-blue-100 text-xs mb-4">Cancela cuando quieras · Pago seguro con Stripe</p>
+      <div class="space-y-2.5">
+        <button type="button" data-plan="3m" onclick="selectPlan('3m')" class="plan-card w-full text-left rounded-xl p-3.5 bg-yellow-50 text-gray-800 flex items-center justify-between border-2 border-yellow-400 ring-2 ring-yellow-300 shadow-md relative transition-all">
+          <span class="absolute -top-2 right-3 text-[9px] font-black px-2 py-0.5 rounded-full" style="background:#FECC02; color:#00335A;">MÁS POPULAR</span>
+          <div><div class="flex items-center gap-2"><span class="font-black">3 meses</span><span class="text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded-full">AHORRA 10%</span></div><div class="text-xs text-gray-500 mt-0.5">Total 1 071 kr · cada 3 meses</div></div>
+          <div class="text-right flex-shrink-0"><div class="font-black text-swe-blue text-xl leading-none">357</div><div class="text-[11px] text-gray-500">kr/mes</div></div>
+        </button>
+        <button type="button" data-plan="1m" onclick="selectPlan('1m')" class="plan-card w-full text-left rounded-xl p-3.5 bg-white text-gray-800 flex items-center justify-between border-2 border-gray-200 transition-all">
+          <div><div class="font-black">Mensual</div><div class="text-xs text-gray-500 mt-0.5">Cancela cuando quieras</div></div>
+          <div class="text-right flex-shrink-0"><div class="font-black text-gray-800 text-xl leading-none">399</div><div class="text-[11px] text-gray-500">kr/mes</div></div>
+        </button>
+      </div>
+      <button onclick="startCheckout()" class="w-full mt-4 rounded-xl py-3.5 font-black" style="background:#FECC02; color:#00335A; border:none; cursor:pointer; font-family:inherit; font-size:1.05rem;">Empezar ahora →</button>
+    </div>
+    <div class="bg-white rounded-2xl p-5 shadow border border-gray-100 mt-5">
+      <div class="font-black text-gray-800 mb-2">¿Hay permanencia? ¿Puedo cancelar?</div>
+      <p class="text-sm text-gray-600 leading-relaxed mb-2"><strong>No.</strong> No existe permanencia ni contratos largos. La suscripción es mensual y se renueva automáticamente cada mes.</p>
+      <p class="text-sm text-gray-600 leading-relaxed mb-2">Puedes cancelarla cuando quieras desde tu cuenta en la plataforma o mediante el enlace disponible en el grupo de WhatsApp. Para evitar el siguiente cobro, debes cancelarla antes de la fecha de renovación.</p>
+      <p class="text-sm text-gray-600 leading-relaxed">Una vez procesado el pago mensual, no se realizan reembolsos, aunque decidas no asistir a las clases. Podrás seguir utilizando la plataforma y las clases hasta finalizar el periodo que ya pagaste. Después, no se efectuarán nuevos cobros.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     VIEW: PLATAFORMA (pública) — video + beneficios
+════════════════════════════════════════════════════════════ -->
+<div id="view-plataforma" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <nav class="scs-nav">
+    <div class="scs-nav-in">
+      <input type="checkbox" id="scsNavT_p" class="scs-nav-cbx">
+      <label for="scsNavT_p" class="scs-nav-burger" aria-label="Abrir menú"><span></span><span></span><span></span></label>
+      <div class="scs-nav-menu">
+        <a onclick="landingGo('inicio')" style="cursor:pointer">Inicio</a>
+        <a onclick="showView('membresia')" style="cursor:pointer">Membresía</a>
+        <a onclick="showView('plataforma')" style="cursor:pointer">Plataforma</a>
+        <a onclick="landingGo('nosotros')" style="cursor:pointer">Sobre nosotros</a>
+        <a onclick="landingGo('atencion')" style="cursor:pointer">Atención al cliente</a>
+        <div class="scs-nav-btns">
+          <button type="button" onclick="showView('login')" class="scs-btn-ghost">Iniciar sesión</button>
+          <a onclick="showView('membresia')" style="cursor:pointer" class="scs-btn-yellow">Regístrate aquí</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="max-w-3xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-black text-gray-800 text-center mb-4">Conoce tu plataforma</h1>
+    <div id="plataforma-video-wrap" style="position:relative;width:100%;padding-bottom:56.25%;border-radius:16px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.12);background:#00304f;">
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#cfe0ee;text-align:center;padding:20px;"><div style="font-size:34px">🎥</div><div style="font-weight:700;margin-top:6px">Aquí va tu video de YouTube</div><div style="font-weight:400;font-size:13px;color:#9fbcd4;margin-top:4px">(mándame el link y lo incrusto)</div></div>
+    </div>
+    <h2 class="text-xl font-black text-gray-800 mt-8 mb-1">Todo lo que incluye tu plataforma</h2>
+    <p class="text-sm text-gray-500 mb-5">Más que un curso: un método completo para que hables sueco de verdad, a tu ritmo.</p>
+    <div class="space-y-3">
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex gap-3"><div class="text-2xl flex-shrink-0">🎯</div><div><div class="font-black text-gray-800 text-sm mb-0.5">Prueba de nivel</div><p class="text-sm text-gray-600 leading-relaxed">Da tu prueba de nivel y sabrás en qué debes mejorar. Te ayuda a analizar cómo va tu sueco y en qué enfocarte.</p></div></div>
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex gap-3"><div class="text-2xl flex-shrink-0">📚</div><div><div class="font-black text-gray-800 text-sm mb-0.5">Practica en todos los niveles</div><p class="text-sm text-gray-600 leading-relaxed">Tienes SFI A, B, C y D. Podrás practicar, escuchar, leer y más en cada nivel, y dar la prueba de cada uno.</p></div></div>
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex gap-3"><div class="text-2xl flex-shrink-0">💡</div><div><div class="font-black text-gray-800 text-sm mb-0.5">Teoría</div><p class="text-sm text-gray-600 leading-relaxed">Una sección para practicar la teoría con un método donde no solo lees: practicas desde el primer momento y entiendes el porqué.</p></div></div>
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex gap-3"><div class="text-2xl flex-shrink-0">✍️</div><div><div class="font-black text-gray-800 text-sm mb-0.5">Practicar gramática</div><p class="text-sm text-gray-600 leading-relaxed">Practica temas específicos: desde preposiciones hasta los tiempos de los verbos, adverbios y más. Aquí aprendes gramática de verdad.</p></div></div>
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex gap-3"><div class="text-2xl flex-shrink-0">🎧</div><div><div class="font-black text-gray-800 text-sm mb-0.5">Escuchar</div><p class="text-sm text-gray-600 leading-relaxed">Aprende a escuchar con audios y preguntas de todos los niveles.</p></div></div>
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex gap-3"><div class="text-2xl flex-shrink-0">🇸🇪</div><div><div class="font-black text-gray-800 text-sm mb-0.5">Prueba de ciudadanía</div><p class="text-sm text-gray-600 leading-relaxed">Prepárate para el examen de ciudadanía (medborgarskap).</p></div></div>
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex gap-3"><div class="text-2xl flex-shrink-0">✨</div><div><div class="font-black text-gray-800 text-sm mb-0.5">Y mucho más</div><p class="text-sm text-gray-600 leading-relaxed">Más recursos dentro de la plataforma, siempre en español y pensado para ti.</p></div></div>
+    </div>
+    <div class="text-center mt-8">
+      <button onclick="showView('membresia')" class="rounded-xl px-8 py-3.5 font-black" style="background:#FECC02;color:#00335A;border:none;cursor:pointer;font-size:1.05rem;">Quiero empezar →</button>
+    </div>
+  </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════

@@ -131,6 +131,12 @@ function showView(id) {
   try { if (VIEW_URLS[id]) history.replaceState(null, '', VIEW_URLS[id]); } catch (e) {}
 }
 
+// Ir a la landing y (opcional) desplazarse a una sección — usado por el menú desde otras páginas.
+function landingGo(anchor) {
+  showView('alumnos');
+  if (anchor) { setTimeout(() => { const el = document.getElementById(anchor); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 80); }
+}
+
 // La barra inferior se ve en las secciones principales; se oculta durante actividades
 // que requieren concentración (lecciones, quizzes, prueba de nivel, Tala, etc.).
 const NAV_VIEWS = { home: 'home', aprender: 'aprender', miviaje: 'miviaje', progreso: 'progreso', menu: 'aprender', vocab: 'aprender' };
