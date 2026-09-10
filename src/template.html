@@ -557,26 +557,43 @@
       </div>
     </div>
   </nav>
-  <div class="max-w-md mx-auto px-4 py-8">
-    <h1 class="text-2xl font-black text-gray-800 text-center mb-1">Elige tu membresía</h1>
-    <p class="text-center text-sm text-gray-500 mb-6">Precios simples y transparentes. Cancela cuando quieras.</p>
-    <div class="rounded-2xl p-5 text-white shadow-lg" style="background:linear-gradient(160deg,#0a4d84,#00335A);">
-      <div class="mb-1"><div class="font-black text-base leading-tight">PRECIOS SIMPLES, SIN COMPROMISOS</div></div>
-      <p class="text-blue-100 text-xs mb-4">Cancela cuando quieras · Pago seguro con Stripe</p>
-      <div class="space-y-2.5">
-        <button type="button" data-plan="3m" onclick="selectPlan('3m')" class="plan-card w-full text-left rounded-xl p-3.5 bg-yellow-50 text-gray-800 flex items-center justify-between border-2 border-yellow-400 ring-2 ring-yellow-300 shadow-md relative transition-all">
-          <span class="absolute -top-2 right-3 text-[9px] font-black px-2 py-0.5 rounded-full" style="background:#FECC02; color:#00335A;">MÁS POPULAR</span>
-          <div><div class="flex items-center gap-2"><span class="font-black">3 meses</span><span class="text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded-full">AHORRA 10%</span></div><div class="text-xs text-gray-500 mt-0.5">Total 1 071 kr · cada 3 meses</div></div>
-          <div class="text-right flex-shrink-0"><div class="font-black text-swe-blue text-xl leading-none">357</div><div class="text-[11px] text-gray-500">kr/mes</div></div>
-        </button>
-        <button type="button" data-plan="1m" onclick="selectPlan('1m')" class="plan-card w-full text-left rounded-xl p-3.5 bg-white text-gray-800 flex items-center justify-between border-2 border-gray-200 transition-all">
-          <div><div class="font-black">Mensual</div><div class="text-xs text-gray-500 mt-0.5">Cancela cuando quieras</div></div>
-          <div class="text-right flex-shrink-0"><div class="font-black text-gray-800 text-xl leading-none">399</div><div class="text-[11px] text-gray-500">kr/mes</div></div>
-        </button>
-      </div>
-      <button onclick="startCheckout()" class="w-full mt-4 rounded-xl py-3.5 font-black" style="background:#FECC02; color:#00335A; border:none; cursor:pointer; font-family:inherit; font-size:1.05rem;">Empezar ahora →</button>
+  <!-- HERO azul (pantalla completa) -->
+  <div style="background:linear-gradient(160deg,#013a5e 0%,#00243c 100%);color:#fff;padding:52px 20px 64px;">
+    <div class="max-w-3xl mx-auto text-center">
+      <h1 class="text-3xl sm:text-4xl font-black mb-5 leading-tight">Nuestras membresías y precios</h1>
+      <p class="text-blue-100 text-sm sm:text-base leading-relaxed mb-4">Aprende sueco, comprométete con tu progreso y pierde el miedo a comunicarte. Con el acompañamiento de Sophie, métodos prácticos y estrategias adaptadas a tu nivel, notarás tus avances en cada clase.</p>
+      <p class="text-blue-100 text-sm sm:text-base leading-relaxed">Aprender sueco es una inversión en tu confianza, tus oportunidades laborales y tu futuro en Suecia. Sin permanencia y sin plazo de cancelación. Cancela cuando quieras.</p>
     </div>
-    <div class="bg-white rounded-2xl p-5 shadow border border-gray-100 mt-5">
+  </div>
+
+  <!-- TARJETAS DE PRECIOS -->
+  <div class="max-w-4xl mx-auto px-4 -mt-9 pb-2">
+    <div class="grid md:grid-cols-2 gap-5 items-stretch">
+
+      <!-- 3 MESES (popular) -->
+      <div class="bg-white rounded-2xl shadow-xl border-2 border-yellow-400 p-6 flex flex-col relative">
+        <span class="absolute -top-3 left-6 text-[11px] font-black px-3 py-1 rounded-full" style="background:#FECC02;color:#00335A;">MÁS POPULAR</span>
+        <div class="text-[11px] font-bold text-gray-400 tracking-wide mt-1">PLAN TRIMESTRAL</div>
+        <div class="flex items-center gap-2 mt-1"><h3 class="text-xl font-black text-gray-800">3 meses</h3><span class="text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded-full">AHORRA 10%</span></div>
+        <p class="text-sm text-gray-600 leading-relaxed mt-3 flex-1">Nuestro plan más elegido. Comprométete con tu progreso y avanza sin interrupciones — es la mejor forma de mantener el hábito y ver resultados de verdad. Pagas <strong>1 071 kr cada 3 meses</strong> y <strong>te ahorras 126 kr</strong> frente al plan mensual.</p>
+        <div class="mt-5 flex items-end gap-1"><span class="text-4xl font-black text-swe-blue leading-none">357</span><span class="text-sm text-gray-500 mb-1">kr/mes</span></div>
+        <button onclick="selectPlan('3m');startCheckout()" class="w-full mt-5 rounded-xl py-3.5 font-black" style="background:#FECC02;color:#00335A;border:none;cursor:pointer;font-size:1.05rem;">Empezar ahora →</button>
+      </div>
+
+      <!-- MENSUAL -->
+      <div class="bg-white rounded-2xl shadow border border-gray-200 p-6 flex flex-col">
+        <div class="text-[11px] font-bold text-gray-400 tracking-wide mt-1">PLAN MENSUAL</div>
+        <h3 class="text-xl font-black text-gray-800 mt-1">Mensual</h3>
+        <p class="text-sm text-gray-600 leading-relaxed mt-3 flex-1">Máxima flexibilidad para empezar sin compromiso. Prueba la plataforma y las clases a tu ritmo; <strong>cancelas cuando quieras</strong>, sin permanencia ni plazos.</p>
+        <div class="mt-5 flex items-end gap-1"><span class="text-4xl font-black text-gray-800 leading-none">399</span><span class="text-sm text-gray-500 mb-1">kr/mes</span></div>
+        <button onclick="selectPlan('1m');startCheckout()" class="w-full mt-5 rounded-xl py-3.5 font-black" style="background:#00335A;color:#fff;border:none;cursor:pointer;font-size:1.05rem;">Elegir mensual →</button>
+      </div>
+
+    </div>
+    <p class="text-center text-[11px] text-gray-400 mt-4">Pago seguro con Stripe · Sin permanencia · Cancela cuando quieras</p>
+
+    <!-- Info transparente -->
+    <div class="bg-white rounded-2xl p-6 shadow border border-gray-100 mt-6 mb-10 max-w-2xl mx-auto">
       <div class="font-black text-gray-800 mb-2">¿Hay permanencia? ¿Puedo cancelar?</div>
       <p class="text-sm text-gray-600 leading-relaxed mb-2"><strong>No.</strong> No existe permanencia ni contratos largos. La suscripción es mensual y se renueva automáticamente cada mes.</p>
       <p class="text-sm text-gray-600 leading-relaxed mb-2">Puedes cancelarla cuando quieras desde tu cuenta en la plataforma o mediante el enlace disponible en el grupo de WhatsApp. Para evitar el siguiente cobro, debes cancelarla antes de la fecha de renovación.</p>
