@@ -129,12 +129,33 @@ function showView(id) {
   window.scrollTo(0, 0);
   try { _updateBottomNav(id); } catch (e) {}
   try { if (VIEW_URLS[id]) history.replaceState(null, '', VIEW_URLS[id]); } catch (e) {}
+  try { if (id === 'membresia' && typeof initMembresiaReviews === 'function') initMembresiaReviews(); } catch (e) {}
 }
 
 // Ir a la landing y (opcional) desplazarse a una sección — usado por el menú desde otras páginas.
 function landingGo(anchor) {
   showView('alumnos');
   if (anchor) { setTimeout(() => { const el = document.getElementById(anchor); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 80); }
+}
+
+// Reseñas en la página de Membresía (entre el texto y los precios). Reusa _landingReviews.
+async function initMembresiaReviews() {
+  if (!_landingReviews || !_landingReviews.length) {
+    try { const { data } = await sb.from('reviews').select('*').eq('status', 'approved').order('created_at', { ascending: false }).limit(8); _landingReviews = data || []; } catch (e) {}
+  }
+  _renderMembresiaReviews();
+}
+function _renderMembresiaReviews() {
+  const box = document.getElementById('membresia-reviews');
+  if (!box) return;
+  const wrap = document.getElementById('membresia-reviews-wrap');
+  const list = (_landingReviews || []).slice(0, 4);
+  if (!list.length) { box.innerHTML = ''; if (wrap) wrap.style.display = 'none'; return; }
+  if (wrap) wrap.style.display = '';
+  box.innerHTML = list.map(rv => `<div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+    <div class="flex items-center gap-2 mb-1.5">${(typeof reviewAvatarHtml === 'function') ? reviewAvatarHtml(rv, 'w-9 h-9 text-sm') : ''}<div class="min-w-0"><div class="font-bold text-gray-800 text-sm truncate">${escHtml(rv.name || '')}</div><div class="text-swe-yellow text-xs leading-none">${'★'.repeat(Math.max(1, Math.min(5, rv.rating || 5)))}</div></div></div>
+    <p class="text-gray-600 text-sm leading-relaxed" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${escHtml(rv.comment || '')}</p>
+  </div>`).join('');
 }
 
 // La barra inferior se ve en las secciones principales; se oculta durante actividades
