@@ -321,7 +321,7 @@
         <a href="#inicio">Inicio</a>
         <a onclick="showView('membresia')" style="cursor:pointer">Membresía</a>
         <a onclick="showView('plataforma')" style="cursor:pointer">Plataforma</a>
-        <a href="#nosotros">Sobre nosotros</a>
+        <a onclick="showView('nosotros')" style="cursor:pointer">Sobre nosotros</a>
         <a href="#atencion">Atención al cliente</a>
         <div class="scs-nav-btns">
           <button type="button" onclick="showView('login')" class="scs-btn-ghost">Iniciar sesión</button>
@@ -520,10 +520,6 @@
 
   <!-- ═══ SECCIONES (placeholder — se llenan después) ═══ -->
   <div class="max-w-5xl mx-auto px-3 pb-2 space-y-5">
-    <section id="nosotros" class="bg-white rounded-2xl p-6 shadow border border-gray-100">
-      <h2 class="text-xl font-black text-gray-800 mb-2">Sobre nosotros</h2>
-      <p class="text-sm text-gray-600 leading-relaxed">Somos Andree y Sophie. Sophie es sueca nativa y enseña el idioma de forma cercana y práctica; Andree hace posible que hispanohablantes de todo el mundo aprendan sueco con acompañamiento real. <span class="text-gray-400">(Texto provisional — luego lo escribes a tu gusto.)</span></p>
-    </section>
     <section id="atencion" class="bg-white rounded-2xl p-6 shadow border border-gray-100 text-center">
       <h2 class="text-xl font-black text-gray-800 mb-2">Atención al cliente</h2>
       <p class="text-sm text-gray-600 mb-4">¿Dudas sobre las clases, tu pago o tu grupo? Escríbenos por WhatsApp y te respondemos (normalmente en menos de 24 horas).</p>
@@ -547,7 +543,7 @@
         <a onclick="landingGo('inicio')" style="cursor:pointer">Inicio</a>
         <a onclick="showView('membresia')" style="cursor:pointer">Membresía</a>
         <a onclick="showView('plataforma')" style="cursor:pointer">Plataforma</a>
-        <a onclick="landingGo('nosotros')" style="cursor:pointer">Sobre nosotros</a>
+        <a onclick="showView('nosotros')" style="cursor:pointer">Sobre nosotros</a>
         <a onclick="landingGo('atencion')" style="cursor:pointer">Atención al cliente</a>
         <div class="scs-nav-btns">
           <button type="button" onclick="showView('login')" class="scs-btn-ghost">Iniciar sesión</button>
@@ -560,7 +556,7 @@
   <div style="background:linear-gradient(160deg,#013a5e 0%,#00243c 100%);color:#fff;padding:56px 20px 96px;">
     <div class="max-w-3xl mx-auto text-center">
       <h1 class="text-3xl sm:text-4xl font-black mb-6 leading-tight">Nuestras membresías y precios</h1>
-      <p class="text-blue-100 text-sm sm:text-base leading-relaxed mb-4">Aprende y pierde el miedo a hablar sueco. Con el acompañamiento de Sophie y sus métodos, verás resultados en cada clase.</p>
+      <p class="text-blue-100 text-sm sm:text-base leading-relaxed mb-4">Aprende y pierde el miedo a hablar sueco.</p>
       <p class="text-blue-100 text-sm sm:text-base leading-relaxed mb-4">Aprender sueco es una inversión en tu futuro, tu confianza, tus oportunidades laborales y una mejor calidad de vida en Suecia.</p>
       <p class="text-blue-100 text-sm sm:text-base leading-relaxed">Sin permanencia y sin plazo de cancelación. Cancela cuando quieras.</p>
     </div>
@@ -593,7 +589,7 @@
     <p class="text-center text-[11px] text-gray-400 mt-4">Pago seguro con Stripe · Sin permanencia · Cancela cuando quieras</p>
 
     <!-- Info transparente -->
-    <div class="bg-white rounded-2xl p-6 shadow border border-gray-100 mt-6 mb-10 max-w-2xl mx-auto">
+    <div class="bg-white rounded-2xl p-6 shadow border border-gray-100 mt-6 mb-10 max-w-4xl mx-auto">
       <div class="font-black text-gray-800 mb-2">¿Hay permanencia? ¿Puedo cancelar?</div>
       <p class="text-sm text-gray-600 leading-relaxed mb-2"><strong>No.</strong> No existe permanencia ni contratos largos. La suscripción es mensual y se renueva automáticamente cada mes.</p>
       <p class="text-sm text-gray-600 leading-relaxed mb-2">Puedes cancelarla cuando quieras desde tu cuenta en la plataforma o mediante el enlace disponible en el grupo de WhatsApp. Para evitar el siguiente cobro, debes cancelarla antes de la fecha de renovación.</p>
@@ -614,7 +610,7 @@
         <a onclick="landingGo('inicio')" style="cursor:pointer">Inicio</a>
         <a onclick="showView('membresia')" style="cursor:pointer">Membresía</a>
         <a onclick="showView('plataforma')" style="cursor:pointer">Plataforma</a>
-        <a onclick="landingGo('nosotros')" style="cursor:pointer">Sobre nosotros</a>
+        <a onclick="showView('nosotros')" style="cursor:pointer">Sobre nosotros</a>
         <a onclick="landingGo('atencion')" style="cursor:pointer">Atención al cliente</a>
         <div class="scs-nav-btns">
           <button type="button" onclick="showView('login')" class="scs-btn-ghost">Iniciar sesión</button>
@@ -641,6 +637,80 @@
     </div>
     <div class="text-center mt-8">
       <button onclick="showView('membresia')" class="rounded-xl px-8 py-3.5 font-black" style="background:#FECC02;color:#00335A;border:none;cursor:pointer;font-size:1.05rem;">Quiero empezar →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     VIEW: SOBRE NOSOTROS (pública)
+════════════════════════════════════════════════════════════ -->
+<div id="view-nosotros" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <nav class="scs-nav">
+    <div class="scs-nav-in">
+      <input type="checkbox" id="scsNavT_n" class="scs-nav-cbx">
+      <label for="scsNavT_n" class="scs-nav-burger" aria-label="Abrir menú"><span></span><span></span><span></span></label>
+      <div class="scs-nav-menu">
+        <a onclick="landingGo('inicio')" style="cursor:pointer">Inicio</a>
+        <a onclick="showView('membresia')" style="cursor:pointer">Membresía</a>
+        <a onclick="showView('plataforma')" style="cursor:pointer">Plataforma</a>
+        <a onclick="showView('nosotros')" style="cursor:pointer">Sobre nosotros</a>
+        <a onclick="landingGo('atencion')" style="cursor:pointer">Atención al cliente</a>
+        <div class="scs-nav-btns">
+          <button type="button" onclick="showView('login')" class="scs-btn-ghost">Iniciar sesión</button>
+          <a onclick="showView('membresia')" style="cursor:pointer" class="scs-btn-yellow">Regístrate aquí</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div style="background:linear-gradient(160deg,#013a5e 0%,#00243c 100%);color:#fff;padding:52px 20px 56px;">
+    <div class="max-w-3xl mx-auto text-center">
+      <h1 class="text-3xl sm:text-4xl font-black mb-5">Sobre nosotros</h1>
+      <p class="text-blue-100 text-sm sm:text-base leading-relaxed">Detrás de Sueco con Sophie hay un método creado especialmente para hispanohablantes. Sophie es la experta en el idioma sueco; Andree aporta la experiencia real de quien emigró y aprendió el idioma desde cero. No somos solo profesores: entendemos el idioma y también el proceso emocional y práctico de empezar una nueva vida en Suecia.</p>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-4 py-10 space-y-8">
+
+    <!-- SOPHIE -->
+    <div class="bg-white rounded-2xl shadow border border-gray-100 overflow-hidden md:flex">
+      <div class="md:w-2/5 flex-shrink-0 bg-blue-50">
+        <img src="https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/sophie.jpg" alt="Sophie" class="w-full h-64 md:h-full object-cover" onerror="this.outerHTML='<div class=&quot;w-full h-64 md:h-full flex items-center justify-center text-6xl font-black text-white&quot; style=&quot;background:#006AA7&quot;>S</div>'">
+      </div>
+      <div class="md:w-3/5 p-6">
+        <h2 class="text-2xl font-black text-gray-800 leading-none">Sophie</h2>
+        <p class="text-swe-blue font-bold text-sm mt-1 mb-2">Språkcoach &amp; Integrationscoach</p>
+        <div class="mb-4 text-xl">🇸🇪 🇬🇧 🇩🇪 🇪🇸 <span class="text-[11px] text-gray-400 align-middle ml-1">Sueco · Inglés · Alemán · Español</span></div>
+        <div class="space-y-3 text-sm text-gray-600 leading-relaxed">
+          <p>Nací en Estocolmo y el sueco es mi lengua materna. También hablo inglés y alemán con fluidez, y español. Soy <em>Redovisningsekonom</em> de formación y guía turística certificada en Estocolmo, con muchos años de experiencia enseñando y trabajando con personas de distintos idiomas.</p>
+          <p>Empecé enseñando en escuelas suecas de primaria y secundaria (<em>grundskola</em> y <em>gymnasium</em>), acompañando a los estudiantes en su aprendizaje. También di clases particulares de sueco a estudiantes alemanes de la Universidad de Estocolmo.</p>
+          <p>Soy emprendedora: tengo mi propia empresa de tours privados en Estocolmo, donde recibo a turistas en varios idiomas y les enseño sobre la cultura, los lugares y cómo funciona Suecia.</p>
+          <p>He viajado a Perú varias veces —mi esposo es peruano— y esa experiencia me dio una comprensión cercana de lo que viven los latinos: sus situaciones, sus miedos y su forma de pensar. Por eso mi método ayuda a mis alumnos a aprender y, sobre todo, a <strong>perder rápido el miedo a hablar sueco</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANDREE -->
+    <div class="bg-white rounded-2xl shadow border border-gray-100 overflow-hidden md:flex md:flex-row-reverse">
+      <div class="md:w-2/5 flex-shrink-0 bg-yellow-50">
+        <img src="https://nblxzqdtczitpzxdqexz.supabase.co/storage/v1/object/public/assets/andree.jpg" alt="Andree" class="w-full h-64 md:h-full object-cover" onerror="this.outerHTML='<div class=&quot;w-full h-64 md:h-full flex items-center justify-center text-6xl font-black&quot; style=&quot;background:#FECC02;color:#00335A&quot;>A</div>'">
+      </div>
+      <div class="md:w-3/5 p-6">
+        <h2 class="text-2xl font-black text-gray-800 leading-none">Andree</h2>
+        <p class="text-swe-blue font-bold text-sm mt-1 mb-2">Studiecoach &amp; Framgångscoach</p>
+        <div class="mb-4 text-xl">🇪🇸 🇸🇪 🇬🇧 <span class="text-[11px] text-gray-400 align-middle ml-1">Español · Sueco · Inglés</span></div>
+        <div class="space-y-3 text-sm text-gray-600 leading-relaxed">
+          <p>Nací en Perú. En Suecia he trabajado como líder de curso enseñando programación y desarrollo web en institutos de Estocolmo (<em>högskola</em> y <em>yrkeshögskola</em>), y como <em>idrottsledare</em> en escuelas, enseñando deporte y gimnasia. Hoy soy coach fitness y ayudo a latinos en Europa a transformar su físico y su mentalidad con mi método.</p>
+          <p>Pero no siempre fue así. Cuando llegué a Suecia en 2018 tuve que aprender el idioma desde cero, en una iglesia. Lo logré, y hoy comparto lo que aprendí y los procesos por los que uno pasa como inmigrante al aprender sueco.</p>
+          <p>Dentro de Sueco con Sophie ayudo con la atención a los alumnos, participo en los grupos, apoyo con traducciones cuando hacen falta y comparto consejos prácticos sobre cómo perder el miedo, integrarse y empezar a usar el sueco en situaciones reales.</p>
+          <p>Mi función es complementar la enseñanza con la mirada de alguien que <strong>ya recorrió el mismo camino</strong> que muchos de nuestros estudiantes están comenzando.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center pt-2">
+      <button onclick="showView('membresia')" class="rounded-xl px-8 py-3.5 font-black" style="background:#FECC02;color:#00335A;border:none;cursor:pointer;font-size:1.05rem;">Empieza con nosotros →</button>
     </div>
   </div>
 </div>
