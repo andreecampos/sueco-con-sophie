@@ -23095,7 +23095,7 @@ const JUANITA_PHRASES = {
   wrong:    ['Tranquilo, del error se aprende.', 'Casi… fíjate bien la próxima. 💪', 'No pasa nada, ¡a la que sigue!', 'Uy, esa se fue. ¡Ánimo, mijo!'],
   end:      ['¡Terminaste! Orgullosa de ti. 💛', '¡Lo lograste! Sigue practicando.']
 };
-const JUANITA_IMG = { start: '/juanita/juanita-tu-puedes.png', question: '/juanita/juanita-chancleta.webp', right: '/juanita/juanita-feliz.webp', wrong: '/juanita/juanita-seria.webp' };
+const JUANITA_IMG = { start: '/juanita/juanita-neutra.png', question: '/juanita/juanita-pensativa.png', right: '/juanita/juanita-feliz.png', wrong: '/juanita/juanita-molesta.png' };
 function _jPick(k) { const a = JUANITA_PHRASES[k] || []; return a[Math.floor(Math.random() * a.length)] || ''; }
 function _juanitaSay(kind) {
   if (!grammarState.topic || grammarState.topic.id !== '__juanita__') return;
@@ -23562,10 +23562,13 @@ function showGrammarResult() {
   // Emoji and badge
   const emojiEl = document.getElementById('gq-result-emoji');
   if (emojiEl) emojiEl.textContent = passed ? '🎉' : '💪';
-  if (grammarState.topic && grammarState.topic.id === '__juanita__' && emojiEl) {
-    const _jimg = passed ? '/juanita/juanita-feliz.webp' : '/juanita/juanita-tu-puedes.png';
+  const _jmot = document.getElementById('gq-motivation-card');
+  const _isJuanita = !!(grammarState.topic && grammarState.topic.id === '__juanita__');
+  if (_jmot) _jmot.classList.toggle('hidden', _isJuanita);
+  if (_isJuanita && emojiEl) {
+    const _jimg = passed ? '/juanita/juanita-orgullosa.png' : '/juanita/juanita-tu-puedes.png';
     const _jph = passed ? '¡Muy bien, mijo! Estoy orgullosa de ti. 💛' : 'No te rindas, mijo. ¡A la próxima lo logras! 💪';
-    emojiEl.innerHTML = '<img src="' + _jimg + '" class="w-28 h-28 object-contain mx-auto" alt="Juanita" onerror="this.replaceWith(document.createTextNode(\'' + (passed ? '🎉' : '💪') + '\'))"><div class="text-sm font-bold text-pink-700 mt-2 px-4">' + _jph + '</div>';
+    emojiEl.innerHTML = '<img src="' + _jimg + '" class="w-32 h-32 object-contain mx-auto" alt="Juanita" onerror="this.replaceWith(document.createTextNode(\'' + (passed ? '🎉' : '💪') + '\'))"><div class="text-sm font-bold text-pink-700 mt-2 px-4">' + _jph + '</div>';
   }
 
   const badgeEl = document.getElementById('gq-result-badge');
