@@ -5129,6 +5129,7 @@ const JUANITA_IMG = { start: '/juanita/juanita-neutra.png', question: '/juanita/
 function _jPick(k) { const a = JUANITA_PHRASES[k] || []; return a[Math.floor(Math.random() * a.length)] || ''; }
 function _juanitaSay(kind) {
   if (!grammarState.topic || grammarState.topic.id !== '__juanita__') return;
+  const jb = document.getElementById('gq-juanita'); if (jb) jb.classList.remove('hidden');   // solo aparece al responder
   const el = document.getElementById('gq-juanita-say'); if (el) el.textContent = _jPick(kind);
   const img = document.getElementById('gq-juanita-img'); if (img && JUANITA_IMG[kind]) img.src = JUANITA_IMG[kind];
 }
@@ -5163,7 +5164,6 @@ function juanitaStart(amount) {
   const titleEl = document.getElementById('gq-topic-title'); if (titleEl) titleEl.textContent = topic.title;
   showView('grammar-quiz');
   renderGrammarQuestion();
-  _juanitaSay('start');
 }
 
 // ── Navigate to grammar topic selector ───────────────────────
@@ -5429,8 +5429,7 @@ function renderGrammarQuestion() {
   const questionArea = document.getElementById('gq-question-area');
   if (questionArea) questionArea.classList.remove('hidden');
   const _jb = document.getElementById('gq-juanita');
-  if (_jb) _jb.classList.toggle('hidden', !(grammarState.topic && grammarState.topic.id === '__juanita__'));
-  try { _juanitaSay('question'); } catch (e) {}
+  if (_jb) _jb.classList.add('hidden');   // Juanita NO se muestra mientras el alumno lee/responde
 }
 
 // ── Ordenar palabras (grammar) ───────────────────────────────
@@ -5596,8 +5595,8 @@ function showGrammarResult() {
   const _isJuanita = !!(grammarState.topic && grammarState.topic.id === '__juanita__');
   if (_jmot) _jmot.classList.toggle('hidden', _isJuanita);
   if (_isJuanita && emojiEl) {
-    const _jimg = passed ? '/juanita/juanita-orgullosa.png' : '/juanita/juanita-tu-puedes.png';
-    const _jph = passed ? '¡Muy bien, mijo! Estoy orgullosa de ti. 💛' : 'No te rindas, mijo. ¡A la próxima lo logras! 💪';
+    const _jimg = passed ? '/juanita/juanita-orgullosa.png' : '/juanita/juanita-con-chancla.png';
+    const _jph = passed ? '¡Muy bien, mijo! Estoy orgullosa de ti. 💛' : '¡Ay, mijo! Con esa nota sale la chancla… ¡a estudiar y me lo repites! 🩴💪';
     emojiEl.innerHTML = '<img src="' + _jimg + '" class="w-32 h-32 object-contain mx-auto" alt="Juanita" onerror="this.replaceWith(document.createTextNode(\'' + (passed ? '🎉' : '💪') + '\'))"><div class="text-sm font-bold text-pink-700 mt-2 px-4">' + _jph + '</div>';
   }
 
