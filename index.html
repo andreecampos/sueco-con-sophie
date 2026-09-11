@@ -1099,9 +1099,9 @@
         <div class="flex-1 min-w-0"><div class="font-bold text-gray-800">🇸🇪 Medborgarskapsprovet</div><div class="text-xs text-gray-500">Prepárate para el examen de ciudadanía sueca</div><div class="mt-1.5 flex items-center gap-2"><div class="flex-1 max-w-[160px]" id="bar-medborgar"></div><span class="text-xs font-black text-indigo-600" id="pct-medborgar">0 %</span></div></div>
         <span class="text-gray-300 text-lg flex-shrink-0">›</span>
       </button>
-      <button onclick="openComingSoon('/juanita/juanita-chancleta.webp','Practicando con Juanita','Muy pronto practicarás conversaciones guiadas con Juanita, tu mamá latina favorita.','Entendido')" class="w-full flex items-center gap-4 bg-pink-50 rounded-2xl p-4 shadow-sm border-2 border-pink-100 hover:border-pink-300 transition-all text-left">
+      <button onclick="openJuanita()" class="w-full flex items-center gap-4 bg-pink-50 rounded-2xl p-4 shadow-sm border-2 border-pink-100 hover:border-pink-300 transition-all text-left">
         <span class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 bg-pink-50 overflow-hidden"><img src="/juanita/juanita-chancleta.webp" class="w-11 h-11 object-contain" alt="Juanita" onerror="this.onerror=null;this.replaceWith(document.createTextNode('👵'))"></span>
-        <div class="flex-1 min-w-0"><div class="font-bold text-gray-800">Practicando con Juanita</div><div class="text-xs text-gray-500">Conversaciones guiadas con IA</div></div>
+        <div class="flex-1 min-w-0"><div class="font-bold text-gray-800">Practicando con Juanita</div><div class="text-xs text-gray-500">Practica preguntas por nivel, con Juanita animándote</div></div>
         <span class="text-[10px] font-bold text-pink-600 bg-pink-50 px-2 py-1 rounded-full flex-shrink-0">snart tillgänglig</span>
       </button>
       <button onclick="openComingSoon('🇸🇪','¿Qué tan sueco eres?','Muy pronto podrás poner a prueba tus conocimientos con un reto divertido.','Entendido')" class="w-full flex items-center gap-4 bg-emerald-50 rounded-2xl p-4 shadow-sm border-2 border-emerald-100 hover:border-emerald-300 transition-all text-left">
@@ -2167,7 +2167,7 @@
     <button data-nav="aprender" onclick="navGo('aprender')" class="nav-btn flex flex-col items-center gap-0.5 py-2 mx-1 my-1 rounded-2xl text-gray-400 transition-all"><span class="text-xl leading-none">📖</span><span class="text-[10px] font-semibold">Aprender</span></button>
     <button data-nav="miviaje" onclick="navGo('miviaje')" class="nav-btn flex flex-col items-center gap-0.5 py-2 mx-1 my-1 rounded-2xl text-gray-400 transition-all"><span class="text-xl leading-none">🗺️</span><span class="text-[10px] font-semibold">Mi viaje</span></button>
     <button data-nav="progreso" onclick="navGo('progreso')" class="nav-btn flex flex-col items-center gap-0.5 py-2 mx-1 my-1 rounded-2xl text-gray-400 transition-all"><span class="text-xl leading-none">📈</span><span class="text-[10px] font-semibold">Progreso</span></button>
-    <button data-nav="juanita" onclick="openComingSoon('/juanita/juanita-chancleta.webp','Practicando con Juanita','Muy pronto practicarás conversaciones guiadas con Juanita.','Entendido')" class="nav-btn flex flex-col items-center gap-0.5 py-1 mx-1 my-1 rounded-2xl text-gray-400 transition-all"><img src="/juanita/juanita-chancleta.webp" class="w-7 h-7 object-contain" alt="Juanita" onerror="this.outerHTML='<span class=&quot;text-xl leading-none&quot;>👵</span>'"><span class="text-[10px] font-semibold">Juanita</span></button>
+    <button data-nav="juanita" onclick="openJuanita()" class="nav-btn flex flex-col items-center gap-0.5 py-1 mx-1 my-1 rounded-2xl text-gray-400 transition-all"><img src="/juanita/juanita-chancleta.webp" class="w-7 h-7 object-contain" alt="Juanita" onerror="this.outerHTML='<span class=&quot;text-xl leading-none&quot;>👵</span>'"><span class="text-[10px] font-semibold">Juanita</span></button>
   </div>
 </div>
 
@@ -23083,6 +23083,61 @@ const grammarState = {
   fromTheory: null,    // id de la unidad de Teoría que lanzó la práctica
 };
 
+// ═══════════════════════════════════════════════════════════
+//  JUANITA — práctica guiada (sin IA). Elige nivel + cantidad y
+//  resuelve preguntas reales con Juanita animándote. Reusa el motor de quiz.
+// ═══════════════════════════════════════════════════════════
+let _juanitaLevel = null;
+const JUANITA_PHRASES = {
+  start:    ['¡Vamos, mijo, que tú puedes! 💪', 'A darle con ganas, ¡yo te acompaño! 💛', 'Respira y confía: lo vas a lograr.'],
+  question: ['Léela con calma, mijo.', 'Piensa bien… tú sabes.', 'Concéntrate, ¡ya casi!', 'Sin miedo, con calma.'],
+  right:    ['¡Esooo! Muy bien, mijo. 👏', '¡Correcto! Estoy orgullosa. 💛', '¡Vas volando! Sigue así.', '¡Bien hecho! Te lo dije.'],
+  wrong:    ['Tranquilo, del error se aprende.', 'Casi… fíjate bien la próxima. 💪', 'No pasa nada, ¡a la que sigue!', 'Uy, esa se fue. ¡Ánimo, mijo!'],
+  end:      ['¡Terminaste! Orgullosa de ti. 💛', '¡Lo lograste! Sigue practicando.']
+};
+function _jPick(k) { const a = JUANITA_PHRASES[k] || []; return a[Math.floor(Math.random() * a.length)] || ''; }
+function _juanitaSay(kind) {
+  if (!grammarState.topic || grammarState.topic.id !== '__juanita__') return;
+  const el = document.getElementById('gq-juanita-say'); if (el) el.textContent = _jPick(kind);
+}
+function openJuanita() { if (typeof requireAccess === 'function' && !requireAccess()) return; _juanitaLevel = null; showView('juanita'); _juanitaResetPicker(); }
+function _juanitaResetPicker() {
+  document.querySelectorAll('.juanita-lvl').forEach(b => b.classList.remove('ring-4', 'ring-pink-300'));
+  const amt = document.getElementById('juanita-amount'); if (amt) amt.classList.add('hidden');
+}
+function juanitaSetLevel(lv) {
+  _juanitaLevel = lv;
+  document.querySelectorAll('.juanita-lvl').forEach(b => {
+    const on = b.getAttribute('data-lvl') === lv;
+    b.classList.toggle('ring-4', on); b.classList.toggle('ring-pink-300', on);
+  });
+  const amt = document.getElementById('juanita-amount'); if (amt) amt.classList.remove('hidden');
+  const lbl = document.getElementById('juanita-amount-label'); if (lbl) lbl.textContent = 'Nivel ' + lv + ' — ¿cuántas preguntas?';
+}
+function _juanitaPool(level) {
+  const out = [];
+  try { (GRAMMAR_DATA.topics || []).forEach(t => { if (t.level === level) (t.questions || []).forEach(q => out.push(q)); }); } catch (e) {}
+  return out;
+}
+function juanitaStart(amount) {
+  if (!_juanitaLevel) { showToast('Elige un nivel primero 🙂', 'info'); return; }
+  const pool = _juanitaPool(_juanitaLevel);
+  if (!pool.length) { showToast('Pronto habrá más preguntas de este nivel 🙂', 'info'); return; }
+  const n = (amount === 'main') ? Math.min(15, pool.length) : Math.min(amount, pool.length);
+  const qs = [...pool].sort(() => Math.random() - 0.5).slice(0, n).map(shuffleOptions);
+  const topic = { id: '__juanita__', title: '👵 Juanita · Nivel ' + _juanitaLevel, questions: qs, level: _juanitaLevel, color: '#EC4899' };
+  grammarState.fromTheory = null;
+  grammarState.limit = n;
+  grammarState.topic = topic;
+  grammarState.questions = qs;
+  grammarState.index = 0; grammarState.score = 0; grammarState.answered = false;
+  grammarState.streak = 0; grammarState.best = 0; grammarState.total = 0;
+  const titleEl = document.getElementById('gq-topic-title'); if (titleEl) titleEl.textContent = topic.title;
+  showView('grammar-quiz');
+  renderGrammarQuestion();
+  _juanitaSay('start');
+}
+
 // ── Navigate to grammar topic selector ───────────────────────
 function showGrammar() {
   if (!requireAccess()) return;
@@ -23345,6 +23400,9 @@ function renderGrammarQuestion() {
   if (resultEl) resultEl.classList.add('hidden');
   const questionArea = document.getElementById('gq-question-area');
   if (questionArea) questionArea.classList.remove('hidden');
+  const _jb = document.getElementById('gq-juanita');
+  if (_jb) _jb.classList.toggle('hidden', !(grammarState.topic && grammarState.topic.id === '__juanita__'));
+  try { _juanitaSay('question'); } catch (e) {}
 }
 
 // ── Ordenar palabras (grammar) ───────────────────────────────
@@ -23442,6 +23500,7 @@ function answerGrammar(selectedIdx) {
   if (grammarState.answered) return;
   const q = grammarState.questions[grammarState.index];
   const isCorrect = selectedIdx === q.correct;
+  try { _juanitaSay(isCorrect ? 'right' : 'wrong'); } catch (e) {}
 
   q.options.forEach((_, i) => {
     const btn = document.getElementById(`gq-opt-${i}`);
@@ -25958,6 +26017,45 @@ function backToTheory() {
 <!-- ═══════════════════════════════════════════════════════════
      VIEW: GRAMMAR QUIZ — Preguntas una por una
 ════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════
+     VIEW: JUANITA — práctica guiada (elige nivel + cantidad)
+════════════════════════════════════════════════════════════ -->
+<div id="view-juanita" class="view" style="background:#fdf2f8; min-height:100vh;">
+  <div class="bg-swe-blue text-white">
+    <div class="max-w-md mx-auto px-4 py-3 flex items-center gap-3">
+      <button onclick="goHome()" class="text-blue-200 hover:text-white transition-colors" aria-label="Volver">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <span class="font-bold">Practica con Juanita</span>
+    </div>
+  </div>
+  <div class="max-w-md mx-auto px-4 py-6">
+    <div class="text-center mb-6">
+      <img src="/juanita/juanita-chancleta.webp" class="w-24 h-24 object-contain mx-auto" alt="Juanita" onerror="this.outerHTML='<div class=&quot;text-6xl&quot;>👵</div>'">
+      <h1 class="text-2xl font-black text-gray-800 mt-2">Practica con Juanita</h1>
+      <p class="text-gray-500 text-sm mt-1">Yo te acompaño. Elige tu nivel y a practicar. 💛</p>
+    </div>
+
+    <div class="font-bold text-gray-700 mb-3">1. ¿Qué nivel quieres practicar?</div>
+    <div class="grid grid-cols-2 gap-3 mb-7">
+      <button data-lvl="A" onclick="juanitaSetLevel('A')" class="juanita-lvl bg-white rounded-2xl p-4 shadow-sm border-2 border-pink-100 text-left transition-all"><div class="font-black text-gray-800">SFI A</div><div class="text-xs text-gray-500">Principiante</div></button>
+      <button data-lvl="B" onclick="juanitaSetLevel('B')" class="juanita-lvl bg-white rounded-2xl p-4 shadow-sm border-2 border-pink-100 text-left transition-all"><div class="font-black text-gray-800">SFI B</div><div class="text-xs text-gray-500">Básico</div></button>
+      <button data-lvl="C" onclick="juanitaSetLevel('C')" class="juanita-lvl bg-white rounded-2xl p-4 shadow-sm border-2 border-pink-100 text-left transition-all"><div class="font-black text-gray-800">SFI C</div><div class="text-xs text-gray-500">Intermedio</div></button>
+      <button data-lvl="D" onclick="juanitaSetLevel('D')" class="juanita-lvl bg-white rounded-2xl p-4 shadow-sm border-2 border-pink-100 text-left transition-all"><div class="font-black text-gray-800">SFI D</div><div class="text-xs text-gray-500">Avanzado</div></button>
+    </div>
+
+    <div id="juanita-amount" class="hidden">
+      <div id="juanita-amount-label" class="font-bold text-gray-700 mb-3">Elige cuántas preguntas</div>
+      <div class="space-y-2.5">
+        <button onclick="juanitaStart('main')" class="w-full bg-swe-blue text-white rounded-2xl p-4 font-black text-left flex items-center justify-between shadow"><span>🏆 Prueba principal</span><span class="text-xs font-normal opacity-80">15 preguntas</span></button>
+        <button onclick="juanitaStart(10)" class="w-full bg-white rounded-2xl p-4 font-bold text-gray-800 border-2 border-gray-200 text-left hover:border-pink-300 transition-all">10 preguntas</button>
+        <button onclick="juanitaStart(20)" class="w-full bg-white rounded-2xl p-4 font-bold text-gray-800 border-2 border-gray-200 text-left hover:border-pink-300 transition-all">20 preguntas</button>
+        <button onclick="juanitaStart(30)" class="w-full bg-white rounded-2xl p-4 font-bold text-gray-800 border-2 border-gray-200 text-left hover:border-pink-300 transition-all">30 preguntas</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="view-grammar-quiz" class="view">
   <!-- Header -->
   <div class="bg-swe-blue text-white blue-header">
@@ -25983,6 +26081,12 @@ function backToTheory() {
 
   <!-- Question area -->
   <div class="max-w-4xl mx-auto px-4 py-5">
+    <div id="gq-juanita" class="hidden mb-3">
+      <div class="flex items-center gap-3 bg-pink-50 border border-pink-100 rounded-2xl p-3">
+        <img src="/juanita/juanita-chancleta.webp" class="w-10 h-10 object-contain flex-shrink-0" alt="Juanita" onerror="this.outerHTML='<span class=&quot;text-2xl&quot;>👵</span>'">
+        <div id="gq-juanita-say" class="text-sm font-semibold text-pink-700"></div>
+      </div>
+    </div>
     <div id="gq-question-area" class="glass rounded-2xl p-5 shadow border border-blue-100 mb-4">
       <div id="gq-category" class="text-xs font-bold text-swe-blue uppercase tracking-wide mb-3"></div>
       <p id="gq-question-text" class="font-bold text-gray-800 text-base mb-4"></p>

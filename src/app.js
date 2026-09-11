@@ -5113,6 +5113,61 @@ const grammarState = {
   fromTheory: null,    // id de la unidad de Teoría que lanzó la práctica
 };
 
+// ═══════════════════════════════════════════════════════════
+//  JUANITA — práctica guiada (sin IA). Elige nivel + cantidad y
+//  resuelve preguntas reales con Juanita animándote. Reusa el motor de quiz.
+// ═══════════════════════════════════════════════════════════
+let _juanitaLevel = null;
+const JUANITA_PHRASES = {
+  start:    ['¡Vamos, mijo, que tú puedes! 💪', 'A darle con ganas, ¡yo te acompaño! 💛', 'Respira y confía: lo vas a lograr.'],
+  question: ['Léela con calma, mijo.', 'Piensa bien… tú sabes.', 'Concéntrate, ¡ya casi!', 'Sin miedo, con calma.'],
+  right:    ['¡Esooo! Muy bien, mijo. 👏', '¡Correcto! Estoy orgullosa. 💛', '¡Vas volando! Sigue así.', '¡Bien hecho! Te lo dije.'],
+  wrong:    ['Tranquilo, del error se aprende.', 'Casi… fíjate bien la próxima. 💪', 'No pasa nada, ¡a la que sigue!', 'Uy, esa se fue. ¡Ánimo, mijo!'],
+  end:      ['¡Terminaste! Orgullosa de ti. 💛', '¡Lo lograste! Sigue practicando.']
+};
+function _jPick(k) { const a = JUANITA_PHRASES[k] || []; return a[Math.floor(Math.random() * a.length)] || ''; }
+function _juanitaSay(kind) {
+  if (!grammarState.topic || grammarState.topic.id !== '__juanita__') return;
+  const el = document.getElementById('gq-juanita-say'); if (el) el.textContent = _jPick(kind);
+}
+function openJuanita() { if (typeof requireAccess === 'function' && !requireAccess()) return; _juanitaLevel = null; showView('juanita'); _juanitaResetPicker(); }
+function _juanitaResetPicker() {
+  document.querySelectorAll('.juanita-lvl').forEach(b => b.classList.remove('ring-4', 'ring-pink-300'));
+  const amt = document.getElementById('juanita-amount'); if (amt) amt.classList.add('hidden');
+}
+function juanitaSetLevel(lv) {
+  _juanitaLevel = lv;
+  document.querySelectorAll('.juanita-lvl').forEach(b => {
+    const on = b.getAttribute('data-lvl') === lv;
+    b.classList.toggle('ring-4', on); b.classList.toggle('ring-pink-300', on);
+  });
+  const amt = document.getElementById('juanita-amount'); if (amt) amt.classList.remove('hidden');
+  const lbl = document.getElementById('juanita-amount-label'); if (lbl) lbl.textContent = 'Nivel ' + lv + ' — ¿cuántas preguntas?';
+}
+function _juanitaPool(level) {
+  const out = [];
+  try { (GRAMMAR_DATA.topics || []).forEach(t => { if (t.level === level) (t.questions || []).forEach(q => out.push(q)); }); } catch (e) {}
+  return out;
+}
+function juanitaStart(amount) {
+  if (!_juanitaLevel) { showToast('Elige un nivel primero 🙂', 'info'); return; }
+  const pool = _juanitaPool(_juanitaLevel);
+  if (!pool.length) { showToast('Pronto habrá más preguntas de este nivel 🙂', 'info'); return; }
+  const n = (amount === 'main') ? Math.min(15, pool.length) : Math.min(amount, pool.length);
+  const qs = [...pool].sort(() => Math.random() - 0.5).slice(0, n).map(shuffleOptions);
+  const topic = { id: '__juanita__', title: '👵 Juanita · Nivel ' + _juanitaLevel, questions: qs, level: _juanitaLevel, color: '#EC4899' };
+  grammarState.fromTheory = null;
+  grammarState.limit = n;
+  grammarState.topic = topic;
+  grammarState.questions = qs;
+  grammarState.index = 0; grammarState.score = 0; grammarState.answered = false;
+  grammarState.streak = 0; grammarState.best = 0; grammarState.total = 0;
+  const titleEl = document.getElementById('gq-topic-title'); if (titleEl) titleEl.textContent = topic.title;
+  showView('grammar-quiz');
+  renderGrammarQuestion();
+  _juanitaSay('start');
+}
+
 // ── Navigate to grammar topic selector ───────────────────────
 function showGrammar() {
   if (!requireAccess()) return;
@@ -5375,6 +5430,9 @@ function renderGrammarQuestion() {
   if (resultEl) resultEl.classList.add('hidden');
   const questionArea = document.getElementById('gq-question-area');
   if (questionArea) questionArea.classList.remove('hidden');
+  const _jb = document.getElementById('gq-juanita');
+  if (_jb) _jb.classList.toggle('hidden', !(grammarState.topic && grammarState.topic.id === '__juanita__'));
+  try { _juanitaSay('question'); } catch (e) {}
 }
 
 // ── Ordenar palabras (grammar) ───────────────────────────────
@@ -5472,6 +5530,7 @@ function answerGrammar(selectedIdx) {
   if (grammarState.answered) return;
   const q = grammarState.questions[grammarState.index];
   const isCorrect = selectedIdx === q.correct;
+  try { _juanitaSay(isCorrect ? 'right' : 'wrong'); } catch (e) {}
 
   q.options.forEach((_, i) => {
     const btn = document.getElementById(`gq-opt-${i}`);
