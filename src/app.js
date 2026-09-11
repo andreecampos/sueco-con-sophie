@@ -158,15 +158,20 @@ function _renderMembresiaReviews() {
   if (!box) return;
   const wrap = document.getElementById('membresia-reviews-wrap');
   const nav = document.getElementById('membresia-reviews-nav');
-  const total = (_landingReviews || []).length;
+  // Prioriza las reseñas con foto de perfil (avatar) al inicio; conserva el orden por fecha dentro de cada grupo.
+  const sorted = (_landingReviews || []).map((r, i) => ({ r, i }))
+    .sort((a, b) => ((b.r && b.r.avatar_url ? 1 : 0) - (a.r && a.r.avatar_url ? 1 : 0)) || (a.i - b.i))
+    .map(x => x.r);
+  const total = sorted.length;
   if (!total) { box.innerHTML = ''; if (wrap) wrap.style.display = 'none'; return; }
   if (wrap) wrap.style.display = '';
   const per = 2; const pages = Math.max(1, Math.ceil(total / per));
   if (_membresiaRevPage >= pages) _membresiaRevPage = 0;
-  const slice = _landingReviews.slice(_membresiaRevPage * per, _membresiaRevPage * per + per);
+  const slice = sorted.slice(_membresiaRevPage * per, _membresiaRevPage * per + per);
   box.innerHTML = slice.map(rv => `<div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
     <div class="flex items-center gap-2 mb-1.5">${(typeof reviewAvatarHtml === 'function') ? reviewAvatarHtml(rv, 'w-9 h-9 text-sm') : ''}<div class="min-w-0"><div class="font-bold text-gray-800 text-sm truncate">${escHtml(rv.name || '')}</div><div class="text-swe-yellow text-xs leading-none">${'★'.repeat(Math.max(1, Math.min(5, rv.rating || 5)))}</div></div></div>
     <p class="text-gray-600 text-sm leading-relaxed" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${escHtml(rv.comment || '')}</p>
+    <div class="text-[11px] text-gray-400 mt-1.5 font-medium">${(typeof fmtReviewDate === 'function') ? fmtReviewDate(rv.created_at) : ''}${(typeof reviewCountryLabel === 'function') ? reviewCountryLabel(rv) : ''}</div>
   </div>`).join('');
   const dots = document.getElementById('membresia-reviews-dots'); if (dots) dots.textContent = (_membresiaRevPage + 1) + ' / ' + pages;
   if (nav) { if (pages > 1) { nav.classList.remove('hidden'); nav.classList.add('flex'); } else { nav.classList.add('hidden'); nav.classList.remove('flex'); } }
