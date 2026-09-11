@@ -5572,7 +5572,47 @@ function nextGrammarQuestion() {
 
 // ── Terminar la practica y ver resultado ─────────────
 function finishGrammar() {
+  if (grammarState.topic && grammarState.topic.id === '__juanita__') { showJuanitaResult(); return; }
   showGrammarResult();
+}
+
+// Tip de Juanita: mira el progreso del alumno y sugiere en qué enfocarse.
+function _juanitaTip() {
+  const areas = [];
+  const push = (label, fn) => { try { const p = fn(); if (p != null && !isNaN(p)) areas.push({ label, pct: Math.round(p) }); } catch (e) {} };
+  push('gramática', () => moduleProgress('grammar', { onlyAvailable: true }).pct);
+  push('comprensión auditiva', () => moduleProgress('listening', { onlyAvailable: true }).pct);
+  push('vocabulario', () => moduleProgress('vocabulary', { onlyAvailable: true }).pct);
+  push('lectura', () => moduleProgress('reading', { onlyAvailable: true }).pct);
+  push('escritura', () => moduleProgress('writing', { onlyAvailable: true }).pct);
+  if (!areas.length) return 'Sigue practicando un poquito cada día, mijo. 💛';
+  areas.sort((a, b) => a.pct - b.pct);
+  const weak = areas[0], strong = areas[areas.length - 1];
+  if (weak.label === strong.label || (strong.pct - weak.pct) < 5) return 'Vas parejo, mijo. Sigue firme y verás resultados. 💪';
+  return 'Hijito, enfócate ahora en <b>' + weak.label + '</b>. En <b>' + strong.label + '</b> ya vas bien. 👏';
+}
+
+// Resultado de Juanita: SOLO un modal (reacción + frase + tip). Sin pregunta ni botones detrás.
+function showJuanitaResult() {
+  const score = grammarState.score;
+  const total = grammarState.total || 1;
+  const pct = Math.round((score / total) * 100);
+  const passed = pct >= 70;
+  ['gq-question-area', 'gq-explanation', 'gq-next-btn', 'gq-result'].forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('hidden'); });
+  const img = passed ? '/juanita/juanita-orgullosa.png' : '/juanita/juanita-con-chancla.png';
+  const emoji = passed ? '🎉' : '🩴';
+  const phrase = passed ? '¡Muy bien, mijo! Estoy orgullosa de ti. 💛' : '¡Ay, mijo! Con esa nota sale la chancla… ¡a estudiar y me lo repites! 🩴';
+  const imgEl = document.getElementById('jr-img');
+  if (imgEl) { imgEl.src = img; imgEl.onerror = function () { this.onerror = null; this.replaceWith(document.createTextNode(emoji)); }; }
+  const setHtml = (id, v) => { const e = document.getElementById(id); if (e) e.innerHTML = v; };
+  setHtml('jr-score', score + ' / ' + total + '  ·  ' + pct + '% aciertos');
+  setHtml('jr-phrase', phrase);
+  setHtml('jr-tip', _juanitaTip());
+  const m = document.getElementById('juanita-result-modal'); if (m) m.classList.remove('hidden');
+}
+function closeJuanitaResult() {
+  const m = document.getElementById('juanita-result-modal'); if (m) m.classList.add('hidden');
+  showView('juanita'); _juanitaResetPicker();
 }
 
 // ── Show final result screen ─────────────────────────────────

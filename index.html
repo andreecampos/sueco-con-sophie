@@ -23542,7 +23542,47 @@ function nextGrammarQuestion() {
 
 // ── Terminar la practica y ver resultado ─────────────
 function finishGrammar() {
+  if (grammarState.topic && grammarState.topic.id === '__juanita__') { showJuanitaResult(); return; }
   showGrammarResult();
+}
+
+// Tip de Juanita: mira el progreso del alumno y sugiere en qué enfocarse.
+function _juanitaTip() {
+  const areas = [];
+  const push = (label, fn) => { try { const p = fn(); if (p != null && !isNaN(p)) areas.push({ label, pct: Math.round(p) }); } catch (e) {} };
+  push('gramática', () => moduleProgress('grammar', { onlyAvailable: true }).pct);
+  push('comprensión auditiva', () => moduleProgress('listening', { onlyAvailable: true }).pct);
+  push('vocabulario', () => moduleProgress('vocabulary', { onlyAvailable: true }).pct);
+  push('lectura', () => moduleProgress('reading', { onlyAvailable: true }).pct);
+  push('escritura', () => moduleProgress('writing', { onlyAvailable: true }).pct);
+  if (!areas.length) return 'Sigue practicando un poquito cada día, mijo. 💛';
+  areas.sort((a, b) => a.pct - b.pct);
+  const weak = areas[0], strong = areas[areas.length - 1];
+  if (weak.label === strong.label || (strong.pct - weak.pct) < 5) return 'Vas parejo, mijo. Sigue firme y verás resultados. 💪';
+  return 'Hijito, enfócate ahora en <b>' + weak.label + '</b>. En <b>' + strong.label + '</b> ya vas bien. 👏';
+}
+
+// Resultado de Juanita: SOLO un modal (reacción + frase + tip). Sin pregunta ni botones detrás.
+function showJuanitaResult() {
+  const score = grammarState.score;
+  const total = grammarState.total || 1;
+  const pct = Math.round((score / total) * 100);
+  const passed = pct >= 70;
+  ['gq-question-area', 'gq-explanation', 'gq-next-btn', 'gq-result'].forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('hidden'); });
+  const img = passed ? '/juanita/juanita-orgullosa.png' : '/juanita/juanita-con-chancla.png';
+  const emoji = passed ? '🎉' : '🩴';
+  const phrase = passed ? '¡Muy bien, mijo! Estoy orgullosa de ti. 💛' : '¡Ay, mijo! Con esa nota sale la chancla… ¡a estudiar y me lo repites! 🩴';
+  const imgEl = document.getElementById('jr-img');
+  if (imgEl) { imgEl.src = img; imgEl.onerror = function () { this.onerror = null; this.replaceWith(document.createTextNode(emoji)); }; }
+  const setHtml = (id, v) => { const e = document.getElementById(id); if (e) e.innerHTML = v; };
+  setHtml('jr-score', score + ' / ' + total + '  ·  ' + pct + '% aciertos');
+  setHtml('jr-phrase', phrase);
+  setHtml('jr-tip', _juanitaTip());
+  const m = document.getElementById('juanita-result-modal'); if (m) m.classList.remove('hidden');
+}
+function closeJuanitaResult() {
+  const m = document.getElementById('juanita-result-modal'); if (m) m.classList.add('hidden');
+  showView('juanita'); _juanitaResetPicker();
 }
 
 // ── Show final result screen ─────────────────────────────────
@@ -26065,6 +26105,18 @@ function backToTheory() {
       <button onclick="juanitaStart(30)" class="w-full bg-white rounded-2xl p-4 font-bold text-gray-800 border-2 border-gray-200 text-left hover:border-pink-300 transition-all">30 preguntas</button>
     </div>
     <button onclick="closeJuanitaAmount()" class="w-full mt-3 text-center text-gray-400 text-sm font-semibold py-2">Cancelar</button>
+  </div>
+</div>
+
+<!-- MODAL: resultado de Juanita (reacción + frase + tip) -->
+<div id="juanita-result-modal" class="hidden fixed inset-0 z-[80] flex items-center justify-center p-4" style="background:rgba(15,23,42,0.6);backdrop-filter:blur(3px);">
+  <div class="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl text-center">
+    <img id="jr-img" src="/juanita/juanita-orgullosa.png" class="w-32 h-32 object-contain mx-auto mb-2" alt="Juanita">
+    <div id="jr-phrase" class="text-pink-700 font-bold text-base mb-3"></div>
+    <div id="jr-score" class="text-2xl font-black text-gray-800 mb-3"></div>
+    <div id="jr-tip" class="bg-pink-50 border border-pink-100 rounded-2xl p-3 text-sm text-gray-700 leading-relaxed mb-4"></div>
+    <button onclick="closeJuanitaResult()" class="w-full bg-swe-blue text-white py-3 rounded-2xl font-black hover:bg-swe-dark transition-colors">Practicar otra vez</button>
+    <button onclick="goHome()" class="w-full mt-2 text-gray-400 text-sm font-semibold py-2">Volver al inicio</button>
   </div>
 </div>
 
