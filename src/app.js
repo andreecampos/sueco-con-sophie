@@ -5125,25 +5125,22 @@ const JUANITA_PHRASES = {
   wrong:    ['Tranquilo, del error se aprende.', 'Casi… fíjate bien la próxima. 💪', 'No pasa nada, ¡a la que sigue!', 'Uy, esa se fue. ¡Ánimo, mijo!'],
   end:      ['¡Terminaste! Orgullosa de ti. 💛', '¡Lo lograste! Sigue practicando.']
 };
+const JUANITA_IMG = { start: '/juanita/juanita-tu-puedes.png', question: '/juanita/juanita-chancleta.webp', right: '/juanita/juanita-feliz.webp', wrong: '/juanita/juanita-seria.webp' };
 function _jPick(k) { const a = JUANITA_PHRASES[k] || []; return a[Math.floor(Math.random() * a.length)] || ''; }
 function _juanitaSay(kind) {
   if (!grammarState.topic || grammarState.topic.id !== '__juanita__') return;
   const el = document.getElementById('gq-juanita-say'); if (el) el.textContent = _jPick(kind);
+  const img = document.getElementById('gq-juanita-img'); if (img && JUANITA_IMG[kind]) img.src = JUANITA_IMG[kind];
 }
 function openJuanita() { if (typeof requireAccess === 'function' && !requireAccess()) return; _juanitaLevel = null; showView('juanita'); _juanitaResetPicker(); }
-function _juanitaResetPicker() {
-  document.querySelectorAll('.juanita-lvl').forEach(b => b.classList.remove('ring-4', 'ring-pink-300'));
-  const amt = document.getElementById('juanita-amount'); if (amt) amt.classList.add('hidden');
-}
+function _juanitaResetPicker() { const m = document.getElementById('juanita-amount-modal'); if (m) m.classList.add('hidden'); }
 function juanitaSetLevel(lv) {
   _juanitaLevel = lv;
-  document.querySelectorAll('.juanita-lvl').forEach(b => {
-    const on = b.getAttribute('data-lvl') === lv;
-    b.classList.toggle('ring-4', on); b.classList.toggle('ring-pink-300', on);
-  });
-  const amt = document.getElementById('juanita-amount'); if (amt) amt.classList.remove('hidden');
-  const lbl = document.getElementById('juanita-amount-label'); if (lbl) lbl.textContent = 'Nivel ' + lv + ' — ¿cuántas preguntas?';
+  const lbl = document.getElementById('juanita-amount-label');
+  if (lbl) lbl.textContent = 'Nivel ' + lv + ' — ¿cuántas preguntas?';
+  const modal = document.getElementById('juanita-amount-modal'); if (modal) modal.classList.remove('hidden');
 }
+function closeJuanitaAmount() { const m = document.getElementById('juanita-amount-modal'); if (m) m.classList.add('hidden'); }
 function _juanitaPool(level) {
   const out = [];
   try { (GRAMMAR_DATA.topics || []).forEach(t => { if (t.level === level) (t.questions || []).forEach(q => out.push(q)); }); } catch (e) {}
@@ -5153,6 +5150,7 @@ function juanitaStart(amount) {
   if (!_juanitaLevel) { showToast('Elige un nivel primero 🙂', 'info'); return; }
   const pool = _juanitaPool(_juanitaLevel);
   if (!pool.length) { showToast('Pronto habrá más preguntas de este nivel 🙂', 'info'); return; }
+  closeJuanitaAmount();
   const n = (amount === 'main') ? Math.min(15, pool.length) : Math.min(amount, pool.length);
   const qs = [...pool].sort(() => Math.random() - 0.5).slice(0, n).map(shuffleOptions);
   const topic = { id: '__juanita__', title: '👵 Juanita · Nivel ' + _juanitaLevel, questions: qs, level: _juanitaLevel, color: '#EC4899' };
@@ -5594,6 +5592,11 @@ function showGrammarResult() {
   // Emoji and badge
   const emojiEl = document.getElementById('gq-result-emoji');
   if (emojiEl) emojiEl.textContent = passed ? '🎉' : '💪';
+  if (grammarState.topic && grammarState.topic.id === '__juanita__' && emojiEl) {
+    const _jimg = passed ? '/juanita/juanita-feliz.webp' : '/juanita/juanita-tu-puedes.png';
+    const _jph = passed ? '¡Muy bien, mijo! Estoy orgullosa de ti. 💛' : 'No te rindas, mijo. ¡A la próxima lo logras! 💪';
+    emojiEl.innerHTML = '<img src="' + _jimg + '" class="w-28 h-28 object-contain mx-auto" alt="Juanita" onerror="this.replaceWith(document.createTextNode(\'' + (passed ? '🎉' : '💪') + '\'))"><div class="text-sm font-bold text-pink-700 mt-2 px-4">' + _jph + '</div>';
+  }
 
   const badgeEl = document.getElementById('gq-result-badge');
   if (badgeEl) {

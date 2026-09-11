@@ -23095,25 +23095,22 @@ const JUANITA_PHRASES = {
   wrong:    ['Tranquilo, del error se aprende.', 'Casi… fíjate bien la próxima. 💪', 'No pasa nada, ¡a la que sigue!', 'Uy, esa se fue. ¡Ánimo, mijo!'],
   end:      ['¡Terminaste! Orgullosa de ti. 💛', '¡Lo lograste! Sigue practicando.']
 };
+const JUANITA_IMG = { start: '/juanita/juanita-tu-puedes.png', question: '/juanita/juanita-chancleta.webp', right: '/juanita/juanita-feliz.webp', wrong: '/juanita/juanita-seria.webp' };
 function _jPick(k) { const a = JUANITA_PHRASES[k] || []; return a[Math.floor(Math.random() * a.length)] || ''; }
 function _juanitaSay(kind) {
   if (!grammarState.topic || grammarState.topic.id !== '__juanita__') return;
   const el = document.getElementById('gq-juanita-say'); if (el) el.textContent = _jPick(kind);
+  const img = document.getElementById('gq-juanita-img'); if (img && JUANITA_IMG[kind]) img.src = JUANITA_IMG[kind];
 }
 function openJuanita() { if (typeof requireAccess === 'function' && !requireAccess()) return; _juanitaLevel = null; showView('juanita'); _juanitaResetPicker(); }
-function _juanitaResetPicker() {
-  document.querySelectorAll('.juanita-lvl').forEach(b => b.classList.remove('ring-4', 'ring-pink-300'));
-  const amt = document.getElementById('juanita-amount'); if (amt) amt.classList.add('hidden');
-}
+function _juanitaResetPicker() { const m = document.getElementById('juanita-amount-modal'); if (m) m.classList.add('hidden'); }
 function juanitaSetLevel(lv) {
   _juanitaLevel = lv;
-  document.querySelectorAll('.juanita-lvl').forEach(b => {
-    const on = b.getAttribute('data-lvl') === lv;
-    b.classList.toggle('ring-4', on); b.classList.toggle('ring-pink-300', on);
-  });
-  const amt = document.getElementById('juanita-amount'); if (amt) amt.classList.remove('hidden');
-  const lbl = document.getElementById('juanita-amount-label'); if (lbl) lbl.textContent = 'Nivel ' + lv + ' — ¿cuántas preguntas?';
+  const lbl = document.getElementById('juanita-amount-label');
+  if (lbl) lbl.textContent = 'Nivel ' + lv + ' — ¿cuántas preguntas?';
+  const modal = document.getElementById('juanita-amount-modal'); if (modal) modal.classList.remove('hidden');
 }
+function closeJuanitaAmount() { const m = document.getElementById('juanita-amount-modal'); if (m) m.classList.add('hidden'); }
 function _juanitaPool(level) {
   const out = [];
   try { (GRAMMAR_DATA.topics || []).forEach(t => { if (t.level === level) (t.questions || []).forEach(q => out.push(q)); }); } catch (e) {}
@@ -23123,6 +23120,7 @@ function juanitaStart(amount) {
   if (!_juanitaLevel) { showToast('Elige un nivel primero 🙂', 'info'); return; }
   const pool = _juanitaPool(_juanitaLevel);
   if (!pool.length) { showToast('Pronto habrá más preguntas de este nivel 🙂', 'info'); return; }
+  closeJuanitaAmount();
   const n = (amount === 'main') ? Math.min(15, pool.length) : Math.min(amount, pool.length);
   const qs = [...pool].sort(() => Math.random() - 0.5).slice(0, n).map(shuffleOptions);
   const topic = { id: '__juanita__', title: '👵 Juanita · Nivel ' + _juanitaLevel, questions: qs, level: _juanitaLevel, color: '#EC4899' };
@@ -23564,6 +23562,11 @@ function showGrammarResult() {
   // Emoji and badge
   const emojiEl = document.getElementById('gq-result-emoji');
   if (emojiEl) emojiEl.textContent = passed ? '🎉' : '💪';
+  if (grammarState.topic && grammarState.topic.id === '__juanita__' && emojiEl) {
+    const _jimg = passed ? '/juanita/juanita-feliz.webp' : '/juanita/juanita-tu-puedes.png';
+    const _jph = passed ? '¡Muy bien, mijo! Estoy orgullosa de ti. 💛' : 'No te rindas, mijo. ¡A la próxima lo logras! 💪';
+    emojiEl.innerHTML = '<img src="' + _jimg + '" class="w-28 h-28 object-contain mx-auto" alt="Juanita" onerror="this.replaceWith(document.createTextNode(\'' + (passed ? '🎉' : '💪') + '\'))"><div class="text-sm font-bold text-pink-700 mt-2 px-4">' + _jph + '</div>';
+  }
 
   const badgeEl = document.getElementById('gq-result-badge');
   if (badgeEl) {
@@ -26031,28 +26034,35 @@ function backToTheory() {
   </div>
   <div class="max-w-md mx-auto px-4 py-6">
     <div class="text-center mb-6">
-      <img src="/juanita/juanita-chancleta.webp" class="w-24 h-24 object-contain mx-auto" alt="Juanita" onerror="this.outerHTML='<div class=&quot;text-6xl&quot;>👵</div>'">
+      <img src="/juanita/juanita-chancleta.webp" id="juanita-hero-img" class="w-36 h-36 object-contain mx-auto" alt="Juanita" onerror="this.outerHTML='<div class=&quot;text-7xl&quot;>👵</div>'">
       <h1 class="text-2xl font-black text-gray-800 mt-2">Practica con Juanita</h1>
-      <p class="text-gray-500 text-sm mt-1">Yo te acompaño. Elige tu nivel y a practicar. 💛</p>
+      <p class="text-gray-600 text-sm mt-2 leading-relaxed">Juanita es una mamá latina del Perú, con todo el carácter de una mamá que quiere lo mejor para sus hijos. Su misión: que aprendas sueco sí o sí. Elige tu nivel y ella te acompaña en cada pregunta. 💛</p>
     </div>
 
-    <div class="font-bold text-gray-700 mb-3">1. ¿Qué nivel quieres practicar?</div>
-    <div class="grid grid-cols-2 gap-3 mb-7">
+    <div class="font-bold text-gray-700 mb-3">Elige tu nivel para practicar</div>
+    <div class="grid grid-cols-2 gap-3">
       <button data-lvl="A" onclick="juanitaSetLevel('A')" class="juanita-lvl bg-white rounded-2xl p-4 shadow-sm border-2 border-pink-100 text-left transition-all"><div class="font-black text-gray-800">SFI A</div><div class="text-xs text-gray-500">Principiante</div></button>
       <button data-lvl="B" onclick="juanitaSetLevel('B')" class="juanita-lvl bg-white rounded-2xl p-4 shadow-sm border-2 border-pink-100 text-left transition-all"><div class="font-black text-gray-800">SFI B</div><div class="text-xs text-gray-500">Básico</div></button>
       <button data-lvl="C" onclick="juanitaSetLevel('C')" class="juanita-lvl bg-white rounded-2xl p-4 shadow-sm border-2 border-pink-100 text-left transition-all"><div class="font-black text-gray-800">SFI C</div><div class="text-xs text-gray-500">Intermedio</div></button>
       <button data-lvl="D" onclick="juanitaSetLevel('D')" class="juanita-lvl bg-white rounded-2xl p-4 shadow-sm border-2 border-pink-100 text-left transition-all"><div class="font-black text-gray-800">SFI D</div><div class="text-xs text-gray-500">Avanzado</div></button>
     </div>
+  </div>
+</div>
 
-    <div id="juanita-amount" class="hidden">
-      <div id="juanita-amount-label" class="font-bold text-gray-700 mb-3">Elige cuántas preguntas</div>
-      <div class="space-y-2.5">
-        <button onclick="juanitaStart('main')" class="w-full bg-swe-blue text-white rounded-2xl p-4 font-black text-left flex items-center justify-between shadow"><span>🏆 Prueba principal</span><span class="text-xs font-normal opacity-80">15 preguntas</span></button>
-        <button onclick="juanitaStart(10)" class="w-full bg-white rounded-2xl p-4 font-bold text-gray-800 border-2 border-gray-200 text-left hover:border-pink-300 transition-all">10 preguntas</button>
-        <button onclick="juanitaStart(20)" class="w-full bg-white rounded-2xl p-4 font-bold text-gray-800 border-2 border-gray-200 text-left hover:border-pink-300 transition-all">20 preguntas</button>
-        <button onclick="juanitaStart(30)" class="w-full bg-white rounded-2xl p-4 font-bold text-gray-800 border-2 border-gray-200 text-left hover:border-pink-300 transition-all">30 preguntas</button>
-      </div>
+<!-- MODAL: cantidad de preguntas de Juanita -->
+<div id="juanita-amount-modal" class="hidden fixed inset-0 z-[75] flex items-center justify-center p-4" style="background:rgba(15,23,42,0.55);backdrop-filter:blur(2px);" onclick="if(event.target===this)closeJuanitaAmount()">
+  <div class="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl">
+    <div class="flex items-center gap-3 mb-4">
+      <img src="/juanita/juanita-tu-puedes.png" class="w-12 h-12 object-contain flex-shrink-0" alt="Juanita" onerror="this.outerHTML='<span class=&quot;text-3xl&quot;>👵</span>'">
+      <div id="juanita-amount-label" class="font-black text-gray-800">¿Cuántas preguntas?</div>
     </div>
+    <div class="space-y-2.5">
+      <button onclick="juanitaStart('main')" class="w-full bg-swe-blue text-white rounded-2xl p-4 font-black text-left flex items-center justify-between shadow"><span>🏆 Prueba principal</span><span class="text-xs font-normal opacity-80">15 preguntas</span></button>
+      <button onclick="juanitaStart(10)" class="w-full bg-white rounded-2xl p-4 font-bold text-gray-800 border-2 border-gray-200 text-left hover:border-pink-300 transition-all">10 preguntas</button>
+      <button onclick="juanitaStart(20)" class="w-full bg-white rounded-2xl p-4 font-bold text-gray-800 border-2 border-gray-200 text-left hover:border-pink-300 transition-all">20 preguntas</button>
+      <button onclick="juanitaStart(30)" class="w-full bg-white rounded-2xl p-4 font-bold text-gray-800 border-2 border-gray-200 text-left hover:border-pink-300 transition-all">30 preguntas</button>
+    </div>
+    <button onclick="closeJuanitaAmount()" class="w-full mt-3 text-center text-gray-400 text-sm font-semibold py-2">Cancelar</button>
   </div>
 </div>
 
@@ -26081,10 +26091,10 @@ function backToTheory() {
 
   <!-- Question area -->
   <div class="max-w-4xl mx-auto px-4 py-5">
-    <div id="gq-juanita" class="hidden mb-3">
-      <div class="flex items-center gap-3 bg-pink-50 border border-pink-100 rounded-2xl p-3">
-        <img src="/juanita/juanita-chancleta.webp" class="w-10 h-10 object-contain flex-shrink-0" alt="Juanita" onerror="this.outerHTML='<span class=&quot;text-2xl&quot;>👵</span>'">
-        <div id="gq-juanita-say" class="text-sm font-semibold text-pink-700"></div>
+    <div id="gq-juanita" class="hidden mb-4">
+      <div class="flex items-center gap-3 bg-pink-50 border-2 border-pink-200 rounded-2xl p-3">
+        <img id="gq-juanita-img" src="/juanita/juanita-chancleta.webp" class="w-16 h-16 object-contain flex-shrink-0" alt="Juanita" onerror="this.outerHTML='<span class=&quot;text-4xl&quot;>👵</span>'">
+        <div id="gq-juanita-say" class="text-sm font-bold text-pink-700 leading-snug"></div>
       </div>
     </div>
     <div id="gq-question-area" class="glass rounded-2xl p-5 shadow border border-blue-100 mb-4">
