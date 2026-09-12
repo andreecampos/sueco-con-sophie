@@ -322,7 +322,7 @@
         <a onclick="showView('membresia')" style="cursor:pointer">Membresía</a>
         <a onclick="showView('plataforma')" style="cursor:pointer">Plataforma</a>
         <a onclick="showView('nosotros')" style="cursor:pointer">Sobre nosotros</a>
-        <a href="#atencion">Atención al cliente</a>
+        <a onclick="showView('programas')" style="cursor:pointer">Programas intensivos</a>
         <div class="scs-nav-btns">
           <button type="button" onclick="showView('login')" class="scs-btn-ghost">Iniciar sesión</button>
           <a onclick="showView('membresia')" style="cursor:pointer" class="scs-btn-yellow">Regístrate aquí</a>
@@ -518,14 +518,6 @@
 
   </div>
 
-  <!-- ═══ SECCIONES (placeholder — se llenan después) ═══ -->
-  <div class="max-w-5xl mx-auto px-3 pb-2 space-y-5">
-    <section id="atencion" class="bg-white rounded-2xl p-6 shadow border border-gray-100 text-center">
-      <h2 class="text-xl font-black text-gray-800 mb-2">Atención al cliente</h2>
-      <p class="text-sm text-gray-600 mb-4">¿Dudas sobre las clases, tu pago o tu grupo? Escríbenos por WhatsApp y te respondemos (normalmente en menos de 24 horas).</p>
-      <a href="https://wa.me/46769184251?text=Hola%2C%20tengo%20una%20consulta%20sobre%20Sueco%20con%20Sophie" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-green-500 text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-green-600 transition-colors">Escríbenos por WhatsApp</a>
-    </section>
-  </div>
 
   <!-- BOTÓN FLOTANTE WHATSAPP -->
   <a href="https://wa.me/46769184251?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20las%20clases%20de%20sueco" target="_blank" rel="noopener" style="position:fixed; bottom:20px; right:20px; z-index:50; background:#25D366; width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 6px 20px rgba(0,0,0,0.25); text-decoration:none;" title="Escríbenos por WhatsApp"><svg viewBox="0 0 24 24" width="30" height="30" fill="#fff"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg></a>
@@ -544,7 +536,7 @@
         <a onclick="showView('membresia')" style="cursor:pointer">Membresía</a>
         <a onclick="showView('plataforma')" style="cursor:pointer">Plataforma</a>
         <a onclick="showView('nosotros')" style="cursor:pointer">Sobre nosotros</a>
-        <a onclick="landingGo('atencion')" style="cursor:pointer">Atención al cliente</a>
+        <a onclick="showView('programas')" style="cursor:pointer">Programas intensivos</a>
         <div class="scs-nav-btns">
           <button type="button" onclick="showView('login')" class="scs-btn-ghost">Iniciar sesión</button>
           <a onclick="showView('membresia')" style="cursor:pointer" class="scs-btn-yellow">Regístrate aquí</a>
@@ -653,7 +645,7 @@
         <a onclick="showView('membresia')" style="cursor:pointer">Membresía</a>
         <a onclick="showView('plataforma')" style="cursor:pointer">Plataforma</a>
         <a onclick="showView('nosotros')" style="cursor:pointer">Sobre nosotros</a>
-        <a onclick="landingGo('atencion')" style="cursor:pointer">Atención al cliente</a>
+        <a onclick="showView('programas')" style="cursor:pointer">Programas intensivos</a>
         <div class="scs-nav-btns">
           <button type="button" onclick="showView('login')" class="scs-btn-ghost">Iniciar sesión</button>
           <a onclick="showView('membresia')" style="cursor:pointer" class="scs-btn-yellow">Regístrate aquí</a>
@@ -663,9 +655,6 @@
   </nav>
   <div class="max-w-3xl mx-auto px-4 py-8">
     <h1 class="text-2xl font-black text-gray-800 text-center mb-4">Conoce tu plataforma</h1>
-    <div id="plataforma-video-wrap" style="position:relative;width:100%;padding-bottom:56.25%;border-radius:16px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.12);background:#00304f;">
-      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#cfe0ee;text-align:center;padding:20px;"><div style="font-size:34px">🎥</div><div style="font-weight:700;margin-top:6px">Aquí va tu video de YouTube</div><div style="font-weight:400;font-size:13px;color:#9fbcd4;margin-top:4px">(mándame el link y lo incrusto)</div></div>
-    </div>
     <h2 class="text-xl font-black text-gray-800 mt-8 mb-1">Todo lo que incluye tu plataforma</h2>
     <p class="text-sm text-gray-500 mb-5">Más que un curso: un método completo para que hables sueco de verdad, a tu ritmo.</p>
     <div class="space-y-3">
@@ -696,7 +685,7 @@
         <a onclick="showView('membresia')" style="cursor:pointer">Membresía</a>
         <a onclick="showView('plataforma')" style="cursor:pointer">Plataforma</a>
         <a onclick="showView('nosotros')" style="cursor:pointer">Sobre nosotros</a>
-        <a onclick="landingGo('atencion')" style="cursor:pointer">Atención al cliente</a>
+        <a onclick="showView('programas')" style="cursor:pointer">Programas intensivos</a>
         <div class="scs-nav-btns">
           <button type="button" onclick="showView('login')" class="scs-btn-ghost">Iniciar sesión</button>
           <a onclick="showView('membresia')" style="cursor:pointer" class="scs-btn-yellow">Regístrate aquí</a>
@@ -752,6 +741,208 @@
 
     <div class="text-center pt-2">
       <button onclick="showView('membresia')" class="rounded-xl px-8 py-3.5 font-black" style="background:#FECC02;color:#00335A;border:none;cursor:pointer;font-size:1.05rem;">Empieza con nosotros →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     VIEW: PROGRAMAS INTENSIVOS (pública)
+════════════════════════════════════════════════════════════ -->
+<div id="view-programas" class="view" style="background:#f4f7fb; min-height:100vh;">
+  <nav class="scs-nav">
+    <div class="scs-nav-in">
+      <input type="checkbox" id="scsNavT_pr" class="scs-nav-cbx">
+      <label for="scsNavT_pr" class="scs-nav-burger" aria-label="Abrir menú"><span></span><span></span><span></span></label>
+      <div class="scs-nav-menu">
+        <a onclick="landingGo('inicio')" style="cursor:pointer">Inicio</a>
+        <a onclick="showView('membresia')" style="cursor:pointer">Membresía</a>
+        <a onclick="showView('plataforma')" style="cursor:pointer">Plataforma</a>
+        <a onclick="showView('nosotros')" style="cursor:pointer">Sobre nosotros</a>
+        <a onclick="showView('programas')" style="cursor:pointer">Programas intensivos</a>
+        <div class="scs-nav-btns">
+          <button type="button" onclick="showView('login')" class="scs-btn-ghost">Iniciar sesión</button>
+          <a onclick="showView('membresia')" style="cursor:pointer" class="scs-btn-yellow">Regístrate aquí</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 1 · HERO -->
+  <div style="background:linear-gradient(160deg,#013a5e 0%,#00243c 100%);color:#fff;padding:52px 20px 46px;">
+    <div class="max-w-3xl mx-auto text-center">
+      <h1 class="text-3xl sm:text-4xl font-black mb-3 leading-tight">Programa Intensivo de Sueco 🇸🇪</h1>
+      <p class="text-blue-100 text-sm sm:text-base leading-relaxed mb-5 max-w-xl mx-auto">Grupos reducidos para aprender, practicar y avanzar con una estructura clara durante 8 semanas.</p>
+      <div class="inline-block text-sm font-semibold rounded-full px-4 py-2" style="background:rgba(255,255,255,0.12)">8 semanas · 16 clases · 2 veces por semana · Máximo 5 alumnos</div>
+    </div>
+  </div>
+
+  <!-- 2 · LOS DOS PROGRAMAS -->
+  <div class="max-w-4xl mx-auto px-4 -mt-6 pb-2">
+    <div class="grid md:grid-cols-2 gap-5 items-stretch">
+      <!-- CARD 1 -->
+      <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 flex flex-col">
+        <div class="text-[11px] font-bold text-gray-400 tracking-wide">PROGRAMA 1</div>
+        <h3 class="text-xl font-black text-gray-800 mt-1">De cero a básico</h3>
+        <p class="text-sm text-gray-600 leading-relaxed mt-2">Estás empezando desde cero: aquí construyes las bases que necesitas para empezar a comunicarte en sueco.</p>
+        <ul class="text-sm text-gray-700 mt-4 space-y-1.5 flex-1">
+          <li>📅 8 semanas · 2 clases por semana</li>
+          <li>🎯 16 clases de 60 minutos</li>
+          <li>👥 Máximo 5 alumnos</li>
+          <li>🗣️ Conversación guiada + práctica</li>
+          <li>📚 Gramática + vocabulario</li>
+          <li>💬 Correcciones + material incluido</li>
+          <li>📈 Progreso estructurado paso a paso</li>
+          <li>📱 Plataforma + grupo de WhatsApp</li>
+          <li>🎥 Clases grabadas para repasar</li>
+        </ul>
+        <div class="mt-5 flex items-end gap-1"><span class="text-4xl font-black text-swe-blue leading-none">250</span><span class="text-sm text-gray-500 mb-1">SEK / clase</span></div>
+        <div class="text-xs text-gray-400 mt-1">16 clases · Total del programa: 4.000 SEK</div>
+        <div class="mt-3 text-[11px] font-bold text-orange-600 bg-orange-50 rounded-lg px-3 py-1.5 self-start">PLAZAS LIMITADAS · Máximo 5 alumnos por grupo</div>
+        <a href="https://wa.me/46769184251?text=Hola%2C%20quiero%20inscribirme%20al%20Programa%20Intensivo%20(De%20cero%20a%20b%C3%A1sico)" target="_blank" rel="noopener" class="block w-full mt-4 rounded-xl py-3.5 font-black text-center" style="background:#FECC02;color:#00335A;">QUIERO INSCRIBIRME</a>
+      </div>
+      <!-- CARD 2 -->
+      <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 flex flex-col">
+        <div class="text-[11px] font-bold text-gray-400 tracking-wide">PROGRAMA 2</div>
+        <h3 class="text-xl font-black text-gray-800 mt-1">De básico a mayor fluidez</h3>
+        <p class="text-sm text-gray-600 leading-relaxed mt-2">Para ti que ya entiendes sueco, pero quieres hablar y expresarte con mayor seguridad.</p>
+        <ul class="text-sm text-gray-700 mt-4 space-y-1.5 flex-1">
+          <li>📅 8 semanas · 2 clases por semana</li>
+          <li>🎯 16 clases de 60 minutos</li>
+          <li>👥 Máximo 5 alumnos</li>
+          <li>🗣️ Mucha práctica oral</li>
+          <li>🇸🇪 Sueco para situaciones reales</li>
+          <li>📚 Gramática aplicada</li>
+          <li>💬 Correcciones + material incluido</li>
+          <li>📈 Progreso estructurado</li>
+          <li>📱 Plataforma + grupo de WhatsApp</li>
+        </ul>
+        <div class="mt-5 flex items-end gap-1"><span class="text-4xl font-black text-swe-blue leading-none">250</span><span class="text-sm text-gray-500 mb-1">SEK / clase</span></div>
+        <div class="text-xs text-gray-400 mt-1">16 clases · Total del programa: 4.000 SEK</div>
+        <div class="mt-3 text-[11px] font-bold text-orange-600 bg-orange-50 rounded-lg px-3 py-1.5 self-start">PLAZAS LIMITADAS · Máximo 5 alumnos por grupo</div>
+        <a href="https://wa.me/46769184251?text=Hola%2C%20quiero%20inscribirme%20al%20Programa%20Intensivo%20(De%20b%C3%A1sico%20a%20mayor%20fluidez)" target="_blank" rel="noopener" class="block w-full mt-4 rounded-xl py-3.5 font-black text-center" style="background:#FECC02;color:#00335A;">QUIERO INSCRIBIRME</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 · ¿QUÉ PROGRAMA ES PARA MÍ? -->
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <h2 class="text-center text-xl sm:text-2xl font-black text-gray-800 mb-5">¿Qué programa es para mí?</h2>
+    <div class="grid md:grid-cols-2 gap-5">
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+        <div class="font-black text-gray-800 mb-2">De cero a básico</div>
+        <div class="text-xs font-bold text-gray-400 mb-2">Ideal si…</div>
+        <ul class="text-sm text-gray-600 space-y-1.5 list-disc pl-5">
+          <li>Estás empezando con el sueco.</li>
+          <li>Conoces palabras pero te cuesta construir frases.</li>
+          <li>Dependes mucho del traductor.</li>
+          <li>Te cuesta hacer preguntas o responder de forma espontánea.</li>
+          <li>Necesitas construir una buena base de gramática y vocabulario.</li>
+        </ul>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+        <div class="font-black text-gray-800 mb-2">De básico a mayor fluidez</div>
+        <div class="text-xs font-bold text-gray-400 mb-2">Ideal si…</div>
+        <ul class="text-sm text-gray-600 space-y-1.5 list-disc pl-5">
+          <li>Ya entiendes bastante sueco.</li>
+          <li>Puedes construir frases, pero te bloqueas al hablar.</li>
+          <li>Quieres mantener conversaciones más largas.</li>
+          <li>Necesitas mejorar gramática y orden de palabras.</li>
+          <li>Quieres desenvolverte con más seguridad en el trabajo y la vida diaria.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-5">
+      <p class="text-sm text-gray-600 mb-2">¿No sabes cuál elegir? Escríbenos y te ayudamos a encontrar el grupo adecuado para tu nivel.</p>
+      <a href="https://wa.me/46769184251?text=Hola%2C%20quiero%20inscribirme%20al%20Programa%20Intensivo.%20%C2%BFCu%C3%A1l%20es%20mi%20nivel%3F" target="_blank" rel="noopener" class="inline-block rounded-xl px-7 py-3 font-black" style="background:#FECC02;color:#00335A;">QUIERO INSCRIBIRME</a>
+    </div>
+  </div>
+
+  <!-- 4 · QUÉ APRENDERÁS: DE CERO A BÁSICO -->
+  <div class="bg-white">
+    <div class="max-w-3xl mx-auto px-4 py-10">
+      <h2 class="text-xl sm:text-2xl font-black text-gray-800 text-center">De cero a básico</h2>
+      <p class="text-sm text-gray-500 text-center mb-6">Lo que trabajarás durante las 8 semanas</p>
+      <div class="space-y-3">
+        <details class="rounded-2xl border border-gray-100 shadow-sm overflow-hidden group"><summary class="cursor-pointer list-none px-4 py-3.5 font-bold text-gray-800 text-sm flex items-center justify-between">1 · Gramática y estructura<span class="text-swe-blue group-open:rotate-180 transition-transform">⌄</span></summary><div class="px-4 pb-4 text-sm text-gray-600 leading-relaxed">Orden básico de las palabras · afirmaciones y preguntas · pronombres personales · sustantivos (en/ett) · singular y plural · forma determinada e indeterminada · adjetivos y concordancia básica · infinitivo · presens · introducción a preteritum · introducción a perfekt (har + supinum) · futuro con «ska» y «kommer att» · verbos modales (kan, vill, ska, måste, får) · negación con «inte» · palabras interrogativas · preposiciones frecuentes · conectores básicos.</div></details>
+        <details class="rounded-2xl border border-gray-100 shadow-sm overflow-hidden group"><summary class="cursor-pointer list-none px-4 py-3.5 font-bold text-gray-800 text-sm flex items-center justify-between">2 · Vocabulario<span class="text-swe-blue group-open:rotate-180 transition-transform">⌄</span></summary><div class="px-4 pb-4 text-sm text-gray-600 leading-relaxed">Presentaciones · familia · vivienda · trabajo · profesiones · comida · compras · números · precios · horas · fechas · transporte · salud · actividades cotidianas · servicios habituales en Suecia.</div></details>
+        <details class="rounded-2xl border border-gray-100 shadow-sm overflow-hidden group"><summary class="cursor-pointer list-none px-4 py-3.5 font-bold text-gray-800 text-sm flex items-center justify-between">3 · Hablar y escuchar<span class="text-swe-blue group-open:rotate-180 transition-transform">⌄</span></summary><div class="px-4 pb-4 text-sm text-gray-600 leading-relaxed">Presentarte · hablar de ti · hacer y responder preguntas · mantener conversaciones sencillas · entender instrucciones básicas · pedir ayuda · explicar que no entiendes · hablar sobre tu día · contar algo que ocurrió · hablar de tus planes.</div></details>
+        <details class="rounded-2xl border border-gray-100 shadow-sm overflow-hidden group"><summary class="cursor-pointer list-none px-4 py-3.5 font-bold text-gray-800 text-sm flex items-center justify-between">4 · Sueco para la vida real<span class="text-swe-blue group-open:rotate-180 transition-transform">⌄</span></summary><div class="px-4 pb-4 text-sm text-gray-600 leading-relaxed">Supermercado · restaurante · transporte público · trabajo · vivienda · escuela/förskola · vårdcentral · preguntar horarios · pedir información · conversaciones cotidianas.</div></details>
+        <details class="rounded-2xl border border-gray-100 shadow-sm overflow-hidden group"><summary class="cursor-pointer list-none px-4 py-3.5 font-bold text-gray-800 text-sm flex items-center justify-between">5 · Pronunciación<span class="text-swe-blue group-open:rotate-180 transition-transform">⌄</span></summary><div class="px-4 pb-4 text-sm text-gray-600 leading-relaxed">Vocales suecas · Å, Ä, Ö · sonidos importantes · ritmo · pronunciación de palabras y frases · comprensión de preguntas sencillas.</div></details>
+      </div>
+      <div class="mt-6 rounded-2xl p-5 text-white text-center" style="background:linear-gradient(160deg,#0a4d84,#00335A);">
+        <div class="text-[11px] font-bold text-blue-200 tracking-widest mb-1">TU OBJETIVO</div>
+        <p class="text-sm leading-relaxed">Pasar de palabras sueltas y frases memorizadas a <b>empezar a construir y usar tus propias frases</b> en sueco.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5 · QUÉ APRENDERÁS: DE BÁSICO A MAYOR FLUIDEZ -->
+  <div class="max-w-3xl mx-auto px-4 py-10">
+    <h2 class="text-xl sm:text-2xl font-black text-gray-800 text-center">De básico a mayor fluidez</h2>
+    <p class="text-sm text-gray-500 text-center mb-6">Lo que trabajarás durante las 8 semanas</p>
+    <div class="space-y-3">
+      <details class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden group"><summary class="cursor-pointer list-none px-4 py-3.5 font-bold text-gray-800 text-sm flex items-center justify-between">1 · Gramática y estructura<span class="text-swe-blue group-open:rotate-180 transition-transform">⌄</span></summary><div class="px-4 pb-4 text-sm text-gray-600 leading-relaxed">Consolidación de presens · preteritum · perfekt · uso y diferencia de los tiempos · futuro · verbos modales · orden de palabras («ordföljd») · oración principal («huvudsats») y subordinada («bisats») · posición de «inte» · conectores · preposiciones · comparación de adjetivos · pronombres y posesivos · causa y consecuencia · expresar opiniones y argumentar · frases más desarrolladas. <span class="text-gray-400">(Usamos términos suecos como ordföljd, huvudsats y bisats, siempre explicados en español.)</span></div></details>
+      <details class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden group"><summary class="cursor-pointer list-none px-4 py-3.5 font-bold text-gray-800 text-sm flex items-center justify-between">2 · Hablar y conversar<span class="text-swe-blue group-open:rotate-180 transition-transform">⌄</span></summary><div class="px-4 pb-4 text-sm text-gray-600 leading-relaxed">Conversaciones más largas · explicar experiencias · contar acontecimientos · expresar opiniones · argumentar · estar de acuerdo y en desacuerdo · explicar problemas · proponer soluciones · dar consejos · hacer preguntas de seguimiento · hablar de forma más espontánea.</div></details>
+      <details class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden group"><summary class="cursor-pointer list-none px-4 py-3.5 font-bold text-gray-800 text-sm flex items-center justify-between">3 · Sueco para la vida real<span class="text-swe-blue group-open:rotate-180 transition-transform">⌄</span></summary><div class="px-4 pb-4 text-sm text-gray-600 leading-relaxed">Trabajo · conversaciones con compañeros · reuniones · entrevistas laborales · llamadas telefónicas · vivienda · vårdcentral · escuela/förskola · servicios · autoridades · sociedad sueca · situaciones sociales.</div></details>
+      <details class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden group"><summary class="cursor-pointer list-none px-4 py-3.5 font-bold text-gray-800 text-sm flex items-center justify-between">4 · Comprensión y pronunciación<span class="text-swe-blue group-open:rotate-180 transition-transform">⌄</span></summary><div class="px-4 pb-4 text-sm text-gray-600 leading-relaxed">Comprender conversaciones más naturales · reconocer palabras dentro de frases completas · ritmo · entonación · pronunciación · estrategias cuando no entiendes · ampliar vocabulario cotidiano.</div></details>
+      <details class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden group"><summary class="cursor-pointer list-none px-4 py-3.5 font-bold text-gray-800 text-sm flex items-center justify-between">5 · Leer y escribir<span class="text-swe-blue group-open:rotate-180 transition-transform">⌄</span></summary><div class="px-4 pb-4 text-sm text-gray-600 leading-relaxed">Mensajes · correos · información cotidiana · textos más desarrollados · expresar una opinión por escrito · estructurar mejor tus ideas.</div></details>
+    </div>
+    <div class="mt-6 rounded-2xl p-5 text-white text-center" style="background:linear-gradient(160deg,#0a4d84,#00335A);">
+      <div class="text-[11px] font-bold text-blue-200 tracking-widest mb-1">TU OBJETIVO</div>
+      <p class="text-sm leading-relaxed">Pasar de «entiendo sueco, pero me cuesta hablar» a <b>usar el idioma activamente</b>, con más seguridad e independencia.</p>
+    </div>
+    <p class="text-[11px] text-gray-400 text-center mt-4 leading-relaxed">El contenido se inspira en las habilidades para desenvolverse en Suecia y en áreas que se trabajan dentro de SFI, pero no prometemos alcanzar un nivel oficial de SFI ni una certificación al terminar las 8 semanas.</p>
+  </div>
+
+  <!-- 6 · CÓMO FUNCIONA -->
+  <div class="bg-white">
+    <div class="max-w-2xl mx-auto px-4 py-10 text-center">
+      <h2 class="text-lg sm:text-xl font-black text-gray-800 leading-snug mb-5">Aprender sueco no es solo estudiarlo.<br>Hay que utilizarlo.</h2>
+      <div class="flex flex-wrap justify-center items-center gap-2 mb-5">
+        <span class="bg-blue-50 text-swe-blue font-bold text-sm px-4 py-2 rounded-full">Aprender</span><span class="text-gray-300">→</span>
+        <span class="bg-blue-50 text-swe-blue font-bold text-sm px-4 py-2 rounded-full">Practicar</span><span class="text-gray-300">→</span>
+        <span class="bg-blue-50 text-swe-blue font-bold text-sm px-4 py-2 rounded-full">Hablar</span><span class="text-gray-300">→</span>
+        <span class="bg-blue-50 text-swe-blue font-bold text-sm px-4 py-2 rounded-full">Corregir</span><span class="text-gray-300">→</span>
+        <span class="bg-blue-50 text-swe-blue font-bold text-sm px-4 py-2 rounded-full">Repetir</span>
+      </div>
+      <p class="text-sm text-gray-600 leading-relaxed max-w-xl mx-auto">En las clases combinamos explicación y práctica. Aprendes una estructura y después la usas hablando, escribiendo y resolviendo situaciones reales.</p>
+    </div>
+  </div>
+
+  <!-- 7 · TODO INCLUIDO -->
+  <div class="max-w-3xl mx-auto px-4 py-10">
+    <h2 class="text-xl sm:text-2xl font-black text-gray-800 text-center mb-6">Todo esto está incluido</h2>
+    <div class="grid sm:grid-cols-2 gap-x-6 gap-y-2.5 text-sm text-gray-700">
+      <div class="flex gap-2"><span class="text-green-600 font-black">✓</span> 16 clases en vivo por Zoom</div>
+      <div class="flex gap-2"><span class="text-green-600 font-black">✓</span> 2 clases por semana</div>
+      <div class="flex gap-2"><span class="text-green-600 font-black">✓</span> 8 semanas</div>
+      <div class="flex gap-2"><span class="text-green-600 font-black">✓</span> Máximo 5 alumnos</div>
+      <div class="flex gap-2"><span class="text-green-600 font-black">✓</span> Clases grabadas</div>
+      <div class="flex gap-2"><span class="text-green-600 font-black">✓</span> Material de estudio</div>
+      <div class="flex gap-2"><span class="text-green-600 font-black">✓</span> Grupo privado de WhatsApp</div>
+      <div class="flex gap-2"><span class="text-green-600 font-black">✓</span> Acceso a la plataforma Sueco con Sophie</div>
+      <div class="flex gap-2"><span class="text-green-600 font-black">✓</span> Ejercicios entre clases</div>
+      <div class="flex gap-2"><span class="text-green-600 font-black">✓</span> Correcciones durante las clases</div>
+      <div class="flex gap-2"><span class="text-green-600 font-black">✓</span> Práctica oral</div>
+      <div class="flex gap-2"><span class="text-green-600 font-black">✓</span> Gramática aplicada</div>
+    </div>
+    <div class="mt-6 rounded-2xl p-5 text-center border-2 border-yellow-300 bg-yellow-50">
+      <div class="font-black text-gray-800">Máximo 5 alumnos</div>
+      <p class="text-sm text-gray-600 mt-1">Un grupo reducido significa más oportunidades para hablar, recibir correcciones y ayuda directa de Sophie.</p>
+    </div>
+  </div>
+
+  <!-- 8 · PRECIO + CTA FINAL -->
+  <div style="background:linear-gradient(160deg,#013a5e 0%,#00243c 100%);color:#fff;">
+    <div class="max-w-2xl mx-auto px-4 py-12 text-center">
+      <h2 class="text-xl sm:text-2xl font-black mb-6 leading-snug">8 semanas para darle estructura y continuidad a tu sueco.</h2>
+      <div class="flex items-end justify-center gap-2"><span class="text-5xl font-black" style="color:#FECC02">250</span><span class="text-lg font-bold mb-1">SEK / clase</span></div>
+      <p class="text-blue-100 text-sm mt-2">16 clases · 2 clases por semana · 8 semanas</p>
+      <p class="text-blue-100 text-sm">Total del programa: <b>4.000 SEK</b></p>
+      <div class="inline-block text-sm font-bold rounded-full px-4 py-2 mt-4" style="background:rgba(255,255,255,0.12)">Máximo 5 plazas por grupo</div>
+      <p class="text-blue-200 text-xs mt-3 max-w-md mx-auto">Las plazas son limitadas para mantener grupos pequeños y ofrecer más práctica y seguimiento durante las clases.</p>
+      <a href="https://wa.me/46769184251?text=Hola%2C%20quiero%20inscribirme%20al%20Programa%20Intensivo%20de%20Sueco" target="_blank" rel="noopener" class="block max-w-xs mx-auto mt-6 rounded-xl py-4 font-black text-center text-lg" style="background:#FECC02;color:#00335A;">QUIERO INSCRIBIRME</a>
+      <p class="text-blue-200 text-xs mt-3">Escríbenos para recibir la próxima fecha de inicio y los horarios disponibles.</p>
     </div>
   </div>
 </div>
