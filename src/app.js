@@ -5119,13 +5119,22 @@ const grammarState = {
 // ═══════════════════════════════════════════════════════════
 let _juanitaLevel = null;
 const JUANITA_PHRASES = {
-  start:    ['¡Vamos, mijo, que tú puedes! 💪', 'A darle con ganas, ¡yo te acompaño! 💛', 'Respira y confía: lo vas a lograr.'],
-  question: ['Léela con calma, mijo.', 'Piensa bien… tú sabes.', 'Concéntrate, ¡ya casi!', 'Sin miedo, con calma.'],
-  right:    ['¡Esooo! Muy bien, mijo. 👏', '¡Correcto! Estoy orgullosa. 💛', '¡Vas volando! Sigue así.', '¡Bien hecho! Te lo dije.'],
-  wrong:    ['Tranquilo, del error se aprende.', 'Casi… fíjate bien la próxima. 💪', 'No pasa nada, ¡a la que sigue!', 'Uy, esa se fue. ¡Ánimo, mijo!'],
-  end:      ['¡Terminaste! Orgullosa de ti. 💛', '¡Lo lograste! Sigue practicando.']
+  right: [
+    '¡Eso, mijo! Así me gusta. Sigue así. 👏',
+    '¡Correcto! ¿Ves que sí puedes cuando te concentras? 💪',
+    '¡Muy bien! Esa es mi sangre. 😌',
+    '¡Ajá! Por fin te aplicaste. 👏',
+    '¡Bien hecho! Pero no te confíes, ¿eh? 💛'
+  ],
+  wrong: [
+    'No, mijo. Concéntrate, que te me distraes. 😤',
+    'Nada de adivinar. Lee bien y piensa. 🙄',
+    'Ay, mijito… esa te la sabías. Ponte pilas. 😠',
+    '¡Otra vez! Menos flojera y más estudio. 💢',
+    'Uy no. Esa estaba fácil, mijo. Despierta. 😑'
+  ]
 };
-const JUANITA_IMG = { start: '/juanita/juanita-neutra.png', question: '/juanita/juanita-pensativa.png', right: '/juanita/juanita-feliz.png', wrong: '/juanita/juanita-molesta.png' };
+const JUANITA_IMG = { right: '/juanita/juanita-muy-bien.jpg', wrong: '/juanita/juanita-molesta.jpg' };
 function _jPick(k) { const a = JUANITA_PHRASES[k] || []; return a[Math.floor(Math.random() * a.length)] || ''; }
 function _juanitaSay(kind) {
   if (!grammarState.topic || grammarState.topic.id !== '__juanita__') return;
@@ -5490,6 +5499,7 @@ function checkGrammarType() {
 
 // ── Calificación común (todos los formatos) ──────────────────
 function _gradeGrammar(q, isCorrect) {
+  try { _juanitaSay(isCorrect ? 'right' : 'wrong'); } catch (e) {}
   grammarState.answered = true;
   grammarState.total++;
   if (isCorrect) {
@@ -5527,7 +5537,6 @@ function answerGrammar(selectedIdx) {
   if (grammarState.answered) return;
   const q = grammarState.questions[grammarState.index];
   const isCorrect = selectedIdx === q.correct;
-  try { _juanitaSay(isCorrect ? 'right' : 'wrong'); } catch (e) {}
 
   q.options.forEach((_, i) => {
     const btn = document.getElementById(`gq-opt-${i}`);
@@ -5599,7 +5608,7 @@ function showJuanitaResult() {
   const pct = Math.round((score / total) * 100);
   const passed = pct >= 70;
   ['gq-question-area', 'gq-explanation', 'gq-next-btn', 'gq-result'].forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('hidden'); });
-  const img = passed ? '/juanita/juanita-orgullosa.png' : '/juanita/juanita-con-chancla.png';
+  const img = passed ? '/juanita/juanita-aplaudiendo.jpg' : '/juanita/juanita-con-chancla.jpg';
   const emoji = passed ? '🎉' : '🩴';
   const phrase = passed ? '¡Muy bien, mijo! Estoy orgullosa de ti. 💛' : '¡Ay, mijo! Con esa nota sale la chancla… ¡a estudiar y me lo repites! 🩴';
   const imgEl = document.getElementById('jr-img');
