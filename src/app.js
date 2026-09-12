@@ -5120,22 +5120,44 @@ const grammarState = {
 let _juanitaLevel = null;
 const JUANITA_PHRASES = {
   right: [
-    '¡Eso, mijo! Así me gusta. Sigue así. 👏',
+    '¡Eso, {m}! Así me gusta. Sigue así. 👏',
     '¡Correcto! ¿Ves que sí puedes cuando te concentras? 💪',
     '¡Muy bien! Esa es mi sangre. 😌',
     '¡Ajá! Por fin te aplicaste. 👏',
-    '¡Bien hecho! Pero no te confíes, ¿eh? 💛'
+    '¡Bien hecho! Pero no te confíes, ¿eh? 💛',
+    '¡Perfecto, {m}! Así se hace. 🙌',
+    '¡Correctísimo! Me haces sentir orgullosa. 💛'
   ],
   wrong: [
-    'No, mijo. Concéntrate, que te me distraes. 😤',
+    'No, {m}. Concéntrate, que te me distraes. 😤',
     'Nada de adivinar. Lee bien y piensa. 🙄',
-    'Ay, mijito… esa te la sabías. Ponte pilas. 😠',
+    'Ay, {m}… esa te la sabías. Ponte pilas. 😠',
     '¡Otra vez! Menos flojera y más estudio. 💢',
-    'Uy no. Esa estaba fácil, mijo. Despierta. 😑'
+    'Uy no. Esa estaba fácil, {m}. Despierta. 😑',
+    'Incorrecto. Lee la explicación y no la vuelvas a fallar. 📖',
+    '¿En qué estabas pensando, {m}? Enfócate. 😤'
   ]
 };
+const _jLast = {};
+// mijo/mija según el nombre (heurística: termina en 'a' → femenino).
+function _juanitaTerm() {
+  try {
+    const s = window._sbSession || {};
+    const nm = String((s.name || (typeof state !== 'undefined' && state.profile && state.profile.name) || '')).trim();
+    const first = nm.split(/\s+/)[0].toLowerCase();
+    const maleA = ['josua', 'noa', 'elia', 'luca', 'sasha', 'nikita', 'kunta'];
+    if (first && first.endsWith('a') && maleA.indexOf(first) === -1) return 'mija';
+  } catch (e) {}
+  return 'mijo';
+}
 const JUANITA_IMG = { right: '/juanita/juanita-muy-bien.jpg', wrong: '/juanita/juanita-molesta.jpg' };
-function _jPick(k) { const a = JUANITA_PHRASES[k] || []; return a[Math.floor(Math.random() * a.length)] || ''; }
+function _jPick(k) {
+  const a = JUANITA_PHRASES[k] || []; if (!a.length) return '';
+  let idx = Math.floor(Math.random() * a.length);
+  if (a.length > 1 && a[idx] === _jLast[k]) idx = (idx + 1) % a.length;  // no repetir la anterior
+  _jLast[k] = a[idx];
+  return a[idx].replace(/\{m\}/g, _juanitaTerm());
+}
 function _juanitaSay(kind) {
   if (!grammarState.topic || grammarState.topic.id !== '__juanita__') return;
   const jb = document.getElementById('gq-juanita'); if (jb) jb.classList.remove('hidden');   // solo aparece al responder
@@ -5162,7 +5184,9 @@ function juanitaStart(amount) {
   if (!pool.length) { showToast('Pronto habrá más preguntas de este nivel 🙂', 'info'); return; }
   closeJuanitaAmount();
   const n = (amount === 'main') ? Math.min(15, pool.length) : Math.min(amount, pool.length);
-  const qs = [...pool].sort(() => Math.random() - 0.5).slice(0, n).map(shuffleOptions);
+  // Prioriza formatos más difíciles (escribir/ordenar) sobre opción múltiple.
+  const _hard = q => (q.type === 'order' || q.type === 'type') ? 0 : 1;
+  const qs = [...pool].sort(() => Math.random() - 0.5).sort((a, b) => _hard(a) - _hard(b)).slice(0, n).map(shuffleOptions);
   const topic = { id: '__juanita__', title: '👵 Juanita · Nivel ' + _juanitaLevel, questions: qs, level: _juanitaLevel, color: '#EC4899' };
   grammarState.fromTheory = null;
   grammarState.limit = n;
@@ -5610,7 +5634,8 @@ function showJuanitaResult() {
   ['gq-question-area', 'gq-explanation', 'gq-next-btn', 'gq-result'].forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('hidden'); });
   const img = passed ? '/juanita/juanita-aplaudiendo.jpg' : '/juanita/juanita-con-chancla.jpg';
   const emoji = passed ? '🎉' : '🩴';
-  const phrase = passed ? '¡Muy bien, mijo! Estoy orgullosa de ti. 💛' : '¡Ay, mijo! Con esa nota sale la chancla… ¡a estudiar y me lo repites! 🩴';
+  const _t = _juanitaTerm();
+  const phrase = passed ? ('¡Muy bien, ' + _t + '! Estoy orgullosa de ti. 💛') : ('¡Ay, ' + _t + '! Con esa nota sale la chancla… ¡a estudiar y me lo repites! 🩴');
   const imgEl = document.getElementById('jr-img');
   if (imgEl) { imgEl.src = img; imgEl.onerror = function () { this.onerror = null; this.replaceWith(document.createTextNode(emoji)); }; }
   const setHtml = (id, v) => { const e = document.getElementById(id); if (e) e.innerHTML = v; };
@@ -5619,10 +5644,9 @@ function showJuanitaResult() {
   setHtml('jr-tip', _juanitaTip());
   const m = document.getElementById('juanita-result-modal'); if (m) m.classList.remove('hidden');
 }
-function closeJuanitaResult() {
-  const m = document.getElementById('juanita-result-modal'); if (m) m.classList.add('hidden');
-  showView('juanita'); _juanitaResetPicker();
-}
+function closeJuanitaResultModal() { const m = document.getElementById('juanita-result-modal'); if (m) m.classList.add('hidden'); }
+function juanitaPracticeAgain() { closeJuanitaResultModal(); showView('juanita'); _juanitaResetPicker(); }
+function juanitaResultHome() { closeJuanitaResultModal(); goHome(); }
 
 // ── Show final result screen ─────────────────────────────────
 function showGrammarResult() {
