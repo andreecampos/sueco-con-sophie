@@ -130,7 +130,35 @@ function showView(id) {
   try { _updateBottomNav(id); } catch (e) {}
   try { if (VIEW_URLS[id]) history.replaceState(null, '', VIEW_URLS[id]); } catch (e) {}
   try { if (id === 'membresia' && typeof initMembresiaReviews === 'function') initMembresiaReviews(); } catch (e) {}
+  try { if (id === 'login' && typeof _renderLoginPhrase === 'function') _renderLoginPhrase(); } catch (e) {}
 }
+
+// Frases suecas motivadoras del login (rotan cada día). Fáciles de entender.
+const LOGIN_PHRASES = [
+  { sv: 'Steg för steg.', es: 'Paso a paso.' },
+  { sv: 'Du klarar det!', es: '¡Tú puedes!' },
+  { sv: 'Öva lite varje dag.', es: 'Practica un poco cada día.' },
+  { sv: 'Ge inte upp!', es: '¡No te rindas!' },
+  { sv: 'Var inte rädd att prata.', es: 'No tengas miedo de hablar.' },
+  { sv: 'Idag lär du dig något nytt.', es: 'Hoy aprendes algo nuevo.' },
+  { sv: 'Sakta men säkert.', es: 'Despacio pero seguro.' },
+  { sv: 'Fel hjälper dig att lära.', es: 'Equivocarse te ayuda a aprender.' },
+  { sv: 'Ett ord i taget.', es: 'Una palabra a la vez.' },
+  { sv: 'Din framtid talar svenska.', es: 'Tu futuro habla sueco.' },
+  { sv: 'Fortsätt kämpa!', es: '¡Sigue adelante!' },
+  { sv: 'Lycka till idag!', es: '¡Mucha suerte hoy!' },
+  { sv: 'Varje dag blir du bättre.', es: 'Cada día eres mejor.' },
+  { sv: 'Tro på dig själv.', es: 'Cree en ti.' },
+  { sv: 'Du är starkare än du tror.', es: 'Eres más fuerte de lo que crees.' }
+];
+function _renderLoginPhrase() {
+  const el1 = document.getElementById('login-phrase-sv'); if (!el1) return;
+  const el2 = document.getElementById('login-phrase-es');
+  const p = LOGIN_PHRASES[Math.floor(Date.now() / 86400000) % LOGIN_PHRASES.length]; // cambia cada día
+  el1.textContent = '"' + p.sv + '"';
+  if (el2) el2.textContent = p.es;
+}
+try { _renderLoginPhrase(); } catch (e) {}
 
 // Ir a la landing y (opcional) desplazarse a una sección — usado por el menú desde otras páginas.
 function landingGo(anchor) {

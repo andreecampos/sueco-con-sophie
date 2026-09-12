@@ -977,21 +977,24 @@
   </div>
 </div>
 
-<div id="view-login" class="view active" style="background: linear-gradient(160deg, #006AA7 0%, #004F7C 55%, #002D54 100%); min-height: 100vh;">
-  <div class="flex flex-col min-h-screen items-center justify-center px-4 py-10">
+<div id="view-login" class="view active" style="min-height:100vh; background:#eef3f7;">
+  <div class="lg:flex" style="min-height:100vh;">
 
-    <!-- Brand header -->
-    <div class="text-center mb-8">
-      <div class="flex justify-center flex-wrap gap-1 mb-5 text-2xl">
-        🇲🇽🇨🇴🇦🇷🇨🇱🇵🇪🇻🇪🇧🇷🇪🇨🇸🇪
-      </div>
-      <h1 style="font-family:'Inter',sans-serif; font-size:3.2rem; font-weight:900; color:#FFFFFF; letter-spacing:-1px; line-height:1; text-shadow:0 2px 20px rgba(0,0,0,0.3);">Sueco con Sophie</h1>
+    <!-- IZQUIERDA: branding + frase sueca (rota cada día) -->
+    <div class="lg:w-1/2 flex flex-col justify-center items-center text-center px-8 py-14 text-white" style="background:linear-gradient(160deg,#006AA7 0%,#004F7C 55%,#002D54 100%);">
+      <div class="flex justify-center flex-wrap gap-1 mb-5 text-2xl">🇲🇽🇨🇴🇦🇷🇨🇱🇵🇪🇻🇪🇧🇷🇪🇨🇸🇪</div>
+      <h1 style="font-family:'Inter',sans-serif; font-size:2.6rem; font-weight:900; color:#FFFFFF; letter-spacing:-1px; line-height:1; text-shadow:0 2px 20px rgba(0,0,0,0.3);">Sueco con Sophie</h1>
       <p style="color:rgba(255,255,255,0.7); font-size:0.9rem; margin-top:0.6rem; letter-spacing:1px;">Aprende sueco · Conéctate · Expande tu mundo</p>
-      <div style="height:3px; width:60px; background:#FECC02; margin:1rem auto 0; border-radius:2px;"></div>
+      <div style="height:3px; width:60px; background:#FECC02; margin:1.3rem auto;"></div>
+      <div class="max-w-sm mt-2">
+        <div id="login-phrase-sv" style="font-size:1.6rem; font-weight:800; line-height:1.3;"></div>
+        <div id="login-phrase-es" style="color:rgba(255,255,255,0.75); font-size:0.95rem; margin-top:0.5rem;"></div>
+      </div>
     </div>
 
-    <!-- Login card -->
-    <div style="width:100%; max-width:360px;">
+    <!-- DERECHA: formulario -->
+    <div class="lg:w-1/2 flex items-center justify-center px-4 py-12">
+      <div style="width:100%; max-width:380px;">
       <div style="background:white; border-radius:20px; padding:28px; box-shadow:0 25px 60px rgba(0,0,0,0.35);">
         <div id="admin-mode-badge" style="display:none; text-align:center; margin-bottom:10px;"><span style="display:inline-block; background:#EFF6FF; color:#006AA7; font-size:0.7rem; font-weight:800; padding:5px 12px; border-radius:999px;">🔐 Acceso administrador</span></div>
         <h2 style="font-size:1.1rem; font-weight:700; color:#1f2937; text-align:center; margin-bottom:4px;">Iniciar sesión</h2>
@@ -1032,7 +1035,7 @@
         <!-- Inscríbete CTA -->
         <div id="enroll-cta" style="text-align:center;">
           <p style="font-size:0.72rem; color:#9ca3af; margin-bottom:10px;">¿Aún no eres alumno/a?</p>
-          <button id="enroll-btn" onclick="window.location.href='/'"
+          <button id="enroll-btn" onclick="showView('membresia')"
             style="width:100%; background:#FECC02; color:#1a1a2e; border:none; border-radius:12px; padding:13px; font-size:0.92rem; font-weight:800; cursor:pointer; letter-spacing:0.2px; transition:all 0.2s; font-family:inherit; box-shadow:0 4px 15px rgba(254,204,2,0.35);"
             onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(254,204,2,0.5)'"
             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(254,204,2,0.35)'">
@@ -1042,12 +1045,9 @@
         </div>
       </div>
 
-      <!-- Admin link subtle -->
-      <div style="text-align:center; margin-top:20px;">
+        </div>
       </div>
     </div>
-
-  </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -18522,7 +18522,35 @@ function showView(id) {
   try { _updateBottomNav(id); } catch (e) {}
   try { if (VIEW_URLS[id]) history.replaceState(null, '', VIEW_URLS[id]); } catch (e) {}
   try { if (id === 'membresia' && typeof initMembresiaReviews === 'function') initMembresiaReviews(); } catch (e) {}
+  try { if (id === 'login' && typeof _renderLoginPhrase === 'function') _renderLoginPhrase(); } catch (e) {}
 }
+
+// Frases suecas motivadoras del login (rotan cada día). Fáciles de entender.
+const LOGIN_PHRASES = [
+  { sv: 'Steg för steg.', es: 'Paso a paso.' },
+  { sv: 'Du klarar det!', es: '¡Tú puedes!' },
+  { sv: 'Öva lite varje dag.', es: 'Practica un poco cada día.' },
+  { sv: 'Ge inte upp!', es: '¡No te rindas!' },
+  { sv: 'Var inte rädd att prata.', es: 'No tengas miedo de hablar.' },
+  { sv: 'Idag lär du dig något nytt.', es: 'Hoy aprendes algo nuevo.' },
+  { sv: 'Sakta men säkert.', es: 'Despacio pero seguro.' },
+  { sv: 'Fel hjälper dig att lära.', es: 'Equivocarse te ayuda a aprender.' },
+  { sv: 'Ett ord i taget.', es: 'Una palabra a la vez.' },
+  { sv: 'Din framtid talar svenska.', es: 'Tu futuro habla sueco.' },
+  { sv: 'Fortsätt kämpa!', es: '¡Sigue adelante!' },
+  { sv: 'Lycka till idag!', es: '¡Mucha suerte hoy!' },
+  { sv: 'Varje dag blir du bättre.', es: 'Cada día eres mejor.' },
+  { sv: 'Tro på dig själv.', es: 'Cree en ti.' },
+  { sv: 'Du är starkare än du tror.', es: 'Eres más fuerte de lo que crees.' }
+];
+function _renderLoginPhrase() {
+  const el1 = document.getElementById('login-phrase-sv'); if (!el1) return;
+  const el2 = document.getElementById('login-phrase-es');
+  const p = LOGIN_PHRASES[Math.floor(Date.now() / 86400000) % LOGIN_PHRASES.length]; // cambia cada día
+  el1.textContent = '"' + p.sv + '"';
+  if (el2) el2.textContent = p.es;
+}
+try { _renderLoginPhrase(); } catch (e) {}
 
 // Ir a la landing y (opcional) desplazarse a una sección — usado por el menú desde otras páginas.
 function landingGo(anchor) {
